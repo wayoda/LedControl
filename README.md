@@ -9,11 +9,12 @@ by the great [Read The Docs](http://readthedocs.org/) project.
 
 Download
 --------
-~~The lastest binary version of the Library is always available on the ~~
-~~[Download Page](https://github.com/wayoda/LedControl/downloads) of the project.~~
+~~The lastest binary version of the Library is always available on the 
+[Download Page](https://github.com/wayoda/LedControl/downloads) of the project.~~
 
 Oops,that feature is gone on Github!
 Please, get the library from the [Arduino Playground](http://playground.arduino.cc/Main/LedControl) pages:
+
 [LedControl.zip](http://arduino.cc/playground/uploads/Main/LedControl.zip)
 
 

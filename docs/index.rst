@@ -331,8 +331,8 @@ testing the basic concepts of the ``LedControl`` library.
 There are 3 different ways to switch a Led in a Matrix on or off. We start with
 a function that controls each one of the Led's individually...
 
-Lighting up individual Leds 
-*************************** 
+Control single Leds 
+******************* 
 
 Here is the prototype for the function that switches Leds on or off.
 
@@ -379,8 +379,8 @@ Here's some code that lights up a few Leds
 be updated, it would require many lines of code. So there are two more functions
 in the library, that control a complete row and column with a single call.
     
-Control all the Leds in a row 
-+++++++++++++++++++++++++++++ 
+Control a row 
++++++++++++++ 
 
 The ``setRow(addr,row,value)``-function takes 3 arguments. The first one is the
 already familiar address of our device. The second one is the row that is going
@@ -442,8 +442,8 @@ Here is the signature of the method :
      */ 
     void setRow(int addr, int row, byte value);
 
-Control all the Leds in a column 
-+++++++++++++++++++++++++++++++++ 
+Control a column 
+++++++++++++++++ 
 
 What can be done for ''rows'' can likewise be done with ''columns''. The
 ``setColumn()``-method updates 8 Leds in the vertical columns.
@@ -548,16 +548,16 @@ A complete example for the Led matrix functions can be found on the `demo-page
       time, that could lead to some delay that is actually visible.
 
 
-Controlling 7-Segment displays 
-****************************** 
+Control 7-Segment displays 
+************************** 
 It's not the standard usage for 7-segment Leds...
 
 .. image:: ArduinoOn7Segment.jpg
 
 but looks good!
 
-Printing numbers 
-++++++++++++++++ 
+Print numbers 
++++++++++++++ 
 The most common use of 7-segment displays is to show numbers. The
 first function we look at, takes an argument of type byte and prints
 the corresponding digit on the specified column. The range of valid
@@ -622,8 +622,8 @@ This is the prototype for the function:
 The ``digit``-argument must be from the range 0..7 because the MAX72XX can drive
 up to eight 7-segment displays. The index starts at 0 as usual.
 
-Printing characters 
-+++++++++++++++++++ 
+Print characters 
+++++++++++++++++ 
 There is a limited set of characters that make (visual) sense on a
 7-segment display. A common use would be the character '-' for
 negative values and the 6 characters from 'A'..'F'
