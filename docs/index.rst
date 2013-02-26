@@ -331,8 +331,8 @@ testing the basic concepts of the ``LedControl`` library.
 There are 3 different ways to switch a Led in a Matrix on or off. We start with
 a function that controls each one of the Led's individually...
 
-Control single Leds 
-******************* 
+Control a single Led 
+++++++++++++++++++++ 
 
 Here is the prototype for the function that switches Leds on or off.
 
