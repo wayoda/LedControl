@@ -1,5 +1,5 @@
-Democode for the LedControl-library
-===================================
+LedControl-library demos
+========================
 Here are a few demo-sketches that using the LedControl-library. You
 can either copy+paste the code directly into the editor of the
 Arduino-IDE, or download the sketches in a zip-file :
@@ -14,8 +14,8 @@ Arduino-IDE, or download the sketches in a zip-file :
 .. toctree::
    :maxdepth: 1
 
-LedMatrixDemo - Demo for a Led matrix
-*************************************
+Led matrix
+**********
 Here is a small demo to be run on a Led matrix. A matrix of at least
 5x7 Leds is recommended, but there is no problem running it on a
 smaller matrix, it simply won't look that good.
@@ -164,8 +164,8 @@ how you could drive a small text display if you had a few spare
     }
 
 
-Demo for a 7-segment display
-****************************
+7-segment display
+*****************
 Here is a demo to be run on a 7-segment display. The initialization of
 the devices is exactly the same as in the matrix demo. 
 ``scrollDigits()`` uses the ``setDigits()`` method for (hex-)numbers between 0 and 15. 
@@ -250,20 +250,17 @@ characters.
         scrollDigits(); 
     }
 
-Demo for driving more than one ``MAX72XX``
-******************************************
+Cascaded devices
+****************
 Here is a demo that shows how to address more than one ``MAX72XX``
 from a single ``LedControl`` variable. You would obviously need at
-least two cascaded devices to test this. 
+least two cascaded devices to test this. The demo doesn't do anything
+exciting. It simply uses a big loop in which it switches all Leds on
+all devices on and off, one after the other. 
 
-
-The demo doesn't do anything exciting. It simply uses a big loop in
-which it switches all Leds on all devices on and off, one after the
-other. 
-
-
-The other point of interest is the @@setup()@@-function that
-initializes all devices in a loop.
+The thing to remember is that you have to initialize all of the
+devices, like we do it in the ``setup()``-function where all of the
+MAX72XX are initialized in a loop.
 
 .. note :: **Update Pin numbers...**
 
