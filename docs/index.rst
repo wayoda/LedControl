@@ -26,9 +26,55 @@ of alphanumeric characters that make (visual) sense on this kind of
 displays. But the library also provides a basic set of functions by which either
 individual or groups of Leds can be switched on and off.
 
+The library documentation is devided into three parts
+
+- :doc:`Hardware and schematics <hardware>`
+- :doc:`Documenation of the library functions<software>`
+- :doc:`Democode for using the the library <demos>`
+
 .. toctree::
-   :maxdepth: 2
-   
-   hardware.rst
-   software.rst
-   demos.rst
+   :hidden:
+
+   hardware
+   software
+   demos
+
+Known bugs 
+********** 
+Currently none (with Arduino 0022 and Arduino 1.0 (RC1))
+
+Revision History 
+**************** 
+*February 27, 2013*
+    Moved code to `Github <http://github.com>`_ and documentation to
+    `Read The Docs <https://readthedocs.org>`_
+*September 10, 2012* 
+    Changed the software license from LGPL to an MIT-style license.  
+*September 19, 2011* 
+    Uploaded new version of LedControl.zip.  Release 1.0 of the
+    Arduino-IDE renamed the internal header file ``WProgramm.h`` to 
+    ``Arduino.h``. The include statement in ``LedControl.h`` was
+    updated so the library compiles under pre- and post-1.0 version 
+    of the IDE 
+*October 14, 2008* 
+    Uploaded a new version of the LedControl.zip. The original 
+    version did not compile under arduino-0012.
+*December 5, 2007* 
+    Documentation and sourcecode is now hosted on the arduino
+    playground 
+*June 23, 2007* 
+    First public release
+
+
+Feedback 
+******** 
+Your first stop should be the arduino forum section
+``Hardware/Interfacing`` which I visit regulary. But you are also welcome to
+send questions, objections or corrections to <e.fahle@wayoda.org>
+
+License (The software) 
+********************** 
+The sourcecode for this library is released under the Terms of the 
+GNU Lesser General Public License version 2.1.
+
+
