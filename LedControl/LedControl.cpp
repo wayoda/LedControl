@@ -181,8 +181,8 @@ void LedControl::setChar(int addr, int digit, char value, boolean dp) {
     offset=addr*8;
     index=(byte)value;
     if(index >127) {
-	//nothing define we use the space char
-	value=32;
+	//no defined beyond index 127, so we use the space char
+	index=32;
     }
     v=charTable[index];
     if(dp)
