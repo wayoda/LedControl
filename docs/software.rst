@@ -661,7 +661,7 @@ digits.
      * value the character to be displayed.
      * dp sets the decimal point.  
      */ 
-    void setChar(int addr, int digit, char value, *boolean dp);
+    void setChar(int addr, int digit, char value, *boolean dp);i
 
 
 Commented demos for the library 
@@ -671,7 +671,7 @@ also download the code for the demos from [[LedControlDemos | there]].
     
 Sourcecode and download 
 *********************** 
-The sourcecode of the library is available as a zip-file :[[Attach:LedControl.zip | ``LedControl.zip``]]
+The sourcecode of the library is available as a zip-file : `LedControl.zip <http://arduino.cc/playground/uploads/Main/LedControl.zip>`_
 
 The zip-file will create a new directory named LedControl with 3 files:
 
@@ -691,8 +691,8 @@ versions of the arduino environment.
 - Starting with version ``0010`` the Arduino IDE expects libraries to be
   installed at ``arduino-<version>/hardware/libraries/``
 
-When the file [[Attach:LedControl.zip | ``LedControl.zip``]] has been unpacked
-into one of the directory from above, the new library has to be compiled. From
+When the file `LedControl.zip <http://arduino.cc/playground/uploads/Main/LedControl.zip>`_
+has been unpacke into one of the directory from above, the new library has to be compiled. From
 the arduino-ide this is very simple. Create a new sketch with the following
 content...
 
@@ -710,5 +710,6 @@ content...
   all of your sketches that start with a ``#include "LedControl.h"`` line.
 
 The Zip-File also contains 3 example sketches which are documented on the
-[[LedControlDemos]] page.
+`LedControlDemos <demos>`_ page.
+
 

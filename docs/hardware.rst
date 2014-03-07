@@ -328,7 +328,8 @@ Arduino from a 500mA hub.
 
 Powering the Leds from batteries
 ++++++++++++++++++++++++++++++++
-Its hard to come up with numbers as to how long a battery will last. So here are just a few guidelines:
+Its hard to come up with numbers as to how long a battery will last. So here are
+just a few guidelines:
 
 - Every Led that is **not** lit saves power. 
 - Selecting a higher value for ``RSet`` makes the display dimmer, 

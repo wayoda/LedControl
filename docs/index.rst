@@ -10,7 +10,7 @@ or a ``MAX7219`` chip which are both used to that drives a Led matrix
 or a 7-segment display from an Arduino board.  
 
 A detailed description of the hardware and a
-schematic can be found ``here``.
+schematic can be found `here <hardware>`.
 
 As a teaser here is a picture of my rather crappy (but working) testbed...
 

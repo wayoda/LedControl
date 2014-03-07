@@ -4,7 +4,7 @@ Here are a few demo-sketches that using the LedControl-library. You
 can either copy+paste the code directly into the editor of the
 Arduino-IDE, or download the sketches in a zip-file :
 
-   ``LedControlDemos.zip``
+  `LedControlDemos.zip <http://arduino.cc/playground/uploads/Main/LedControl.zip>`_
 
 .. note :: **LedControl must be installed first...**
 
