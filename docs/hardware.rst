@@ -1,46 +1,41 @@
-The Hardware 
-============
-The LedControl library supports two Maxim display drivers, the
-``MAX7219`` and the ``MAX7221``. These two circuits can drive up 64
+Hardware and schematics
+=======================
+The library supports two Maxim IC display drivers, the
+``MAX7219`` and the ``MAX7221``. Both circuits can drive up 64
 individual Led's, or 7-segment displays with 8 digits. The drivers
 implement a `SPI
 <http://en.wikipedia.org/wiki/Serial_Peripheral_Interface_Bus>`_
 compatible slave interface that can be controlled from the Arduino
 using only 3 digital output pins. An datasheet for
-the IC's is available from the `Maxim homepage
-<http://www.maxim-ic.com/>`_. Both drivers are very similar, so I will
-use the generic term ``MAX72XX`` the ``MAX7221`` *and* the
-``MAX7219``. Both drivers are still in production (Feb 2013).
+the ``MAX72XX`` is available from the `Maxim homepage
+<http://www.maxim-ic.com/>`_. Both drivers provide identical functions 
+so I will use the generic term ``MAX72XX`` for the ``MAX7221`` *and* the
+``MAX7219``. Both chips are still in production as of March 2014.
 
-This section of the documentation for LedControl library focuses on
-building the hardware, and is to be considered as a supplement to the
+This section of the documentation focuses on building the external hardware, 
+and should be seen as supplement to the
 `original datasheet
 <http://www.maximintegrated.com/datasheet/index.mvp/id/1339>`_ . 
 For a basic understanding I suggest you have a look at the datasheet
 first and the read this section for Arduino specific information
 
-Wiring and schematics
-*********************
-Here is a basic schematic for a ``MAX72XX``, showing the data signals
+Wiring 
+******
+Here is a basic schematic for a ``MAX72XX``, showing only the *data* signals
 coming from the Arduino.
  
 .. image:: MAX72XX_SPI.jpg
     :align: center
 
-There are not yet any Leds in the schematic. There will be an extra
-section on Led wiring.
-
-
-Besides the ``MAX72XX`` itself and the Leds you need only 3 external
+Besides the ``MAX72XX`` itself and the Leds there are only 3 external
 components: two capacitors (``C1``; ``C2``) and a resistor (``RSet``). 
 
 The capacitors are there to supress noise signals introduced through
-the power-supply lines. By no means these 2 capacitors can be
+the power-supply lines. By no means these 2 capacitors should be
 ommitted, as it might lead to sporadic or permanent
 malfunctions. These types of errors are really hard to track
 down. Both capacitors **must** be placed as near as possible to the
 ``V+`` and the ``Gnd`` pins of the ``MAX72XX``. 
-
 
 The resistor ``RSet`` is responsible for setting an upper limit on the
 current that is fed into the Leds. Selecting the correct resistor
@@ -53,23 +48,21 @@ Arduino-board. If you add more than one matrix to the Arduino you will
 probably need an external power-supply. More on this in section
 :ref:`Power supply issues <PowerSupply>`.
 
-
 Arduino interface
 +++++++++++++++++
 The ``Gnd``-Pins of the ``MAX72XX`` have to be connected to one of the
 ``Gnd``-Pins on the Arduino board. That makes both circuits work on
 the same voltage-level. The positive power-supply pins (``+5V/Vcc``)
-can be connected to the Arduino-board for a limited number of
+can directly be connected to the Arduino-board only for a limited number of
 Led's.(See :ref:`Power supply issues <PowerSupply>` for details.)
 
 
 The three signal lines (``DIn,CLK,Load(/CS)``) have to be connected to
 three digital outputs on the Arduino board. It depends on the software
 which Arduino pins have to be used. For the exact pin-numbers you have
-to refer to the documentation of the library or the example code on
+to refer to the software documentation of the library or the example code on
 which you build your project. With most of the libraries for the
 ``MAX72XX`` you are free to choose any pins you like.
-
 
 If you read the datasheet for the ``MAX72XX`` you know that the
 drivers can be cascaded by simply connecting the signal ``DOut`` from
@@ -79,12 +72,12 @@ one chip to ``DIn`` on the next chip. The signals ``Clk`` and
 cascaded that way. But the SPI-interface is not capable of any error
 checking on the transmitted data, so you are already limited with the
 length of the cables that run from one ``MAX72XX`` to the next one. If
-your cables get longer than 10cm between each ``MAX72XX`` you
+your cables have to be much longer than 10cm (4 inch) between each ``MAX72XX`` you
 ''might'' already run into trouble.       
 
 Led-matrix
 ++++++++++
-The ``MAX72XX`` can drive up to an 8x8 matrix as shown in the
+The ``MAX72XX`` can drive up an 8x8 matrix as shown in the
 schematic below. The labels on the left and the top of the schematic
 refer to the matching pins of the ``MAX72XX``.
 
@@ -97,14 +90,12 @@ also pre-wired ones available. They can be directly connected to the
 ``MAX72XX``. Some are arranged as ''column cathode'' and some are
 ''column anode'' (as in the diagram above). Either type will work but
 you must connect the anodes to the ``Seg`` lines and cathodes to the
-``Dig`` lines and arrange your source data to suit (e.g. be prepared
-to swap rows for columns).
-
+``Dig`` lines.
 
 7-segment displays
 ++++++++++++++++++
-7-segment digits are nothing more than 8 Leds (``7-segments`` and the
-``dot``) mounted in a special way. For 7-segment displays you must use
+A 7-segment digit is actually nothing more than 8 Leds (``7-segments`` 
+and the ``dot``) mounted in a special way. For 7-segment displays you must use
 the ''common cathode''-type. There is no easy way to make a ''common
 anode''-type seven segment display work with a ``MAX72XX``.
 
@@ -114,12 +105,12 @@ The internal wiring of a ''common cathode'' type looks like this
 .. image:: Seg7Internals.jpg
     :align: center
 
-If you look at the matrix schematic again that would resembles one of
+If you look at the matrix schematic again that would resemble one of
 the rows. The pin-labels on the 7-segment digits match the name of the
 pins on a ``MAX72XX``, with the common cathode pin wired to one of the
 ``Dig0-7`` pins.  
 In most shops you'll find only single 7-segment digits. But it is very
-easy to build displays with more digits with the wiring below. 
+easy to build displays with more digits using the schematic below. 
 
 
 .. image:: Seg7Matrix.jpg
@@ -128,10 +119,9 @@ easy to build displays with more digits with the wiring below.
 A complete schematic
 ++++++++++++++++++++
 A detailed schematic showing all the components is simply too large
-for the computer screen. But clicking the link below will open a new
-browser window with a schematic in print resolution. It shows the
-wiring for 2 cascaded ``MAX72XX``. One drives a plain matrix and the
-other a 7-segment display.
+for the computer screen. Click the image below for a schematic in 
+print resolution. It shows the complete wiring for 2 cascaded ``MAX72XX``. 
+One drives a plain matrix and the other a 7-segment display.
 
 
 .. image:: MAX72XX_Schematic.jpg
@@ -167,7 +157,7 @@ here...
     matrix is placed near some audio circuit it can introduce  audible
     noise to the signal. So, if your project would go into categories
     like : audio gadget, audio levelmeter, (low-)voltage measurement,
-    etc. than better take the ``MAX7221``.
+    etc. than go for the ``MAX7221``.
 
 In all other cases you should be fine with the ``MAX7219``.
 
@@ -177,18 +167,18 @@ Selecting ``RSet``
 ******************
 The Arduino forum topics concerning the ``MAX72XX``, often show that
 there is a fair bit of uncertainty when it comes to selecting a value
-for the resistor RSet. It is the single component that limits the
-current for all the individual Leds. While some people seem to think
+for the resistor ``RSet``. It is the single component that limits the
+current fed into all the individual Leds. While some people seem to think
 of this resistor as a way to control the brightness of the Leds, its
 real purpose is to protect the ``MAX72XX`` and the Leds from exessive
 currents. Setting the brightness of the display can and should be done
-software-controlled. 
+from software. 
 
 To find out the correct value for ``RSet`` you need the datasheet for
 the ``MAX72XX`` **and** the datasheet for the Ledmatrix or 
 7-segment display you're going to use. 
 
-From the datasheet of your Led's you will need only two values 
+From the datasheet of your Led's you will need to know two values 
 
 ``DC forward current``
    the maximum current that is allowed to go through the Led without
@@ -206,7 +196,7 @@ often rated with a ``DC forward current`` of 25-30mA. Limiting to 20mA
 would make a good choice. 
 
 With the information from the Led's datasheet we can now lookup the
-resulting value for resistor ``RSet`` in the table below (which I have
+resulting value for resistor ``RSet`` in the table below (which I 
 copied from the ``MAX72XX`` datasheet):
 
 
@@ -220,6 +210,18 @@ ISeg  1.5V            2.0V          2.5V          3.0V          3.5V
 20mA  29.8k |omega|   28.0k |omega| 25.9k |omega| 24.5k |omega| 22.6k |omega| 
 10mA  66.7k |omega|   63.7k |omega| 59.3k |omega| 55.4k |omega| 51.2k |omega| 
 ====  =============== ============= ============= ============= =============
+
++------+---------------+---------------+---------------+---------------+---------------+
+| ISeg | 1.5V          | 2.0V          | 2.5V          | 3.0V          | 3.5V          |
++======+===============+===============+===============+===============+===============+
+| 40mA | 12.2k |omega| | 11.8k |omega| | 11.0k |omega| | 10.6k |omega| | 9.69k |omega| | 
++------+---------------+---------------+---------------+---------------+---------------+
+| 30mA | 17.8k |omega| | 17.1k |omega| | 15.8k |omega| | 15.0k |omega| | 14.0k |omega| |
++------+---------------+---------------+---------------+---------------+---------------+
+| 20mA | 29.8k |omega| | 28.0k |omega| | 25.9k |omega| | 24.5k |omega| | 22.6k |omega| |
++------+---------------+---------------+---------------+---------------+---------------+
+| 10mA | 66.7k |omega| | 63.7k |omega| | 59.3k |omega| | 55.4k |omega| | 51.2k |omega| |
++------+---------------+---------------+---------------+---------------+---------------+
 
 Here is an example:
 I have a 5x7 dots *bright red* Led matrix. The datasheet states a

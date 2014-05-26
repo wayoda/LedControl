@@ -3,7 +3,7 @@
   <!-- LedControl setup the version information -->
   <property name="ledcontrol.major.version" value="1" /> 
   <property name="ledcontrol.minor.version" value="0" /> 
-  <property name="ledcontrol.build.version" value="0" /> 
+  <property name="ledcontrol.build.version" value="1" /> 
 
   <property name="ledcontrol.zip-version" 
 	    value="${ledcontrol.major.version}.${ledcontrol.minor.version}.${ledcontrol.build.version}" 

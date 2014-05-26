@@ -710,6 +710,6 @@ content...
   all of your sketches that start with a ``#include "LedControl.h"`` line.
 
 The Zip-File also contains 3 example sketches which are documented on the
-`LedControlDemos <demos>`_ page.
+:doc:`demos` page.
 
 
