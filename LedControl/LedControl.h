@@ -27,6 +27,8 @@
 #ifndef LedControl_h
 #define LedControl_h
 
+#include <avr/pgmspace.h>
+
 #if (ARDUINO >= 100)
 #include <Arduino.h>
 #else
@@ -37,7 +39,7 @@
  * Segments to be switched on for characters and digits on
  * 7-Segment Displays
  */
-const static byte charTable[128] = {
+const static byte charTable [] PROGMEM  = {
     B01111110,B00110000,B01101101,B01111001,B00110011,B01011011,B01011111,B01110000,
     B01111111,B01111011,B01110111,B00011111,B00001101,B00111101,B01001111,B01000111,
     B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
