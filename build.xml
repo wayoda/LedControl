@@ -1,60 +1,60 @@
 <?xml version="1.0"?>
 <project name="LedControl" default="help" basedir=".">
   <!-- LedControl setup the version information -->
-  <property name="ledcontrol.major.version" value="1" /> 
-  <property name="ledcontrol.minor.version" value="0" /> 
-  <property name="ledcontrol.build.version" value="3" /> 
+    <!-- Read the version information -->
+    <loadproperties srcFile="version.properties"/>
 
-  <property name="ledcontrol.zip-version" 
-	    value="${ledcontrol.major.version}.${ledcontrol.minor.version}.${ledcontrol.build.version}" 
-	    /> 
+    <property name="ledcontrol.zip-version" 
+        value="${ledcontrol.major.version}.${ledcontrol.minor.version}.${ledcontrol.build.version}" 
+        /> 
 
-  
-  <!-- directory structure setup -->
-  <property name="ledcontrol.src" value="${basedir}/LedControl"/>
-  <property name="dist.dir" value="${basedir}/dist"/>
-  <property name="install.dir" value="${user.home}/sketchbook/libraries"/>
 
-  <target name="help" >
-    <echo message="
-Buildscript for packaging and installing the Arduino LedControl library ${line.separator}
-'ant zip'     create a zip-file of the library ${line.separator}
-'ant install' install the library into the users sketchbook ${line.separator}
-" 
-/>
+    <!-- directory structure setup -->
+    <property name="ledcontrol.src" value="${basedir}/LedControl"/>
+    <property name="dist.dir" value="${basedir}/dist"/>
+    <loadproperties srcFile="local.properties"/>
 
-  </target>
+    <target name="help" >
+        <echo message="
+            Buildscript for packaging and installing the Arduino LedControl library ${line.separator}
+            'ant zip'     create a zip-file of the library ${line.separator}
+            'ant install' install the library into the users sketchbook ${line.separator}
+            " 
+            />
 
-  <!-- create the text display zip files for library distribuion -->
-  <target name="ledcontrol.zip" >
-    <mkdir dir="${dist.dir}" />
-    <delete file="${dist.dir}/LedControl-${ledcontrol.zip-version}.zip" />
-    <zip destfile="${dist.dir}/LedControl-${ledcontrol.zip-version}.zip">
-      <zipfileset dir="${ledcontrol.src}"
-		  prefix="LedControl/" 
-		  filemode="755" 
-		  dirmode="755"
-		  includes="*.h, *.cpp, keywords.txt" >
-      </zipfileset>
-      <zipfileset dir="${ledcontrol.src}/examples"
-		  prefix="LedControl/examples" 
-		  filemode="755" 
-		  dirmode="755"
-		  includes="**/*.pde" >
-      </zipfileset>
-    </zip>
-  </target>
+    </target>
 
-  <target name="ledcontrol.install" depends="ledcontrol.zip">
-    <unzip src="${dist.dir}/LedControl-${ledcontrol.zip-version}.zip"
-	   dest="${install.dir}" 
-	   overwrite="true" />
-  </target>
+    <!-- create the text display zip files for library distribuion -->
+    <target name="ledcontrol.zip" >
+        <mkdir dir="${dist.dir}" />
+        <delete file="${dist.dir}/LedControl-${ledcontrol.zip-version}.zip" />
+        <zip destfile="${dist.dir}/LedControl-${ledcontrol.zip-version}.zip">
+            <zipfileset dir="${ledcontrol.src}"
+                prefix="LedControl/" 
+                filemode="755" 
+                dirmode="755"
+                includes="*.h, *.cpp, keywords.txt" >
+            </zipfileset>
+            <zipfileset dir="${ledcontrol.src}/examples"
+                prefix="LedControl/examples" 
+                filemode="755" 
+                dirmode="755"
+                includes="**/*.pde" >
+            </zipfileset>
+        </zip>
+    </target>
 
-  <target name="install" depends="ledcontrol.install" />
+    <target name="ledcontrol.install" depends="ledcontrol.zip">
+        <unzip src="${dist.dir}/LedControl-${ledcontrol.zip-version}.zip"
+            dest="${install.dir}" 
+            overwrite="true" />
+    </target>
 
-  
-  <!-- create all zip files for library distribuion -->
-  <target name="zip" depends="ledcontrol.zip" />
+    <target name="install" depends="ledcontrol.install" />
+
+
+    <!-- create all zip files for library distribuion -->
+    <target name="zip" depends="ledcontrol.zip" />
+
 </project>
 
