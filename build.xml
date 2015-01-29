@@ -12,20 +12,18 @@
     <!-- directory structure setup -->
     <property name="ledcontrol.src" value="${basedir}/LedControl"/>
     <property name="dist.dir" value="${basedir}/dist"/>
-    <loadproperties srcFile="local.properties"/>
 
     <target name="help" >
         <echo message="
-            Buildscript for packaging and installing the Arduino LedControl library ${line.separator}
-            'ant zip'     create a zip-file of the library ${line.separator}
-            'ant install' install the library into the users sketchbook ${line.separator}
+            Buildscript for packaging the Arduino LedControl library ${line.separator}
+            'ant dist'    create a zip-file of the library in ${dist.dir}${line.separator}
             " 
             />
 
     </target>
 
     <!-- create the text display zip files for library distribuion -->
-    <target name="ledcontrol.zip" >
+    <target name="ledcontrol.dist" >
         <mkdir dir="${dist.dir}" />
         <delete file="${dist.dir}/LedControl-${ledcontrol.zip-version}.zip" />
         <zip destfile="${dist.dir}/LedControl-${ledcontrol.zip-version}.zip">
@@ -44,17 +42,9 @@
         </zip>
     </target>
 
-    <target name="ledcontrol.install" depends="ledcontrol.zip">
-        <unzip src="${dist.dir}/LedControl-${ledcontrol.zip-version}.zip"
-            dest="${install.dir}" 
-            overwrite="true" />
-    </target>
-
-    <target name="install" depends="ledcontrol.install" />
-
 
     <!-- create all zip files for library distribuion -->
-    <target name="zip" depends="ledcontrol.zip" />
+    <target name="dist" depends="ledcontrol.dist" />
 
 </project>
 
