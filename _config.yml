@@ -1,0 +1,11 @@
+# Site settings
+title: LedControl
+email: e.fahle@wayoda.org
+description: "LedControl - An Arduino library for the MAX7219 and MAX7221."
+baseurl: ""
+url: "http://yourdomain.com"
+github_username:  wayoda
+
+# Build settings
+markdown: kramdown
+permalink: pretty
