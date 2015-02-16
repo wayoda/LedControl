@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html xmlns="en">
+    <head>
+        <title>LedControl</title>
+        <meta charset="utf-8" />
+        <meta name="author" content="Eberhard Fahle" />
+        <link rel="stylesheet" href="/theme/css/poole.css" type="text/css" />
+        <link rel="stylesheet" href="/theme/css/hyde.css" type="text/css" />
+            <link rel="stylesheet" href="/theme/css/github.css" type="text/css" />
+    
+        <link href="http://fonts.googleapis.com/css?family=Gentium+Book Basic:400italic,400,700italic,700" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata&subset=latin-ext' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+<div class="sidebar">
+    <div class="container sidebar-sticky">
+        <div class="sidebar-about"><a href="/index.html">LedControl</a></div>
+        <div class="sidebar-lead">An Arduino library for the MAX7219 and MAX7221</div>
+        <div class="sidebar-nav">
+            <ul>
+                    <li><a class="sidebar-menu-item " href="/index.html">Home</a></li>
+                    <li><a class="sidebar-menu-item " href="/pages/hardware.html">Hardware</a></li>
+                    <li><a class="sidebar-menu-item " href="/pages/software.html">Software</a></li>
+                    <li><a class="sidebar-menu-item active" href="/pages/demos.html">Demos</a></li>
+            </ul>
+        </div>
+        <div class=sidebar-info>
+            <ul>
+                <li><a class="sidebar-social-item" href="https://github.com/wayoda/LedControl"><img class="icon" src="/theme/images/github-dark-20.png" alt="LedControl on Github">Project on Github</a></li>
+                <li><a class="sidebar-social-item" href="mailto:e.fahle@wayoda.org"><img class="icon" src="/theme/images/mail-dark-20.png" alt="E-Mail">E-Mail</a></li>
+            </ul>    
+            <span class="sidebar-info-item">Latest version: 1.0.3</span>
+            <span class="sidebar-info-item">&copy; 2015</span>
+ 
+        </div>
+  </div>
+</div>
+        <div class="content container">
+<div class="page">
+  <h1>LedControl-library demos</h1>
+<p>Here are a few demo-sketches that using the LedControl-library. You can
+either copy+paste the code directly into the editor of the Arduino-IDE,
+or download the sketches in a zip-file :</p>
+<blockquote>
+<p><a href="http://arduino.cc/playground/uploads/Main/LedControl.zip">LedControlDemos.zip</a></p>
+</blockquote>
+<h2>Led matrix</h2>
+<p>Here is a small demo to be run on a Led matrix. A matrix of at least 5x7
+Leds is recommended, but there is no problem running it on a smaller
+matrix, it simply won't look that good.</p>
+<p>Please have a close look at the initialization-code and the
+<code>setup()</code>-function. If you don't to pull the <code>MAX72XX</code> from powersaving
+mode with the <code>shutdown()</code>-function or if you forget to call
+<code>setIntensiy()</code> for setting the display brightness, your Leds my remain
+dark even though the sketch runs without errors.</p>
+<p>Otherwise the code should be straight forward. <code>rows(), columns()</code> and
+<code>single()</code> show the different ways to update the matrix.
+<code>writeArduinoOnMatrix()</code> is a bit of eye-candy, that shows how you could
+drive a small text display if you had a few spare <code>MAX72XX</code>.</p>
+<div class="highlight"><pre><span class="cm">/* We always have to include the library */</span>
+<span class="err">#</span><span class="nx">include</span> <span class="s2">&quot;LedControl.h&quot;</span>
+
+<span class="cm">/* Now we need a LedControl to work with.  </span>
+<span class="cm"> * These pin numbers will probably not work with your hardware</span>
+<span class="cm"> * pin 12 is connected to the DataIn  </span>
+<span class="cm"> * pin 11 is connected to the CLK  </span>
+<span class="cm"> * pin 10 is connected to LOAD  </span>
+<span class="cm"> * We have only a single MAX72XX.  </span>
+<span class="cm"> */</span>
+<span class="nx">LedControl</span> <span class="nx">lc</span><span class="o">=</span><span class="nx">LedControl</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="cm">/* we always wait a bit between updates of the display */</span>
+<span class="nx">unsigned</span> <span class="kr">long</span> <span class="nx">delaytime</span><span class="o">=</span><span class="mi">100</span><span class="p">;</span>
+
+<span class="k">void</span> <span class="nx">setup</span><span class="p">()</span> <span class="p">{</span>
+    <span class="cm">/* The MAX72XX is in power-saving mode on startup,</span>
+<span class="cm">       we have to do a wakeup call</span>
+<span class="cm">     */</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">shutdown</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="kc">false</span><span class="p">);</span>
+    <span class="cm">/* Set the brightness to a medium values */</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setIntensity</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">8</span><span class="p">);</span>
+    <span class="cm">/* and clear the display */</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">clearDisplay</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* This method will display the characters for the word &quot;Arduino&quot;</span>
+<span class="cm"> * one after the other on the matrix.  </span>
+<span class="cm"> * (you need at least 5x7 leds to see the whole chars)</span>
+<span class="cm"> */</span>
+<span class="k">void</span> <span class="nx">writeArduinoOnMatrix</span><span class="p">()</span> <span class="p">{</span>
+    <span class="cm">/* here is the data for the characters */</span>
+    <span class="kr">byte</span> <span class="nx">a</span><span class="cp">[</span><span class="mi">5</span><span class="cp">]</span><span class="o">=</span><span class="p">{</span><span class="nx">B01111110</span><span class="p">,</span><span class="nx">B10001000</span><span class="p">,</span><span class="nx">B10001000</span><span class="p">,</span><span class="nx">B10001000</span><span class="p">,</span><span class="nx">B01111110</span><span class="p">};</span>
+    <span class="kr">byte</span> <span class="nx">r</span><span class="cp">[</span><span class="mi">5</span><span class="cp">]</span><span class="o">=</span><span class="p">{</span><span class="nx">B00111110</span><span class="p">,</span><span class="nx">B00010000</span><span class="p">,</span><span class="nx">B00100000</span><span class="p">,</span><span class="nx">B00100000</span><span class="p">,</span><span class="nx">B00010000</span><span class="p">};</span>
+    <span class="kr">byte</span> <span class="nx">d</span><span class="cp">[</span><span class="mi">5</span><span class="cp">]</span><span class="o">=</span><span class="p">{</span><span class="nx">B00011100</span><span class="p">,</span><span class="nx">B00100010</span><span class="p">,</span><span class="nx">B00100010</span><span class="p">,</span><span class="nx">B00010010</span><span class="p">,</span><span class="nx">B11111110</span><span class="p">};</span>
+    <span class="kr">byte</span> <span class="nx">u</span><span class="cp">[</span><span class="mi">5</span><span class="cp">]</span><span class="o">=</span><span class="p">{</span><span class="nx">B00111100</span><span class="p">,</span><span class="nx">B00000010</span><span class="p">,</span><span class="nx">B00000010</span><span class="p">,</span><span class="nx">B00000100</span><span class="p">,</span><span class="nx">B00111110</span><span class="p">};</span>
+    <span class="kr">byte</span> <span class="nx">i</span><span class="cp">[</span><span class="mi">5</span><span class="cp">]</span><span class="o">=</span><span class="p">{</span><span class="nx">B00000000</span><span class="p">,</span><span class="nx">B00100010</span><span class="p">,</span><span class="nx">B10111110</span><span class="p">,</span><span class="nx">B00000010</span><span class="p">,</span><span class="nx">B00000000</span><span class="p">};</span>
+    <span class="kr">byte</span> <span class="nx">n</span><span class="cp">[</span><span class="mi">5</span><span class="cp">]</span><span class="o">=</span><span class="p">{</span><span class="nx">B00111110</span><span class="p">,</span><span class="nx">B00010000</span><span class="p">,</span><span class="nx">B00100000</span><span class="p">,</span><span class="nx">B00100000</span><span class="p">,</span><span class="nx">B00011110</span><span class="p">};</span>
+    <span class="kr">byte</span> <span class="nx">o</span><span class="cp">[</span><span class="mi">5</span><span class="cp">]</span><span class="o">=</span><span class="p">{</span><span class="nx">B00011100</span><span class="p">,</span><span class="nx">B00100010</span><span class="p">,</span><span class="nx">B00100010</span><span class="p">,</span><span class="nx">B00100010</span><span class="p">,</span><span class="nx">B00011100</span><span class="p">};</span>
+
+    <span class="cm">/* now display them one by one with a small delay */</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">a</span><span class="cp">[</span><span class="mi">0</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nx">a</span><span class="cp">[</span><span class="mi">1</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="nx">a</span><span class="cp">[</span><span class="mi">2</span><span class="cp">]</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="nx">a</span><span class="cp">[</span><span class="mi">3</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="nx">a</span><span class="cp">[</span><span class="mi">4</span><span class="cp">]</span><span class="p">);</span> <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">r</span><span class="cp">[</span><span class="mi">0</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nx">r</span><span class="cp">[</span><span class="mi">1</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="nx">r</span><span class="cp">[</span><span class="mi">2</span><span class="cp">]</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="nx">r</span><span class="cp">[</span><span class="mi">3</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="nx">r</span><span class="cp">[</span><span class="mi">4</span><span class="cp">]</span><span class="p">);</span> <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">d</span><span class="cp">[</span><span class="mi">0</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nx">d</span><span class="cp">[</span><span class="mi">1</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="nx">d</span><span class="cp">[</span><span class="mi">2</span><span class="cp">]</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="nx">d</span><span class="cp">[</span><span class="mi">3</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="nx">d</span><span class="cp">[</span><span class="mi">4</span><span class="cp">]</span><span class="p">);</span> <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">u</span><span class="cp">[</span><span class="mi">0</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nx">u</span><span class="cp">[</span><span class="mi">1</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="nx">u</span><span class="cp">[</span><span class="mi">2</span><span class="cp">]</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="nx">u</span><span class="cp">[</span><span class="mi">3</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="nx">u</span><span class="cp">[</span><span class="mi">4</span><span class="cp">]</span><span class="p">);</span> <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">i</span><span class="cp">[</span><span class="mi">0</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nx">i</span><span class="cp">[</span><span class="mi">1</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="nx">i</span><span class="cp">[</span><span class="mi">2</span><span class="cp">]</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="nx">i</span><span class="cp">[</span><span class="mi">3</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="nx">i</span><span class="cp">[</span><span class="mi">4</span><span class="cp">]</span><span class="p">);</span> <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">n</span><span class="cp">[</span><span class="mi">0</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nx">n</span><span class="cp">[</span><span class="mi">1</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="nx">n</span><span class="cp">[</span><span class="mi">2</span><span class="cp">]</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="nx">n</span><span class="cp">[</span><span class="mi">3</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="nx">n</span><span class="cp">[</span><span class="mi">4</span><span class="cp">]</span><span class="p">);</span> <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nx">o</span><span class="cp">[</span><span class="mi">0</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nx">o</span><span class="cp">[</span><span class="mi">1</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="nx">o</span><span class="cp">[</span><span class="mi">2</span><span class="cp">]</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="nx">o</span><span class="cp">[</span><span class="mi">3</span><span class="cp">]</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="nx">o</span><span class="cp">[</span><span class="mi">4</span><span class="cp">]</span><span class="p">);</span> <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+    <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span> <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span> <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* This function lights up a some Leds in a row.  </span>
+<span class="cm"> * The pattern will repeat on every row and</span>
+<span class="cm"> * blink along with the row-number.  </span>
+<span class="cm"> * row number 4 (index==3) will blink 4 times etc.  </span>
+<span class="cm">*/</span>
+<span class="k">void</span> <span class="nx">rows</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kr">int</span> <span class="nx">row</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">row</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span><span class="nx">row</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+        <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">row</span><span class="p">,</span><span class="nx">B10100000</span><span class="p">);</span> <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+        <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">row</span><span class="p">,(</span><span class="kr">byte</span><span class="p">)</span><span class="mi">0</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="kr">int</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">row</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+            <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">row</span><span class="p">,</span><span class="nx">B10100000</span><span class="p">);</span>
+            <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+            <span class="nx">lc</span><span class="p">.</span><span class="nx">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">row</span><span class="p">,(</span><span class="kr">byte</span><span class="p">)</span><span class="mi">0</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/* This function lights up a some Leds in a column.</span>
+<span class="cm"> * The pattern repeats on every column and will blink along</span>
+<span class="cm"> * with the column-number.  </span>
+<span class="cm"> * column number 4 (index==3) will blink 4 times etc.  </span>
+<span class="cm">*/</span>
+<span class="k">void</span> <span class="nx">columns</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kr">int</span> <span class="nx">col</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">col</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span><span class="nx">col</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+        <span class="nx">lc</span><span class="p">.</span><span class="nx">setColumn</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">col</span><span class="p">,</span><span class="nx">B10100000</span><span class="p">);</span>
+        <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+        <span class="nx">lc</span><span class="p">.</span><span class="nx">setColumn</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">col</span><span class="p">,(</span><span class="kr">byte</span><span class="p">)</span><span class="mi">0</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="kr">int</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">col</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+            <span class="nx">lc</span><span class="p">.</span><span class="nx">setColumn</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">col</span><span class="p">,</span><span class="nx">B10100000</span><span class="p">);</span>
+            <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+            <span class="nx">lc</span><span class="p">.</span><span class="nx">setColumn</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">col</span><span class="p">,(</span><span class="kr">byte</span><span class="p">)</span><span class="mi">0</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/* This function will light up every Led on the matrix.</span>
+<span class="cm"> * The led will blink along with the row-number.  </span>
+<span class="cm"> * row number 4 (index==3) will blink 4 times etc. */</span>
+<span class="k">void</span> <span class="nx">single</span><span class="p">()</span> <span class="p">{</span>
+     <span class="k">for</span><span class="p">(</span><span class="kr">int</span> <span class="nx">row</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">row</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span><span class="nx">row</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">for</span><span class="p">(</span><span class="kr">int</span> <span class="nx">col</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">col</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span><span class="nx">col</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+             <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+             <span class="nx">lc</span><span class="p">.</span><span class="nx">setLed</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">row</span><span class="p">,</span><span class="nx">col</span><span class="p">,</span><span class="kc">true</span><span class="p">);</span>
+             <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+             <span class="k">for</span><span class="p">(</span><span class="kr">int</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">col</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                 <span class="nx">lc</span><span class="p">.</span><span class="nx">setLed</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">row</span><span class="p">,</span><span class="nx">col</span><span class="p">,</span><span class="kc">false</span><span class="p">);</span>
+                 <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+                 <span class="nx">lc</span><span class="p">.</span><span class="nx">setLed</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">row</span><span class="p">,</span><span class="nx">col</span><span class="p">,</span><span class="kc">true</span><span class="p">);</span>
+                 <span class="nx">delay</span><span class="p">(</span><span class="nx">delaytime</span><span class="p">);</span>
+             <span class="p">}</span>
+         <span class="p">}</span>
+      <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">void</span> <span class="nx">loop</span><span class="p">()</span> <span class="p">{</span>  
+    <span class="nx">writeArduinoOnMatrix</span><span class="p">();</span>
+    <span class="nx">rows</span><span class="p">();</span>
+    <span class="nx">columns</span><span class="p">();</span>
+    <span class="nx">single</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>7-segment display</h2>
+<p>Here is a demo to be run on a 7-segment display. The initialization of
+the devices is exactly the same as in the matrix demo. <code>scrollDigits()</code>
+uses the <code>setDigits()</code> method for (hex-)numbers between 0 and 15.</p>
+<p><code>writeArduinoOn7Segment()</code> is a little bit more interesting, as it uses
+the <code>setChar()</code>-method for the predefined characters '' 'A','d' '' and
+the <code>setRow()</code>-function for creating a mock up of the missing
+characters.</p>
+<div class="highlight"><pre><span class="cm">/* We always have to include the library */</span>
+<span class="cp">#include &quot;LedControl.h&quot;</span>
+
+<span class="cm">/* Now we need a LedControl to work with.  </span>
+<span class="cm"> * These pin numbers will probably not work with your hardware</span>
+<span class="cm"> * pin 12 is connected to the DataIn  </span>
+<span class="cm"> * pin 11 is connected to the CLK  </span>
+<span class="cm"> * pin 10 is connected to LOAD  </span>
+<span class="cm"> * We have only a single MAX72XX.  </span>
+<span class="cm"> */</span>
+<span class="n">LedControl</span> <span class="n">lc</span><span class="o">=</span><span class="n">LedControl</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="cm">/* we always wait a bit between updates of the display */</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">delaytime</span><span class="o">=</span><span class="mi">250</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+    <span class="cm">/* The MAX72XX is in power-saving mode on startup,</span>
+<span class="cm">     * we have to do a wakeup call</span>
+<span class="cm">     */</span>
+    <span class="n">lc</span><span class="p">.</span><span class="n">shutdown</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">false</span><span class="p">);</span>
+    <span class="cm">/* Set the brightness to a medium values */</span>
+    <span class="n">lc</span><span class="p">.</span><span class="n">setIntensity</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">8</span><span class="p">);</span>
+    <span class="cm">/* and clear the display */</span>
+    <span class="n">lc</span><span class="p">.</span><span class="n">clearDisplay</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* This method will scroll the characters for the word &quot;Arduino&quot;</span>
+<span class="cm"> * one digit 0.  */</span>
+<span class="kt">void</span> <span class="nf">writeArduinoOn7Segment</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">lc</span><span class="p">.</span><span class="n">setChar</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="sc">&#39;a&#39;</span><span class="p">,</span><span class="nb">false</span><span class="p">);</span>
+    <span class="n">delay</span><span class="p">(</span><span class="n">delaytime</span><span class="p">);</span>
+    <span class="n">lc</span><span class="p">.</span><span class="n">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mh">0x05</span><span class="p">);</span>
+    <span class="n">delay</span><span class="p">(</span><span class="n">delaytime</span><span class="p">);</span>
+    <span class="n">lc</span><span class="p">.</span><span class="n">setChar</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="sc">&#39;d&#39;</span><span class="p">,</span><span class="nb">false</span><span class="p">);</span>
+    <span class="n">delay</span><span class="p">(</span><span class="n">delaytime</span><span class="p">);</span>
+    <span class="n">lc</span><span class="p">.</span><span class="n">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mh">0x1c</span><span class="p">);</span>
+    <span class="n">delay</span><span class="p">(</span><span class="n">delaytime</span><span class="p">);</span>
+    <span class="n">lc</span><span class="p">.</span><span class="n">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">B00010000</span><span class="p">);</span>
+    <span class="n">delay</span><span class="p">(</span><span class="n">delaytime</span><span class="p">);</span>
+    <span class="n">lc</span><span class="p">.</span><span class="n">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mh">0x15</span><span class="p">);</span>
+    <span class="n">delay</span><span class="p">(</span><span class="n">delaytime</span><span class="p">);</span>
+    <span class="n">lc</span><span class="p">.</span><span class="n">setRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mh">0x1D</span><span class="p">);</span>
+    <span class="n">delay</span><span class="p">(</span><span class="n">delaytime</span><span class="p">);</span>
+    <span class="n">lc</span><span class="p">.</span><span class="n">clearDisplay</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">delay</span><span class="p">(</span><span class="n">delaytime</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* This method will scroll all the hexa-decimal numbers and</span>
+<span class="cm"> * letters on the display. You will need at least four 7-Segment</span>
+<span class="cm"> * digits. otherwise it won&#39;t really look that good.  </span>
+<span class="cm"> */</span>
+<span class="kt">void</span> <span class="nf">scrollDigits</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">13</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">lc</span><span class="p">.</span><span class="n">setDigit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="nb">false</span><span class="p">);</span>
+        <span class="n">lc</span><span class="p">.</span><span class="n">setDigit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nb">false</span><span class="p">);</span>
+        <span class="n">lc</span><span class="p">.</span><span class="n">setDigit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span><span class="nb">false</span><span class="p">);</span>
+        <span class="n">lc</span><span class="p">.</span><span class="n">setDigit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">,</span><span class="nb">false</span><span class="p">);</span>
+        <span class="n">delay</span><span class="p">(</span><span class="n">delaytime</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">lc</span><span class="p">.</span><span class="n">clearDisplay</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">delay</span><span class="p">(</span><span class="n">delaytime</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span> <span class="p">{</span>  
+    <span class="n">writeArduinoOn7Segment</span><span class="p">();</span>
+    <span class="n">scrollDigits</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>Cascaded devices</h2>
+<p>Here is a demo that shows how to address more than one <code>MAX72XX</code> from a
+single <code>LedControl</code> variable. You would obviously need at least two
+cascaded devices to test this. The demo doesn't do anything exciting. It
+simply uses a big loop in which it switches all Leds on all devices on
+and off, one after the other.</p>
+<p>The thing to remember is that you have to initialize all of the devices,
+like we do it in the <code>setup()</code>-function where all of the MAX72XX are
+initialized in a loop.</p>
+<div class="highlight"><pre><span class="cm">/* We always have to include the library */</span>
+<span class="cp">#include &quot;LedControl.h&quot;</span>
+
+<span class="cm">/* Now we need a LedControl to work with.</span>
+<span class="cm"> * These pin numbers will probably not work with your hardware</span>
+<span class="cm"> * pin 12 is connected to the DataIn  </span>
+<span class="cm"> * pin 11 is connected to the CLK  </span>
+<span class="cm"> * pin 10 is connected to LOAD  </span>
+<span class="cm"> * Please set the number of devices you have</span>
+<span class="cm"> * But the maximum default of 8 MAX72XX will also work.</span>
+<span class="cm"> */</span>
+<span class="n">LedControl</span> <span class="n">lc</span><span class="o">=</span><span class="n">LedControl</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">);</span>
+
+<span class="cm">/* we always wait a bit between updates of the display */</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">delaytime</span><span class="o">=</span><span class="mi">500</span><span class="p">;</span>
+
+<span class="cm">/* This time we have more than one device.  </span>
+<span class="cm"> * But all of them have to be initialized  individually.  </span>
+<span class="cm"> */</span>
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">//we have already set the number of devices</span>
+    <span class="c1">//when we created the LedControl</span>
+    <span class="kt">int</span> <span class="n">devices</span><span class="o">=</span><span class="n">lc</span><span class="p">.</span><span class="n">getDeviceCount</span><span class="p">();</span>
+    <span class="c1">//we have to init all devices in a loop</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">address</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">address</span><span class="o">&lt;</span><span class="n">devices</span><span class="p">;</span><span class="n">address</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* The  MAX72XX is in power-saving mode on startup*/</span>
+        <span class="n">lc</span><span class="p">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">address</span><span class="p">,</span><span class="nb">false</span><span class="p">);</span>
+        <span class="cm">/* Set the brightness to a medium value */</span>
+        <span class="n">lc</span><span class="p">.</span><span class="n">setIntensity</span><span class="p">(</span><span class="n">address</span><span class="p">,</span><span class="mi">8</span><span class="p">);</span>
+        <span class="cm">/* and clear the display */</span>
+        <span class="n">lc</span><span class="p">.</span><span class="n">clearDisplay</span><span class="p">(</span><span class="n">address</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span> <span class="p">{</span>  
+    <span class="c1">//read the number cascaded devices int</span>
+    <span class="n">devices</span><span class="o">=</span><span class="n">lc</span><span class="p">.</span><span class="n">getDeviceCount</span><span class="p">();</span>
+
+    <span class="c1">//we have to init all devices in a loop</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">row</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span><span class="n">row</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">col</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">col</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span><span class="n">col</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">address</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">address</span><span class="o">&lt;</span><span class="n">devices</span><span class="p">;</span><span class="n">address</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">delay</span><span class="p">(</span><span class="n">delaytime</span><span class="p">);</span>
+                <span class="n">lc</span><span class="p">.</span><span class="n">setLed</span><span class="p">(</span><span class="n">address</span><span class="p">,</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="nb">true</span><span class="p">);</span>
+                <span class="n">delay</span><span class="p">(</span><span class="n">delaytime</span><span class="p">);</span>
+                <span class="n">lc</span><span class="p">.</span><span class="n">setLed</span><span class="p">(</span><span class="n">address</span><span class="p">,</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="nb">false</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+ 
+        </div>
+    </body>
+</html>

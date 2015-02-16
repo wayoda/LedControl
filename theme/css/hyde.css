@@ -1,0 +1,229 @@
+/*
+ * Global resets
+ *
+ * Update the foundational and global aspects of the page.
+ */
+
+@media (min-width: 48em) {
+    html {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 58em) {
+    html {
+        font-size: 20px;
+    }
+}
+
+
+/*
+ * Sidebar
+ *
+ * The banner for the site name, intro, menu and contacts. Starts
+ * out above content on small mobile devices, then moves to the side with wider viewports.
+ */
+
+.sidebar {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: #ccc;
+    background-color: #00979c;
+    border-width: 0 0 4px 0;
+    border-style: solid;
+    border-color: #F47A20;
+}
+
+@media (min-width: 48em) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 18rem;
+        text-align: left;
+        border-width: 0 4px 0 0;
+    }
+}
+
+/* Sidebar links */
+.sidebar a {
+    font-family: "Lato", Helvetica, Arial, sans-serif;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+/* About section */
+.sidebar-about {
+    padding-bottom: 1rem;
+}
+
+.sidebar-about a {
+    color: #FFF;
+    margin-top: 0;
+    font-size: 3rem;
+    font-weight: bold;
+    border-width: 0;
+}
+
+.sidebar-about a:hover,
+.sidebar-about a:focus {
+    text-decoration: none;
+    color: #F47A20;
+}
+
+
+.sidebar-lead {
+    font-size: 1.2rem;
+    padding-bottom: 1rem;
+}
+
+/* Sidebar nav */
+.sidebar-nav {
+    margin-bottom: 1rem;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    list-style-position: inside;
+}
+
+.sidebar-nav li {
+    padding: 4px 0;
+}
+
+.sidebar-nav .active {
+    text-decoration: none;
+    border-color: #F47A20;
+}
+
+.sidebar-menu-item {  
+    line-height: 1.2;
+    margin-left: 0; 
+    margin-right: 0;
+    padding-left: 0px;
+    border-style: solid;
+    border-width: 0 0 2px 0;
+    border-color: #00979c;
+}
+
+
+a.sidebar-menu-item:hover,
+a.sidebar-menu-item:focus {
+    font-weight:bold;
+    text-decoration: none;
+    color: #F47A20;
+}
+
+.sidebar-info ul {
+    list-style: none;
+    list-style-position: inside;
+}
+
+.sidebar-info li {
+    padding: 4px 0;
+}
+
+
+.sidebar-info-item {
+    display: block;
+    line-height: 1.75;
+    color: #ccc;
+}
+
+.sidebar-info-item img {
+    padding-right: 5px;
+    display: inline;
+    margin: 0; 
+    vertical-align: middle;
+
+}
+
+a.sidebar-social-item {
+    color: #ccc;
+    font-size: 20px;
+}
+
+a.sidebar-social-item img {
+    padding-right: 10px;
+    display: inline;
+    margin: 0; 
+    vertical-align: top; 
+}
+
+a.sidebar-social-item:hover,
+a.sidebar-social-item:focus {
+    text-decoration: none;
+    color: #f47a20;
+}
+
+
+
+/* Sticky sidebar
+ *
+ * Add the `sidebar-sticky` class to the sidebar's container to affix it the
+ * contents to the bottom of the sidebar in tablets and up.
+ */
+
+@media (min-width: 48em) {
+    .sidebar-sticky {
+        position: absolute;
+        right:  1rem;
+        bottom: 1rem;
+        left:   1rem;
+    }
+}
+
+
+/* Container
+ *
+ * Align the contents of the site above the proper threshold with some margin-fu
+ * with a 25%-wide `.sidebar`.
+ */
+
+.content {
+    padding-top:    1rem;
+    padding-bottom: 1rem;
+}
+
+@media (min-width: 48em) {
+    .content {
+        max-width: 38rem;
+        margin-left: 20rem;
+        margin-right: 2rem;
+    }
+}
+
+@media (min-width: 64em) {
+    .content {
+        margin-left: 22rem;
+        margin-right: 4rem;
+    }
+}
+
+
+/*
+ * Reverse layout
+ *
+ * Flip the orientation of the page by placing the `.sidebar` on the right.
+ */
+
+@media (min-width: 48em) {
+    .layout-reverse .sidebar {
+        left: auto;
+        right: 0;
+    }
+    .layout-reverse .content {
+        margin-left: 2rem;
+        margin-right: 20rem;
+    }
+}
+
+@media (min-width: 64em) {
+    .layout-reverse .content {
+        margin-left: 4rem;
+        margin-right: 22rem;
+    }
+}
+
+
