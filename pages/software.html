@@ -310,7 +310,7 @@ void<span class="w"> </span>clearDisplay<span class="o">(</span>int<span class="
 
 <p>All Led's off after this one, that's it...</p>
 <h2>Controlling a Led matrix</h2>
-<p><img alt="image" src="/images/ArduinoOnMatrix.jpg" />
+<p><img alt="image" src="../images/ArduinoOnMatrix.jpg" />
 Ok, I made this one up, but with 8 <code>MAX72XX</code> you could create a
 textdisplay for 12 characters. The picture of my test-setup at the top
 of the article reveals that I have only single 5x7 matrix. But this
@@ -338,7 +338,7 @@ void<span class="w"> </span>setLed<span class="o">(</span>int<span class="w"> </
 is a <code>row</code> and what is a <code>column</code> on the matrix? It really depends on
 the wiring bewteen the <code>MAX72XX</code> and your matrix. The
 <code>LedControl</code>-library assumes the setup used in this schematic:</p>
-<p><img alt="image" src="/images/LedMatrix.jpg" /></p>
+<p><img alt="image" src="../images/LedMatrix.jpg" /></p>
 <p>There are 8 rows (indexed from 0..7) and 8 columns (also indexed from
 0..7) in the matrix. If we want to light up the Led which is located at
 the very right of the 3'rd row from the top, simply take the index of
@@ -367,7 +367,7 @@ that is going to be updated and the third one the value for this row.</p>
 a byte, uses a simple encoding where each bit set to 1 represents a lit
 led and an unset bit a Led switched off. Here is an example:</p>
 <p>We want to light up the marked Leds from the schematic...</p>
-<p><img alt="image" src="/images/LedMatrixSetRow.jpg" /></p>
+<p><img alt="image" src="../images/LedMatrixSetRow.jpg" /></p>
 <p>The index for the row to be updated is 2. Now we have to set the
 byte-value for the Leds to be lit. The easiest approach is to include
 the standard header-file <code>&lt;binary.h&gt;</code> to your sketch. Now you can write
@@ -415,7 +415,7 @@ void<span class="w"> </span>setRow<span class="o">(</span>int<span class="w"> </
 <p>What can be done for ''rows'' can likewise be done with ''columns''. The
 <code>setColumn()</code>-method updates 8 Leds in the vertical columns.</p>
 <p>Here is an example.</p>
-<p><img alt="image" src="/images/LedMatrixSetCol.jpg" /></p>
+<p><img alt="image" src="../images/LedMatrixSetCol.jpg" /></p>
 <p>This time we want the 4 leds at the bottom of column 6 to be lit. We can
 use the the binary encoding again. Here the leftmost bit in the value
 refers to the Led at the top of the column:</p>
@@ -436,7 +436,7 @@ refers to the Led at the top of the column:</p>
 <a href="http://example.com">demo-page</a> for the library.</p>
 <h2>Control 7-Segment displays</h2>
 <p>It's not the standard usage for 7-segment Leds...</p>
-<p><img alt="image" src="/images/ArduinoOn7Segment.jpg" /></p>
+<p><img alt="image" src="../images/ArduinoOn7Segment.jpg" /></p>
 <p>but looks good!</p>
 <h3>Print numbers</h3>
 <p>The most common use of 7-segment displays is to show numbers. The first
