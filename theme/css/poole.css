@@ -26,6 +26,7 @@ html {
 body {
     color: #515151;
     background-color: #fff;
+    line-height: 1.2;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
 }
