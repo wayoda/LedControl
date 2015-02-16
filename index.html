@@ -37,12 +37,57 @@
   </div>
 </div>
         <div class="content container">
-<section id="content">
-<h2>All articles</h2>
-
-<ol id="post-list">
-</ol><!-- /#posts-list -->
-</section><!-- /#content -->
+<div class="page">
+  <h1>The Arduino LedControl library</h1>
+<p>The library provides the methods to control a <code>MAX7221</code> or a
+<code>MAX7219</code> chip which are capable of driving a Led matrix as well as a
+7-segment display from an Arduino board.</p>
+<p><img alt="image" src="/images/MAX7221Setup.jpg" /></p>
+<p>It's the first attempt to write . There is
+already a library and a lot of code-examples for the Arduino and the
+MAX72XX available, but the focus had always been on controlling Leds
+layed out in some sort of rectangular matrix. I use the MAX72XX to drive
+7-segment displays, so I wanted a function to display numbers (decimal
+and hexa-decimal) and also the limited set of alphanumeric characters
+that make (visual) sense on this kind of displays. But the library also
+provides a basic set of functions by which either individual or groups
+of Leds can be switched on and off.</p>
+<p>The library documentation is devided into three parts</p>
+<ul>
+<li><a href="" title="http://{{SITE_URL}}/pages/hardware">Hardware and schematics</a></li>
+<li>Documenation of the library functions\&lt;software></li>
+<li>Democode for using the the library \&lt;demos></li>
+</ul>
+<h3>Known bugs</h3>
+<p>Currently none (with Arduino 0022 and Arduino 1.0 (RC1))</p>
+<h3>Revision History</h3>
+<dl>
+<dt><em>February 27, 2013</em></dt>
+<dd>Moved code to <a href="http://github.com">Github</a> and documentation to <a href="https://readthedocs.org">Read
+The Docs</a></dd>
+<dt><em>September 10, 2012</em></dt>
+<dd>Changed the software license from LGPL to an MIT-style license.</dd>
+<dt><em>September 19, 2011</em></dt>
+<dd>Uploaded new version of LedControl.zip. Release 1.0 of the
+Arduino-IDE renamed the internal header file <code>WProgramm.h</code> to
+<code>Arduino.h</code>. The include statement in <code>LedControl.h</code> was updated so
+the library compiles under pre- and post-1.0 version of the IDE</dd>
+<dt><em>October 14, 2008</em></dt>
+<dd>Uploaded a new version of the LedControl.zip. The original version
+did not compile under arduino-0012.</dd>
+<dt><em>December 5, 2007</em></dt>
+<dd>Documentation and sourcecode is now hosted on the arduino playground</dd>
+<dt><em>June 23, 2007</em></dt>
+<dd>First public release</dd>
+</dl>
+<h3>Feedback</h3>
+<p>Your first stop should be the arduino forum section
+<code>Hardware/Interfacing</code> which I visit regulary. But you are also welcome
+to send questions, objections or corrections to <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#46;&#102;&#97;&#104;&#108;&#101;&#64;&#119;&#97;&#121;&#111;&#100;&#97;&#46;&#111;&#114;&#103;">&#101;&#46;&#102;&#97;&#104;&#108;&#101;&#64;&#119;&#97;&#121;&#111;&#100;&#97;&#46;&#111;&#114;&#103;</a></p>
+<h3>License (The software)</h3>
+<p>The sourcecode for this library is released under the Terms of the GNU
+Lesser General Public License version 2.1.</p>
+</div>
  
         </div>
     </body>
