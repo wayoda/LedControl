@@ -100,7 +100,7 @@ trouble.</p>
 <p>The <code>MAX72XX</code> can drive up an 8x8 matrix as shown in the schematic
 below. The labels on the left and the top of the schematic refer to the
 matching pins of the <code>MAX72XX</code>.</p>
-<p><img alt="image" src="/images/LedMatrix.jpg" /></p>
+<p><img alt="image" src="../images/LedMatrix.jpg" /></p>
 <p>You can build your own matrix out of individual Leds, but there are also
 pre-wired ones available. They can be directly connected to the
 <code>MAX72XX</code>. Some are arranged as ''column cathode'' and some are ''column
@@ -112,19 +112,19 @@ the <code>dot</code>) mounted in a special way. For 7-segment displays you must 
 the ''common cathode''-type. There is no easy way to make a ''common
 anode''-type seven segment display work with a <code>MAX72XX</code>.</p>
 <p>The internal wiring of a ''common cathode'' type looks like this</p>
-<p><img alt="image" src="/images/Seg7Internals.jpg" /></p>
+<p><img alt="image" src="../images/Seg7Internals.jpg" /></p>
 <p>If you look at the matrix schematic again that would resemble one of the
 rows. The pin-labels on the 7-segment digits match the name of the pins
 on a <code>MAX72XX</code>, with the common cathode pin wired to one of the <code>Dig0-7</code>
 pins. In most shops you'll find only single 7-segment digits. But it is
 very easy to build displays with more digits using the schematic below.</p>
-<p><img alt="image" src="/images/Seg7Matrix.jpg" /></p>
+<p><img alt="image" src="../images/Seg7Matrix.jpg" /></p>
 <h3>A complete schematic</h3>
 <p>A detailed schematic showing all the components is simply too large for
 the computer screen. Click the image below for a schematic in print
 resolution. It shows the complete wiring for 2 cascaded <code>MAX72XX</code>. One
 drives a plain matrix and the other a 7-segment display.</p>
-<p><img alt="image" src="/images/MAX72XX_Schematic.jpg" /></p>
+<p><img alt="image" src="../images/MAX72XX_Schematic.jpg" /></p>
 <blockquote>
 <p><strong>note</strong></p>
 <p>Click on the image for print-size resolution</p>
@@ -256,7 +256,7 @@ will the whole matrix draw from the power supply?</em></p>
 of the matrix at the same time. Let's look at the schematic of the Led
 matrix again. A row is made of 8 Leds the connected cathodes (two of
 them are marked in the schematic).</p>
-<p><img alt="image" src="/images/LedMatrixRowsMarked.jpg" /></p>
+<p><img alt="image" src="../images/LedMatrixRowsMarked.jpg" /></p>
 <p>Internally the <code>MAX72XX</code> multiplexes the rows of the matrix.
 Multiplexing means : The drivers switches between the rows of the matrix
 very fast (about 800 times a second). That gives the impression all the
