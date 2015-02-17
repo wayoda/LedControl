@@ -55,6 +55,7 @@ h1, h2, h3, h4, h5, h6 {
     text-rendering: optimizeLegibility;
 }
 
+/* Big fat header for an article, use only on top of page */
 h1 {
     font-size: 2rem;
     color: #F47A20; 
@@ -100,6 +101,7 @@ li {
 dt {
     font-weight: bold;
 }
+
 dd {
     padding-left: 1.5rem;
     margin-bottom: .5rem;
@@ -140,9 +142,8 @@ pre {
     margin-top: 0;
     margin-bottom: 1rem;
     padding: 1rem;
-    font-size: .8rem;
+    font-size: 1rem;
     line-height: 1.4;
-    /* white-space: pre-wrap; */
     background-color: #f9f9f9;
     overflow-x: auto;
 }
@@ -192,7 +193,7 @@ pre code {
 /* Quotes */
 blockquote {
     padding: .5rem 1rem;
-    margin: .8rem 0;
+    margin: .5rem 0;
     color: #7a7a7a;
     border-left: .25rem solid #e5e5e5;
 }
@@ -212,7 +213,6 @@ img {
     display: block;
     max-width: 100%;
     margin: 0 0 1rem;
-    border-radius: 5px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -276,33 +276,6 @@ tbody tr:nth-child(odd) th {
     padding-right: 1rem;
     margin-left:  auto;
     margin-right: auto;
-}
-
-
-/*
- * Masthead
- *
- * Super small header above the content for site name and short description.
- */
-
-.masthead {
-    padding-top:    1rem;
-    padding-bottom: 1rem;
-    margin-bottom: 3rem;
-}
-.masthead-title {
-    margin-top: 0;
-    margin-bottom: 0;
-    color: #505050;
-}
-.masthead-title a {
-    color: #505050;
-}
-.masthead-title small {
-    font-size: 75%;
-    font-weight: 400;
-    color: #c0c0c0;
-    letter-spacing: 0;
 }
 
 
