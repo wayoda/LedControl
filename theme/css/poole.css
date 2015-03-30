@@ -15,8 +15,10 @@ body {
 html {
     font-family: "Gentium Book", serif;
     font-size: 16px;
+    line-height: 1.5;
 }
 
+/* Increase font-size on bigger screens */
 @media (min-width: 38em) {
     html {
         font-size: 20px;
@@ -24,12 +26,16 @@ html {
 }
 
 body {
+    line-height: 1.25;
     color: #515151;
     background-color: #fff;
-    line-height: 1.2;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
 }
+
+.clear {
+    clear:both;
+} 
 
 a {
     color: #268bd2;
@@ -47,7 +53,7 @@ a:focus {
 
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
-    font-family: "Lato", Helvetica, Arial, sans-serif;
+    font-family: "Gentium Book", serif;
     margin-bottom: .5rem;
     font-weight: 700;
     line-height: 1.25;
@@ -90,18 +96,17 @@ strong {
 /* Lists */
 ul, ol, dl {
     margin-top: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     list-style-position: inside;
 }
 
 li {
-    padding-left:1rem;
+    padding-left: 1rem;
 }
 
 dt {
     font-weight: bold;
 }
-
 dd {
     padding-left: 1.5rem;
     margin-bottom: .5rem;
@@ -110,7 +115,7 @@ dd {
 /* Misc */
 hr {
     position: relative;
-    margin: 1.5rem 0;
+    margin: 0.5rem 0;
     border: 0;
     border-top: 1px solid #eee;
     border-bottom: 1px solid #fff;
@@ -129,12 +134,12 @@ abbr[title] {
 }
 
 /* Code */
-code,
-pre {
+code, pre {
     font-family: 'Inconsolata', "Courier New", monospace;
 }
 
 code {
+    font-size: 100%;
 }
 
 pre {
@@ -150,23 +155,25 @@ pre {
 
 pre code {
     padding: 0;
-    font-size: 100%;
+    font-size: 85%;
     color: inherit;
     background-color: transparent;
 }
+
 
 /* Pygments via Jekyll */
 .highlight {
     margin-bottom: 1rem;
     border-radius: 4px;
 }
+
 .highlight pre {
     margin-bottom: 0;
 }
 
 /* Gist via GitHub Pages */
 .gist .gist-file {
-    font-family: 'Inconsolata', "Courier New", monospace !important;
+    font-family: Menlo, Monaco, "Courier New", monospace !important;
 }
 
 .gist .markdown-body {
@@ -190,10 +197,9 @@ pre code {
     border-radius: 0;
 }
 
-/* Quotes */
 blockquote {
     padding: .5rem 1rem;
-    margin: .5rem 0;
+    margin: .8rem 0;
     color: #7a7a7a;
     border-left: .25rem solid #e5e5e5;
 }
@@ -212,9 +218,8 @@ blockquote p:last-child {
 img {
     display: block;
     max-width: 100%;
-    margin: 0 0 1rem;
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto auto 1rem;
+    border-radius: 5px;
 }
 
 /* Tables */
@@ -225,37 +230,18 @@ table {
     border-collapse: collapse;
 }
 
-td, th {
+td,th {
     padding: .25rem .5rem;
     border: 1px solid #e5e5e5;
     text-align: center;
 }
 
-tbody tr:nth-child(odd) td,
-tbody tr:nth-child(odd) th {
+tbody tr:nth-child(odd) td, tbody tr:nth-child(odd) th {
     background-color: #f9f9f9;
 }
 
 
-/*
- * Custom type
- *
- * Extend paragraphs with `.lead` for larger introductory text.
- */
-
-.lead {
-    font-size: 1.25rem;
-    font-weight: 300;
-}
-
-
-/*
- * Messages
- *
- * Show alert messages to users. You may add it to single elements like a `<p>`,
- * or to a parent if there are multiple elements to show.
- */
-
+/* Custom types */
 .message {
     margin-bottom: 1rem;
     padding: 1rem;
@@ -263,22 +249,95 @@ tbody tr:nth-child(odd) th {
     background-color: #f9f9f9;
 }
 
-
-/*
- * Container
- *
- * Center the page content.
- */
-
-.container {
-    max-width: 38rem;
+/* Container used to center the content. */
+#container {
+    max-width: 42rem;
     padding-left:  1rem;
     padding-right: 1rem;
     margin-left:  auto;
     margin-right: auto;
 }
 
+/* The page header */
+#header {
+    padding-top:    1rem;
+    padding-bottom: 1rem;
+    font-size: 1.25rem;
+}
 
+#header a {
+    color: #a0a0a0;
+}
+
+#header-left {
+    float:left;
+    clear:both;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#header-left .header-title a {
+    font-size: 4rem;
+    font-family: "Lato", Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    color: #00979C;
+}
+
+#header-left .header-title a:hover,a:focus {
+    text-decoration: none;
+}
+
+
+#header-left .header-description {
+    font-weight: 400;
+    color: #a0a0a0;
+}
+
+#header-nav {
+    float: right;
+
+}
+
+#header-nav ul {
+    margin:0;
+    list-style:none;
+
+}
+
+#header-nav ul li {
+    text-align: right;
+    padding-left:0rem;
+    padding-right:0rem;
+}
+    
+#header-nav ul li a {
+    font-weight:400;
+}
+
+#header-nav ul li a.active {
+    font-weight:700;
+    color:#F47A20;
+}
+
+#header-nav ul li a:hover,a:focus {
+    text-decoration: none;
+    color: #000;
+}
+
+.hr-top {
+    width:100%;
+    border-top: 4px solid #00979c;
+
+}
+
+#footer {
+    background-color: #515151; 
+    padding-top:    1rem;
+    padding-bottom: 1rem;
+    border-top: 4px solid #F47A20;
+}
+
+    
 /*
  * Posts and pages
  *
@@ -358,6 +417,7 @@ tbody tr:nth-child(odd) th {
     padding: 1rem;
     border: 1px solid #eee;
 }
+
 .pagination-item:first-child {
     margin-bottom: -1px;
 }

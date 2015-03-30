@@ -4,39 +4,36 @@
         <title>LedControl</title>
         <meta charset="utf-8" />
         <meta name="author" content="Eberhard Fahle" />
-        <link rel="stylesheet" href="../theme/css/poole.css" type="text/css" />
-        <link rel="stylesheet" href="../theme/css/hyde.css" type="text/css" />
-            <link rel="stylesheet" href="../theme/css/github.css" type="text/css" />
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+        <link rel="stylesheet" href="http://wayoda.github.io/LedControl/theme/css/poole.css" type="text/css" />
+
+            <link rel="stylesheet" href="http://wayoda.github.io/LedControl/theme/css/github.css" type="text/css" />
     
         <link href="http://fonts.googleapis.com/css?family=Gentium+Book Basic:400italic,400,700italic,700" rel="stylesheet" type="text/css">
         <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Inconsolata&subset=latin-ext' rel='stylesheet' type='text/css'>
     </head>
     <body>
-<div class="sidebar">
-    <!--    <div class="container sidebar-sticky"> -->
-        <div class="sidebar-about"><a href="../index.html">LedControl</a></div>
-        <div class="sidebar-lead">An Arduino library for the MAX7219 and MAX7221</div>
-        <div class="sidebar-nav">
-            <ul>
-                    <li><a class="sidebar-menu-item " href="../index.html">Home</a></li>
-                    <li><a class="sidebar-menu-item active" href="../pages/hardware.html">Hardware</a></li>
-                    <li><a class="sidebar-menu-item " href="../pages/software.html">Software</a></li>
-                    <li><a class="sidebar-menu-item " href="../pages/demos.html">Demos</a></li>
-            </ul>
-        </div>
-        <div class=sidebar-info>
-            <ul>
-                <li><a class="sidebar-social-item" href="https://github.com/wayoda/LedControl"><img class="icon" src="../theme/images/github-dark-20.png" alt="LedControl on Github">Project on Github</a></li>
-                <li><a class="sidebar-social-item" href="mailto:e.fahle@wayoda.org"><img class="icon" src="../theme/images/mail-dark-20.png" alt="E-Mail">E-Mail</a></li>
-            </ul>    
-            <span class="sidebar-info-item">Latest version: 1.0.4</span>
-            <span class="sidebar-info-item">&copy; 2015</span>
- 
-        </div>
-        <!-- </div> -->
+        <div id="container">
+<div id="header">
+    <div id="header-left" >
+        <span class="header-title"><a href="http://wayoda.github.io/LedControl/index.html">LedControl</a></span>
+        </br>
+        <span class="header-description">An Arduino library for the MAX7219 and MAX7221</span>
+    </div>
+    <div id="header-nav">
+        <ul>
+            <li><a class="sidebar-menu-item " href="http://wayoda.github.io/LedControl/index.html">Home</a></li>
+            <li><a class="sidebar-menu-item active" href="http://wayoda.github.io/LedControl/pages/hardware.html">Hardware</a></li>
+            <li><a class="sidebar-menu-item " href="http://wayoda.github.io/LedControl/pages/software.html">Software</a></li>
+            <li><a class="sidebar-menu-item " href="http://wayoda.github.io/LedControl/pages/demos.html">Demos</a></li>
+        </ul>
+    </div>
 </div>
-        <div class="content container">
+<div class="clear"></div>
+<hr class="hr-top">               <div class="content">
 <div class="page">
   <h1>Hardware and schematics</h1>
 <p>The library supports two Maxim IC display drivers, the <code>MAX7219</code> and the
@@ -124,11 +121,7 @@ very easy to build displays with more digits using the schematic below.</p>
 the computer screen. Click the image below for a schematic in print
 resolution. It shows the complete wiring for 2 cascaded <code>MAX72XX</code>. One
 drives a plain matrix and the other a 7-segment display.</p>
-<p><img alt="image" src="../images/MAX72XX_Schematic.jpg" /></p>
-<blockquote>
-<p><strong>note</strong></p>
-<p>Click on the image for print-size resolution</p>
-</blockquote>
+<p><a href="../images/MAX72XX_Schematic.jpg"><img alt="image" src="../images/MAX72XX_Schematic.jpg" /></a></p>
 <h2><code>MAX7219</code> vs. <code>MAX7221</code></h2>
 <p>Since there are only minor differences between the MAX7219 and MAX7221
 how do you know which one to choose? There are two things to consider
@@ -330,6 +323,15 @@ that time the Arduino was still running, but the <code>MAX72XX</code> was not ab
 to drive the Leds any more.</p>
 </div>
  
-        </div>
+            </div>
+<div id="footer">
+    <ul>
+        <li><a class="footer-social-item" href="https://github.com/wayoda/LedControl"><img class="icon" src="http://wayoda.github.io/LedControl/theme/images/github-dark-20.png" alt="LedControl on Github">Project on Github</a></li>
+        <li><a class="footer-social-item" href="mailto:e.fahle@wayoda.org"><img class="icon" src="http://wayoda.github.io/LedControl/theme/images/mail-dark-20.png" alt="E-Mail">E-Mail</a></li>
+    </ul>    
+    <span class="footer-info-item">Latest version: 1.0.4</span>
+    <span class="footer-info-item">&copy; 2015</span>
+</div>
+    </div> 
     </body>
 </html>
