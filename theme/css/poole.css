@@ -332,12 +332,31 @@ tbody tr:nth-child(odd) td, tbody tr:nth-child(odd) th {
 
 #footer {
     background-color: #515151; 
-    padding-top:    1rem;
-    padding-bottom: 1rem;
+    padding: 0.5rem 4rem;
     border-top: 4px solid #F47A20;
+    color:#FFF;
+    font-size:1.25rem;
 }
 
-    
+#footer a {
+    color:#FFF;
+}
+
+#footer a:hover,a:focus {
+    text-decoration: none;
+    color: #F47A20;
+}
+
+#footer-info-item {
+    padding: 0.5rem 0.5rem;
+}
+
+#footer img {
+    margin: 0px 4px;
+    display: inline;
+
+}
+
 /*
  * Posts and pages
  *
