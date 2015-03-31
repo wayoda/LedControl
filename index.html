@@ -37,23 +37,24 @@
 <div class="page">
   <h1>The Arduino LedControl library</h1>
 <p><code>LedControl</code> is a library for the <code>MAX7221</code> and <code>MAX7219</code> Led display drivers.
-Only a few components are needed to control 64 Led's ndividually or a 7-segment
-display with up to 8 digits wide.</p>
+Only a few components are needed to control 64 Leds or a 7-segment
+display.</p>
 <p><img alt="image" src="/LedControl/images/MAX7221Setup.jpg" /></p>
-<p>On the internet you find a lot code-examples for the Arduino and the <code>MAX72XX</code>
-Led display driver. Usually the focus is on controlling Leds layed out in some sort of rectangular matrix. I
-needed the MAX72XX to drive a few 7-segment displays, so I went for a simple set of 
-functions that display plain numbers and also the limited set of alphanumeric characters
+<p>There are already lot code-examples for the Arduino and the <code>MAX72XX</code>
+Led display driver. Most of the projects have their focus on controlling individual Leds 
+layed out in some sort of rectangular matrix. I needed the MAX72XX to drive a few 
+7-segment displays, so I went for a simple set of functions that display plain numbers 
+and the (limited) set of alphanumeric characters
 that make sense visually. But the library also has the standard set of functions
 to control each Led individually.</p>
 <h3>Download and install</h3>
 <p>The latest version of the library is always to be found on the github project
-pages. There is always a version tagged <code>Latest release</code>. </p>
+pages. There is always a version tagged. </p>
 <blockquote>
 <p><a href="https://github.com/wayoda/LedControl/releases">LedControl release page</a></p>
 </blockquote>
-<p>From here want to download the <code>zip</code>-file named <code>LedControl-&lt;version&gt;.zip</code> to
-your computer. This file contains the libary and a few example sketches. You
+<p>Download the <code>LedControl-&lt;version&gt;.zip</code>-file tagged as <code>Latest release</code>. 
+This file contains the libary and a few example sketches. You
 don't need any of the <code>Source code</code> files which are also on the release page.</p>
 <p>Install the library following the guidelines on the Arduino homepage:</p>
 <blockquote>
@@ -68,11 +69,11 @@ guide</a> </p>
 <li><a href="/LedControl/pages/software">Library function documentation</a></li>
 </ul>
 <p>I would recommend you start by reading the <a href="/LedControl/pages/hardware">Hardware section</a>
-and then run a few of the examples from the
-<a href="/LedControl/pages/demos">tutorial</a>. The <a href="/LedControl/pages/software">Library function documentation</a> has an entry
+and then run a few of the examples from the <a href="/LedControl/pages/demos">tutorial</a>. 
+The <a href="/LedControl/pages/software">Library function documentation</a> has an entry
 for each function that is available to your code.</p>
 <h3>Known bugs</h3>
-<p>Currently none (tested with versions <em>Arduino 1.0.x</em> and <em>Arduino 1.5.x</em>)</p>
+<p>Currently none (tested with versions <em>Arduino 1.0.x</em> and <em>Arduino 1.6.x</em>)</p>
 <h3>Revision History</h3>
 <dl>
 <dt><em>January 20, 2015</em></dt>
@@ -96,9 +97,9 @@ did not compile under arduino-0012.</dd>
 </dl>
 <h3>Feedback</h3>
 <p>If you find an error or if you are looking for a special feature not yet covered
-by the existing code please open a new issue on the <a href="https://github.com/wayoda/LedControl/issues">github project
+in the existing code, please open a new issue on the <a href="https://github.com/wayoda/LedControl/issues">github project
 page</a>. If you don't have a github
-account you are also welcome to send questions, objections or corrections to <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#46;&#102;&#97;&#104;&#108;&#101;&#64;&#119;&#97;&#121;&#111;&#100;&#97;&#46;&#111;&#114;&#103;">&#101;&#46;&#102;&#97;&#104;&#108;&#101;&#64;&#119;&#97;&#121;&#111;&#100;&#97;&#46;&#111;&#114;&#103;</a></p>
+account (and don't want one) send your questions, objections or corrections to <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#46;&#102;&#97;&#104;&#108;&#101;&#64;&#119;&#97;&#121;&#111;&#100;&#97;&#46;&#111;&#114;&#103;">&#101;&#46;&#102;&#97;&#104;&#108;&#101;&#64;&#119;&#97;&#121;&#111;&#100;&#97;&#46;&#111;&#114;&#103;</a></p>
 <h3>License (The software)</h3>
 <p>The sourcecode for this library is released under the Terms of a <a href="https://github.com/wayoda/LedControl/blob/master/LICENSE">MIT-style
 license</a></p>
