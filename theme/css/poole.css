@@ -260,8 +260,7 @@ tbody tr:nth-child(odd) td, tbody tr:nth-child(odd) th {
 
 /* The page header */
 #header {
-    padding-top:    1rem;
-    padding-bottom: 1rem;
+    padding: 1rem 0.5rem;
     font-size: 1.25rem;
 }
 
@@ -327,19 +326,23 @@ tbody tr:nth-child(odd) td, tbody tr:nth-child(odd) th {
 .hr-top {
     width:100%;
     border-top: 4px solid #00979c;
+}
 
+#content {
+    padding: 1rem 0.5rem;
 }
 
 #footer {
-    background-color: #515151; 
-    padding: 0.5rem 4rem;
+    background-color: #FFF; 
+    padding: 1rem 0.5rem;
     border-top: 4px solid #F47A20;
-    color:#FFF;
-    font-size:1.25rem;
+    color:#A0A0A0;
+    font-size:1rem;
+    text-align:center;
 }
 
 #footer a {
-    color:#FFF;
+    color:#A0A0A0;
 }
 
 #footer a:hover,a:focus {
@@ -348,13 +351,19 @@ tbody tr:nth-child(odd) td, tbody tr:nth-child(odd) th {
 }
 
 #footer-info-item {
-    padding: 0.5rem 0.5rem;
+    padding: 0.5rem 0.5rem;    
+}
+
+#footer span.bold {
+    margin-right:8px;
+    color: #00979C;
+    font-weight:700;
+    font-family: "Lato", Helvetica, Arial, sans-serif;
 }
 
 #footer img {
-    margin: 0px 4px;
+    margin: 0px 8px;
     display: inline;
-
 }
 
 /*
