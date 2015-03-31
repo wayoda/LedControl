@@ -37,15 +37,15 @@
 <div class="page">
   <h1>Hardware and schematics</h1>
 <p>The library supports two Maxim IC display drivers, the <code>MAX7219</code> and the
-<code>MAX7221</code>. Both circuits can drive up 64 individual Led's, or 7-segment
-displays with 8 digits. The drivers implement a
+<code>MAX7221</code>. Both circuits can drive up 64 Leds or a 7-Segment
+display with 8 digits. The drivers implement a
 <a href="http://en.wikipedia.org/wiki/Serial_Peripheral_Interface_Bus">SPI</a>
 compatible slave interface that can be controlled from the Arduino using
-only 3 digital output pins. An datasheet for the <code>MAX72XX</code> is available
+only 3 digital output pins. A datasheet for the <code>MAX72XX</code> is available
 from the <a href="http://www.maxim-ic.com/">Maxim homepage</a>. Both drivers
 provide identical functions so I will use the generic term <code>MAX72XX</code> for
-the <code>MAX7221</code> <em>and</em> the <code>MAX7219</code>. Both chips are still in production as
-of March 2014.</p>
+the <code>MAX7221</code> <em>and</em> the <code>MAX7219</code>. Both driver chips are still in production as
+of March 2015.</p>
 <p>This section of the documentation focuses on building the external
 hardware, and should be seen as supplement to the <a href="http://www.maximintegrated.com/datasheet/index.mvp/id/1339">original
 datasheet</a> .
@@ -58,69 +58,65 @@ signals coming from the Arduino.</p>
 <p>Besides the <code>MAX72XX</code> itself and the Leds there are only 3 external
 components: two capacitors (<code>C1</code>; <code>C2</code>) and a resistor (<code>RSet</code>).</p>
 <p>The capacitors are there to supress noise signals introduced through the
-power-supply lines. By no means these 2 capacitors should be ommitted,
-as it might lead to sporadic or permanent malfunctions. These types of
-errors are really hard to track down. Both capacitors <strong>must</strong> be placed
+power-supply lines. The 2 capacitors should be not ommitted,
+as it might lead to sporadic or permanent malfunctions. Errors of this type
+are really hard to track down. Both capacitors <strong>must</strong> be placed
 as near as possible to the <code>V+</code> and the <code>Gnd</code> pins of the <code>MAX72XX</code>.</p>
 <p>The resistor <code>RSet</code> is responsible for setting an upper limit on the
 current that is fed into the Leds. Selecting the correct resistor value
 might not be trivial. There is an in-depth discussion
-\&lt;SelectRSet> on this later.</p>
-<p>The <code>MAX72XX</code> has to be powered with <code>+5V</code>. For a single Led-matrix it
-is possible to use the <code>+5V</code> supply from the Arduino-board. If you add
+<a href="#SelectRSet">Selecting RSet</a> on this later.</p>
+<p>The <code>MAX72XX</code> has to be powered with <code>+5V</code>. For a single Led-Matrix with 64 Leds
+it is possible to use the <code>+5V</code> supply from the Arduino-board. If you add
 more than one matrix to the Arduino you will probably need an external
-power-supply. More on this in section
-Power supply issues \&lt;PowerSupply>.</p>
-<h3>Arduino interface</h3>
-<p>The <code>Gnd</code>-Pins of the <code>MAX72XX</code> have to be connected to one of the
-<code>Gnd</code>-Pins on the Arduino board. That makes both circuits work on the
+power-supply. More on this in section <a href="#PowerSupply">Power supply issues</a>.</p>
+<h3>The Arduino interface</h3>
+<p>The <code>Gnd</code>-Pins of the <code>MAX72XX</code> has to be connected to one of the
+<code>Gnd</code>-Pins on the Arduino board so both circuits work on the
 same voltage-level. The positive power-supply pins (<code>+5V/Vcc</code>) can
 directly be connected to the Arduino-board only for a limited number of
-Led's.(See Power supply issues \&lt;PowerSupply> for details.)</p>
-<p>The three signal lines (<code>DIn,CLK,Load(/CS)</code>) have to be connected to
-three digital outputs on the Arduino board. It depends on the software
-which Arduino pins have to be used. For the exact pin-numbers you have
-to refer to the software documentation of the library or the example
-code on which you build your project. With most of the libraries for the
-<code>MAX72XX</code> you are free to choose any pins you like.</p>
+Leds.(See <a href="#PowerSupply">Power supply issues</a> for details.)</p>
+<p>The three signal lines (<code>DIn,CLK,Load(/CS)</code>) can be connected to
+any three digital outputs of the Arduino board. Just make sure you 
+use the same pin numbers later when you write the Arduino Sketch that 
+drives the Leds. </p>
 <p>If you read the datasheet for the <code>MAX72XX</code> you know that the drivers
-can be cascaded by simply connecting the signal <code>DOut</code> from one chip to
+can be cascaded by connecting the signal <code>DOut</code> from one chip to
 <code>DIn</code> on the next chip. The signals <code>Clk</code> and <code>Load(/CS)</code> have to be
 connected in parallel to each <code>MAX72XX</code>. There is no strict limit as to
 how many drivers can be cascaded that way. But the SPI-interface is not
 capable of any error checking on the transmitted data, so you are
 already limited with the length of the cables that run from one
 <code>MAX72XX</code> to the next one. If your cables have to be much longer than
-10cm (4 inch) between each <code>MAX72XX</code> you ''might'' already run into
+10cm (4 inch) between each <code>MAX72XX</code> you <em>might</em> already run into
 trouble.</p>
-<h3>Led-matrix</h3>
+<h3>Led-Matrix</h3>
 <p>The <code>MAX72XX</code> can drive up an 8x8 matrix as shown in the schematic
 below. The labels on the left and the top of the schematic refer to the
 matching pins of the <code>MAX72XX</code>.</p>
 <p><img alt="image" src="../images/LedMatrix.jpg" /></p>
-<p>You can build your own matrix out of individual Leds, but there are also
+<p>You can build your own matrix using individual Leds, but there are also
 pre-wired ones available. They can be directly connected to the
-<code>MAX72XX</code>. Some are arranged as ''column cathode'' and some are ''column
-anode'' (as in the diagram above). Either type will work but you must
-connect the anodes to the <code>Seg</code> lines and cathodes to the <code>Dig</code> lines.</p>
-<h3>7-segment displays</h3>
-<p>A 7-segment digit is actually nothing more than 8 Leds (<code>7-segments</code> and
-the <code>dot</code>) mounted in a special way. For 7-segment displays you must use
-the ''common cathode''-type. There is no easy way to make a ''common
-anode''-type seven segment display work with a <code>MAX72XX</code>.</p>
-<p>The internal wiring of a ''common cathode'' type looks like this</p>
+<code>MAX72XX</code>. Some are arranged as <em>column cathode</em> and some are <em>column
+anode</em> (as in the diagram above). Either type will work but you must
+connect the <strong>anodes</strong> to the <code>Seg</code> lines and <strong>cathodes</strong> to the <code>Dig</code> lines.</p>
+<h3>7-Segment displays</h3>
+<p>A 7-Segment digit is actually nothing more than 8 Leds (<code>7 segments</code> and
+the <code>dot</code>) mounted in a special way. For 7-Segment displays <strong>only</strong> 
+the <em>common cathode</em>-type will work. There is no easy way to make a 
+<em>common anode</em>-type 7-Segment display work with the <code>MAX72XX</code>.</p>
+<p>The internal wiring of a <em>common cathode</em> type looks like this</p>
 <p><img alt="image" src="../images/Seg7Internals.jpg" /></p>
 <p>If you look at the matrix schematic again that would resemble one of the
-rows. The pin-labels on the 7-segment digits match the name of the pins
+rows. The pin-labels on the 7-Segment digits match the name of the pins
 on a <code>MAX72XX</code>, with the common cathode pin wired to one of the <code>Dig0-7</code>
-pins. In most shops you'll find only single 7-segment digits. But it is
+pins. In most shops you'll find only single 7-Segment digits. But it is
 very easy to build displays with more digits using the schematic below.</p>
 <p><img alt="image" src="../images/Seg7Matrix.jpg" /></p>
 <h3>A complete schematic</h3>
-<p>A detailed schematic showing all the components is simply too large for
-the computer screen. Click the image below for a schematic in print
-resolution. It shows the complete wiring for 2 cascaded <code>MAX72XX</code>. One
-drives a plain matrix and the other a 7-segment display.</p>
+<p>Here is a detailed schematic showing the complete wiring for 2 cascaded <code>MAX72XX</code>. 
+One drives a standard 64 Led-Matrix and the other one a 7-Segment display with
+8 digits.</p>
 <p><a href="../images/MAX72XX_Schematic.jpg"><img alt="image" src="../images/MAX72XX_Schematic.jpg" /></a></p>
 <h2><code>MAX7219</code> vs. <code>MAX7221</code></h2>
 <p>Since there are only minor differences between the MAX7219 and MAX7221
@@ -136,18 +132,18 @@ type of USB device that can act as SPI-master. The <code>MAX7219</code> in this
 regard deviates a little bit from the standards. But on the other
 hand all the Arduino software and libraries I have seen so far
 support both devices. If your answer is <em>No</em> here, take the
-<code>MAX7219</code> since it is usually a bit cheaper.</dd>
+<code>MAX7219</code> since it is a lot cheaper.</dd>
 <dt><em>Does your project use the analog inputs of the Arduino? Do you do some kind of audio-processing?</em></dt>
-<dd>The <code>MAX7221</code> was designed for reduced electromagnetic interference
-(EMI). EMI <em>could</em> lead to some jitter in the readings from the
-analog inputs of the Arduino or if the Led matrix is placed near
+<dd>The <code>MAX7221</code> is designed with reduced electromagnetic interference
+(<code>EMI</code>) in mind. <code>EMI</code> <em>could</em> lead to some jitter in the readings from the
+analog inputs of the Arduino or if the Led-Matrix is placed near
 some audio circuit it can introduce audible noise to the signal. So,
 if your project would go into categories like : audio gadget, audio
 levelmeter, (low-)voltage measurement, etc. than go for the
 <code>MAX7221</code>.</dd>
 </dl>
 <p>In all other cases you should be fine with the <code>MAX7219</code>.</p>
-<h2>Selecting <code>RSet</code></h2>
+<h2><a id='SelectRSet'></a>Selecting <code>RSet</code></h2>
 <p>The Arduino forum topics concerning the <code>MAX72XX</code>, often show that there
 is a fair bit of uncertainty when it comes to selecting a value for the
 resistor <code>RSet</code>. It is the single component that limits the current fed
@@ -157,7 +153,7 @@ purpose is to protect the <code>MAX72XX</code> and the Leds from exessive curren
 Setting the brightness of the display can and should be done from
 software.</p>
 <p>To find out the correct value for <code>RSet</code> you need the datasheet for the
-<code>MAX72XX</code> <strong>and</strong> the datasheet for the Ledmatrix or 7-segment display
+<code>MAX72XX</code> <strong>and</strong> the datasheet for the Ledmatrix or 7-Segment display
 you're going to use.</p>
 <p>From the datasheet of your Led's you will need to know two values</p>
 <dl>
@@ -171,7 +167,7 @@ damaging it in the long run.</dd>
 the color of the Led, you have to limit the current going through the
 Led with resistor <code>RSet</code>. Since <code>DC forward current</code> is a maximum value,
 which is not be exceeded, you should settle for a slightly lower
-current. Standard Led's and 7-segment displays are often rated with a
+current. Standard Led's and 7-Segment displays are often rated with a
 <code>DC forward current</code> of 25-30mA. Limiting to 20mA would make a good
 choice.</p>
 <p>With the information from the Led's datasheet we can now lookup the
@@ -241,7 +237,7 @@ resistors required by your Led colors you will have to settle for the
 highest value. The brightness of the Leds with different colors will not
 really match, so it's a ''trial and error'' thing finding the right
 Leds.</p>
-<h2>Power supply issues</h2>
+<h2><a id="PowerSupply"></a>Power supply issues</h2>
 <p>Now that we know how much current is going through one Led in the
 matrix, the next thing you might ask yourself is : <em>How much current
 will the whole matrix draw from the power supply?</em></p>
@@ -258,8 +254,8 @@ fast. The big advantage of this trick is that at every single point of
 time no more than 8 Leds (one row) are lit. The maximum current that a
 single matrix will ever demand is 8 times the current you have set with
 resistor <code>RSet</code> (+ some 10mA for the <code>MAX72XX</code> itself).</p>
-<p>In the example from section Select RSet \&lt;SelectRSet> we choose a value
-that limits the Led current to 20mA. If our software now lights up all
+<p>In the example from section <a href="#SelectRSet">Selecting RSet</a> we chose a value
+that limits the Led current to a maximum of 20mA. If our code lights up all
 the 64 Leds in the Matrix at the same time, we still have to supply only
 170mA, because of multiplexing.</p>
 <blockquote>
@@ -282,13 +278,13 @@ soon as it is unplugged from mains and runs on batteries.</dd>
 hub, you can draw 500mA from each port. Some of these self-powered
 hubs supply the current, even when your computer is turned off or
 you unplug the hub itself. But sadly this is often not even
-mentioned in the datasheet of the hub. I have 3 self-powered hubs.
+mentioned in the datasheet of the hub. I have three self-powered hubs on my desk.
 One switches the USB-ports off when my machine shuts down or I
 unplug the hub. The other two don't care about this, the 5V supply
 on the USB-port is always alive.</dd>
 <dt><em>External bus-powered hub</em></dt>
 <dd>These hubs don't bring their own power-supply and therefore they
-will deliver not more than 100mA per USB-port. This type of hub is
+will deliver no more than 100mA per USB-port. This type of hub is
 not really suitable for any Ardunino project with external hardware
 to be powered from USB.</dd>
 </dl>
@@ -299,7 +295,7 @@ hardware draws depends very much on the software you write.</p>
 at the same time and you selected resistor <code>RSet</code> that allows a current
 of 20mA per Led. That will add up to a maximum current of 170mA per
 matrix. With two of these matrices you're at 340mA. Now add another 40mA
-for the arduino itself and you'll end up with 380mA. There is not enough
+for the Arduino board itself and you'll end up with 380mA. There is not enough
 headroom for adding third matrix in this case.</p>
 <p>But if you light up only a single Led at any time, your maximum current
 is at 30mA. You can easily drive 15 <code>MAX72XX</code> and the Arduino from a
@@ -310,16 +306,16 @@ here are just a few guidelines:</p>
 <ul>
 <li>Every Led that is <strong>not</strong> lit saves power.</li>
 <li>Selecting a higher value for <code>RSet</code> makes the display dimmer, but
-    also reduces the current going through the Leds.</li>
+  also reduces the current going through the Leds.</li>
 <li>Use software features to reduce the brightness of the matrix to a
-    tolerable minimum.</li>
+  tolerable minimum.</li>
 </ul>
-<p>Here is the result from a test I did with a 9V battery that had a
-capacity of 625mAH and a Led matrix on which 32 out of the 64 Leds where
-lit all the time. The whole setup with the matrix and the Arduino (model
+<p>I ran a test with a 9V battery that had a capacity of 625mAH and 
+a Led matrix on which 32 out of the 64 Leds where lit all the time. 
+The whole setup with the matrix and the Arduino (model
 NG Rev.C) consumed a static current of 78mA. After about 55 minutes all
-the Leds went off. The voltage on the battery had dropped below 7.4V. By
-that time the Arduino was still running, but the <code>MAX72XX</code> was not able
+the Leds went off. The voltage on the battery had dropped below 7.4V. 
+The Arduino board itself was still running, but the <code>MAX72XX</code> was not able
 to drive the Leds any more.</p>
 </div>
  
