@@ -37,7 +37,7 @@
                 prefix="LedControl/examples" 
                 filemode="755" 
                 dirmode="755"
-                includes="**/*.pde" >
+                includes="**/*.ino" >
             </zipfileset>
         </zip>
     </target>
