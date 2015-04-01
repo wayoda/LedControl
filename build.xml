@@ -31,7 +31,7 @@
                 prefix="LedControl/" 
                 filemode="755" 
                 dirmode="755"
-                includes="*.h, *.cpp, keywords.txt" >
+                includes="*.h, *.cpp, keywords.txt, library.properties" >
             </zipfileset>
             <zipfileset dir="${ledcontrol.src}/examples"
                 prefix="LedControl/examples" 
