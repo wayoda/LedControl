@@ -1,6 +1,7 @@
 LedControl
 ==========
 LedControl is an [Arduino](http://arduino.cc) library for MAX7219 and MAX7221 Led display drivers.
+The code also works with the [Teensy (3.1)](https://www.pjrc.com/teensy/)
 
 Documentation
 -------------
