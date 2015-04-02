@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="en">
+    <head>
+        <title>LedControl</title>
+        <meta charset="utf-8" />
+        <meta name="author" content="Eberhard Fahle" />
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+        <link rel="stylesheet" href="http://wayoda.github.io/LedControl/theme/css/style.css" type="text/css" />
+
+            <link rel="stylesheet" href="http://wayoda.github.io/LedControl/theme/css/github.css" type="text/css" />
+    
+        <link href="http://fonts.googleapis.com/css?family=Gentium+Book Basic:400italic,400,700italic,700" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata&subset=latin-ext' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <div id="container">
+<div id="header">
+    <div id="header-left" >
+        <span class="header-title"><a href="http://wayoda.github.io/LedControl/index.html">LedControl</a></span>
+        </br>
+        <span class="header-description">An Arduino library for the MAX7219 and MAX7221</span>
+    </div>
+    <div id="header-nav">
+        <ul>
+            <li><a class="sidebar-menu-item " href="http://wayoda.github.io/LedControl/index.html">Home</a></li>
+            <li><a class="sidebar-menu-item " href="http://wayoda.github.io/LedControl/pages/hardware.html">Hardware</a></li>
+            <li><a class="sidebar-menu-item " href="http://wayoda.github.io/LedControl/pages/software.html">Software</a></li>
+            <li><a class="sidebar-menu-item active" href="http://wayoda.github.io/LedControl/pages/faq.html">FAQ</a></li>
+        </ul>
+    </div>
+</div>
+<div class="clear"></div>
+<hr class="hr-top">               <div id="content">
+<div class="page">
+    <div id="page-menu">
+        <ul>
+            <li><a href="#Tech">Technical Questions</a></li>
+            <li><a href="#Alt">Alternatives</a></li>
+            <li><a href="#Misc">Uncategorized</a></li>
+         </ul>
+    </div>
+<h1>FAQ</h1>
+<p>Here are a few questions turn up from time to time... </p>
+<h2><a id="Tech"></a>Technical Questions</h2>
+<p><strong><em>Why don't you use the hardware SPI-Bus of the Arduino?</em></strong></p>
+<p>When I wrote the first version of the library I didn't knew much
+about the Arduino or AVR processors in general and I knew nothing 
+writing code for the hardware SPI-bus on an ATMega. But I knew how 
+the SPI protocol works and how I could make this work using simple 
+<code>digitalWrite()</code> commands. I turned out the library code is fast enough
+for common use cases, so there is no need for doing Hi-Speed communications.</p>
+<p>Other strong points in favour of the (admittedly trivial) code design are
+- Use <em>any</em> three free IO-Pins of your board for the hardware
+- Simple to debug. Much easier than managing 3 differnt SPI devices connected to
+  the same hardware bus
+- Library is easily portable to other platforms, since it uses only two very basic
+  functions from the Arduino language</p>
+<p><strong><em>The pins of my board work at 3.3V IO level what now?</em></strong></p>
+<p>You need some extra hardware to make this work. The MAX72XX expects the power supply 
+and the input logig level to be at 5V. So you'll need two things </p>
+<ul>
+<li>a 5V power source </li>
+<li>a component that works as a logic level converter </li>
+</ul>
+<p>If you are lucky your 3.3V Arduino board already has 5V connector that delivers
+enough current for the Leds. I tested the example code with an Arduino Due and a Teensy 3.1. 
+On both boards the IO-Pins output only 3.3V but both have the USB power supply broken out on 
+a header that serves enough current at 5V to drive a single Led matrix. </p>
+<p>Logic level converter breakout boards are available at all of the Arduino
+distributers. Search the web for <code>"Arduino logic level converter"</code>. Most 
+suppliers offer bi-directional converters which are fine to use even though for the MAX72XX
+you only need the <em>Up</em>-conversion (3.3V&rarr;5V). Most breakouts supply more than 
+one channel, you need at least 3.</p>
+<p><strong><em>On which boards did you test the code?</em></strong></p>
+<ul>
+<li>Arduino NG</li>
+<li>Teensy 3.1 (needs a logic level shifter)</li>
+<li>Arduino Due (needs a logic level shifter)</li>
+<li>Arduino Nano</li>
+</ul>
+<h2><a id="Alt"></a>Alternatives</h2>
+<p><strong><em>The <code>MAX72XX</code> is too expensive, are there any cheaper solutions?</em></strong></p>
+<p>There are a lots of alternatives but the MAX7221 is the only driver Led driver IC
+that is still available in breadboard friendly
+<a href="http://en.wikipedia.org/wiki/Dual_in-line_package">PDIP</a> format. 
+Over here in Germany you get it 30% cheaper than 3 couple of years ago and
+the <code>MAX7221</code> is even 50 cent cheaper than the <code>MAX7219</code>.</p>
+<h2><a id="Misc"></a>Uncategorized</h2>
+<p><strong><em>The <code>Max72XX</code> is outdated, I want multicolored Leds!</em></strong></p>
+<p>True, but if you need to drive a lot of Led's it still has its use.</p>
+</div>
+ 
+            </div>
+<div id="footer">
+     <div class="footer-info-item">
+         <p><span class="bold">Contact </span><a href="https://github.com/wayoda/LedControl"><img class="icon" src="http://wayoda.github.io/LedControl/theme/images/github-dark-20.png" alt="LedControl on Github">LedControl Project on Github</a><a href="mailto:e.fahle@wayoda.org"><img class="icon" src="http://wayoda.github.io/LedControl/theme/images/mail-dark-20.png" alt="E-Mail">e.fahle@wayoda.org</a></p>
+         <p><span class="bold">LedControl </span>Current version: 1.0.5 &ndash; &copy; 2015 Eberhard Fahle</p>
+     </div>
+</div>
+    </div> 
+    </body>
+</html>

@@ -101,7 +101,8 @@ ul, ol, dl {
 }
 
 li {
-    padding-left: 1rem;
+    padding-left: 2rem;
+    text-indent: -1em;
 }
 
 dt {
@@ -329,8 +330,46 @@ tbody tr:nth-child(odd) td, tbody tr:nth-child(odd) th {
 }
 
 #content {
-    padding: 1rem 0.5rem;
+    padding-top: 0;
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }
+
+#page-menu {
+    margin-left: auto;
+    margin-right: auto;
+    text-align:center;
+
+}
+
+#page-menu ul {
+    list-style: none;
+}
+
+#page-menu  ul li {
+    display:inline;
+    color:#a0a0a0;
+    padding: 0 0;
+}
+
+#page-menu ul li:after {
+    content:" ♦ ";
+}
+
+#page-menu ul li:last-child:after {
+    content:"";
+}
+
+#page-menu ul li a {
+    color:#a0a0a0;
+}
+
+#page-menu ul li a:hover, a:focus {
+    color:#000;
+    text-decoration:none;
+}
+
 
 #footer {
     background-color: #FFF; 
@@ -418,7 +457,7 @@ tbody tr:nth-child(odd) td, tbody tr:nth-child(odd) th {
     color: #268bd2;
     text-decoration: none;
 }
-.related-posts li a:hover small {
+.related-posts li a:hover, a:focus {
     color: inherit;
 }
 

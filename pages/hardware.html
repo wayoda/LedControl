@@ -7,7 +7,7 @@
         <!-- Enable responsiveness on mobile devices-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-        <link rel="stylesheet" href="http://wayoda.github.io/LedControl/theme/css/poole.css" type="text/css" />
+        <link rel="stylesheet" href="http://wayoda.github.io/LedControl/theme/css/style.css" type="text/css" />
 
             <link rel="stylesheet" href="http://wayoda.github.io/LedControl/theme/css/github.css" type="text/css" />
     
@@ -28,14 +28,21 @@
             <li><a class="sidebar-menu-item " href="http://wayoda.github.io/LedControl/index.html">Home</a></li>
             <li><a class="sidebar-menu-item active" href="http://wayoda.github.io/LedControl/pages/hardware.html">Hardware</a></li>
             <li><a class="sidebar-menu-item " href="http://wayoda.github.io/LedControl/pages/software.html">Software</a></li>
-            <li><a class="sidebar-menu-item " href="http://wayoda.github.io/LedControl/pages/demos.html">Demos</a></li>
+            <li><a class="sidebar-menu-item " href="http://wayoda.github.io/LedControl/pages/faq.html">FAQ</a></li>
         </ul>
     </div>
 </div>
 <div class="clear"></div>
 <hr class="hr-top">               <div id="content">
 <div class="page">
-  <h1>Hardware and schematics</h1>
+    <div id="page-menu">
+        <ul>
+            <li><a href="#Wiring">Wiring</a></li>
+            <li><a href="#SelectRSet">Selecting RSet</a></li>
+            <li><a href="#PowerSupply">Power Supply</a></li>
+         </ul>
+    </div>
+<h1>Hardware and schematics</h1>
 <p>The library supports two Maxim IC display drivers, the <code>MAX7219</code> and the
 <code>MAX7221</code>. Both circuits can drive up 64 Leds or a 7-Segment
 display with 8 digits. The drivers implement a
@@ -51,7 +58,7 @@ hardware, and should be seen as supplement to the <a href="http://www.maximinteg
 datasheet</a> .
 For a basic understanding I suggest you have a look at the datasheet
 first and the read this section for Arduino specific information</p>
-<h2>Wiring</h2>
+<h2><a id="Wiring"></a>Wiring</h2>
 <p>Here is a basic schematic for a <code>MAX72XX</code>, showing only the <em>data</em>
 signals coming from the Arduino.</p>
 <p><img alt="image" src="../images/MAX72XX_SPI.jpg" /></p>
@@ -323,7 +330,7 @@ to drive the Leds any more.</p>
 <div id="footer">
      <div class="footer-info-item">
          <p><span class="bold">Contact </span><a href="https://github.com/wayoda/LedControl"><img class="icon" src="http://wayoda.github.io/LedControl/theme/images/github-dark-20.png" alt="LedControl on Github">LedControl Project on Github</a><a href="mailto:e.fahle@wayoda.org"><img class="icon" src="http://wayoda.github.io/LedControl/theme/images/mail-dark-20.png" alt="E-Mail">e.fahle@wayoda.org</a></p>
-         <p><span class="bold">LedControl </span>Current version: 1.0.4 &ndash; &copy; 2015 Eberhard Fahle</p>
+         <p><span class="bold">LedControl </span>Current version: 1.0.5 &ndash; &copy; 2015 Eberhard Fahle</p>
      </div>
 </div>
     </div> 

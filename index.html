@@ -7,7 +7,7 @@
         <!-- Enable responsiveness on mobile devices-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-        <link rel="stylesheet" href="http://wayoda.github.io/LedControl/theme/css/poole.css" type="text/css" />
+        <link rel="stylesheet" href="http://wayoda.github.io/LedControl/theme/css/style.css" type="text/css" />
 
             <link rel="stylesheet" href="http://wayoda.github.io/LedControl/theme/css/github.css" type="text/css" />
     
@@ -28,14 +28,21 @@
             <li><a class="sidebar-menu-item active" href="http://wayoda.github.io/LedControl/index.html">Home</a></li>
             <li><a class="sidebar-menu-item " href="http://wayoda.github.io/LedControl/pages/hardware.html">Hardware</a></li>
             <li><a class="sidebar-menu-item " href="http://wayoda.github.io/LedControl/pages/software.html">Software</a></li>
-            <li><a class="sidebar-menu-item " href="http://wayoda.github.io/LedControl/pages/demos.html">Demos</a></li>
+            <li><a class="sidebar-menu-item " href="http://wayoda.github.io/LedControl/pages/faq.html">FAQ</a></li>
         </ul>
     </div>
 </div>
 <div class="clear"></div>
 <hr class="hr-top">               <div id="content">
 <div class="page">
-  <h1>The Arduino LedControl library</h1>
+    <div id="page-menu">
+        <ul>
+            <li><a href="#Download">Download</a></li>
+            <li><a href="#Bugs">Known Bugs</a></li>
+            <li><a href="#Feedback">Feedback</a></li>
+         </ul>
+    </div>
+<h1>The Arduino LedControl library</h1>
 <p><code>LedControl</code> is a library for the <code>MAX7221</code> and <code>MAX7219</code> Led display drivers.
 Only a few components are needed to control 64 Leds or a 7-segment
 display.</p>
@@ -47,7 +54,7 @@ layed out in some sort of rectangular matrix. I needed the MAX72XX to drive a fe
 and the (limited) set of alphanumeric characters
 that make sense visually. But the library also has the standard set of functions
 to control each Led individually.</p>
-<h3>Download and install</h3>
+<h2><a id="Download"></a> Download and install</h2>
 <p>The latest version of the library is on the github project
 pages.</p>
 <blockquote>
@@ -65,14 +72,15 @@ guide</a> </p>
 <p>The library documentation is devided into three parts</p>
 <ul>
 <li><a href="/LedControl/pages/hardware">Hardware and schematics</a></li>
-<li><a href="/LedControl/pages/demos">A short tutorial for using the the library</a></li>
 <li><a href="/LedControl/pages/software">Library function documentation</a></li>
+<li><a href="/LedControl/pages/faq">(Not so) Frequently asked questions</a></li>
 </ul>
 <p>I recommend reading the <a href="/LedControl/pages/hardware">Hardware section</a> first
-and then run a few of the examples from the <a href="/LedControl/pages/demos">tutorial</a>. 
-The <a href="/LedControl/pages/software">Library function documentation</a> has an entry
-for each function that is available to your code.</p>
-<h3>Known bugs</h3>
+and then go through the <a href="/LedControl/pages/software">Library function documentation</a>. 
+and run a few of the example sketches that come with the library code. 
+The <a href="/LedControl/pages/faq">FAQ</a> collects some of the topics that where brought up
+by library users.</p>
+<h3><a id="Bugs"></a> Known bugs</h3>
 <p>Currently none (tested with versions <em>Arduino 1.0.x</em> and <em>Arduino 1.6.x</em>)</p>
 <h3>Revision History</h3>
 <dl>
@@ -95,7 +103,7 @@ did not compile under arduino-0012.</dd>
 <dt><em>June 23, 2007</em></dt>
 <dd>First public release</dd>
 </dl>
-<h3>Feedback</h3>
+<h2><a id="Feedback"></a>Feedback</h2>
 <p>If you find an error or if you are looking for a special feature not yet covered
 in the existing code, please open a new issue on the <a href="https://github.com/wayoda/LedControl/issues">github project
 page</a>. If you don't have a github
@@ -109,7 +117,7 @@ license</a></p>
 <div id="footer">
      <div class="footer-info-item">
          <p><span class="bold">Contact </span><a href="https://github.com/wayoda/LedControl"><img class="icon" src="http://wayoda.github.io/LedControl/theme/images/github-dark-20.png" alt="LedControl on Github">LedControl Project on Github</a><a href="mailto:e.fahle@wayoda.org"><img class="icon" src="http://wayoda.github.io/LedControl/theme/images/mail-dark-20.png" alt="E-Mail">e.fahle@wayoda.org</a></p>
-         <p><span class="bold">LedControl </span>Current version: 1.0.4 &ndash; &copy; 2015 Eberhard Fahle</p>
+         <p><span class="bold">LedControl </span>Current version: 1.0.5 &ndash; &copy; 2015 Eberhard Fahle</p>
      </div>
 </div>
     </div> 
