@@ -4,7 +4,7 @@ LedControl is an [Arduino](http://arduino.cc) library for MAX7219 and MAX7221 Le
 
 Documentation
 -------------
-There is a tutorial for the library on the [Arduino Playground](http://playground.arduino.cc/Main/LedControl)
+Documentation for the library is on the [Github Project Pages](http://wayoda.github.io/LedControl/)
 
 Download
 --------
