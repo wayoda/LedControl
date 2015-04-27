@@ -15,7 +15,7 @@ The lastest binary version of the Library is always available from the
 
 Install
 -------
-The library can be installed using the [standard Arduino library install procedure](http://arduino.cc/en/Guide/Libraries#.UwxndHX5PtY)  
+The library can be installed using the [standard Arduino library install procedure](http://arduino.cc/en/Guide/Libraries)  
 
 
 
