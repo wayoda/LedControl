@@ -52,14 +52,14 @@ functions.</p>
 <p>A single MAX72XX Led driver is able to control 64 Leds. The library supports up
 to 8 daisy chained MAX72XX drivers. Controlling 512 Leds should be more than
 enough for most purposes. </p>
-<p>The library code comes with 
-<a href="https://github.com/wayoda/LedControl/tree/master/LedControl/examples">3 demo sketches</a>. 
-Your probably want to have a look at this code while reading this section. 
-The demo code is well documented and provides some insight how 
-all the different parts of the library work together.</p>
+<p>The library code comes with three <a href="https://github.com/wayoda/LedControl/tree/master/examples">demo
+sketches</a>. Your
+probably want to have a look at this code while reading this section. The demo
+code is well documented and provides some insight how all the different parts of
+the library work together.</p>
 <h2><a id="Init"></a>Library initialization</h2>
-<p>To include the library into your Arduino code you have to write a few lines 
-of initialization code. </p>
+<p>To include the library into your Arduino code you have to write a few lines of
+initialization code. </p>
 <h3>Add the library to your sketch</h3>
 <p>This works like with any other Arduino libray, you can either use the 
 <code>Include Library</code> menu function from IDE, or you simply add an </p>
@@ -90,20 +90,21 @@ of your sketch to make it acessible to the rest of the projects code.</p>
 devices takes 4 arguments. The first 3 arguments are the pin-numbers on the
 Arduino that are connected to the MAX72XX. These can be any of the digital
 IO-pins on an arduino.  In the example pins <code>12</code>,<code>11</code> and <code>10</code> where choosen
-arbitrarily. The library code does no sanity checks on the pin-numbers to
-be <em>valid</em> in any way.  Passing in something stupid (pin <code>123</code> ??), or simply
-the <em>wrong</em> pin-number will break the code without notice or error messages. 
-You don't have to initialize the IO-pins as outputs or set them to a certain state, 
+arbitrarily. The library code does no sanity checks on the pin-numbers to be
+<em>valid</em> in any way.  Passing in something stupid (pin <code>123</code> ??), or simply the
+<em>wrong</em> pin-number will break the code without notice or error messages.  You
+don't have to initialize the IO-pins as outputs or set them to a certain state,
 the library will do that for you.</p>
 <p>The fourth argument to <code>LedControl(dataPin,clockPin,csPin,numDevices)</code> is the
 number of cascaded MAX72XX devices you're using with this <code>LedControl</code>. The
 library can address up to 8 devices from a single <code>LedControl</code>-variable. There
 is a little performance penalty implied with each device you add to the chain,
-but the amount of memory used by the library-code will stay the same, no matter how
-many devices you set. Since one <code>LedControl</code> cannot address more than 8
+but the amount of memory used by the library-code will stay the same, no matter
+how many devices you set. Since one <code>LedControl</code> cannot address more than 8
 devices, only values between 1..8 are allowed here.</p>
-<p>If you sketch needs to control more than 8 MAX72XX, another 
-<code>LedControl</code>-variable needs to be created that uses 3 different pins on your arduino-board. </p>
+<p>If you sketch needs to control more than 8 MAX72XX, another
+<code>LedControl</code>-variable needs to be created that uses 3 different pins on your
+arduino-board. </p>
 <div class="highlight"><pre><span class="cp">#include &quot;LedControl.h&quot;</span>
 <span class="c1">// Create a LedControl for the first 8 devices...  </span>
 <span class="n">LedControl</span> <span class="n">lc1</span><span class="o">=</span><span class="n">LedControl</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">);</span>
@@ -113,8 +114,8 @@ devices, only values between 1..8 are allowed here.</p>
 
 
 <h3>Get the number of attached devices</h3>
-<p>There is no way to read the IO-pin numbers from the code, but there is a function
-that gets the maximum number of devices attached to an <code>LedControl</code>.</p>
+<p>There is no way to read the IO-pin numbers from the code, but there is a
+function that gets the maximum number of devices attached to an <code>LedControl</code>.</p>
 <div class="highlight"><pre><span class="c">/* Gets the maximum number of devices attached to this LedControl.</span>
 <span class="c"> * Returns :</span>
 <span class="c"> *   int the number of devices attached to this LedControl */</span> 
@@ -147,14 +148,14 @@ Note that <code>getDeviceCount()</code> returns the number of devices attached, 
 <em>address</em> of an device starts at 0 for the first one, 1 for the second one,..
 <code>getDeviceCount()-1</code> for the last one. </p>
 <h3><a id="ShutdownMode"></a>Power saving mode</h3>
-<p>Leds consume quite a lot of energy when they are lit. Battery operated 
-devices need a way save power by switching the whole display off, 
-when the user doesn't need it. The MAX72XX supports a power shutdown mode.</p>
-<p>In shutdown mode the device switches off all the Led's on the display, but the data is
-retained. When the device comes out of shutdown mode the same Leds will be lit
-as before it went to sleep. It is even possible to send new data during shutdown mode.
-When the device is reactivated, the new data will appear the display. Here is
-an example for an <em>invisible</em> countdown on a 7-segment display:</p>
+<p>Leds consume quite a lot of energy when they are lit. Battery operated devices
+need a way save power by switching the whole display off, when the user doesn't
+need it. The MAX72XX supports a power shutdown mode.</p>
+<p>In shutdown mode the device switches off all the Led's on the display, but the
+data is retained. When the device comes out of shutdown mode the same Leds will
+be lit as before it went to sleep. It is even possible to send new data during
+shutdown mode.  When the device is reactivated, the new data will appear the
+display. Here is an example for an <em>invisible</em> countdown on a 7-segment display:</p>
 <div class="highlight"><pre>void countDown() { 
     int i=9; 
     lc.setDigit(0,(byte)i,false); 
@@ -196,18 +197,18 @@ you don't have to read this section just to make your hardware work</em></p>
 <p>When a new LedControl is created it will activate all 8 digits on all devices.
 Each <em>lit</em> digit will be switched on for 1/8 of a second by the multiplexer
 circuit that drives the digits. If you have any reason to limit the number of
-scanned digits the Led's get switched on more frequently, and therefore will be on for longer 
-periods of time. </p>
-<p>The effect of setting the scan limit to 4 is that a lit Led is now switched on for 1/4 of a
-second instead of the standard 1/8 of a second. The <code>MAX72XX</code> has to provide the 
-current on the segment-driver for a longer period of time.</p>
+scanned digits the Led's get switched on more frequently, and therefore will be
+on for longer periods of time. </p>
+<p>The effect of setting the scan limit to 4 is that a lit Led is now switched on
+for 1/4 of a second instead of the standard 1/8 of a second. The <code>MAX72XX</code> has
+to provide the current on the segment-driver for a longer period of time.</p>
 <p>You should read the relevant section of the <code>MAX72XX</code> datasheet carefully! Its
 actually possible to <strong>destroy</strong> a <code>MAX72XX</code> by choosing a bad combination of
 resistor <code>RSet</code> that limits the current going through the Led's and the number
 of digits scanned by the device. The only reason to tweak the scanlimit at all,
 is that the display looks too dark. But this is most likely due to the fact that
-the <a href="#SetupBrightness">intensity</a> on was not raised on startup. 
-Here's the prototype of <code>setScanLimit()</code> for those who need it:</p>
+the <a href="#SetupBrightness">intensity</a> on was not raised on startup.  Here's the
+prototype of <code>setScanLimit()</code> for those who need it:</p>
 <div class="highlight"><pre><span class="cm">/* Set the number of digits (or rows) to be displayed.</span>
 <span class="cm"> * See datasheet for side effects of the scanlimit on the brightness</span>
 <span class="cm"> * of the display.</span>
@@ -230,10 +231,11 @@ void<span class="w"> </span>setScanLimit<span class="o">(</span>int<span class="
 <li>and a comand that allows the brightness of the Leds to be controlled from
     software.</li>
 </ul>
-<p>With the <code>setIntensity(int addr, int intensity)</code> method the brightness of the Leds 
-can be set in 16 discrete steps(<code>0..15</code>). Higher values make the display brighter. 
-Values greater than 15 will be discarded without changing the brightness.
-Even the lowest value <code>0</code> will not switch the display off completely off. </p>
+<p>With the <code>setIntensity(int addr, int intensity)</code> method the brightness of the
+Leds can be set in 16 discrete steps(<code>0..15</code>). Higher values make the display
+brighter.  Values greater than 15 will be discarded without changing the
+brightness.  Even the lowest value <code>0</code> will not switch the display off
+completely off. </p>
 <div class="highlight"><pre><span class="cm">/* Set the brightness of the display.</span>
 <span class="cm"> * Params:</span>
 <span class="cm"> *   addr the address of the display to control</span>
@@ -273,7 +275,8 @@ brightness as soon as display data arrives.</p>
 <p>With all the initialization code in place its now time to control some Leds.</p>
 <p><img alt="image" src="../images/ArduinoOnMatrix.jpg" /> </p>
 <h3>Clearing the display</h3>
-<p>The name of the function <code>LedControl.clearDisplay(addr)</code> already suggests what it does.</p>
+<p>The name of the function <code>LedControl.clearDisplay(addr)</code> already suggests what
+it does.</p>
 <div class="highlight"><pre><span class="cm">/* Switch all Leds on the display off.</span>
 <span class="cm"> * Params:</span>
 <span class="cm"> *   addr The address of the display to control </span>
@@ -282,8 +285,9 @@ void<span class="w"> </span>clearDisplay<span class="o">(</span>int<span class="
 </pre></div>
 
 
-<p>All Leds on the selected device are switched off. Its important to understand 
-that this is different from <a href="#ShutdownMode">shutdown mode</a>, where the data is retained. </p>
+<p>All Leds on the selected device are switched off. Its important to understand
+that this is different from <a href="#ShutdownMode">shutdown mode</a>, where the data is
+retained. </p>
 <h3>Control a single Led</h3>
 <p>This is the prototype of the function that switches a single Led on or off.</p>
 <div class="highlight"><pre><span class="cm">/* Set the status of a single Led.</span>
@@ -297,14 +301,14 @@ void<span class="w"> </span>setLed<span class="o">(</span>int<span class="w"> </
 </pre></div>
 
 
-<p>The idea behind the <code>addr</code> and <code>state</code> arguments should be clear, but what do the 
-<code>row</code> and <code>column</code> arguments refer to? This depends on the wiring
-between the <code>MAX72XX</code> and your matrix. The <code>LedControl</code>-library assumes the
-setup used in this schematic:</p>
+<p>The idea behind the <code>addr</code> and <code>state</code> arguments should be clear, but what do
+the <code>row</code> and <code>column</code> arguments refer to? This depends on the wiring between
+the <code>MAX72XX</code> and your matrix. The <code>LedControl</code>-library assumes the setup used
+in this schematic:</p>
 <p><img alt="image" src="../images/LedMatrix.jpg" /></p>
 <p>There are 8 rows (indexed from 0..7) and 8 columns (also indexed from 0..7) in
-the matrix. If the Led located at the very right of the 3'rd row from the top 
-is to be lit, the index of the Led <code>2.7</code> must used as the row and column arguments.</p>
+the matrix. If the Led located at the very right of the 3'rd row from the top is
+to be lit, the index of the Led <code>2.7</code> must used as the row and column arguments.</p>
 <p>This code excerpt shows how few Leds on the first MAX72XX device are set</p>
 <div class="highlight"><pre>//switch on the led in the 3&#39;rd row 8&#39;th column of the device at addr=0 
 lc.setLed(0,2,7,true); 
@@ -316,22 +320,24 @@ lc.setLed(0,2,7,false);
 </pre></div>
 
 
-<p>The <code>setLed()</code> function is fine for lighting up a few Leds, but if more Leds need to be
-updated, this would require many lines of code. So there are two more functions in
-the library, that control a complete row and column with a single command.</p>
+<p>The <code>setLed()</code> function is fine for lighting up a few Leds, but if more Leds
+need to be updated, this would require many lines of code. So there are two more
+functions in the library, that control a complete row and column with a single
+command.</p>
 <h3>Control the row of a matrix</h3>
 <p>The <code>setRow(addr,row,value)</code>-function takes 3 arguments. The first one is the
-already familiar address of the device. The second one is the row that needs to 
+already familiar address of the device. The second one is the row that needs to
 be updated and the third one the value to be set for this row.</p>
-<p>The <code>value</code> argument takes an 8-bit wide byte where each bit set to <code>1</code> 
+<p>The <code>value</code> argument takes an 8-bit wide byte where each bit set to <code>1</code>
 represents a lit led and a bit set to <code>0</code> a Led that is to be switched off. </p>
-<p>For an example, the Leds marked in red are to be switched on, all others switched off.</p>
+<p>For an example, the Leds marked in red are to be switched on, all others
+switched off.</p>
 <p><img alt="image" src="../images/LedMatrixSetRow.jpg" /></p>
-<p>The index for the row to be updated is <code>2</code> (counted from the top). 
-The <code>value</code> argument has to be set to the byte-value for the Leds to be lit. 
-The easiest approach is to include the standard header-file <code>&lt;binary.h&gt;</code> 
-into to your sketch. The value is written in binary encoding is an exact 
-mapping between bits set to <code>1</code> and the Leds to be switched on. </p>
+<p>The index for the row to be updated is <code>2</code> (counted from the top).  The <code>value</code>
+argument has to be set to the byte-value for the Leds to be lit.  The easiest
+approach is to include the standard header-file <code>&lt;binary.h&gt;</code> into to your
+sketch. The value is written in binary encoding is an exact mapping between bits
+set to <code>1</code> and the Leds to be switched on. </p>
 <div class="highlight"><pre>//include this file at the top of your Sketch
 &lt;binary.h&gt;
 
@@ -342,9 +348,9 @@ lc.setRow(0,2,B10110000);
 </pre></div>
 
 
-<p>When specifying the value in binary encoding is not possible, a simple table 
-that maps the decimal values of each bit to the Led it affects can help. The
-two rows at the bottom show the decimal value for the example is to be calculated.</p>
+<p>When specifying the value in binary encoding is not possible, a simple table
+that maps the decimal values of each bit to the Led it affects can help. The two
+rows at the bottom show the decimal value for the example is to be calculated.</p>
 <table>
 <thead>
 <tr>
@@ -600,7 +606,7 @@ void<span class="w"> </span>setChar<span class="o">(</span>int<span class="w"> <
 
 <h2><a id="Demos"></a>Library Demos</h2>
 <p>The library comes with three well documented 
-<a href="https://github.com/wayoda/LedControl/tree/master/LedControl/examples">demo sketches</a>. 
+<a href="https://github.com/wayoda/LedControl/tree/master/examples">demo sketches</a>. 
 Basic methods to control a Led-Matrix, a 7-Segment display 
 and access to daisy-chained MAX72XX devices are shown. The demos might be a good start
 for writing your own sketches.</p>
