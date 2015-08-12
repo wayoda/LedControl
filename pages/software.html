@@ -520,7 +520,8 @@ The function also provides an argumment to switch decimal point on the column on
     int ones;  
     int tens;  
     int hundreds; 
-    boolean negative;
+
+    boolean negative=false;
 
     if(v &lt; -999 || v &gt; 999)  
         return;  
@@ -555,7 +556,7 @@ The function also provides an argumment to switch decimal point on the column on
 <span class="cm"> *  value  the value to be displayed. (0x00..0x0F)</span>
 <span class="cm"> *  dp     sets the decimal point.  </span>
 <span class="cm">*/</span><span class="w">  </span>
-void<span class="w"> </span>setDigit<span class="o">(</span>int<span class="w"> </span>addr<span class="o">,</span><span class="w"> </span>int<span class="w"> </span><span class="o">*</span>digit<span class="o">,</span><span class="w"> </span>byte<span class="w"> </span>value<span class="o">,</span><span class="w"> </span><span class="o">*</span>boolean<span class="w"> </span>dp<span class="o">)</span><span class="err">;</span><span class="w"> </span>
+void<span class="w"> </span>setDigit<span class="o">(</span>int<span class="w"> </span>addr<span class="o">,</span><span class="w"> </span>int<span class="w"> </span>digit<span class="o">,</span><span class="w"> </span>byte<span class="w"> </span>value<span class="o">,</span><span class="w"> </span>boolean<span class="w"> </span>dp<span class="o">)</span><span class="err">;</span><span class="w"> </span>
 </pre></div>
 
 
@@ -600,7 +601,7 @@ digits.</p>
 <span class="cm"> *   value the character to be displayed.</span>
 <span class="cm"> *   dp    sets the decimal point.  </span>
 <span class="cm">*/</span><span class="w"> </span>
-void<span class="w"> </span>setChar<span class="o">(</span>int<span class="w"> </span>addr<span class="o">,</span><span class="w"> </span>int<span class="w"> </span>digit<span class="o">,</span><span class="w"> </span>char<span class="w"> </span>value<span class="o">,</span><span class="w"> </span><span class="o">*</span>boolean<span class="w"> </span>dp<span class="o">)</span><span class="err">;</span><span class="w"></span>
+void<span class="w"> </span>setChar<span class="o">(</span>int<span class="w"> </span>addr<span class="o">,</span><span class="w"> </span>int<span class="w"> </span>digit<span class="o">,</span><span class="w"> </span>char<span class="w"> </span>value<span class="o">,</span><span class="w"> </span>boolean<span class="w"> </span>dp<span class="o">)</span><span class="err">;</span><span class="w"></span>
 </pre></div>
 
 
