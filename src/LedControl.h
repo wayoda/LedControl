@@ -88,6 +88,13 @@ class LedControl {
         LedControl(int dataPin, int clkPin, int csPin, int numDevices=1);
 
         /*
+         * Initialize chip and display. Allows for initialization within
+         * setup(), which is the only way to do it on some platforms
+         * as Energia.
+         */
+        void init();
+
+        /*
          * Gets the number of devices attached to this LedControl.
          * Returns :
          * int	the number of devices on this LedControl

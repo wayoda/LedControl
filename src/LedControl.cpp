@@ -50,11 +50,13 @@ LedControl::LedControl(int dataPin, int clkPin, int csPin, int numDevices) {
     if(numDevices<=0 || numDevices>8 )
         numDevices=8;
     maxDevices=numDevices;
+}
+
+void LedControl::init() {
     pinMode(SPI_MOSI,OUTPUT);
     pinMode(SPI_CLK,OUTPUT);
     pinMode(SPI_CS,OUTPUT);
     digitalWrite(SPI_CS,HIGH);
-    SPI_MOSI=dataPin;
     for(int i=0;i<64;i++) 
         status[i]=0x00;
     for(int i=0;i<maxDevices;i++) {
