@@ -1,0 +1,23 @@
+{
+  "name": "LedControl",
+  "keywords": "led, matrix, segment, display, driver, maxim, max7219, max7221",
+  "description": "An Arduino library for the MAX7221 and MAX7219 LED display drivers. Supports LED matrix displays, 7-segment displays, ands multiple daisychained drivers.",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/wayoda/LedControl.git"
+  },
+  "version": "1.0.6",
+  "authors": [
+    {
+      "name": "Eberhard Fahle",
+      "email": "e.fahle@wayoda.org",
+      "url": "http://wayoda.github.io/LedControl",
+      "maintainer": true
+    }
+  ],
+  "include": "src",
+  "examples": "examples/*/*.ino",
+  "frameworks": "arduino",
+  "platforms": "*"
+}
