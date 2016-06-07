@@ -182,9 +182,23 @@ class LedControl {
          * dp	sets the decimal point.
          */
         void setChar(int addr, int digit, char value, boolean dp);
- 
+
         /*
          * Display a specified byte on a 7-Segment Display.
+         * Specify a byte in the format: B_______
+         * where the blanks are either 1's or 0's corresponding to the on-off state of each of the segments A-G.
+         *
+         * Diagram of the 7-segments:
+         * --A--
+         * |   |
+         * F   B
+         * |   |
+         * --G--
+         * |   |
+         * E   C
+         * |   |
+         * --D--
+         *
          * Params:
          * addr address of the display
          * digit  the position of the digit on the display (0..7)
