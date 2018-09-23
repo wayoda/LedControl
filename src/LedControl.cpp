@@ -189,7 +189,7 @@ void LedControl::setChar(int addr, int digit, char value, boolean dp) {
     spiTransfer(addr, digit+1,v);
 }
 
-void LedControl::setString(int addr, int digit, String theString)
+void LedControl::setString(int addr, int digit, String theString,uint8_t dotpattern)
 {
 	
 	if(addr<0 || addr>=maxDevices)
@@ -198,16 +198,14 @@ void LedControl::setString(int addr, int digit, String theString)
         return;
 	for(int i=0;i<theString.length();i++) 
 	{
-		setChar(addr,digit,theString.charAt(i),0);
-		Serial.print(theString.charAt(i));
-		Serial.println('-');
+		setChar(addr,digit,theString.charAt(i),(0x80&dotpattern)!=0);
+		dotpattern<<=1;
 		if(--digit<0) 
 		{
 			digit=7;
 			if(++addr>=maxDevices) return;
 		}
 	}
-
 }
 
 void LedControl::spiTransfer(int addr, volatile byte opcode, volatile byte data) {

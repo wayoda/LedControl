@@ -204,17 +204,11 @@ class LedControl {
          * addr	address of the display the string starts on (0..n-1)
          * digit	the start position of the string on the display (0..7)
          * theString	the character to be displayed. 
+         * dotpattern	Bitpattern to set the dots additionally along the string starting with the leftmost bit
          */		
-		void setString(int addr, int startDigit, String theString);
+		void setString(int addr, int startDigit, String theString, uint8_t dotpattern);
 		
-        /* 
-         * Set all 7 segment dots on a device according to the bitpattern.
-		 * Params:
-         * addr	address of the display (0..n-1)
-         * digit	the start position of the character on the display (0..7)
-         * value	the character to be displayed. 
-         */			
-		void setDots(int addr, byte dotpattern);
+
 };
 
 #endif	//LedControl.h

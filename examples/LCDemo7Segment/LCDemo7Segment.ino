@@ -40,9 +40,9 @@ void loop() {
  
   writeArduinoOn7Segment(); // expects 1 digit
   scrollDigits(); // expects 4 digits
-  traverseCodepage(); // expects 8 digits
   writeArduinoString(); // expects 8 digits
   writeGoStringOnPositions(); // expects 8 digits
+  traverseCodepage(); // expects 8 digits
 
 }
 
@@ -77,7 +77,7 @@ void writeArduinoOn7Segment() {
  "Arduino" on a 8 digit 7 Seg display 
  */
 void writeArduinoString() {
-  lc.setString(0,7,"Arduino");
+  lc.setString(0,7,"Arduino",0x02);
   delay(delaytime*5);
 }
 
@@ -87,10 +87,10 @@ void writeArduinoString() {
  */
 
 void writeGoStringOnPositions() {
-  lc.setString(0,7,"________");
+  lc.setString(0,7,"________",0x55);
   for(int i=1;i<8;i++)
   {
-    lc.setString(0,i,"Go");
+    lc.setString(0,i,"Go",0x80);
     delay(delaytime);
   }
 }
@@ -121,9 +121,12 @@ void traverseCodepage()
 {
   String offsetAsString;
   lc.clearDisplay(0);
+  lc.setString(0,7,"Codepage",0);
+  delay(delaytime*2);
+  lc.clearDisplay(0);
   for (int i=0;i<128;i+=4) {
     offsetAsString=String(i);
-    lc.setString(0,4+offsetAsString.length(),offsetAsString);
+    lc.setString(0,4+offsetAsString.length(),offsetAsString,0);
     lc.setChar(0,3,i,false);
     lc.setChar(0,2,i+1,false);
     lc.setChar(0,1,i+2,false);
