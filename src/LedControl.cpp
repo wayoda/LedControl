@@ -189,19 +189,42 @@ void LedControl::setChar(int addr, int digit, char value, boolean dp) {
     spiTransfer(addr, digit+1,v);
 }
 
-void LedControl::spiTransfer(int addr, volatile byte opcode, volatile byte data) {
-    //Create an array with the data to shift out
-    int offset=addr*2;
-    int maxbytes=maxDevices*2;
+void LedControl::setString(int addr, int digit, String theString)
+{
+	
+	if(addr<0 || addr>=maxDevices)
+        return;
+    if(digit<0 || digit>7)
+        return;
+	for(int i=0;i<theString.length();i++) 
+	{
+		setChar(addr,digit,theString.charAt(i),0);
+		Serial.print(theString.charAt(i));
+		Serial.println('-');
+		if(--digit<0) 
+		{
+			digit=7;
+			if(++addr>=maxDevices) return;
+		}
+	}
 
-    for(int i=0;i<maxbytes;i++)
-        spidata[i]=(byte)0;
-    //put our device data into the array
+}
+
+void LedControl::spiTransfer(int addr, volatile byte opcode, volatile byte data) {
+    
+    int offset=addr*2;
+    int maxbytes=maxDevices*2; // two bytes (opcode+data) for every device
+
+	//Prepare array with the data to shift out 
+	memset(spidata,0,maxbytes);
+	
+    //put our device data into the array (other devices get 0x0000)
     spidata[offset+1]=opcode;
     spidata[offset]=data;
+	
     //enable the line 
     digitalWrite(SPI_CS,LOW);
-    //Now shift out the data 
+    //Now shift out the data (Backwards order necessary) 
     for(int i=maxbytes;i>0;i--)
         shiftOut(SPI_MOSI,SPI_CLK,MSBFIRST,spidata[i-1]);
     //latch the data onto the display

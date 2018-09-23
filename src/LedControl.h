@@ -39,23 +39,35 @@
  * Segments to be switched on for characters and digits on
  * 7-Segment Displays
  */
+ 
+/* The following table is used to translate an ascii byte value 
+ * to the corresponding 7segment bitmap pattern 
+ * To give the easyest usability with the most possible response, lower or upper case versions of
+ * letters are replaced by the other size, when the original size could not be designed properly. 
+ * (Check the Comments to see the replacements)
+ * Also some designs are ambigous (e.g. 2 and Z, 0 and O, ( and C ). 
+ * This must be sovled by giving good context, choosing good words. 
+ * which lies in the responsibility of the final design.
+ * Some other designs are more a possibility, then a real representation, but may be more useful then just blank (e.g. :<=>)
+ */
 const static byte charTable [] PROGMEM  = {
-    B01111110,B00110000,B01101101,B01111001,B00110011,B01011011,B01011111,B01110000,
-    B01111111,B01111011,B01110111,B00011111,B00001101,B00111101,B01001111,B01000111,
-    B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
-    B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
-    B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
-    B00000000,B00000000,B00000000,B00000000,B10000000,B00000001,B10000000,B00000000,
-    B01111110,B00110000,B01101101,B01111001,B00110011,B01011011,B01011111,B01110000,
-    B01111111,B01111011,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
-    B00000000,B01110111,B00011111,B00001101,B00111101,B01001111,B01000111,B00000000,
-    B00110111,B00000000,B00000000,B00000000,B00001110,B00000000,B00000000,B00000000,
-    B01100111,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
-    B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00001000,
-    B00000000,B01110111,B00011111,B00001101,B00111101,B01001111,B01000111,B00000000,
-    B00110111,B00000000,B00000000,B00000000,B00001110,B00000000,B00010101,B00011101,
-    B01100111,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
-    B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000
+//      0/8      1/9       2/A       3/B         4/C       5/D       6/E       7/F  
+    B01111110,B00110000,B01101101,B01111001,  B00110011,B01011011,B01011111,B01110000, //  (0) 0123 4567
+    B01111111,B01111011,B01110111,B00011111,  B00001101,B00111101,B01001111,B01000111, //  (8) 89AB CDEF
+	B01100000,B00011000,B00001100,B01000010,  B01101100,B01011010,B00110001,B00000111, // (16) •••• ••••
+    B01000000,B01001000,B01001001,B00000000,  B00000000,B00000000,B00000000,B00000000, // (24) •••• ••••
+    B00000000,B00000000,B00100010,B00000000,  B00000000,B00000000,B00000000,B00100000, // (32)  ×"× ×××'   
+    B01001110,B01111000,B01100011,B00000000,  B10000000,B00000001,B10000000,B00100100, // (40) ()*× ,-./ 
+    B01111110,B00110000,B01101101,B01111001,  B00110011,B01011011,B01011111,B01110000, // (48) 0123 4567
+    B01111111,B01111011,B00001001,B00000000,  B00000000,B01000011,B01000001,B01100001, // (56) 89:× ×<=>
+    B00000000,B01110111,B01111111,B01001110,  B00111101,B01001111,B01000111,B01011111, // (64) ×ABC DEFG
+    B00110111,B00110000,B00111100,B00000000,  B00001110,B00000000,B00010101,B01111110, // (72) HIJ× L×nO
+    B01100111,B00000000,B00000000,B01011011,  B00000000,B00111110,B00000000,B00000000, // (80) P××S ×U××
+    B00000000,B00111011,B01101101,B00000000,  B00000000,B00010010,B01100010,B00001000, // (88) ××YZ ×\^_
+    B00000010,B01110111,B00011111,B00001101,  B00111101,B01001111,B01000111,B01011111, // (96) `Abc dEFG
+    B00010111,B00010000,B00111100,B00000000,  B00110000,B00000000,B00010101,B00011101, //(104) hiJ× l×no
+    B01100111,B00000000,B00000101,B01011011,  B00000000,B00011100,B00000000,B00000000, //(112) P×rS ×u×× 
+    B00000000,B00111011,B01101101,B00000000,  B00000110,B00000000,B00100101,B00000000  //(120) ×YZ× |×~×
 };
 
 class LedControl {
@@ -65,8 +77,8 @@ class LedControl {
         /* Send out a single command to the device */
         void spiTransfer(int addr, byte opcode, byte data);
 
-        /* We keep track of the led-status for all 8 devices in this array */
-        byte status[64];
+        /* led-status for 8 elements with 8 led on up to 8 devices  */
+        byte status[64]; 
         /* Data is shifted out of this pin*/
         int SPI_MOSI;
         /* The clock is signaled on this pin */
@@ -90,7 +102,7 @@ class LedControl {
         /*
          * Gets the number of devices attached to this LedControl.
          * Returns :
-         * int	the number of devices on this LedControl
+         * int	the number of devices on this LedControl (1..n)
          */
         int getDeviceCount();
 
@@ -108,7 +120,7 @@ class LedControl {
          * See datasheet for sideeffects of the scanlimit on the brightness
          * of the display.
          * Params :
-         * addr	address of the display to control
+         * addr	address of the display to control (0..n-1)
          * limit	number of digits to be displayed (1..8)
          */
         void setScanLimit(int addr, int limit);
@@ -116,7 +128,7 @@ class LedControl {
         /* 
          * Set the brightness of the display.
          * Params:
-         * addr		the address of the display to control
+         * addr		the address of the display to control (0..n-1)
          * intensity	the brightness of the display. (0..15)
          */
         void setIntensity(int addr, int intensity);
@@ -131,7 +143,7 @@ class LedControl {
         /* 
          * Set the status of a single Led.
          * Params :
-         * addr	address of the display 
+         * addr	address of the display  (0..n-1)
          * row	the row of the Led (0..7)
          * col	the column of the Led (0..7)
          * state	If true the led is switched on, 
@@ -142,7 +154,7 @@ class LedControl {
         /* 
          * Set all 8 Led's in a row to a new state
          * Params:
-         * addr	address of the display
+         * addr	address of the display (0..n-1)
          * row	row which is to be set (0..7)
          * value	each bit set to 1 will light up the
          *		corresponding Led.
@@ -152,7 +164,7 @@ class LedControl {
         /* 
          * Set all 8 Led's in a column to a new state
          * Params:
-         * addr	address of the display
+         * addr	address of the display (0..n-1)
          * col	column which is to be set (0..7)
          * value	each bit set to 1 will light up the
          *		corresponding Led.
@@ -162,7 +174,7 @@ class LedControl {
         /* 
          * Display a hexadecimal digit on a 7-Segment Display
          * Params:
-         * addr	address of the display
+         * addr	address of the display (0..n-1)
          * digit	the position of the digit on the display (0..7)
          * value	the value to be displayed. (0x00..0x0F)
          * dp	sets the decimal point.
@@ -170,18 +182,39 @@ class LedControl {
         void setDigit(int addr, int digit, byte value, boolean dp);
 
         /* 
-         * Display a character on a 7-Segment display.
-         * There are only a few characters that make sense here :
-         *	'0','1','2','3','4','5','6','7','8','9','0',
-         *  'A','b','c','d','E','F','H','L','P',
-         *  '.','-','_',' ' 
-         * Params:
-         * addr	address of the display
+         * Display a character (according to ascii codepage) on a 7-Segment display.
+         * For the available characters check the char table
+		 * in the upper part of this header file.
+
+		 * Params:
+         * addr	address of the display (0..n-1)
          * digit	the position of the character on the display (0..7)
          * value	the character to be displayed. 
          * dp	sets the decimal point.
          */
         void setChar(int addr, int digit, char value, boolean dp);
+
+        /* 
+         * Display a string  on a 7-Segment display. Starting at th defined the position
+		 * Progressing left to right and ending with the last character. 
+		 * Digits after the string will not be changed)
+         * For the available characters check the char table
+		 * in the upper part of this header file.
+		 * Params:
+         * addr	address of the display the string starts on (0..n-1)
+         * digit	the start position of the string on the display (0..7)
+         * theString	the character to be displayed. 
+         */		
+		void setString(int addr, int startDigit, String theString);
+		
+        /* 
+         * Set all 7 segment dots on a device according to the bitpattern.
+		 * Params:
+         * addr	address of the display (0..n-1)
+         * digit	the start position of the character on the display (0..7)
+         * value	the character to be displayed. 
+         */			
+		void setDots(int addr, byte dotpattern);
 };
 
 #endif	//LedControl.h
