@@ -41,7 +41,7 @@
  */
  
 /* The following table is used to translate an ascii byte value 
- * to the corresponding 7segment bitmap pattern 
+ * to the corresponding 7segment bitmap pattern with segmentmapping "pabcdefg"
  * To give the easyest usability with the most possible response, lower or upper case versions of
  * letters are replaced by the other size, when the original size could not be designed properly. 
  * (Check the Comments to see the replacements)
@@ -77,16 +77,19 @@ class LedControl {
         /* Send out a single command to the device */
         void spiTransfer(int addr, byte opcode, byte data);
 
-        /* led-status for 8 elements with 8 led on up to 8 devices  */
+        /* led-status for 8 devices with 8 elements containing 8 leds (7 segments + DP)  */
         byte status[64]; 
+		/* bit flag, if display of device is rotated by 180 degrees */
+		byte rotate180=0;
+		
         /* Data is shifted out of this pin*/
-        int SPI_MOSI;
+        byte SPI_MOSI;
         /* The clock is signaled on this pin */
-        int SPI_CLK;
+        byte SPI_CLK;
         /* This one is driven LOW for chip selectzion */
-        int SPI_CS;
-        /* The maximum number of devices we use */
-        int maxDevices;
+        byte SPI_CS;
+        /* The maximum number of 7 segment devices we use */
+        byte maxDevices;
 
     public:
         /* 
@@ -96,8 +99,9 @@ class LedControl {
          * clockPin		pin for the clock
          * csPin		pin for selecting the device 
          * numDevices	maximum number of devices that can be controled
+		 * rotate180Flags Flag for every device if it is mounted rotated by 180 degrees
          */
-        LedControl(int dataPin, int clkPin, int csPin, int numDevices=1);
+        LedControl(int dataPin, int clkPin, int csPin, int numDevices=1, uint8_t rotate180Flags=0);
 
         /*
          * Gets the number of devices attached to this LedControl.
@@ -207,6 +211,17 @@ class LedControl {
          * dotpattern	Bitpattern to set the dots additionally along the string starting with the leftmost bit
          */		
 		void setString(int addr, int startDigit, String theString, uint8_t dotpattern);
+
+        /* 
+         * Define if the character font and digit adress of a deviceare in  calculated normal
+		 * or for  180 dregee rotated display(Decimal points up)
+
+		 * Params:
+         * addr	address of the display (0..n-1)
+         * isRotated	boolean to set the rotation of the display
+
+         */
+        void setRotate180(int addr, boolean isRotated);
 		
 
 };

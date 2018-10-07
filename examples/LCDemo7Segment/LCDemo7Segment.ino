@@ -14,6 +14,7 @@
 #define LC_MODULE_COUNT 1
 
 LedControl lc=LedControl(LC_DATA_PIN,LC_CLK_PIN,LC_LOAD_PIN,LC_MODULE_COUNT);
+bool rotate=false;
 
 /* we always wait a bit between updates of the display */
 unsigned long delaytime=500;
@@ -43,7 +44,8 @@ void loop() {
   writeArduinoString(); // expects 8 digits
   writeGoStringOnPositions(); // expects 8 digits
   traverseCodepage(); // expects 8 digits
-
+  rotate=!rotate;
+  lc.setRotate180(0,rotate);
 }
 
 
