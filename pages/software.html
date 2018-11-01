@@ -140,10 +140,10 @@ introduced later on.</p>
 </pre></div>
 
 
-<p>We iterate over the list of devices by an index that runs from 1 to
+<p>We iterate over the list of devices by an index that runs from 0 to
 <code>getDeviceCount()</code>. The index is the <em>address</em> of each device. 
 This <em>address</em> is the first argument of <strong>every</strong> function that sets 
-a feature or a (Led-)value on a device. The adress starts at 1 for the first device, 2 
+a feature or a (Led-)value on a device. The adress starts at 0 for the first device, 1 
 for the second one,.. <code>getDeviceCount()</code> for the last one.</p>
 <h3><a id="ShutdownMode"></a>Power saving mode</h3>
 <p>Leds consume quite a lot of energy when they are lit. Battery operated devices
