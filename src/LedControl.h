@@ -182,6 +182,16 @@ class LedControl {
          * dp	sets the decimal point.
          */
         void setChar(int addr, int digit, char value, boolean dp);
+
+        /* 
+         * Turn on a pixel in a defined position row,column
+         * Params:
+         * addr	address of the display
+         * row	row index 0...7
+         * col	columns index 0...7
+         * intensity	set the intensity 0...15
+         */
+	void SetPixelOn(unsigned char dispnum, unsigned char r,unsigned char c,unsigned char intensity);
 };
 
 #endif	//LedControl.h
