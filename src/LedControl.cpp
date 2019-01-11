@@ -206,6 +206,19 @@ void LedControl::spiTransfer(int addr, volatile byte opcode, volatile byte data)
         shiftOut(SPI_MOSI,SPI_CLK,MSBFIRST,spidata[i-1]);
     //latch the data onto the display
     digitalWrite(SPI_CS,HIGH);
-}    
+}
+
+void LedControl::SetPixelOn(unsigned char dispnum, unsigned char r,unsigned char c,unsigned char intensity){
+  unsigned char row = 0;
+  this->setIntensity(dispnum,intensity);
+  while(row <r){
+    this->setRow(dispnum,row,0);
+    ++row;
+  }
+  this->setRow(dispnum,r,1<<c); ++row;
+  while(row <8){
+    this->setRow(dispnum,row,0); ++row;
+  }
+}
 
 
