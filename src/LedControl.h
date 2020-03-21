@@ -27,7 +27,11 @@
 #ifndef LedControl_h
 #define LedControl_h
 
-#include <avr/pgmspace.h>
+#if (defined(AVR))
+#include <avr\pgmspace.h>
+#else
+#include <pgmspace.h>
+#endif
 
 #if (ARDUINO >= 100)
 #include <Arduino.h>
