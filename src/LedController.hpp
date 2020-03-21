@@ -17,13 +17,34 @@
 #include <memory>
 #include <vector>
 #include <array>
+#include <type_traits>
 
 #define MAX_SEGMENTS 8
+
+const static byte charTable [] PROGMEM  = {
+    B01111110,B00110000,B01101101,B01111001,B00110011,B01011011,B01011111,B01110000,
+    B01111111,B01111011,B01110111,B00011111,B00001101,B00111101,B01001111,B01000111,
+    B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
+    B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
+    B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
+    B00000000,B00000000,B00000000,B00000000,B10000000,B00000001,B10000000,B00000000,
+    B01111110,B00110000,B01101101,B01111001,B00110011,B01011011,B01011111,B01110000,
+    B01111111,B01111011,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
+    B00000000,B01110111,B00011111,B00001101,B00111101,B01001111,B01000111,B00000000,
+    B00110111,B00000000,B00000000,B00000000,B00001110,B00000000,B00000000,B00000000,
+    B01100111,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
+    B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00001000,
+    B00000000,B01110111,B00011111,B00001101,B00111101,B01001111,B01000111,B00000000,
+    B00110111,B00000000,B00000000,B00000000,B00001110,B00000000,B00010101,B00011101,
+    B01100111,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
+    B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000
+};
+
 
 class LedController{
 private:
 
-    std::vector< std::vector<byte> > status;
+    std::array< std::array<byte,8>, MAX_SEGMENTS> status;
 
     ///The pin for the data transfer (DIN)
     unsigned int SPI_DIN;
@@ -38,7 +59,7 @@ private:
     unsigned int SegmentCount;
 
     ///The mutex for the intensity level, needed to make it threading safe.
-    std::mutex mut_IntensityLevel;
+    //std::mutex mut_IntensityLevel;
 
     /**
      * @brief The current brightness level of the leds.
@@ -56,7 +77,7 @@ private:
     void spiTransfer(unsigned int segment, byte opcode, byte data);
 
     ///The array for shifting the data to the devices
-    std::vector<byte> spidata;
+    std::array<byte,MAX_SEGMENTS*2> spidata;
 
     /**
      * @brief Set the brightness of the segment.
@@ -67,9 +88,7 @@ private:
     void setIntensity(unsigned int segmentNumber, unsigned int newIntesityLevel);
 
 public:
-    LedController();
     LedController(unsigned int dataPin, unsigned int clkPin, unsigned int csPin, unsigned int numDevices);
-    ~LedController();
 
     /**
      * @brief Set the Intensity of the whole matrix to the given value.
@@ -144,5 +163,48 @@ public:
      * @param value each bit set to 1 will light up the corresponding Led.
      */
     void setRow(unsigned int segmentNumber, unsigned int row, byte value);
+
+    /**
+     * @brief Set a single led to a given value
+     * 
+     * @param segmentNumber the segment number of the desired led
+     * @param row the row of the desired led (0..7)
+     * @param column the column of the desired led (0..7)
+     * @param state true if it should be on otherwise false
+     */
+    void setLed(unsigned int segmentNumber, unsigned int row, unsigned int column, boolean state);
+
+    /**
+     * @brief Set one column of a given segment
+     * 
+     * @param segmentNumber The desired Segment number
+     * @param col The desired column
+     * @param value The value, this column should have
+     */
+    void setColumn(unsigned int segmentNumber, unsigned int col, byte value);
+
+    /**
+     * @brief Set a hexadecimal digit on a 7-Segment Display
+     * 
+     * @param segmentNumber The number of the desired Segment
+     * @param digit the position of the digit on the display (0..7)
+     * @param value the value to be displayed. (0x00..0x0F)
+     * @param dp if true sets the decimal point
+     */
+    void setDigit(unsigned int segmentNumber, unsigned int digit, byte value, boolean dp);
+
+        /* 
+         * Display a character on a 7-Segment display.
+         * There are only a few characters that make sense here :
+         *	'0','1','2','3','4','5','6','7','8','9','0',
+         *  'A','b','c','d','E','F','H','L','P',
+         *  '.','-','_',' ' 
+         * Params:
+         * addr	address of the display
+         * digit	the position of the character on the display (0..7)
+         * value	the character to be displayed. 
+         * dp	sets the decimal point.
+         */
+        void setChar(unsigned int segmentNumber, unsigned int digit, char value, boolean dp);
 };
 

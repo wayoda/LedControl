@@ -16,8 +16,6 @@
 #define OP_SHUTDOWN    12
 #define OP_DISPLAYTEST 15
 
-LedController::LedController():LedController(27,25,26,4){};
-
 LedController::LedController(
     unsigned int dataPin, 
     unsigned int clkPin, 
@@ -33,17 +31,33 @@ LedController::LedController(
         SegmentCount = MAX_SEGMENTS;
     }
 
-    spidata.reserve(2 * SegmentCount);
-    status.reserve(SegmentCount);
-    for(auto x:status){
-        x.reserve(8);
+    for(unsigned int i = 0; i < spidata.size();i++){
+        spidata.at(i) = 0x00;
     }
 
-    resetMatrix();
-}
+    for(auto x:status){
+        for(unsigned int i = 0; i < x.size();i++){
+            x.at(i) = 0x00;
+        }
+    }
 
-LedController::~LedController(){
+    pinMode(SPI_DIN,OUTPUT);
+    pinMode(SPI_CLK,OUTPUT);
+    pinMode(SPI_CS,OUTPUT);
+    digitalWrite(SPI_CS,HIGH);
+    
+    for(int i=0;i < SegmentCount;i++) {
+        spiTransfer(i,OP_DISPLAYTEST,0);
+        //scanlimit is set to max on startup
+        setScanLimit(i,7);
+        //decode is done in source
+        spiTransfer(i,OP_DECODEMODE,0);
+        clearSegment(i);
+        //we go into shutdown-mode on startup
+        activateSegment(i);
 
+        setIntensity(i,1);
+    }
 }
 
 void LedController::resetMatrix(){
@@ -64,7 +78,7 @@ void LedController::setIntensity(unsigned int newIntesityLevel){
         return;
     }
 
-    std::lock_guard<std::mutex> lock(mut_IntensityLevel);
+    //std::lock_guard<std::mutex> lock(mut_IntensityLevel);
     IntensityLevel = newIntesityLevel;
 
     for(unsigned int i=0;i < SegmentCount;i++){
@@ -174,4 +188,57 @@ void LedController::setRow(unsigned int segmentNumber, unsigned int row, byte va
     
     status.at(segmentNumber).at(row) = value;
     spiTransfer(segmentNumber, row+1, status.at(segmentNumber).at(row));
+}
+
+
+void LedController::setLed(unsigned int segmentNumber, unsigned int row, unsigned int column, boolean state) {
+    if( row > 7 || column > 7 || segmentNumber >= SegmentCount){ return;};
+
+    byte val=B10000000 >> column;
+
+    if(state)
+        status.at(segmentNumber).at(row)=status.at(segmentNumber).at(row)|val;
+    else {
+        val=~val;
+        status.at(segmentNumber).at(row)=status.at(segmentNumber).at(row)&val;
+    }
+    spiTransfer(segmentNumber, row+1,status.at(segmentNumber).at(row));
+}
+
+
+void LedController::setColumn(unsigned int segmentNumber, unsigned int col, byte value) {
+    byte val;
+
+    if( segmentNumber >= SegmentCount || col > 7){return;};
+    
+    for(int row=0;row<8;row++) {
+        val=value >> (7-row);
+        val=val & 0x01;
+        setLed(segmentNumber, row, col, val);
+    }
+}
+
+void LedController::setDigit(unsigned int segmentNumber, unsigned int digit, byte value, boolean dp) {
+    if(segmentNumber >= SegmentCount || digit > 7 || value > 15) {return;};
+
+    byte v = pgm_read_byte_near(charTable + value); 
+    if(dp) {v |= B10000000; };
+    status.at(segmentNumber).at(digit) = v;
+    spiTransfer(segmentNumber, digit+1,v);
+}
+
+void LedController::setChar(unsigned int segmentNumber, unsigned int digit, char value, boolean dp) {
+    if(segmentNumber >= SegmentCount || digit>7) {return;};
+    
+    byte index = (byte)value;
+    if(index >127) {
+        //no defined beyond index 127, so we use the space char
+        index=32;
+    }
+
+    byte v = pgm_read_byte_near(charTable + index); 
+    if(dp){ v |= B10000000; };
+
+    status.at(segmentNumber).at(digit) = v;
+    spiTransfer(segmentNumber, digit+1, v);
 }
