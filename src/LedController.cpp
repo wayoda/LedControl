@@ -24,18 +24,26 @@ LedController::LedController(
     unsigned int csPin, 
     unsigned int numDevices
 ){
-    Data = dataPin;
-    Clock = clkPin;
-    ChipSelect = csPin;
+    SPI_DIN = dataPin;
+    SPI_CLK = clkPin;
+    SPI_CS = csPin;
     SegmentCount = numDevices;
 
-    lc = std::shared_ptr<LedControl>(new LedControl(Data,Clock,ChipSelect,SegmentCount));
+    if(SegmentCount > MAX_SEGMENTS){
+        SegmentCount = MAX_SEGMENTS;
+    }
+
+    spidata.reserve(2 * SegmentCount);
+    status.reserve(SegmentCount);
+    for(auto x:status){
+        x.reserve(8);
+    }
 
     resetMatrix();
 }
 
 LedController::~LedController(){
-    lc.reset();
+
 }
 
 void LedController::resetMatrix(){
@@ -46,8 +54,8 @@ void LedController::resetMatrix(){
 
 
 void LedController::clearMatrix(){
-    for(int i = 0;i < SegmentCount;i++){
-        lc->clearDisplay(i);     // Clear Displays
+    for(unsigned int i = 0;i < SegmentCount;i++){
+        clearSegment(i);   // Clear Segments
     }
 }
 
@@ -60,8 +68,16 @@ void LedController::setIntensity(unsigned int newIntesityLevel){
     IntensityLevel = newIntesityLevel;
 
     for(unsigned int i=0;i < SegmentCount;i++){
-        lc->setIntensity(i,IntensityLevel);
+        setIntensity(i,IntensityLevel);
     }
+}
+
+void LedController::setIntensity(unsigned int segmentNumber, unsigned int newIntesityLevel){
+    if (newIntesityLevel > 15 || segmentNumber >= SegmentCount){
+        return;
+    }
+
+    spiTransfer(segmentNumber, OP_INTENSITY,newIntesityLevel);
 }
 
 void LedController::displayOnSegment(unsigned int segmentindex, byte data[8]){
@@ -70,7 +86,7 @@ void LedController::displayOnSegment(unsigned int segmentindex, byte data[8]){
     }
 
     for(int i=0;i < 8;i++){
-        lc->setRow(segmentindex,i,data[i]);
+        setRow(segmentindex,i,data[i]);
     }
 }
 
@@ -87,7 +103,7 @@ void LedController::shutdownSegment(unsigned int segmentNumber){
         return;
     }
 
-    lc->shutdown(segmentNumber,true);
+    spiTransfer(segmentNumber, OP_SHUTDOWN,0);
 }
 
 void LedController::activateSegment(unsigned int segmentNumber){
@@ -95,7 +111,7 @@ void LedController::activateSegment(unsigned int segmentNumber){
         return;
     }
 
-    lc->shutdown(segmentNumber,false);
+    spiTransfer(segmentNumber, OP_SHUTDOWN,1);
 }
 
 void LedController::shutdownAllSegments(){
@@ -110,21 +126,56 @@ void LedController::activateAllSegments(){
     }
 }
 
-void LedController::spiTransfer(int addr, volatile byte opcode, volatile byte data) {
-    //Create an array with the data to shift out
-    int offset=addr*2;
-    int maxbytes=maxDevices*2;
+void LedController::spiTransfer(unsigned int segment, byte opcode, byte data) {
+    if(segment >= SegmentCount){
+        return;
+    }
 
-    for(int i=0;i<maxbytes;i++)
+    //Create an array with the data to shift out
+    unsigned int offset = segment*2;
+    unsigned int maxbytes = SegmentCount*2;
+
+    for(int i=0;i < maxbytes;i++){
         spidata[i]=(byte)0;
+    }
+
     //put our device data into the array
     spidata[offset+1]=opcode;
     spidata[offset]=data;
+
     //enable the line 
     digitalWrite(SPI_CS,LOW);
+
     //Now shift out the data 
-    for(int i=maxbytes;i>0;i--)
-        shiftOut(SPI_MOSI,SPI_CLK,MSBFIRST,spidata[i-1]);
+    for(int i=maxbytes;i > 0;i--){
+        shiftOut(SPI_DIN,SPI_CLK,MSBFIRST,spidata[i-1]);
+    }
+
     //latch the data onto the display
     digitalWrite(SPI_CS,HIGH);
 }   
+
+void LedController::setScanLimit(unsigned int segmentNumber, unsigned int limit){
+    if(segmentNumber >= SegmentCount){return;};
+    if(limit < 8) {spiTransfer(segmentNumber, OP_SCANLIMIT, limit); };
+}
+
+void LedController::clearSegment(unsigned int segmentNumber){
+    if(segmentNumber>=SegmentCount){
+        return;
+    }
+
+    for(int i=0;i < 8;i++) {
+        status.at(segmentNumber).at(i) = 0x00;
+        spiTransfer(segmentNumber, i+1, status.at(segmentNumber).at(i));
+    }
+}
+
+void LedController::setRow(unsigned int segmentNumber, unsigned int row, byte value){
+    if(segmentNumber >= SegmentCount || row > 7){
+        return;
+    }
+    
+    status.at(segmentNumber).at(row) = value;
+    spiTransfer(segmentNumber, row+1, status.at(segmentNumber).at(row));
+}
