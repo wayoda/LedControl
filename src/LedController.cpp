@@ -20,12 +20,12 @@ LedController::LedController(
     unsigned int dataPin, 
     unsigned int clkPin, 
     unsigned int csPin, 
-    unsigned int numDevices
+    unsigned int numSegments
 ){
     SPI_DIN = dataPin;
     SPI_CLK = clkPin;
     SPI_CS = csPin;
-    SegmentCount = numDevices;
+    SegmentCount = numSegments;
 
     if(SegmentCount > MAX_SEGMENTS){
         SegmentCount = MAX_SEGMENTS;
@@ -190,8 +190,8 @@ void LedController::setRow(unsigned int segmentNumber, unsigned int row, byte va
     spiTransfer(segmentNumber, row+1, status.at(segmentNumber).at(row));
 }
 
-
-void LedController::setLed(unsigned int segmentNumber, unsigned int row, unsigned int column, boolean state) {
+ 
+ void LedController::setLed(unsigned int segmentNumber, unsigned int row, unsigned int column, boolean state) {
     if( row > 7 || column > 7 || segmentNumber >= SegmentCount){ return;};
 
     byte val=B10000000 >> column;

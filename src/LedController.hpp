@@ -40,7 +40,16 @@ const static byte charTable [] PROGMEM  = {
     B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000
 };
 
-
+/**
+ * @brief This class provied a control interface for MAX7219 and MAX7221 Led display drivers.
+ * @long This Controller Class is mainly target at led matracies consisting of more than 1 segment.
+    * While it can also handle 7-Segment Displays it is not tested that well.
+ * @warning This object is not thread safe yet.
+ * 
+ * @todo add functions to shift the pixes up, down, left and right
+ * @todo rename status to ledstates or something like that
+ * @todo make it threading safe
+ */
 class LedController{
 private:
 
@@ -59,7 +68,6 @@ private:
     unsigned int SegmentCount;
 
     ///The mutex for the intensity level, needed to make it threading safe.
-    //std::mutex mut_IntensityLevel;
 
     /**
      * @brief The current brightness level of the leds.
@@ -88,7 +96,15 @@ private:
     void setIntensity(unsigned int segmentNumber, unsigned int newIntesityLevel);
 
 public:
-    LedController(unsigned int dataPin, unsigned int clkPin, unsigned int csPin, unsigned int numDevices);
+    /**
+     * @brief Construct a new LedController object
+     * 
+     * @param dataPin pin on the Arduino where data gets shifted out (DIN)
+     * @param clkPin pin for the clock (CLK)
+     * @param csPin pin for selecting the device (CS)
+     * @param numSegments The number of segments that will be controlled by the controller (default 4)
+     */
+    LedController(unsigned int dataPin, unsigned int clkPin, unsigned int csPin, unsigned int numSegments = 4);
 
     /**
      * @brief Set the Intensity of the whole matrix to the given value.
@@ -97,8 +113,18 @@ public:
      */
     void setIntensity(unsigned int newIntesityLevel);
 
+    /**
+     * @brief Display 8 lines on the given segment
+     * 
+     * @param segmentindex the Segment number of the desired segment
+     * @param data an array containing the data for all the pixels that should be displayed on that segment
+     */
     void displayOnSegment(unsigned int segmentindex, byte data[8]);
 
+    /**
+     * @brief activates all segments, sets to same intensity and cleas them
+     * 
+     */
     void resetMatrix();
 
     /**
@@ -187,24 +213,23 @@ public:
      * @brief Set a hexadecimal digit on a 7-Segment Display
      * 
      * @param segmentNumber The number of the desired Segment
-     * @param digit the position of the digit on the display (0..7)
+     * @param digit the position of the digit on the Segment (0..7)
      * @param value the value to be displayed. (0x00..0x0F)
      * @param dp if true sets the decimal point
      */
     void setDigit(unsigned int segmentNumber, unsigned int digit, byte value, boolean dp);
-
-        /* 
-         * Display a character on a 7-Segment display.
-         * There are only a few characters that make sense here :
-         *	'0','1','2','3','4','5','6','7','8','9','0',
-         *  'A','b','c','d','E','F','H','L','P',
-         *  '.','-','_',' ' 
-         * Params:
-         * addr	address of the display
-         * digit	the position of the character on the display (0..7)
-         * value	the character to be displayed. 
-         * dp	sets the decimal point.
-         */
-        void setChar(unsigned int segmentNumber, unsigned int digit, char value, boolean dp);
+    
+    /**
+     * @brief Set the Display a character on a 7-Segment display.
+     * @note There are only a few characters that make sense here :
+         *	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 
+         *  'A', 'b', 'c', 'd', 'E', 'F', 'H', 'L', 'P', 
+         *  '.', '-', '_', ' ' 
+     * @param segmentNumber The number of the desired segment
+     * @param digit the position of the character on the segment (0..7)
+     * @param value the character to be displayed. 
+     * @param dp dp if true sets the decimal point
+     */
+    void setChar(unsigned int segmentNumber, unsigned int digit, char value, boolean dp);
 };
 
