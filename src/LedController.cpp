@@ -90,10 +90,6 @@ void LedController::displayOnSegment(unsigned int segmentindex, byte data[8]){
     }
 }
 
-std::shared_ptr<LedControl> getLedControl(){
-    return std::shared_ptr<LedControl>();
-}
-
 unsigned int LedController::getSegmentCount(){
     return SegmentCount;
 }

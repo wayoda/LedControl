@@ -80,7 +80,6 @@ public:
 
     void displayOnSegment(unsigned int segmentindex, byte data[8]);
 
-    std::shared_ptr<LedControl> getLedControl();
     void resetMatrix();
 
     /**
