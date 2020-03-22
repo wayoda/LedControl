@@ -1,5 +1,5 @@
-LedControl
-==========
+LedController
+=============
 LedControl is an [Arduino](http://arduino.cc) library for MAX7219 and MAX7221 Led display drivers.
 The code should work with most boards and architectures.
 Feel free to create an issue if something is missing.
