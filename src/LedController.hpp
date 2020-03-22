@@ -231,5 +231,27 @@ public:
      * @param dp dp if true sets the decimal point
      */
     void setChar(unsigned int segmentNumber, unsigned int digit, char value, boolean dp);
+
+    /**
+     * @brief moves the data left by one
+     * 
+     * @param shiftedInColumn The column that will be shifted in on the right (default 0x00)
+     * @return byte The column that gets shifted out on the right
+     */
+    byte moveLeft(byte shiftedInColumn = 0x00);
+
+    /**
+     * @brief refreshes all segments displaying the internally stored state of the segments.
+     * 
+     */
+    void refreshSegments();
+
+    /**
+     * @brief Turns an array of rows into an array of columns
+     * 
+     * @param rowArray the array of rows of which you want the columns
+     * @return std::array<byte,8> the columns of the provided row array
+     */
+    std::array<byte,8> makeColumns(std::array<byte,8> rowArray);
 };
 

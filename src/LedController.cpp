@@ -212,6 +212,7 @@ void LedController::setColumn(unsigned int segmentNumber, unsigned int col, byte
     if( segmentNumber >= SegmentCount || col > 7){return;};
     
     for(int row=0;row<8;row++) {
+        //val = value & (0x01 << row);
         val=value >> (7-row);
         val=val & 0x01;
         setLed(segmentNumber, row, col, val);
@@ -241,4 +242,49 @@ void LedController::setChar(unsigned int segmentNumber, unsigned int digit, char
 
     status.at(segmentNumber).at(digit) = v;
     spiTransfer(segmentNumber, digit+1, v);
+}
+
+byte LedController::moveLeft(byte shiftedInColumn){
+    byte returnValue = 0x00;
+
+    for(unsigned int i = 0; i < 8;i++){
+        if(status.at(SegmentCount-1).at(i) & 0x80){returnValue |= 0x01 << i; };
+    }
+
+    for(int seg = SegmentCount-1;seg >= 0;seg--){
+        for(int row=0;row < 8;row++){
+            status.at(seg).at(row) = status.at(seg).at(row)<<1;
+
+            if(seg != 0 && status.at(seg-1).at(row) & 0x80){ status.at(seg).at(row)++; };
+
+        }
+
+    }
+
+    setColumn(0,7,shiftedInColumn);
+
+    refreshSegments();
+
+    return returnValue;
+}
+
+void LedController::refreshSegments(){
+    for(unsigned int seg = 0; seg < SegmentCount; seg++){
+        for(unsigned int row = 0; row < 8; row++){
+            spiTransfer(seg, row+1, status.at(seg).at(row));
+        }
+    }
+}
+
+std::array<byte,8> LedController::makeColumns(std::array<byte,8> rowArray){
+    std::array<byte,8> columnArray;
+
+    for(unsigned int i = 0; i < 8;i++){
+        columnArray.at(i) = 0x00;
+        for(unsigned int j = 0; j < 8; j++){
+            columnArray.at(i) |= (0x01 & ( rowArray.at(j) >> (7-i) )) << (7-j);
+        }
+    }
+
+    return columnArray;
 }
