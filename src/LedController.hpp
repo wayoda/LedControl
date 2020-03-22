@@ -46,7 +46,7 @@ const static byte charTable [] PROGMEM  = {
     * While it can also handle 7-Segment Displays it is not tested that well.
  * @warning This object is not thread safe yet.
  * 
- * @todo add functions to shift the pixes up, down, left and right
+ * @todo fix orientation
  * @todo rename status to ledstates or something like that
  * @todo make it threading safe
  */
@@ -94,6 +94,8 @@ private:
      * @param newIntesityLevel the brightness of the display. (0..15)
      */
     void setIntensity(unsigned int segmentNumber, unsigned int newIntesityLevel);
+
+    std::array<byte,MAX_SEGMENTS> emptyRow;
 
 public:
     /**
@@ -262,5 +264,35 @@ public:
      * @return byte The column that gets shifted out on the right
      */
     byte moveRight(byte shiftedInColumn = 0x00);
+
+    /**
+     * @brief moves the data up by one
+     * 
+     * @param shiftedInRow The row that will be shifted in on the bottom 
+     * @return std::array<byte,MAX_SEGMENTS> The row the will be shifted out on the top
+     */
+    std::array<byte,MAX_SEGMENTS> moveUp(std::array<byte,MAX_SEGMENTS> shiftedInRow);
+
+    /**
+     * @brief moves the data down by one
+     * 
+     * @param shiftedInRow The row that will be shifted in on the top (default 0x00)
+     * @return std::array<byte,MAX_SEGMENTS> The row the will be shifted out on the bottom
+     */
+    std::array<byte,MAX_SEGMENTS> moveDown(std::array<byte,MAX_SEGMENTS> shiftedInRow);
+
+    /**
+     * @brief moves the data up by oneand 0x00 will be shifted in
+     * 
+     * @return std::array<byte,MAX_SEGMENTS> The row the will be shifted out on the top
+     */
+    std::array<byte,MAX_SEGMENTS> moveUp();
+
+    /**
+     * @brief moves the data down by one and 0x00 will be shifted in
+     * 
+     * @return std::array<byte,MAX_SEGMENTS> The row the will be shifted out on the bottom
+     */
+    std::array<byte,MAX_SEGMENTS> moveDown();
 };
 

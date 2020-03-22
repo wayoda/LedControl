@@ -41,6 +41,10 @@ LedController::LedController(
         }
     }
 
+    for(unsigned int i = 0; i < MAX_SEGMENTS;i++){
+        emptyRow.at(i)=0x00;
+    }
+
     pinMode(SPI_DIN,OUTPUT);
     pinMode(SPI_CLK,OUTPUT);
     pinMode(SPI_CS,OUTPUT);
@@ -312,4 +316,60 @@ byte LedController::moveRight(byte shiftedInColumn){
     refreshSegments();
 
     return returnValue;
+}
+
+std::array<byte,MAX_SEGMENTS> LedController::moveUp(std::array<byte,MAX_SEGMENTS> shiftedInRow ){
+    auto retVal = std::array<byte,MAX_SEGMENTS>(emptyRow);
+    for(unsigned int i = 0; i < SegmentCount;i++){
+        retVal.at(i) = status.at(i).at(0);
+    }
+
+    for (unsigned int i = 0; i < 7; i++){
+        for(unsigned int seg = 0; seg < SegmentCount; seg++){
+            status.at(seg).at(i) = status.at(seg).at(i+1);
+        }
+        
+    }
+
+    for(unsigned int i = 0; i < SegmentCount;i++){
+        status.at(i).at(7) = shiftedInRow.at(i);
+    }
+
+    refreshSegments();
+
+    return retVal;
+    
+}
+
+std::array<byte,MAX_SEGMENTS> LedController::moveDown(std::array<byte,MAX_SEGMENTS> shiftedInRow ){
+    auto retVal = std::array<byte,MAX_SEGMENTS>(emptyRow);
+    for(unsigned int i = 0; i < SegmentCount;i++){
+        retVal.at(i) = status.at(i).at(7);
+    }
+
+    for (unsigned int i = 7; i > 0; i--){
+        for(unsigned int seg = 0; seg < SegmentCount; seg++){
+            status.at(seg).at(i) = status.at(seg).at(i-1);
+        }
+        
+    }
+
+    for(unsigned int i = 0; i < SegmentCount;i++){
+        status.at(i).at(0) = shiftedInRow.at(i);
+    }
+
+    refreshSegments();
+
+    return retVal;
+    
+}
+
+std::array<byte,MAX_SEGMENTS> LedController::moveUp(){
+    auto inVal = std::array<byte,MAX_SEGMENTS>(emptyRow);
+    return moveUp(inVal);
+}
+
+std::array<byte,MAX_SEGMENTS> LedController::moveDown(){
+    auto inVal = std::array<byte,MAX_SEGMENTS>(emptyRow);
+    return moveDown(inVal);
 }
