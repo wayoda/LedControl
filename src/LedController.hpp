@@ -233,14 +233,6 @@ public:
     void setChar(unsigned int segmentNumber, unsigned int digit, char value, boolean dp);
 
     /**
-     * @brief moves the data left by one
-     * 
-     * @param shiftedInColumn The column that will be shifted in on the right (default 0x00)
-     * @return byte The column that gets shifted out on the right
-     */
-    byte moveLeft(byte shiftedInColumn = 0x00);
-
-    /**
      * @brief refreshes all segments displaying the internally stored state of the segments.
      * 
      */
@@ -253,5 +245,22 @@ public:
      * @return std::array<byte,8> the columns of the provided row array
      */
     std::array<byte,8> makeColumns(std::array<byte,8> rowArray);
+
+    /**
+     * @brief moves the data left by one
+     * 
+     * @param shiftedInColumn The column that will be shifted in on the right (default 0x00)
+     * @return byte The column that gets shifted out on the left
+     */
+    byte moveLeft(byte shiftedInColumn = 0x00);
+
+
+    /**
+     * @brief moves the data left by one
+     * 
+     * @param shiftedInColumn The column that will be shifted in on the left (default 0x00)
+     * @return byte The column that gets shifted out on the right
+     */
+    byte moveRight(byte shiftedInColumn = 0x00);
 };
 
