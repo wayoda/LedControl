@@ -11,15 +11,24 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      # ...
+      - uses: actions/checkout@v1
+      - name: install platform io
+        run: | 
+          pip install -U wheel
+          pip install -U platformio
+          python -m platformio update
       - name: "Build & test"
+        env:
+          PLATFORMIO_CI_SRC : examples/LedControllerDemoRocket/LedControllerDemoRocket.ino
         run: |
-          echo "done!"
+          python -m platformio ci --lib="." --board=esp32dev
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
           prerelease: false
           files: |
-            LICENSE.txt
-            *.jar
+            License
+            library.properties
+            keywords.txt
