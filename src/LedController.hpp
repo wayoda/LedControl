@@ -293,6 +293,20 @@ public:
      */
     std::array<byte,MAX_SEGMENTS> moveDown();
 
-    byte reverse(byte var);
+    /**
+     * @brief This function changes to bitorder of a byte (useful to mirror "images" you want to display)
+     * 
+     * @param input The byte that should be reversed
+     * @return byte The reversed byte
+     */
+    byte reverse(byte input);
+
+    /**
+     * @brief Reverse an array of 8 bytes (mirror it)
+     * 
+     * @param input The array that should be mirrored
+     * @return std::array<byte,8> The mirrored array
+     */
+    std::array<byte,8> reverse(std::array<byte,8> input);
 };
 

@@ -384,3 +384,13 @@ byte LedController::reverse(byte var){
     }
     return ret;
 }
+
+std::array<byte,8> LedController::reverse(std::array<byte,8> input){
+    decltype(input) ret;
+
+    for(unsigned int i = 0; i < input.size();i++){
+        ret.at(i) = reverse(input.at(i));
+    }
+
+    return ret;
+}
