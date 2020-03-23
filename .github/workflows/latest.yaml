@@ -9,11 +9,16 @@ jobs:
   pre-release:
     name: "Pre Release latest"
     runs-on: "ubuntu-latest"
-
     steps:
+      - name: install platform io
+        run: 
+          pip install -U platformio
+          platformio update
       - name: "Build & test"
+        env:
+          PLATFORMIO_CI_SRC : examples/LedControllerDemoRocket/LedControllerDemoRocket.ino
         run: |
-          echo "done!"
+          platformio ci --lib="." --board=esp32dev
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -24,3 +29,4 @@ jobs:
           files: |
             License
             library.properties
+            keywords.txt
