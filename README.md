@@ -1,4 +1,4 @@
-# LedController
+# LedController ![pre-release](https://github.com/noah1510/LedController/workflows/pre-release/badge.svg)
 
 LedControl is an [Arduino](http://arduino.cc) library for MAX7219 and MAX7221 Led display drivers.
 The code should work with most boards and architectures but I only test it for the ESP32 Dev Module.
