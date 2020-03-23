@@ -42,7 +42,7 @@ jobs:
           rm -rf doc
           rm -rf Doxyfile
           cd ..
-          zip LedController/latest.zip LedController
+          zip -r LedController/latest.zip LedController
           cd LedController
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
