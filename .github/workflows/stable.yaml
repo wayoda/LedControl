@@ -25,10 +25,8 @@ jobs:
 
       - name: pack repo
         run: |
-          rm -rf doc
-          rm -rf Doxyfile
           cd ..
-          zip -r LedController/latest.zip LedController
+          zip -r release.zip LedController/src LedController/License LedController/README.md LedController/library.properties LedController/keywords.txt LedController/.vscode LedController/examples
           cd LedController
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -37,4 +35,4 @@ jobs:
           prerelease: false
           files: |
             License
-            latest.zip
+            release.zip
