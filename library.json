@@ -1,23 +1,23 @@
 {
-    "name": "LedController",
-    "keywords": "led, matrix, segment, display, driver, maxim, max7219, max7221",
-    "description": "A library for the MAX7219 and the MAX7221 Led display drivers which supports multiple daisychained drivers and supports Led-Matrix displays as well as 7-Segment displays. It also supports shifting the displayed image around.",
-    "repository":
+  "name": "LedController",
+  "keywords": "led, matrix, segment, display, driver, maxim, max7219, max7221",
+  "description": "A library for the MAX7219 and the MAX7221 Led display drivers which supports multiple daisychained drivers and supports Led-Matrix displays as well as 7-Segment displays. It also supports shifting the displayed image around.",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/noah1510/LedController.git"
+  },
+  "version": "1.3.3",
+  "authors": [
     {
-      "type": "git",
-      "url": "https://github.com/noah1510/LedController.git"
-    },
-    "version": "1.3.3",
-    "authors": [
-      {
-        "name": "Noa Sakurajin",
-        "email": "noasakurajin@web.de",
-        "url": "https://noah1510.github.io/LedController/",
-        "maintainer": true
-      }
-    ],
-    "include": "src",
-    "examples": "examples/*/*.ino",
-    "frameworks": "arduino",
-    "platforms": "*"
-  }
+      "name": "Noa Sakurajin",
+      "email": "noasakurajin@web.de",
+      "url": "https://noah1510.github.io/LedController/",
+      "maintainer": true
+    }
+  ],
+  "include": "src",
+  "examples": "examples/*/*.ino",
+  "frameworks": "arduino",
+  "platforms": "*"
+}
