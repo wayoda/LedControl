@@ -27,7 +27,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: install platform io
-        run:
+        run: | 
           pip install -U wheel
           pip install -U platformio
           platformio update
