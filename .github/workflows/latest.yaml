@@ -38,7 +38,12 @@ jobs:
         run: |
           python -m platformio ci --lib="." --board=esp32dev
       - name: pack repo
-        run: zip latest.zip src library.properties License keywords.txt README.md examples .vscode
+        run: |
+          rm -rf doc
+          rm -rf Doxyfile
+          cd ..
+          zip LedController/latest.zip LedController
+          cd ledController
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
