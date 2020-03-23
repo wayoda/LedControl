@@ -292,5 +292,7 @@ public:
      * @return std::array<byte,MAX_SEGMENTS> The row the will be shifted out on the bottom
      */
     std::array<byte,MAX_SEGMENTS> moveDown();
+
+    byte reverse(byte var);
 };
 

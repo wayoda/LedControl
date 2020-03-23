@@ -373,3 +373,14 @@ std::array<byte,MAX_SEGMENTS> LedController::moveDown(){
     auto inVal = std::array<byte,MAX_SEGMENTS>(emptyRow);
     return moveDown(inVal);
 }
+
+byte LedController::reverse(byte var){
+    byte ret = 0x00;
+    for(unsigned int i = 0; i < 8; i++){
+        if(var & (0x01U<<i)){
+            ret |= 0x80U>>i;
+        }
+        
+    }
+    return ret;
+}
