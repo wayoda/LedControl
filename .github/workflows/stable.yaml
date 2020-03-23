@@ -25,9 +25,7 @@ jobs:
 
       - name: pack repo
         run: |
-          cd ..
-          zip -r release.zip LedController/src LedController/License LedController/README.md LedController/library.properties LedController/keywords.txt LedController/.vscode LedController/examples
-          cd LedController
+          zip -r release.zip License README.md library.properties keywords.txt .vscode examples
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
