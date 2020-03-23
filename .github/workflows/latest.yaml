@@ -6,12 +6,29 @@ on:
       - "master"
 
 jobs:
+  doxygen:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: install dependencies
+      run: sudo apt install doxygen graphviz
+    - name: generate docs
+      run: doxygen
+    - name: Deploy
+      uses: s0/git-publish-subdir-action@master
+      env:
+        REPO: self
+        BRANCH: gh-pages
+        FOLDER: doc/html
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   pre-release:
     name: "Pre Release latest"
     runs-on: "ubuntu-latest"
     steps:
       - name: install platform io
-        run: 
+        run:
+          pip install -U wheel
           pip install -U platformio
           platformio update
       - name: "Build & test"
