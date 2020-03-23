@@ -43,7 +43,7 @@ jobs:
           rm -rf Doxyfile
           cd ..
           zip LedController/latest.zip LedController
-          cd ledController
+          cd LedController
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
