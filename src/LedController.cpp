@@ -394,3 +394,13 @@ std::array<byte,8> LedController::reverse(std::array<byte,8> input){
 
     return ret;
 }
+
+std::array<byte,8> LedController::rotate180(std::array<byte,8> input){
+    decltype(input) ret;
+
+    for(unsigned int i = 0; i < input.size();i++){
+        ret.at(input.size()-(i+1)) = reverse(input.at(i));
+    }
+
+    return ret;
+}

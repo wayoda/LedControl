@@ -308,5 +308,13 @@ public:
      * @return std::array<byte,8> The mirrored array
      */
     std::array<byte,8> reverse(std::array<byte,8> input);
+
+    /**
+     * @brief rotate an byte[8] array by 180 degrees
+     * 
+     * @param input the array that will be rotated
+     * @return std::array<byte,8> The rotated array
+     */
+    std::array<byte,8> rotate180(std::array<byte,8> input);
 };
 

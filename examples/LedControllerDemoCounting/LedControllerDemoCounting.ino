@@ -120,39 +120,31 @@ std::array<byte,8> nine= {
   B00000000
 };
 
-std::array <byte ,8> reverse(std::array <byte ,8> dat){
-  decltype(dat) ret;
-  for(unsigned int i=0;i<8;i++){
-    ret[7-i]=lc.reverse(dat[i]);
-  }
-  return ret;
-}
-
 std::array <byte ,8> getDigit(unsigned int i){
   switch (i){
   case 0:
-    return reverse(zero);
+    return lc.rotate180(zero);
   case 1:
-    return reverse(one);
+    return lc.rotate180(one);
     case 2:
-      return reverse(two);
+      return lc.rotate180(two);
     case 3:
-      return reverse(three);
+      return lc.rotate180(three);
     case 4:
-      return reverse(four);
+      return lc.rotate180(four);
     case 5:
-      return reverse(five);
+      return lc.rotate180(five);
     case 6:
-      return reverse(six);
+      return lc.rotate180(six);
     case 7:
-      return reverse(seven);
+      return lc.rotate180(seven);
     case 8:
-      return reverse(eight);
+      return lc.rotate180(eight);
     case 9:
-      return reverse(nine);
+      return lc.rotate180(nine);
   
   default:
-    return reverse(zero);
+    return lc.rotate180(zero);
   }
 }
 
