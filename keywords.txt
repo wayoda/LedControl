@@ -12,7 +12,7 @@ LedController	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-shutdown	KEYWORD2
+shutdownAllSegments	KEYWORD2
 setScanLimit	KEYWORD2
 setIntensity	KEYWORD2
 clearDisplay	KEYWORD2
@@ -22,7 +22,25 @@ setColumn	KEYWORD2
 setDigit	KEYWORD2
 setChar		KEYWORD2
 
+moveLeft	KEYWORD2
+moveRight	KEYWORD2
+moveUp	    KEYWORD2
+moveDown	KEYWORD2
+makeColumns		KEYWORD2
+refreshSegments	KEYWORD2
+clearSegment 	KEYWORD2
+activateAllSegments		KEYWORD2
+
+activateSegment	KEYWORD2
+shutdownSegment	KEYWORD2
+getSegmentCount	    KEYWORD2
+clearMatrix	KEYWORD2
+resetMatrix		KEYWORD2
+displayOnSegment	KEYWORD2
+setIntensity 	KEYWORD2
+
 #######################################
 # Constants (LITERAL1)
 #######################################
 
+MAX_SEGMENTS LITERAL1
