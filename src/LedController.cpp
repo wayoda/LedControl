@@ -35,7 +35,7 @@ LedController::LedController(
         spidata.at(i) = 0x00;
     }
 
-    for(auto x:status){
+    for(auto x:LedStates){
         for(unsigned int i = 0; i < x.size();i++){
             x.at(i) = 0x00;
         }
@@ -180,8 +180,8 @@ void LedController::clearSegment(unsigned int segmentNumber){
     }
 
     for(int i=0;i < 8;i++) {
-        status.at(segmentNumber).at(i) = 0x00;
-        spiTransfer(segmentNumber, i+1, status.at(segmentNumber).at(i));
+        LedStates.at(segmentNumber).at(i) = 0x00;
+        spiTransfer(segmentNumber, i+1, LedStates.at(segmentNumber).at(i));
     }
 }
 
@@ -190,8 +190,8 @@ void LedController::setRow(unsigned int segmentNumber, unsigned int row, byte va
         return;
     }
     
-    status.at(segmentNumber).at(row) = value;
-    spiTransfer(segmentNumber, row+1, status.at(segmentNumber).at(row));
+    LedStates.at(segmentNumber).at(row) = value;
+    spiTransfer(segmentNumber, row+1, LedStates.at(segmentNumber).at(row));
 }
 
  
@@ -201,12 +201,12 @@ void LedController::setRow(unsigned int segmentNumber, unsigned int row, byte va
     byte val=B10000000 >> column;
 
     if(state)
-        status.at(segmentNumber).at(row)=status.at(segmentNumber).at(row)|val;
+        LedStates.at(segmentNumber).at(row)=LedStates.at(segmentNumber).at(row)|val;
     else {
         val=~val;
-        status.at(segmentNumber).at(row)=status.at(segmentNumber).at(row)&val;
+        LedStates.at(segmentNumber).at(row)=LedStates.at(segmentNumber).at(row)&val;
     }
-    spiTransfer(segmentNumber, row+1,status.at(segmentNumber).at(row));
+    spiTransfer(segmentNumber, row+1,LedStates.at(segmentNumber).at(row));
 }
 
 
@@ -228,7 +228,7 @@ void LedController::setDigit(unsigned int segmentNumber, unsigned int digit, byt
 
     byte v = pgm_read_byte_near(charTable + value); 
     if(dp) {v |= B10000000; };
-    status.at(segmentNumber).at(digit) = v;
+    LedStates.at(segmentNumber).at(digit) = v;
     spiTransfer(segmentNumber, digit+1,v);
 }
 
@@ -244,14 +244,14 @@ void LedController::setChar(unsigned int segmentNumber, unsigned int digit, char
     byte v = pgm_read_byte_near(charTable + index); 
     if(dp){ v |= B10000000; };
 
-    status.at(segmentNumber).at(digit) = v;
+    LedStates.at(segmentNumber).at(digit) = v;
     spiTransfer(segmentNumber, digit+1, v);
 }
 
 void LedController::refreshSegments(){
     for(unsigned int seg = 0; seg < SegmentCount; seg++){
         for(unsigned int row = 0; row < 8; row++){
-            spiTransfer(seg, row+1, status.at(seg).at(row));
+            spiTransfer(seg, row+1, LedStates.at(seg).at(row));
         }
     }
 }
@@ -273,14 +273,14 @@ byte LedController::moveRight(byte shiftedInColumn){
     byte returnValue = 0x00;
 
     for(unsigned int i = 0; i < 8;i++){
-        if(status.at(SegmentCount-1).at(i) & 0x80){returnValue |= 0x01 << i; };
+        if(LedStates.at(SegmentCount-1).at(i) & 0x80){returnValue |= 0x01 << i; };
     }
 
     for(int seg = SegmentCount-1;seg >= 0;seg--){
         for(int row=0;row < 8;row++){
-            status.at(seg).at(row) = status.at(seg).at(row)<<1;
+            LedStates.at(seg).at(row) = LedStates.at(seg).at(row)<<1;
 
-            if(seg != 0 && status.at(seg-1).at(row) & 0x80){ status.at(seg).at(row)++; };
+            if(seg != 0 && LedStates.at(seg-1).at(row) & 0x80){ LedStates.at(seg).at(row)++; };
 
         }
 
@@ -298,14 +298,14 @@ byte LedController::moveLeft(byte shiftedInColumn){
     byte returnValue = 0x00;
 
     for(unsigned int i = 0; i < 8;i++){
-        if(status.at(SegmentCount-1).at(i) & 0x80){returnValue |= 0x01 << i; };
+        if(LedStates.at(SegmentCount-1).at(i) & 0x80){returnValue |= 0x01 << i; };
     }
 
     for(int seg = 0;seg < SegmentCount;seg++){
         for(int row=0;row < 8;row++){
-            status.at(seg).at(row) = status.at(seg).at(row)>>1;
+            LedStates.at(seg).at(row) = LedStates.at(seg).at(row)>>1;
 
-            if(seg != SegmentCount-1 && status.at(seg+1).at(row) & 0x01){ status.at(seg).at(row) |= 0x80; };
+            if(seg != SegmentCount-1 && LedStates.at(seg+1).at(row) & 0x01){ LedStates.at(seg).at(row) |= 0x80; };
 
         }
 
@@ -321,18 +321,18 @@ byte LedController::moveLeft(byte shiftedInColumn){
 std::array<byte,MAX_SEGMENTS> LedController::moveDown(std::array<byte,MAX_SEGMENTS> shiftedInRow ){
     auto retVal = std::array<byte,MAX_SEGMENTS>(emptyRow);
     for(unsigned int i = 0; i < SegmentCount;i++){
-        retVal.at(i) = status.at(i).at(0);
+        retVal.at(i) = LedStates.at(i).at(0);
     }
 
     for (unsigned int i = 0; i < 7; i++){
         for(unsigned int seg = 0; seg < SegmentCount; seg++){
-            status.at(seg).at(i) = status.at(seg).at(i+1);
+            LedStates.at(seg).at(i) = LedStates.at(seg).at(i+1);
         }
         
     }
 
     for(unsigned int i = 0; i < SegmentCount;i++){
-        status.at(i).at(7) = shiftedInRow.at(i);
+        LedStates.at(i).at(7) = shiftedInRow.at(i);
     }
 
     refreshSegments();
@@ -344,18 +344,18 @@ std::array<byte,MAX_SEGMENTS> LedController::moveDown(std::array<byte,MAX_SEGMEN
 std::array<byte,MAX_SEGMENTS> LedController::moveUp(std::array<byte,MAX_SEGMENTS> shiftedInRow ){
     auto retVal = std::array<byte,MAX_SEGMENTS>(emptyRow);
     for(unsigned int i = 0; i < SegmentCount;i++){
-        retVal.at(i) = status.at(i).at(7);
+        retVal.at(i) = LedStates.at(i).at(7);
     }
 
     for (unsigned int i = 7; i > 0; i--){
         for(unsigned int seg = 0; seg < SegmentCount; seg++){
-            status.at(seg).at(i) = status.at(seg).at(i-1);
+            LedStates.at(seg).at(i) = LedStates.at(seg).at(i-1);
         }
         
     }
 
     for(unsigned int i = 0; i < SegmentCount;i++){
-        status.at(i).at(0) = shiftedInRow.at(i);
+        LedStates.at(i).at(0) = shiftedInRow.at(i);
     }
 
     refreshSegments();

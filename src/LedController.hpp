@@ -46,13 +46,12 @@ const static byte charTable [] PROGMEM  = {
     * While it can also handle 7-Segment Displays it is not tested that well.
  * @warning This object is not thread safe yet.
  * 
- * @todo rename status to ledstates or something like that
  * @todo make it threading safe
  */
 class LedController{
 private:
 
-    std::array< std::array<byte,8>, MAX_SEGMENTS> status;
+    std::array< std::array<byte,8>, MAX_SEGMENTS> LedStates;
 
     ///The pin for the data transfer (DIN)
     unsigned int SPI_DIN;
