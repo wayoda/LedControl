@@ -1,6 +1,6 @@
 #pragma once
 
-#if (defined(AVR))
+#if (defined(__AVR__))
 #include <avr\pgmspace.h>
 #else
 #include <pgmspace.h>
