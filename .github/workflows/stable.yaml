@@ -23,6 +23,8 @@ jobs:
         run: |
           python -m platformio ci --lib="." --board=esp32dev
 
+      - name: pack repo
+        run: zip latest.zip src library.properties License keywords.txt README.md examples .vscode
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -30,5 +32,4 @@ jobs:
           prerelease: false
           files: |
             License
-            library.properties
-            keywords.txt
+            latest.zip
