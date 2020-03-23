@@ -53,23 +53,26 @@ void loop(){
 
       //if rocket not fully inside let it fly in and shift it
       if(i < 8){
-        lc.moveLeft(rocketColumns[i]);   
+        lc.moveRight(rocketColumns[i]);   
       }else{
-        lc.moveLeft();
+        lc.moveRight();
 
         delay(delayTime);
-        if(i%6 == 4){
-          lc.moveUp();
-        }else if(i%6 == 0){
-          lc.moveUp();
-        }else if(i%6 == 1){
-          lc.moveDown();
-        }else if(i%6 == 2){
-          lc.moveDown();
-        }else if(i%6 == 3){
-          lc.moveDown();
-        }else{
-          lc.moveUp();
+        switch(i % 6){
+          case(3):
+          case(4):
+          case(5):
+            lc.moveUp();
+            break;
+
+          case(0):
+          case(1):
+          case(2):
+            lc.moveDown();
+            break;
+
+          default:
+            break;
         }
       }
          
@@ -85,23 +88,26 @@ void loop(){
 
       //if rocket not fully inside let it fly in and shift it
       if(i < 8){
-        lc.moveRight(rocketColumns[i]);   
+        lc.moveLeft(rocketColumns[i]);   
       }else{
-        lc.moveRight();
+        lc.moveLeft();
 
         delay(delayTime);
-        if(i%6 == 4){
-          lc.moveUp();
-        }else if(i%6 == 0){
-          lc.moveUp();
-        }else if(i%6 == 1){
-          lc.moveDown();
-        }else if(i%6 == 2){
-          lc.moveDown();
-        }else if(i%6 == 3){
-          lc.moveDown();
-        }else{
-          lc.moveUp();
+        switch(i % 6){
+          case(3):
+          case(4):
+          case(5):
+            lc.moveUp();
+            break;
+
+          case(0):
+          case(1):
+          case(2):
+            lc.moveDown();
+            break;
+
+          default:
+            break;
         }
       }
          

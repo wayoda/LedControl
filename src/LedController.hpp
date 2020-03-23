@@ -46,7 +46,6 @@ const static byte charTable [] PROGMEM  = {
     * While it can also handle 7-Segment Displays it is not tested that well.
  * @warning This object is not thread safe yet.
  * 
- * @todo fix orientation
  * @todo rename status to ledstates or something like that
  * @todo make it threading safe
  */

@@ -269,7 +269,7 @@ std::array<byte,8> LedController::makeColumns(std::array<byte,8> rowArray){
     return columnArray;
 }
 
-byte LedController::moveLeft(byte shiftedInColumn){
+byte LedController::moveRight(byte shiftedInColumn){
     byte returnValue = 0x00;
 
     for(unsigned int i = 0; i < 8;i++){
@@ -294,7 +294,7 @@ byte LedController::moveLeft(byte shiftedInColumn){
 }
 
 
-byte LedController::moveRight(byte shiftedInColumn){
+byte LedController::moveLeft(byte shiftedInColumn){
     byte returnValue = 0x00;
 
     for(unsigned int i = 0; i < 8;i++){
@@ -318,7 +318,7 @@ byte LedController::moveRight(byte shiftedInColumn){
     return returnValue;
 }
 
-std::array<byte,MAX_SEGMENTS> LedController::moveUp(std::array<byte,MAX_SEGMENTS> shiftedInRow ){
+std::array<byte,MAX_SEGMENTS> LedController::moveDown(std::array<byte,MAX_SEGMENTS> shiftedInRow ){
     auto retVal = std::array<byte,MAX_SEGMENTS>(emptyRow);
     for(unsigned int i = 0; i < SegmentCount;i++){
         retVal.at(i) = status.at(i).at(0);
@@ -341,7 +341,7 @@ std::array<byte,MAX_SEGMENTS> LedController::moveUp(std::array<byte,MAX_SEGMENTS
     
 }
 
-std::array<byte,MAX_SEGMENTS> LedController::moveDown(std::array<byte,MAX_SEGMENTS> shiftedInRow ){
+std::array<byte,MAX_SEGMENTS> LedController::moveUp(std::array<byte,MAX_SEGMENTS> shiftedInRow ){
     auto retVal = std::array<byte,MAX_SEGMENTS>(emptyRow);
     for(unsigned int i = 0; i < SegmentCount;i++){
         retVal.at(i) = status.at(i).at(7);
