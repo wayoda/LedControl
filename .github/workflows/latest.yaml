@@ -27,6 +27,8 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v1
+      - name: test code quality
+        run: bash <(curl -s https://codecov.io/bash) -t 28811034-e8a8-45bb-abe6-3781f65462e2
       - name: install platform io
         run: | 
           pip install -U wheel
