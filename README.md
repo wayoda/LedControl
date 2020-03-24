@@ -1,4 +1,4 @@
-# LedController ![pre-release](https://github.com/noah1510/LedController/workflows/pre-release/badge.svg) [![Discord](https://discordapp.com/api/guilds/691968013234339881/widget.png)](https://discord.gg/awjW3aG)
+# LedController [![GitHub license](https://img.shields.io/github/license/noah1510/LedController.svg)](https://github.com/noah1510/LedController/blob/master/License) ![pre-release](https://github.com/noah1510/LedController/workflows/pre-release/badge.svg) [![stable release](https://img.shields.io/github/v/release/noah1510/LedController.svg)](https://GitHub.com/noah1510/LedController/releases/) [![Discord](https://discordapp.com/api/guilds/691968013234339881/widget.png)](https://discord.gg/awjW3aG) 
 
 LedControl is an [Arduino](http://arduino.cc) library for MAX7219 and MAX7221 Led display drivers.
 The code should work with most boards and architectures but I only test it for the ESP32 Dev Module.
