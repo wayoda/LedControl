@@ -16,7 +16,7 @@
 #define OP_SHUTDOWN    12
 #define OP_DISPLAYTEST 15
 
-LedController::LedController(unsigned int csPin, unsigned int numSegments = 4):LedController::LedController(MOSI,SCK,csPin,numSegments,true){};
+LedController::LedController(unsigned int csPin, unsigned int numSegments):LedController::LedController(MOSI,SCK,csPin,numSegments,true){};
 
 LedController::LedController(
     unsigned int dataPin, 
