@@ -32,12 +32,20 @@ jobs:
           pip install -U wheel
           pip install -U platformio
           python -m platformio update
-      - name: "Build & test"
+      - name: configure the examples
         run: |
-          export PLATFORMIO_CI_SRC="examples/LedControllerDemoRocket/LedControllerDemoRocket.ino"
-          export PLATFORMIO_CI_SRC="$PLATFORMIO_CI_SRC:examples/LedControllerDemoCounting/LedControllerDemoCounting.ino"
+          export PLATFORMIO_CI_SRC_LOCAL="examples/LedControllerDemoRocket/LedControllerDemoRocket.ino"
+          export PLATFORMIO_CI_SRC_LOCAL="$PLATFORMIO_CI_SRC_LOCAL:examples/LedControllerDemoCounting/LedControllerDemoCounting.ino"
+          export PLATFORMIO_CI_SRC_LOCAL="$PLATFORMIO_CI_SRC_LOCAL:examples/LedControllerDemoHwSPI/LedControllerDemoHwSPI.ino"
+          echo ::set-env name=PLATFORMIO_CI_SRC::$PLATFORMIO_CI_SRC_LOCAL
+      - name: build & test esp32
+        run: |
           python -m platformio ci --lib="." --board=esp32dev
+      - name: build & test d1_mini
+        run: |
           python -m platformio ci --lib="." --board=d1_mini
+      - name: build & test uno
+        run: |
           python -m platformio ci --lib="." --board=uno
       - name: pack repo
         run: |
