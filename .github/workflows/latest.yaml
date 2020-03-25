@@ -25,6 +25,9 @@ jobs:
   pre-release:
     name: "Pre Release latest"
     runs-on: "ubuntu-latest"
+    env:
+      color: '\033[0;33m'
+      clear_color: '\033[0m'
     steps:
       - uses: actions/checkout@v1
       - name: install platform io
@@ -32,21 +35,45 @@ jobs:
           pip install -U wheel
           pip install -U platformio
           python -m platformio update
-      - name: configure the examples
+      - name: build and test Demo Rocket
         run: |
-          export PLATFORMIO_CI_SRC_LOCAL="examples/LedControllerDemoRocket/LedControllerDemoRocket.ino"
-          export PLATFORMIO_CI_SRC_LOCAL="$PLATFORMIO_CI_SRC_LOCAL:examples/LedControllerDemoCounting/LedControllerDemoCounting.ino"
-          export PLATFORMIO_CI_SRC_LOCAL="$PLATFORMIO_CI_SRC_LOCAL:examples/LedControllerDemoHwSPI/LedControllerDemoHwSPI.ino"
-          echo ::set-env name=PLATFORMIO_CI_SRC::$PLATFORMIO_CI_SRC_LOCAL
-      - name: build & test esp32
-        run: |
+          export PLATFORMIO_CI_SRC="examples/LedControllerDemoRocket/LedControllerDemoRocket.ino"
+          
+          echo "${color} Testing esp32dev ${clear_color}"
           python -m platformio ci --lib="." --board=esp32dev
-      - name: build & test d1_mini
-        run: |
+
+          echo "${color} Testing d1_mini ${clear_color}"
           python -m platformio ci --lib="." --board=d1_mini
-      - name: build & test uno
-        run: |
+
+          echo "${color} Testing uno ${clear_color}"
           python -m platformio ci --lib="." --board=uno
+
+      - name: build and test Demo Counting
+        run: |
+          export PLATFORMIO_CI_SRC="examples/LedControllerDemoCounting/LedControllerDemoCounting.ino"
+          
+          echo "${color} Testing esp32dev ${clear_color}"
+          python -m platformio ci --lib="." --board=esp32dev
+
+          echo "${color} Testing d1_mini ${clear_color}"
+          python -m platformio ci --lib="." --board=d1_mini
+
+          echo "${color} Testing uno ${clear_color}"
+          python -m platformio ci --lib="." --board=uno
+
+      - name: build and test Demo Rocket
+        run: |
+          export PLATFORMIO_CI_SRC="examples/LedControllerDemoHwSPI/LedControllerDemoHwSPI.ino"
+
+          echo "${color} Testing esp32dev ${clear_color}"
+          python -m platformio ci --lib="." --board=esp32dev
+
+          echo "${color} Testing d1_mini ${clear_color}"
+          python -m platformio ci --lib="." --board=d1_mini
+
+          echo "${color} Testing uno ${clear_color}"
+          python -m platformio ci --lib="." --board=uno
+
       - name: pack repo
         run: |
           zip -r latest.zip src License README.md library.properties keywords.txt .vscode examples
