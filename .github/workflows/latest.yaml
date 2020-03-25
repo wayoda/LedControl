@@ -33,10 +33,12 @@ jobs:
           pip install -U platformio
           python -m platformio update
       - name: "Build & test"
-        env:
-          PLATFORMIO_CI_SRC : examples/LedControllerDemoRocket/LedControllerDemoRocket.ino
         run: |
+          export PLATFORMIO_CI_SRC="examples/LedControllerDemoRocket/LedControllerDemoRocket.ino"
+          export PLATFORMIO_CI_SRC="$PLATFORMIO_CI_SRC:examples/LedControllerDemoCounting/LedControllerDemoCounting.ino"
           python -m platformio ci --lib="." --board=esp32dev
+          python -m platformio ci --lib="." --board=d1_mini
+          python -m platformio ci --lib="." --board=uno
       - name: pack repo
         run: |
           zip -r latest.zip src License README.md library.properties keywords.txt .vscode examples
