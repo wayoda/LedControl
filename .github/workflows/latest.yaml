@@ -35,21 +35,33 @@ jobs:
           pip install -U wheel
           pip install -U platformio
           python -m platformio update
-      - name: build and test esp32dev
+      - name: build and test Demo Rocket
         run: |
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoRocket/LedControllerDemoRocket.ino"
-          export PLATFORMIO_CI_SRC="$PLATFORMIO_CI_SRC:examples/LedControllerDemoCounting/LedControllerDemoCounting.ino"
-          export PLATFORMIO_CI_SRC="$PLATFORMIO_CI_SRC:examples/LedControllerDemoHwSPI/LedControllerDemoHwSPI.ino"
           
           echo "${color} Testing esp32dev ${clear_color}"
           python -m platformio ci --lib="." --board=esp32dev
 
-      - name: build and test esp8266
+          echo "${color} Testing d1_mini ${clear_color}"
+          python -m platformio ci --lib="." --board=d1_mini
+
+      - name: build and test Demo Counting
         run: |
-          export PLATFORMIO_CI_SRC="examples/LedControllerDemoRocket/LedControllerDemoRocket.ino"
-          export PLATFORMIO_CI_SRC="$PLATFORMIO_CI_SRC:examples/LedControllerDemoCounting/LedControllerDemoCounting.ino"
-          export PLATFORMIO_CI_SRC="$PLATFORMIO_CI_SRC:examples/LedControllerDemoHwSPI/LedControllerDemoHwSPI.ino"
+          export PLATFORMIO_CI_SRC="examples/LedControllerDemoCounting/LedControllerDemoCounting.ino"
           
+          echo "${color} Testing esp32dev ${clear_color}"
+          python -m platformio ci --lib="." --board=esp32dev
+
+          echo "${color} Testing d1_mini ${clear_color}"
+          python -m platformio ci --lib="." --board=d1_mini
+
+      - name: build and test Demo Rocket
+        run: |
+          export PLATFORMIO_CI_SRC="examples/LedControllerDemoHwSPI/LedControllerDemoHwSPI.ino"
+
+          echo "${color} Testing esp32dev ${clear_color}"
+          python -m platformio ci --lib="." --board=esp32dev
+
           echo "${color} Testing d1_mini ${clear_color}"
           python -m platformio ci --lib="." --board=d1_mini
 
