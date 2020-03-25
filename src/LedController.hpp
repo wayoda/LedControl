@@ -1,7 +1,7 @@
 #pragma once
 
 #if (defined(__AVR__))
-#include <avr\pgmspace.h>
+#include <avr/pgmspace.h>
 #else
 #include <pgmspace.h>
 #endif
@@ -14,16 +14,7 @@
 
 #include <SPI.h>
 
-#if (defined(ESP32))
-#include <driver/spi_common.h> 
-#endif
-
-#include <mutex>
-#include <thread>
-#include <memory>
-#include <vector>
 #include <array>
-#include <type_traits>
 
 #define MAX_SEGMENTS 8
 

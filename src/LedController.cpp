@@ -62,7 +62,7 @@ LedController::LedController(
 
     digitalWrite(SPI_CS,HIGH);
     
-    for(int i=0;i < SegmentCount;i++) {
+    for(unsigned int i=0;i < SegmentCount;i++) {
         spiTransfer(i,OP_DISPLAYTEST,0);
         //scanlimit is set to max on startup
         setScanLimit(i,7);
@@ -161,7 +161,7 @@ void LedController::spiTransfer(unsigned int segment, byte opcode, byte data) {
     unsigned int offset = segment*2;
     unsigned int maxbytes = SegmentCount*2;
 
-    for(int i=0;i < maxbytes;i++){
+    for(unsigned int i=0;i < maxbytes;i++){
         spidata[i]=(byte)0;
     }
 
@@ -326,8 +326,8 @@ byte LedController::moveLeft(byte shiftedInColumn){
         if(LedStates.at(SegmentCount-1).at(i) & 0x80){returnValue |= 0x01 << i; };
     }
 
-    for(int seg = 0;seg < SegmentCount;seg++){
-        for(int row=0;row < 8;row++){
+    for(unsigned int seg = 0;seg < SegmentCount;seg++){
+        for(unsigned int row=0;row < 8;row++){
             LedStates.at(seg).at(row) = LedStates.at(seg).at(row)>>1;
 
             if(seg != SegmentCount-1 && LedStates.at(seg+1).at(row) & 0x01){ LedStates.at(seg).at(row) |= 0x80; };
