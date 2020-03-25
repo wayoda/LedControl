@@ -16,16 +16,20 @@
 #define OP_SHUTDOWN    12
 #define OP_DISPLAYTEST 15
 
+LedController::LedController(unsigned int csPin, unsigned int numSegments = 4):LedController::LedController(MOSI,SCK,csPin,numSegments,true){};
+
 LedController::LedController(
     unsigned int dataPin, 
     unsigned int clkPin, 
     unsigned int csPin, 
-    unsigned int numSegments
+    unsigned int numSegments, 
+    bool useHardwareSpiParam
 ){
-    SPI_DIN = dataPin;
+    SPI_MOSI = dataPin;
     SPI_CLK = clkPin;
     SPI_CS = csPin;
     SegmentCount = numSegments;
+    useHardwareSpi = useHardwareSpiParam;
 
     if(SegmentCount > MAX_SEGMENTS){
         SegmentCount = MAX_SEGMENTS;
@@ -45,9 +49,17 @@ LedController::LedController(
         emptyRow.at(i)=0x00;
     }
 
-    pinMode(SPI_DIN,OUTPUT);
+    pinMode(SPI_MOSI,OUTPUT);
     pinMode(SPI_CLK,OUTPUT);
+
     pinMode(SPI_CS,OUTPUT);
+
+    if(useHardwareSpi){
+        SPI.setBitOrder(MSBFIRST);
+		SPI.setDataMode(SPI_MODE0);
+		SPI.begin();
+    }
+
     digitalWrite(SPI_CS,HIGH);
     
     for(int i=0;i < SegmentCount;i++) {
@@ -160,13 +172,26 @@ void LedController::spiTransfer(unsigned int segment, byte opcode, byte data) {
     //enable the line 
     digitalWrite(SPI_CS,LOW);
 
+    if(useHardwareSpi){
+        SPI.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
+    }
+
     //Now shift out the data 
     for(int i=maxbytes;i > 0;i--){
-        shiftOut(SPI_DIN,SPI_CLK,MSBFIRST,spidata[i-1]);
+        if(useHardwareSpi){
+            SPI.transfer(spidata[i-1]);
+        }else{
+            shiftOut(SPI_MOSI,SPI_CLK,MSBFIRST,spidata[i-1]);
+        }
+    }
+
+    if(useHardwareSpi){
+        SPI.endTransaction();
     }
 
     //latch the data onto the display
     digitalWrite(SPI_CS,HIGH);
+
 }   
 
 void LedController::setScanLimit(unsigned int segmentNumber, unsigned int limit){

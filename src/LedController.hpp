@@ -12,6 +12,12 @@
 #include <WProgram.h>
 #endif
 
+#include <SPI.h>
+
+#if (defined(ESP32))
+#include <driver/spi_common.h> 
+#endif
+
 #include <mutex>
 #include <thread>
 #include <memory>
@@ -54,7 +60,7 @@ private:
     std::array< std::array<byte,8>, MAX_SEGMENTS> LedStates;
 
     ///The pin for the data transfer (DIN)
-    unsigned int SPI_DIN;
+    unsigned int SPI_MOSI;
 
     ///The pin for the chip select signal (CS)
     unsigned int SPI_CS;
@@ -64,6 +70,9 @@ private:
 
     ///The number of connected Segments
     unsigned int SegmentCount;
+
+    ///True if hardware spi should be use (a lot faster  but you cannot use any pin you want)
+    bool useHardwareSpi = false;
 
     ///The mutex for the intensity level, needed to make it threading safe.
 
@@ -77,7 +86,7 @@ private:
      * @brief This function transfers one command to the attached module
      * 
      * @param segment The segment that should execute this command 
-     * @param opcode The command that should be executed
+     * @param opcode The command thCLKat should be executed
      * @param data The data needed for that command
      */
     void spiTransfer(unsigned int segment, byte opcode, byte data);
@@ -96,6 +105,15 @@ private:
     std::array<byte,MAX_SEGMENTS> emptyRow;
 
 public:
+
+    /**
+     * @brief Construct a new LedController for use with hardware SPI
+     * 
+     * @param csPin The pin to select the led matrix
+     * @param numSegments the number of connected segments (defualt 4)
+     */
+    LedController(unsigned int csPin, unsigned int numSegments = 4);
+
     /**
      * @brief Construct a new LedController object
      * 
@@ -103,8 +121,9 @@ public:
      * @param clkPin pin for the clock (CLK)
      * @param csPin pin for selecting the device (CS)
      * @param numSegments The number of segments that will be controlled by the controller (default 4)
+     * @param useHardwareSpi true if you want to use hardware SPI (view https://www.arduino.cc/en/Reference/SPI for pin config)
      */
-    LedController(unsigned int dataPin, unsigned int clkPin, unsigned int csPin, unsigned int numSegments = 4);
+    LedController(unsigned int dataPin, unsigned int clkPin, unsigned int csPin, unsigned int numSegments = 4, bool useHardwareSpi = false);
 
     /**
      * @brief Set the Intensity of the whole matrix to the given value.
