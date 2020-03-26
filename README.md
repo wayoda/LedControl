@@ -3,7 +3,20 @@
 LedControl is an [Arduino](http://arduino.cc) library for MAX7219 and MAX7221 Led display drivers.
 The code should work with most boards and architectures but I only test it for the ESP32 Dev Module.
 Feel free to create an issue if something is missing or not working correctly.
-**AVR boards do not work at the moment because they don't support the c++ standard librard so array cannot be included**
+
+The CI automatically tests the following boards(PlatformIO boards names):
+
+* esp32dev
+* d1_mini
+* uno
+* ATmega1280
+* leonardo
+
+The following boards do **not** work at the moment:
+
+* due
+
+All help regarding compatibility with more boards is welcome.
 
 ## Documentation
 

@@ -12,7 +12,7 @@ using C_ByteBlock = byte[8];
 using C_Matrix = byte[MAX_SEGMENTS][8];
 using C_ByteRow = byte[MAX_SEGMENTS];
 
-#if (defined(__AVR__))
+#if (defined(__AVR__) || defined(ARDUINO_SAM_DUE))
 
     #include <avr/pgmspace.h>
 
