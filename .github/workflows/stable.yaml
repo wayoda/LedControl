@@ -18,7 +18,8 @@ jobs:
           pip install -U wheel
           pip install -U platformio
           python -m platformio update
-          
+          python -m platformio platform install --with-all-packages espressif32 espressif8266 atmelavr 
+
       - name: build and test Demo Rocket
         run: |
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoRocket/LedControllerDemoRocket.ino"
@@ -29,7 +30,7 @@ jobs:
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoCounting/LedControllerDemoCounting.ino"
           python -m platformio ci --lib="." ${boards} --keep-build-dir
 
-      - name: build and test Demo Rocket
+      - name: build and test Demo HwSPI
         run: |
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoHwSPI/LedControllerDemoHwSPI.ino"
           python -m platformio ci --lib="." ${boards} --keep-build-dir
