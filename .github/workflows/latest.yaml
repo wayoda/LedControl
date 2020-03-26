@@ -26,8 +26,7 @@ jobs:
     name: "Pre Release latest"
     runs-on: "ubuntu-latest"
     env:
-      color: '\033[0;33m'
-      clear_color: '\033[0m'
+      boards: "-b esp32dev -b d1_mini -b uno -b ATmega1280 -b leonardo"
     steps:
       - uses: actions/checkout@v1
       - name: install platform io
@@ -38,59 +37,17 @@ jobs:
       - name: build and test Demo Rocket
         run: |
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoRocket/LedControllerDemoRocket.ino"
-          
-          echo "${color} Testing esp32dev ${clear_color}"
-          python -m platformio ci --lib="." --board=esp32dev --keep-build-dir
-
-          echo "${color} Testing d1_mini ${clear_color}"
-          python -m platformio ci --lib="." --board=d1_mini --keep-build-dir
-
-          echo "${color} Testing uno ${clear_color}"
-          python -m platformio ci --lib="." --board=uno --keep-build-dir
-
-          echo "${color} Testing ATmega1280 ${clear_color}"
-          python -m platformio ci --lib="." --board=ATmega1280 --keep-build-dir
-
-          echo "${color} Testing leonardo ${clear_color}"
-          python -m platformio ci --lib="." --board=leonardo --keep-build-dir
+          python -m platformio ci --lib="." ${boards} --keep-build-dir
 
       - name: build and test Demo Counting
         run: |
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoCounting/LedControllerDemoCounting.ino"
-          
-          echo "${color} Testing esp32dev ${clear_color}"
-          python -m platformio ci --lib="." --board=esp32dev --keep-build-dir
-
-          echo "${color} Testing d1_mini ${clear_color}"
-          python -m platformio ci --lib="." --board=d1_mini --keep-build-dir
-
-          echo "${color} Testing uno ${clear_color}"
-          python -m platformio ci --lib="." --board=uno --keep-build-dir
-
-          echo "${color} Testing ATmega1280 ${clear_color}"
-          python -m platformio ci --lib="." --board=ATmega1280 --keep-build-dir
-
-          echo "${color} Testing leonardo ${clear_color}"
-          python -m platformio ci --lib="." --board=leonardo --keep-build-dir
+          python -m platformio ci --lib="." ${boards} --keep-build-dir
 
       - name: build and test Demo Rocket
         run: |
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoHwSPI/LedControllerDemoHwSPI.ino"
-
-          echo "${color} Testing esp32dev ${clear_color}"
-          python -m platformio ci --lib="." --board=esp32dev --keep-build-dir
-
-          echo "${color} Testing d1_mini ${clear_color}"
-          python -m platformio ci --lib="." --board=d1_mini --keep-build-dir
-
-          echo "${color} Testing uno ${clear_color}"
-          python -m platformio ci --lib="." --board=uno --keep-build-dir
-
-          echo "${color} Testing ATmega1280 ${clear_color}"
-          python -m platformio ci --lib="." --board=ATmega1280 --keep-build-dir
-
-          echo "${color} Testing leonardo ${clear_color}"
-          python -m platformio ci --lib="." --board=leonardo --keep-build-dir
+          python -m platformio ci --lib="." ${boards} --keep-build-dir
 
       - name: pack repo
         run: |
