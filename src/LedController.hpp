@@ -8,13 +8,13 @@
 #include <WProgram.h>
 #endif
 
+using C_ByteBlock = byte[8];
+using C_Matrix = byte[MAX_SEGMENTS][8];
+using C_ByteRow = byte[MAX_SEGMENTS];
+
 #if (defined(__AVR__))
 
     #include <avr/pgmspace.h>
-
-    using ByteBlock = byte[8];
-    using Matrix = byte[MAX_SEGMENTS][8];
-    using ByteRow = byte[MAX_SEGMENTS];
 
 #else
 
@@ -24,13 +24,8 @@
     
 #endif
 
-#ifdef NO_STD
-    #undef STD_CAPABLE
+#ifndef STD_CAPABLE
     #define STD_CAPABLE 0
-#else
-    #ifndef STD_CAPABLE
-        #define STD_CAPABLE 0
-    #endif
 #endif
 
 #if (STD_CAPABLE > 0)
@@ -42,13 +37,11 @@
 
 #else
 
-    using ByteBlock = byte[8];
-    using Matrix = byte[MAX_SEGMENTS][8];
-    using ByteRow = byte[MAX_SEGMENTS];
+    using ByteBlock = C_ByteBlock;
+    using Matrix = C_Matrix;
+    using ByteRow = C_ByteRow;
 
 #endif
-
-
 
 #include <SPI.h>
 
@@ -129,6 +122,8 @@ private:
 
     ByteRow emptyRow;
 
+    int createEmptyRow(C_ByteRow* row);
+
 public:
 
     /**
@@ -163,7 +158,7 @@ public:
      * @param segmentindex the Segment number of the desired segment
      * @param data an array containing the data for all the pixels that should be displayed on that segment
      */
-    void displayOnSegment(unsigned int segmentindex, byte data[8]);
+    void displayOnSegment(unsigned int segmentindex, ByteBlock data);
 
     /**
      * @brief activates all segments, sets to same intensity and cleas them
@@ -371,7 +366,7 @@ public:
          * @param shiftedInRow The row that will be shifted in on the bottom 
          * @return ByteRow The row the will be shifted out on the top
          */
-        void moveUp(ByteRow shiftedInRow, ByteRow* shiftedOutRow);
+        void moveUp(C_ByteRow shiftedInRow, C_ByteRow* shiftedOutRow);
 
         /**
          * @brief moves the data down by one
@@ -379,21 +374,21 @@ public:
          * @param shiftedInRow The row that will be shifted in on the top (default 0x00)
          * @return ByteRow The row the will be shifted out on the bottom
          */
-        void moveDown(ByteRow shiftedInRow, ByteRow* shiftedOutRow);
+        void moveDown(C_ByteRow shiftedInRow, C_ByteRow* shiftedOutRow);
 
         /**
          * @brief moves the data up by oneand 0x00 will be shifted in
          * 
          * @return ByteRow The row the will be shifted out on the top
          */
-        void moveUp(ByteRow* shiftedOutRow);
+        void moveUp(C_ByteRow* shiftedOutRow);
 
         /**
          * @brief moves the data down by one and 0x00 will be shifted in
          * 
          * @return ByteRow The row the will be shifted out on the bottom
          */
-        void moveDown(ByteRow* shiftedOutRow);
+        void moveDown(C_ByteRow* shiftedOutRow);
 
         /**
          * @brief moves the data up by oneand 0x00 will be shifted in
@@ -415,7 +410,7 @@ public:
          * @param rowArray the array of rows of which you want the columns
          * @return ByteBlock the columns of the provided row array
          */
-        void makeColumns(ByteBlock rowArray, ByteBlock* columnArray);
+        void makeColumns(C_ByteBlock rowArray, C_ByteBlock* columnArray);
 
         /**
          * @brief Reverse an array of 8 bytes (mirror it)
@@ -423,7 +418,7 @@ public:
          * @param input The array that should be mirrored
          * @return ByteBlock The mirrored array
          */
-        void reverse(ByteBlock input, ByteBlock* reversedInput);
+        void reverse(C_ByteBlock input, C_ByteBlock* reversedInput);
 
         /**
          * @brief rotate an byte[8] array by 180 degrees
@@ -431,7 +426,7 @@ public:
          * @param input the array that will be rotated
          * @return ByteBlock The rotated array
          */
-        void rotate180(ByteBlock input, ByteBlock* rotatedInput);
+        void rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput);
 
 
     #endif

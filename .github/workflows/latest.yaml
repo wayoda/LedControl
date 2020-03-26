@@ -45,6 +45,9 @@ jobs:
           echo "${color} Testing d1_mini ${clear_color}"
           python -m platformio ci --lib="." --board=d1_mini
 
+          echo "${color} Testing uno ${clear_color}"
+          python -m platformio ci --lib="." --board=uno
+
       - name: build and test Demo Counting
         run: |
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoCounting/LedControllerDemoCounting.ino"
@@ -55,6 +58,9 @@ jobs:
           echo "${color} Testing d1_mini ${clear_color}"
           python -m platformio ci --lib="." --board=d1_mini
 
+          echo "${color} Testing uno ${clear_color}"
+          python -m platformio ci --lib="." --board=uno
+
       - name: build and test Demo Rocket
         run: |
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoHwSPI/LedControllerDemoHwSPI.ino"
@@ -64,6 +70,9 @@ jobs:
 
           echo "${color} Testing d1_mini ${clear_color}"
           python -m platformio ci --lib="." --board=d1_mini
+
+          echo "${color} Testing uno ${clear_color}"
+          python -m platformio ci --lib="." --board=uno
 
       - name: pack repo
         run: |

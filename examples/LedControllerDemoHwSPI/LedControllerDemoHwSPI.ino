@@ -7,7 +7,7 @@
 
 LedController lc = LedController(CS,Segments);  // Pins: DIN,CLK,CS, # of Display connected
 
-std::array<byte,8> rocket= {
+ByteBlock rocket= {
   B00000000,
   B00001111,
   B00111110,
@@ -18,7 +18,7 @@ std::array<byte,8> rocket= {
   B00000000
 };
 
-auto rocketColumns = lc.makeColumns(rocket);
+ByteBlock rocketColumns;
 
 //sets all rows on all displays to 0
 void switchLED(){
@@ -32,6 +32,12 @@ void switchLED(){
 }
 
 void setup(){
+
+  #if STD_CAPABLE > 0
+    rocketColumns = lc.makeColumns(rocket);
+  #else
+    lc.makeColumns(rocket, &rocketColumns);
+  #endif
 
   pinMode(13, OUTPUT);
 

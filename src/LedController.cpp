@@ -110,7 +110,7 @@ void LedController::setIntensity(unsigned int segmentNumber, unsigned int newInt
     spiTransfer(segmentNumber, OP_INTENSITY,newIntesityLevel);
 }
 
-void LedController::displayOnSegment(unsigned int segmentindex, byte data[8]){
+void LedController::displayOnSegment(unsigned int segmentindex, ByteBlock data){
     if(segmentindex >= SegmentCount){
         return;
     }
@@ -434,7 +434,7 @@ byte LedController::moveLeft(byte shiftedInColumn){
 
 #else
 
-    int createEmptyRow(ByteRow* row){
+    int LedController::createEmptyRow(C_ByteRow* row){
         if(row == nullptr){return 0;};
 
         for(unsigned int i = 0; i < MAX_SEGMENTS;i++){
@@ -444,7 +444,7 @@ byte LedController::moveLeft(byte shiftedInColumn){
         return 1;
     }
 
-    void LedController::makeColumns(ByteBlock rowArray, ByteBlock* columnArray){
+    void LedController::makeColumns(C_ByteBlock rowArray, C_ByteBlock* columnArray){
         if(columnArray == nullptr){return; };
 
         for(unsigned int i = 0; i < 8;i++){
@@ -456,7 +456,7 @@ byte LedController::moveLeft(byte shiftedInColumn){
 
     }
 
-    void LedController::moveDown(ByteRow shiftedInRow, ByteRow* shiftedOutRow){
+    void LedController::moveDown(C_ByteRow shiftedInRow, C_ByteRow* shiftedOutRow){
         if(createEmptyRow(shiftedOutRow) != 0){
             for(unsigned int i = 0; i < SegmentCount;i++){
                 (*shiftedOutRow)[i] = LedStates[i][0];
@@ -478,7 +478,7 @@ byte LedController::moveLeft(byte shiftedInColumn){
         
     }
 
-    void LedController::moveUp(ByteRow shiftedInRow, ByteRow* shiftedOutRow){
+    void LedController::moveUp(C_ByteRow shiftedInRow, C_ByteRow* shiftedOutRow){
         if(createEmptyRow(shiftedOutRow) != 0){
             for(unsigned int i = 0; i < SegmentCount;i++){
                 (*shiftedOutRow)[i] = LedStates[i][7];
@@ -500,13 +500,13 @@ byte LedController::moveLeft(byte shiftedInColumn){
         
     }
 
-    void LedController::moveUp(ByteRow* shiftedOutRow){
+    void LedController::moveUp(C_ByteRow* shiftedOutRow){
         ByteRow inVal;
         createEmptyRow(&inVal);
         moveUp(inVal,shiftedOutRow);
     }
 
-    void LedController::moveDown(ByteRow* shiftedOutRow){
+    void LedController::moveDown(C_ByteRow* shiftedOutRow){
         ByteRow inVal;
         createEmptyRow(&inVal);
         moveDown(inVal,shiftedOutRow);
@@ -525,7 +525,7 @@ byte LedController::moveLeft(byte shiftedInColumn){
     }
 
 
-    void LedController::reverse(ByteBlock input, ByteBlock* reversedInput){
+    void LedController::reverse(C_ByteBlock input, C_ByteBlock* reversedInput){
         if(reversedInput == nullptr){
             return;
         }
@@ -535,7 +535,7 @@ byte LedController::moveLeft(byte shiftedInColumn){
         }
     }
 
-    void LedController::rotate180(ByteBlock input, ByteBlock* rotatedInput){
+    void LedController::rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput){
         if(rotatedInput == nullptr){
             return;
         }
