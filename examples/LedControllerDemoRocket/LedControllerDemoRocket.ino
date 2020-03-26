@@ -10,7 +10,7 @@
 
 LedController lc = LedController(DIN,CLK,CS,Segments);  // Pins: DIN,CLK,CS, # of Display connected
 
-std::array<byte,8> rocket= {
+ByteBlock rocket= {
   B00000000,
   B00001111,
   B00111110,
@@ -21,7 +21,7 @@ std::array<byte,8> rocket= {
   B00000000
 };
 
-auto rocketColumns = lc.makeColumns(rocket);
+ByteBlock rocketColumns;
 
 //sets all rows on all displays to 0
 void switchLED(){
@@ -36,83 +36,89 @@ void switchLED(){
 
 void setup(){
 
+  #if STD_CAPABLE > 0
+    rocketColumns = lc.makeColumns(rocket);
+  #else
+    lc.makeColumns(rocket, &rocketColumns);
+  #endif
+
   pinMode(13, OUTPUT);
     
 }
 
 void loop(){
+
+  lc.clearMatrix();
   
-    lc.clearMatrix();
-    
-    //Let the rocket fly in
-    for(int i = 0;i < 8*(Segments+1);i++){
-      delay(delayTime);
-
-      //blink led for each iteration
-      switchLED();
-
-      //if rocket not fully inside let it fly in and shift it
-      if(i < 8){
-        lc.moveRight(rocketColumns[i]);   
-      }else{
-        lc.moveRight();
-
-        delay(delayTime);
-        switch(i % 6){
-          case(3):
-          case(4):
-          case(5):
-            lc.moveUp();
-            break;
-
-          case(0):
-          case(1):
-          case(2):
-            lc.moveDown();
-            break;
-
-          default:
-            break;
-        }
-      }
-         
-    }
-
+  //Let the rocket fly in
+  for(int i = 0;i < 8*(Segments+1);i++){
     delay(delayTime);
 
-    for(int i = 0;i < 8*(Segments+1);i++){
+    //blink led for each iteration
+    switchLED();
+
+    //if rocket not fully inside let it fly in and shift it
+    if(i < 8){
+      lc.moveRight(rocketColumns[i]);   
+    }else{
+      lc.moveRight();
+
       delay(delayTime);
+      switch(i % 6){
+        case(3):
+        case(4):
+        case(5):
+          lc.moveUp();
+          break;
 
-      //blink led for each iteration
-      switchLED();
+        case(0):
+        case(1):
+        case(2):
+          lc.moveDown();
+          break;
 
-      //if rocket not fully inside let it fly in and shift it
-      if(i < 8){
-        lc.moveLeft(rocketColumns[i]);   
-      }else{
-        lc.moveLeft();
-
-        delay(delayTime);
-        switch(i % 6){
-          case(3):
-          case(4):
-          case(5):
-            lc.moveUp();
-            break;
-
-          case(0):
-          case(1):
-          case(2):
-            lc.moveDown();
-            break;
-
-          default:
-            break;
-        }
+        default:
+          break;
       }
-         
     }
+        
+  }
 
+  delay(delayTime);
+
+  for(int i = 0;i < 8*(Segments+1);i++){
     delay(delayTime);
+
+    //blink led for each iteration
+    switchLED();
+
+    //if rocket not fully inside let it fly in and shift it
+    if(i < 8){
+      lc.moveLeft(rocketColumns[i]);   
+    }else{
+      lc.moveLeft();
+
+      delay(delayTime);
+      switch(i % 6){
+        case(3):
+        case(4):
+        case(5):
+          lc.moveUp();
+          break;
+
+        case(0):
+        case(1):
+        case(2):
+          lc.moveDown();
+          break;
+
+        default:
+          break;
+      }
+    }
+        
+  }
+
+  delay(delayTime);
 
 }

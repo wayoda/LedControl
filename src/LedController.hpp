@@ -1,10 +1,6 @@
 #pragma once
 
-#if (defined(__AVR__))
-#include <avr/pgmspace.h>
-#else
-#include <pgmspace.h>
-#endif
+#define MAX_SEGMENTS 8
 
 #if (ARDUINO >= 100)
 #include <Arduino.h>
@@ -12,11 +8,49 @@
 #include <WProgram.h>
 #endif
 
+#if (defined(__AVR__))
+
+    #include <avr/pgmspace.h>
+
+    using ByteBlock = byte[8];
+    using Matrix = byte[MAX_SEGMENTS][8];
+    using ByteRow = byte[MAX_SEGMENTS];
+
+#else
+
+    #include <pgmspace.h>
+
+    #define STD_CAPABLE 1
+    
+#endif
+
+#ifdef NO_STD
+    #undef STD_CAPABLE
+    #define STD_CAPABLE 0
+#else
+    #ifndef STD_CAPABLE
+        #define STD_CAPABLE 0
+    #endif
+#endif
+
+#if (STD_CAPABLE > 0)
+
+    #include <array>
+    #define ByteBlock std::array<byte,8>
+    #define Matrix std::array< std::array<byte,8>, MAX_SEGMENTS>
+    #define ByteRow std::array<byte,MAX_SEGMENTS>
+
+#else
+
+    using ByteBlock = byte[8];
+    using Matrix = byte[MAX_SEGMENTS][8];
+    using ByteRow = byte[MAX_SEGMENTS];
+
+#endif
+
+
+
 #include <SPI.h>
-
-#include <array>
-
-#define MAX_SEGMENTS 8
 
 const static byte charTable [] PROGMEM  = {
     B01111110,B00110000,B01101101,B01111001,B00110011,B01011011,B01011111,B01110000,
@@ -48,7 +82,7 @@ const static byte charTable [] PROGMEM  = {
 class LedController{
 private:
 
-    std::array< std::array<byte,8>, MAX_SEGMENTS> LedStates;
+    Matrix LedStates;
 
     ///The pin for the data transfer (DIN)
     unsigned int SPI_MOSI;
@@ -83,7 +117,7 @@ private:
     void spiTransfer(unsigned int segment, byte opcode, byte data);
 
     ///The array for shifting the data to the devices
-    std::array<byte,MAX_SEGMENTS*2> spidata;
+    byte spidata[MAX_SEGMENTS*2];
 
     /**
      * @brief Set the brightness of the segment.
@@ -93,7 +127,7 @@ private:
      */
     void setIntensity(unsigned int segmentNumber, unsigned int newIntesityLevel);
 
-    std::array<byte,MAX_SEGMENTS> emptyRow;
+    ByteRow emptyRow;
 
 public:
 
@@ -249,14 +283,6 @@ public:
     void refreshSegments();
 
     /**
-     * @brief Turns an array of rows into an array of columns
-     * 
-     * @param rowArray the array of rows of which you want the columns
-     * @return std::array<byte,8> the columns of the provided row array
-     */
-    std::array<byte,8> makeColumns(std::array<byte,8> rowArray);
-
-    /**
      * @brief moves the data left by one
      * 
      * @param shiftedInColumn The column that will be shifted in on the right (default 0x00)
@@ -274,36 +300,6 @@ public:
     byte moveRight(byte shiftedInColumn = 0x00);
 
     /**
-     * @brief moves the data up by one
-     * 
-     * @param shiftedInRow The row that will be shifted in on the bottom 
-     * @return std::array<byte,MAX_SEGMENTS> The row the will be shifted out on the top
-     */
-    std::array<byte,MAX_SEGMENTS> moveUp(std::array<byte,MAX_SEGMENTS> shiftedInRow);
-
-    /**
-     * @brief moves the data down by one
-     * 
-     * @param shiftedInRow The row that will be shifted in on the top (default 0x00)
-     * @return std::array<byte,MAX_SEGMENTS> The row the will be shifted out on the bottom
-     */
-    std::array<byte,MAX_SEGMENTS> moveDown(std::array<byte,MAX_SEGMENTS> shiftedInRow);
-
-    /**
-     * @brief moves the data up by oneand 0x00 will be shifted in
-     * 
-     * @return std::array<byte,MAX_SEGMENTS> The row the will be shifted out on the top
-     */
-    std::array<byte,MAX_SEGMENTS> moveUp();
-
-    /**
-     * @brief moves the data down by one and 0x00 will be shifted in
-     * 
-     * @return std::array<byte,MAX_SEGMENTS> The row the will be shifted out on the bottom
-     */
-    std::array<byte,MAX_SEGMENTS> moveDown();
-
-    /**
      * @brief This function changes to bitorder of a byte (useful to mirror "images" you want to display)
      * 
      * @param input The byte that should be reversed
@@ -311,20 +307,133 @@ public:
      */
     byte reverse(byte input);
 
-    /**
-     * @brief Reverse an array of 8 bytes (mirror it)
-     * 
-     * @param input The array that should be mirrored
-     * @return std::array<byte,8> The mirrored array
-     */
-    std::array<byte,8> reverse(std::array<byte,8> input);
+    #if (STD_CAPABLE > 0)
 
-    /**
-     * @brief rotate an byte[8] array by 180 degrees
-     * 
-     * @param input the array that will be rotated
-     * @return std::array<byte,8> The rotated array
-     */
-    std::array<byte,8> rotate180(std::array<byte,8> input);
+        /**
+         * @brief moves the data up by one
+         * 
+         * @param shiftedInRow The row that will be shifted in on the bottom 
+         * @return ByteRow The row the will be shifted out on the top
+         */
+        ByteRow moveUp(ByteRow shiftedInRow);
+
+        /**
+         * @brief moves the data down by one
+         * 
+         * @param shiftedInRow The row that will be shifted in on the top (default 0x00)
+         * @return ByteRow The row the will be shifted out on the bottom
+         */
+        ByteRow moveDown(ByteRow shiftedInRow);
+
+        /**
+         * @brief moves the data up by oneand 0x00 will be shifted in
+         * 
+         * @return ByteRow The row the will be shifted out on the top
+         */
+        ByteRow moveUp();
+
+        /**
+         * @brief moves the data down by one and 0x00 will be shifted in
+         * 
+         * @return ByteRow The row the will be shifted out on the bottom
+         */
+        ByteRow moveDown();
+
+        /**
+         * @brief Turns an array of rows into an array of columns
+         * 
+         * @param rowArray the array of rows of which you want the columns
+         * @return ByteBlock the columns of the provided row array
+         */
+        ByteBlock makeColumns(ByteBlock rowArray);
+
+        /**
+         * @brief Reverse an array of 8 bytes (mirror it)
+         * 
+         * @param input The array that should be mirrored
+         * @return ByteBlock The mirrored array
+         */
+        ByteBlock reverse(ByteBlock input);
+
+        /**
+         * @brief rotate an byte[8] array by 180 degrees
+         * 
+         * @param input the array that will be rotated
+         * @return ByteBlock The rotated array
+         */
+        ByteBlock rotate180(ByteBlock input);
+
+    #else
+
+        /**
+         * @brief moves the data up by one
+         * 
+         * @param shiftedInRow The row that will be shifted in on the bottom 
+         * @return ByteRow The row the will be shifted out on the top
+         */
+        void moveUp(ByteRow shiftedInRow, ByteRow* shiftedOutRow);
+
+        /**
+         * @brief moves the data down by one
+         * 
+         * @param shiftedInRow The row that will be shifted in on the top (default 0x00)
+         * @return ByteRow The row the will be shifted out on the bottom
+         */
+        void moveDown(ByteRow shiftedInRow, ByteRow* shiftedOutRow);
+
+        /**
+         * @brief moves the data up by oneand 0x00 will be shifted in
+         * 
+         * @return ByteRow The row the will be shifted out on the top
+         */
+        void moveUp(ByteRow* shiftedOutRow);
+
+        /**
+         * @brief moves the data down by one and 0x00 will be shifted in
+         * 
+         * @return ByteRow The row the will be shifted out on the bottom
+         */
+        void moveDown(ByteRow* shiftedOutRow);
+
+        /**
+         * @brief moves the data up by oneand 0x00 will be shifted in
+         * 
+         * @return ByteRow The row the will be shifted out on the top
+         */
+        void moveUp();
+
+        /**
+         * @brief moves the data down by one and 0x00 will be shifted in
+         * 
+         * @return ByteRow The row the will be shifted out on the bottom
+         */
+        void moveDown();
+
+        /**
+         * @brief Turns an array of rows into an array of columns
+         * 
+         * @param rowArray the array of rows of which you want the columns
+         * @return ByteBlock the columns of the provided row array
+         */
+        void makeColumns(ByteBlock rowArray, ByteBlock* columnArray);
+
+        /**
+         * @brief Reverse an array of 8 bytes (mirror it)
+         * 
+         * @param input The array that should be mirrored
+         * @return ByteBlock The mirrored array
+         */
+        void reverse(ByteBlock input, ByteBlock* reversedInput);
+
+        /**
+         * @brief rotate an byte[8] array by 180 degrees
+         * 
+         * @param input the array that will be rotated
+         * @return ByteBlock The rotated array
+         */
+        void rotate180(ByteBlock input, ByteBlock* rotatedInput);
+
+
+    #endif
 };
 

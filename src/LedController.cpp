@@ -35,18 +35,18 @@ LedController::LedController(
         SegmentCount = MAX_SEGMENTS;
     }
 
-    for(unsigned int i = 0; i < spidata.size();i++){
-        spidata.at(i) = 0x00;
+    for(unsigned int i = 0; i < MAX_SEGMENTS*2;i++){
+        spidata[i] = 0x00;
     }
 
     for(auto x:LedStates){
-        for(unsigned int i = 0; i < x.size();i++){
-            x.at(i) = 0x00;
+        for(unsigned int i = 0; i < 8;i++){
+            x[i] = 0x00;
         }
     }
 
     for(unsigned int i = 0; i < MAX_SEGMENTS;i++){
-        emptyRow.at(i)=0x00;
+        emptyRow[i]=0x00;
     }
 
     pinMode(SPI_MOSI,OUTPUT);
@@ -205,8 +205,8 @@ void LedController::clearSegment(unsigned int segmentNumber){
     }
 
     for(int i=0;i < 8;i++) {
-        LedStates.at(segmentNumber).at(i) = 0x00;
-        spiTransfer(segmentNumber, i+1, LedStates.at(segmentNumber).at(i));
+        LedStates[segmentNumber][i] = 0x00;
+        spiTransfer(segmentNumber, i+1, LedStates[segmentNumber][i]);
     }
 }
 
@@ -215,8 +215,8 @@ void LedController::setRow(unsigned int segmentNumber, unsigned int row, byte va
         return;
     }
     
-    LedStates.at(segmentNumber).at(row) = value;
-    spiTransfer(segmentNumber, row+1, LedStates.at(segmentNumber).at(row));
+    LedStates[segmentNumber][row] = value;
+    spiTransfer(segmentNumber, row+1, LedStates[segmentNumber][row]);
 }
 
  
@@ -226,12 +226,12 @@ void LedController::setRow(unsigned int segmentNumber, unsigned int row, byte va
     byte val=B10000000 >> column;
 
     if(state)
-        LedStates.at(segmentNumber).at(row)=LedStates.at(segmentNumber).at(row)|val;
+        LedStates[segmentNumber][row]=LedStates[segmentNumber][row]|val;
     else {
         val=~val;
-        LedStates.at(segmentNumber).at(row)=LedStates.at(segmentNumber).at(row)&val;
+        LedStates[segmentNumber][row]=LedStates[segmentNumber][row]&val;
     }
-    spiTransfer(segmentNumber, row+1,LedStates.at(segmentNumber).at(row));
+    spiTransfer(segmentNumber, row+1,LedStates[segmentNumber][row]);
 }
 
 
@@ -253,7 +253,7 @@ void LedController::setDigit(unsigned int segmentNumber, unsigned int digit, byt
 
     byte v = pgm_read_byte_near(charTable + value); 
     if(dp) {v |= B10000000; };
-    LedStates.at(segmentNumber).at(digit) = v;
+    LedStates[segmentNumber][digit] = v;
     spiTransfer(segmentNumber, digit+1,v);
 }
 
@@ -269,43 +269,30 @@ void LedController::setChar(unsigned int segmentNumber, unsigned int digit, char
     byte v = pgm_read_byte_near(charTable + index); 
     if(dp){ v |= B10000000; };
 
-    LedStates.at(segmentNumber).at(digit) = v;
+    LedStates[segmentNumber][digit] = v;
     spiTransfer(segmentNumber, digit+1, v);
 }
 
 void LedController::refreshSegments(){
     for(unsigned int seg = 0; seg < SegmentCount; seg++){
         for(unsigned int row = 0; row < 8; row++){
-            spiTransfer(seg, row+1, LedStates.at(seg).at(row));
+            spiTransfer(seg, row+1, LedStates[seg][row]);
         }
     }
-}
-
-std::array<byte,8> LedController::makeColumns(std::array<byte,8> rowArray){
-    std::array<byte,8> columnArray;
-
-    for(unsigned int i = 0; i < 8;i++){
-        columnArray.at(i) = 0x00;
-        for(unsigned int j = 0; j < 8; j++){
-            columnArray.at(i) |= (0x01 & ( rowArray.at(j) >> (7-i) )) << (7-j);
-        }
-    }
-
-    return columnArray;
 }
 
 byte LedController::moveRight(byte shiftedInColumn){
     byte returnValue = 0x00;
 
     for(unsigned int i = 0; i < 8;i++){
-        if(LedStates.at(SegmentCount-1).at(i) & 0x80){returnValue |= 0x01 << i; };
+        if(LedStates[SegmentCount-1][i] & 0x80){returnValue |= 0x01 << i; };
     }
 
     for(int seg = SegmentCount-1;seg >= 0;seg--){
         for(int row=0;row < 8;row++){
-            LedStates.at(seg).at(row) = LedStates.at(seg).at(row)<<1;
+            LedStates[seg][row] = LedStates[seg][row]<<1;
 
-            if(seg != 0 && LedStates.at(seg-1).at(row) & 0x80){ LedStates.at(seg).at(row)++; };
+            if(seg != 0 && LedStates[seg-1][row] & 0x80){ LedStates[seg][row]++; };
 
         }
 
@@ -316,87 +303,6 @@ byte LedController::moveRight(byte shiftedInColumn){
     refreshSegments();
 
     return returnValue;
-}
-
-
-byte LedController::moveLeft(byte shiftedInColumn){
-    byte returnValue = 0x00;
-
-    for(unsigned int i = 0; i < 8;i++){
-        if(LedStates.at(SegmentCount-1).at(i) & 0x80){returnValue |= 0x01 << i; };
-    }
-
-    for(unsigned int seg = 0;seg < SegmentCount;seg++){
-        for(unsigned int row=0;row < 8;row++){
-            LedStates.at(seg).at(row) = LedStates.at(seg).at(row)>>1;
-
-            if(seg != SegmentCount-1 && LedStates.at(seg+1).at(row) & 0x01){ LedStates.at(seg).at(row) |= 0x80; };
-
-        }
-
-    }
-
-    setColumn(SegmentCount-1,0,shiftedInColumn);
-
-    refreshSegments();
-
-    return returnValue;
-}
-
-std::array<byte,MAX_SEGMENTS> LedController::moveDown(std::array<byte,MAX_SEGMENTS> shiftedInRow ){
-    auto retVal = std::array<byte,MAX_SEGMENTS>(emptyRow);
-    for(unsigned int i = 0; i < SegmentCount;i++){
-        retVal.at(i) = LedStates.at(i).at(0);
-    }
-
-    for (unsigned int i = 0; i < 7; i++){
-        for(unsigned int seg = 0; seg < SegmentCount; seg++){
-            LedStates.at(seg).at(i) = LedStates.at(seg).at(i+1);
-        }
-        
-    }
-
-    for(unsigned int i = 0; i < SegmentCount;i++){
-        LedStates.at(i).at(7) = shiftedInRow.at(i);
-    }
-
-    refreshSegments();
-
-    return retVal;
-    
-}
-
-std::array<byte,MAX_SEGMENTS> LedController::moveUp(std::array<byte,MAX_SEGMENTS> shiftedInRow ){
-    auto retVal = std::array<byte,MAX_SEGMENTS>(emptyRow);
-    for(unsigned int i = 0; i < SegmentCount;i++){
-        retVal.at(i) = LedStates.at(i).at(7);
-    }
-
-    for (unsigned int i = 7; i > 0; i--){
-        for(unsigned int seg = 0; seg < SegmentCount; seg++){
-            LedStates.at(seg).at(i) = LedStates.at(seg).at(i-1);
-        }
-        
-    }
-
-    for(unsigned int i = 0; i < SegmentCount;i++){
-        LedStates.at(i).at(0) = shiftedInRow.at(i);
-    }
-
-    refreshSegments();
-
-    return retVal;
-    
-}
-
-std::array<byte,MAX_SEGMENTS> LedController::moveUp(){
-    auto inVal = std::array<byte,MAX_SEGMENTS>(emptyRow);
-    return moveUp(inVal);
-}
-
-std::array<byte,MAX_SEGMENTS> LedController::moveDown(){
-    auto inVal = std::array<byte,MAX_SEGMENTS>(emptyRow);
-    return moveDown(inVal);
 }
 
 byte LedController::reverse(byte var){
@@ -410,22 +316,233 @@ byte LedController::reverse(byte var){
     return ret;
 }
 
-std::array<byte,8> LedController::reverse(std::array<byte,8> input){
-    decltype(input) ret;
+byte LedController::moveLeft(byte shiftedInColumn){
+    byte returnValue = 0x00;
 
-    for(unsigned int i = 0; i < input.size();i++){
-        ret.at(i) = reverse(input.at(i));
+    for(unsigned int i = 0; i < 8;i++){
+        if(LedStates[SegmentCount-1][i] & 0x80){returnValue |= 0x01 << i; };
     }
 
-    return ret;
-}
+    for(unsigned int seg = 0;seg < SegmentCount;seg++){
+        for(unsigned int row=0;row < 8;row++){
+            LedStates[seg][row] = LedStates[seg][row]>>1;
 
-std::array<byte,8> LedController::rotate180(std::array<byte,8> input){
-    decltype(input) ret;
+            if(seg != SegmentCount-1 && LedStates[seg+1][row] & 0x01){ LedStates[seg][row] |= 0x80; };
 
-    for(unsigned int i = 0; i < input.size();i++){
-        ret.at(input.size()-(i+1)) = reverse(input.at(i));
+        }
+
     }
 
-    return ret;
+    setColumn(SegmentCount-1,0,shiftedInColumn);
+
+    refreshSegments();
+
+    return returnValue;
 }
+
+#if (STD_CAPABLE > 0)
+
+    ByteBlock LedController::makeColumns(ByteBlock rowArray){
+        ByteBlock columnArray;
+
+        for(unsigned int i = 0; i < 8;i++){
+            columnArray[i] = 0x00;
+            for(unsigned int j = 0; j < 8; j++){
+                columnArray[i] |= (0x01 & ( rowArray[j] >> (7-i) )) << (7-j);
+            }
+        }
+
+        return columnArray;
+    }
+
+    ByteRow LedController::moveDown(ByteRow shiftedInRow ){
+        auto retVal = ByteRow(emptyRow);
+        for(unsigned int i = 0; i < SegmentCount;i++){
+            retVal[i] = LedStates[i][0];
+        }
+
+        for (unsigned int i = 0; i < 7; i++){
+            for(unsigned int seg = 0; seg < SegmentCount; seg++){
+                LedStates[seg][i] = LedStates[seg][i+1];
+            }
+            
+        }
+
+        for(unsigned int i = 0; i < SegmentCount;i++){
+            LedStates[i][7] = shiftedInRow[i];
+        }
+
+        refreshSegments();
+
+        return retVal;
+        
+    }
+
+    ByteRow LedController::moveUp(ByteRow shiftedInRow ){
+        auto retVal = ByteRow(emptyRow);
+        for(unsigned int i = 0; i < SegmentCount;i++){
+            retVal[i] = LedStates[i][7];
+        }
+
+        for (unsigned int i = 7; i > 0; i--){
+            for(unsigned int seg = 0; seg < SegmentCount; seg++){
+                LedStates[seg][i] = LedStates[seg][i-1];
+            }
+            
+        }
+
+        for(unsigned int i = 0; i < SegmentCount;i++){
+            LedStates[i][0] = shiftedInRow[i];
+        }
+
+        refreshSegments();
+
+        return retVal;
+        
+    }
+
+    ByteRow LedController::moveUp(){
+        auto inVal = ByteRow(emptyRow);
+        return moveUp(inVal);
+    }
+
+    ByteRow LedController::moveDown(){
+        auto inVal = ByteRow(emptyRow);
+        return moveDown(inVal);
+    }
+
+
+    ByteBlock LedController::reverse(ByteBlock input){
+        decltype(input) ret;
+
+        for(unsigned int i = 0; i < input.size();i++){
+            ret[i] = reverse(input[i]);
+        }
+
+        return ret;
+    }
+
+    ByteBlock LedController::rotate180(ByteBlock input){
+        decltype(input) ret;
+
+        for(unsigned int i = 0; i < input.size();i++){
+            ret[input.size()-(i+1)] = reverse(input[i]);
+        }
+
+        return ret;
+    }
+
+#else
+
+    int createEmptyRow(ByteRow* row){
+        if(row == nullptr){return 0;};
+
+        for(unsigned int i = 0; i < MAX_SEGMENTS;i++){
+            (*row)[i] = 0x00;
+        }
+
+        return 1;
+    }
+
+    void LedController::makeColumns(ByteBlock rowArray, ByteBlock* columnArray){
+        if(columnArray == nullptr){return; };
+
+        for(unsigned int i = 0; i < 8;i++){
+            (*columnArray)[i] = 0x00;
+            for(unsigned int j = 0; j < 8; j++){
+                (*columnArray)[i] |= (0x01 & ( rowArray[j] >> (7-i) )) << (7-j);
+            }
+        }
+
+    }
+
+    void LedController::moveDown(ByteRow shiftedInRow, ByteRow* shiftedOutRow){
+        if(createEmptyRow(shiftedOutRow) != 0){
+            for(unsigned int i = 0; i < SegmentCount;i++){
+                (*shiftedOutRow)[i] = LedStates[i][0];
+            }
+        }
+
+        for (unsigned int i = 0; i < 7; i++){
+            for(unsigned int seg = 0; seg < SegmentCount; seg++){
+                LedStates[seg][i] = LedStates[seg][i+1];
+            }
+            
+        }
+
+        for(unsigned int i = 0; i < SegmentCount;i++){
+            LedStates[i][7] = shiftedInRow[i];
+        }
+
+        refreshSegments();
+        
+    }
+
+    void LedController::moveUp(ByteRow shiftedInRow, ByteRow* shiftedOutRow){
+        if(createEmptyRow(shiftedOutRow) != 0){
+            for(unsigned int i = 0; i < SegmentCount;i++){
+                (*shiftedOutRow)[i] = LedStates[i][7];
+            }
+        }
+
+        for (unsigned int i = 7; i > 0; i--){
+            for(unsigned int seg = 0; seg < SegmentCount; seg++){
+                LedStates[seg][i] = LedStates[seg][i-1];
+            }
+            
+        }
+
+        for(unsigned int i = 0; i < SegmentCount;i++){
+            LedStates[i][0] = shiftedInRow[i];
+        }
+
+        refreshSegments();
+        
+    }
+
+    void LedController::moveUp(ByteRow* shiftedOutRow){
+        ByteRow inVal;
+        createEmptyRow(&inVal);
+        moveUp(inVal,shiftedOutRow);
+    }
+
+    void LedController::moveDown(ByteRow* shiftedOutRow){
+        ByteRow inVal;
+        createEmptyRow(&inVal);
+        moveDown(inVal,shiftedOutRow);
+    }
+
+    void LedController::moveDown(){
+        ByteRow inVal;
+        createEmptyRow(&inVal);
+        moveDown(inVal,nullptr);
+    }
+
+    void LedController::moveUp(){
+        ByteRow inVal;
+        createEmptyRow(&inVal);
+        moveUp(inVal,nullptr);
+    }
+
+
+    void LedController::reverse(ByteBlock input, ByteBlock* reversedInput){
+        if(reversedInput == nullptr){
+            return;
+        }
+
+        for(unsigned int i = 0; i < 8;i++){
+            (*reversedInput)[i] = reverse(input[i]);
+        }
+    }
+
+    void LedController::rotate180(ByteBlock input, ByteBlock* rotatedInput){
+        if(rotatedInput == nullptr){
+            return;
+        }
+
+        for(unsigned int i = 0; i < 8;i++){
+            (*rotatedInput)[7 - i] = reverse(input[i]);
+        }
+    }
+
+#endif
