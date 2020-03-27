@@ -302,6 +302,74 @@ public:
      */
     byte reverse(byte input);
 
+    /**
+     * @brief moves the data up by one
+     * 
+     * @param shiftedInRow The row that will be shifted in on the bottom 
+     * @return ByteRow The row the will be shifted out on the top
+     */
+    void moveUp(C_ByteRow shiftedInRow, C_ByteRow* shiftedOutRow);
+
+    /**
+     * @brief moves the data down by one
+     * 
+     * @param shiftedInRow The row that will be shifted in on the top (default 0x00)
+     * @return ByteRow The row the will be shifted out on the bottom
+     */
+    void moveDown(C_ByteRow shiftedInRow, C_ByteRow* shiftedOutRow);
+
+    /**
+     * @brief moves the data up by oneand 0x00 will be shifted in
+     * 
+     * @return ByteRow The row the will be shifted out on the top
+     */
+    void moveUp(C_ByteRow* shiftedOutRow);
+
+    /**
+     * @brief moves the data down by one and 0x00 will be shifted in
+     * 
+     * @return ByteRow The row the will be shifted out on the bottom
+     */
+    void moveDown(C_ByteRow* shiftedOutRow);
+
+    /**
+     * @brief moves the data up by oneand 0x00 will be shifted in
+     * 
+     * @return ByteRow The row the will be shifted out on the top
+     */
+    void moveUp();
+
+    /**
+     * @brief moves the data down by one and 0x00 will be shifted in
+     * 
+     * @return ByteRow The row the will be shifted out on the bottom
+     */
+    void moveDown();
+
+    /**
+     * @brief Turns an array of rows into an array of columns
+     * 
+     * @param rowArray the array of rows of which you want the columns
+     * @return ByteBlock the columns of the provided row array
+     */
+    void makeColumns(C_ByteBlock rowArray, C_ByteBlock* columnArray);
+
+    /**
+     * @brief Reverse an array of 8 bytes (mirror it)
+     * 
+     * @param input The array that should be mirrored
+     * @return ByteBlock The mirrored array
+     */
+    void reverse(C_ByteBlock input, C_ByteBlock* reversedInput);
+
+    /**
+     * @brief rotate an byte[8] array by 180 degrees
+     * 
+     * @param input the array that will be rotated
+     * @return ByteBlock The rotated array
+     */
+    void rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput);
+
     #if (STD_CAPABLE > 0)
 
         /**
@@ -319,20 +387,6 @@ public:
          * @return ByteRow The row the will be shifted out on the bottom
          */
         ByteRow moveDown(ByteRow shiftedInRow);
-
-        /**
-         * @brief moves the data up by oneand 0x00 will be shifted in
-         * 
-         * @return ByteRow The row the will be shifted out on the top
-         */
-        ByteRow moveUp();
-
-        /**
-         * @brief moves the data down by one and 0x00 will be shifted in
-         * 
-         * @return ByteRow The row the will be shifted out on the bottom
-         */
-        ByteRow moveDown();
 
         /**
          * @brief Turns an array of rows into an array of columns
@@ -357,78 +411,7 @@ public:
          * @return ByteBlock The rotated array
          */
         ByteBlock rotate180(ByteBlock input);
-
-    #else
-
-        /**
-         * @brief moves the data up by one
-         * 
-         * @param shiftedInRow The row that will be shifted in on the bottom 
-         * @return ByteRow The row the will be shifted out on the top
-         */
-        void moveUp(C_ByteRow shiftedInRow, C_ByteRow* shiftedOutRow);
-
-        /**
-         * @brief moves the data down by one
-         * 
-         * @param shiftedInRow The row that will be shifted in on the top (default 0x00)
-         * @return ByteRow The row the will be shifted out on the bottom
-         */
-        void moveDown(C_ByteRow shiftedInRow, C_ByteRow* shiftedOutRow);
-
-        /**
-         * @brief moves the data up by oneand 0x00 will be shifted in
-         * 
-         * @return ByteRow The row the will be shifted out on the top
-         */
-        void moveUp(C_ByteRow* shiftedOutRow);
-
-        /**
-         * @brief moves the data down by one and 0x00 will be shifted in
-         * 
-         * @return ByteRow The row the will be shifted out on the bottom
-         */
-        void moveDown(C_ByteRow* shiftedOutRow);
-
-        /**
-         * @brief moves the data up by oneand 0x00 will be shifted in
-         * 
-         * @return ByteRow The row the will be shifted out on the top
-         */
-        void moveUp();
-
-        /**
-         * @brief moves the data down by one and 0x00 will be shifted in
-         * 
-         * @return ByteRow The row the will be shifted out on the bottom
-         */
-        void moveDown();
-
-        /**
-         * @brief Turns an array of rows into an array of columns
-         * 
-         * @param rowArray the array of rows of which you want the columns
-         * @return ByteBlock the columns of the provided row array
-         */
-        void makeColumns(C_ByteBlock rowArray, C_ByteBlock* columnArray);
-
-        /**
-         * @brief Reverse an array of 8 bytes (mirror it)
-         * 
-         * @param input The array that should be mirrored
-         * @return ByteBlock The mirrored array
-         */
-        void reverse(C_ByteBlock input, C_ByteBlock* reversedInput);
-
-        /**
-         * @brief rotate an byte[8] array by 180 degrees
-         * 
-         * @param input the array that will be rotated
-         * @return ByteBlock The rotated array
-         */
-        void rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput);
-
-
+        
     #endif
 };
 
