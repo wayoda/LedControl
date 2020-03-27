@@ -340,6 +340,8 @@ byte LedController::moveLeft(byte shiftedInColumn){
     return returnValue;
 }
 
+//The plain C array functions
+
 int LedController::createEmptyRow(C_ByteRow* row){
     if(row == nullptr){return 0;};
 

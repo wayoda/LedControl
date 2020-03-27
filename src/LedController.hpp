@@ -66,9 +66,11 @@ const static byte charTable [] PROGMEM  = {
 
 /**
  * @brief This class provied a control interface for MAX7219 and MAX7221 Led display drivers.
- * @long This Controller Class is mainly target at led matracies consisting of more than 1 segment.
+ * @details This Controller Class is mainly target at led matracies consisting of more than 1 segment.
     * While it can also handle 7-Segment Displays it is not tested that well.
  * @warning This object is not thread safe yet.
+ * @note If your compiler is STD_CAPABLE the ByteBlock is of the type std::array<byte,8> instead of C_ByteBlock.
+ * @note Check if your code has support for the std by calling: static_assert(STD_CAPABLE > 0, "STD not supported")
  * 
  * @todo make it threading safe
  */
@@ -305,8 +307,8 @@ public:
     /**
      * @brief moves the data up by one
      * 
-     * @param shiftedInRow The row that will be shifted in on the bottom 
-     * @return ByteRow The row the will be shifted out on the top
+     * @param shiftedInRow The row that will be shifted in on the bottom (default 0x00)
+     * @param shiftedOutRow The address of the row that will be shifted out on the bottom 
      */
     void moveUp(C_ByteRow shiftedInRow, C_ByteRow* shiftedOutRow);
 
@@ -314,28 +316,27 @@ public:
      * @brief moves the data down by one
      * 
      * @param shiftedInRow The row that will be shifted in on the top (default 0x00)
-     * @return ByteRow The row the will be shifted out on the bottom
+     * @param shiftedOutRow The address of the row that will be shifted out on the bottom
      */
     void moveDown(C_ByteRow shiftedInRow, C_ByteRow* shiftedOutRow);
 
     /**
      * @brief moves the data up by oneand 0x00 will be shifted in
      * 
-     * @return ByteRow The row the will be shifted out on the top
+     * @param shiftedOutRow The address of the row that will be shifted out on the bottom
      */
     void moveUp(C_ByteRow* shiftedOutRow);
 
     /**
      * @brief moves the data down by one and 0x00 will be shifted in
      * 
-     * @return ByteRow The row the will be shifted out on the bottom
+     * @param shiftedOutRow The address of the row that will be shifted out on the bottom
      */
     void moveDown(C_ByteRow* shiftedOutRow);
 
     /**
-     * @brief moves the data up by oneand 0x00 will be shifted in
+     * @brief moves the data up by one and 0x00 will be shifted in
      * 
-     * @return ByteRow The row the will be shifted out on the top
      */
     void moveUp();
 
@@ -350,7 +351,7 @@ public:
      * @brief Turns an array of rows into an array of columns
      * 
      * @param rowArray the array of rows of which you want the columns
-     * @return ByteBlock the columns of the provided row array
+     * @param columnArray The address where the result will be stored
      */
     void makeColumns(C_ByteBlock rowArray, C_ByteBlock* columnArray);
 
@@ -358,7 +359,7 @@ public:
      * @brief Reverse an array of 8 bytes (mirror it)
      * 
      * @param input The array that should be mirrored
-     * @return ByteBlock The mirrored array
+     * @param reversedInput The address where the result will be stored
      */
     void reverse(C_ByteBlock input, C_ByteBlock* reversedInput);
 
@@ -366,7 +367,7 @@ public:
      * @brief rotate an byte[8] array by 180 degrees
      * 
      * @param input the array that will be rotated
-     * @return ByteBlock The rotated array
+     * @param rotatedInput The address where the result will be stored
      */
     void rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput);
 
@@ -374,6 +375,7 @@ public:
 
         /**
          * @brief moves the data up by one
+         * @warning call static_assert(STD_CAPABLE > 0, "STD not supported") before calling this function
          * 
          * @param shiftedInRow The row that will be shifted in on the bottom 
          * @return ByteRow The row the will be shifted out on the top
@@ -382,6 +384,7 @@ public:
 
         /**
          * @brief moves the data down by one
+         * @warning call static_assert(STD_CAPABLE > 0, "STD not supported") before calling this function
          * 
          * @param shiftedInRow The row that will be shifted in on the top (default 0x00)
          * @return ByteRow The row the will be shifted out on the bottom
@@ -390,6 +393,7 @@ public:
 
         /**
          * @brief Turns an array of rows into an array of columns
+         * @warning call static_assert(STD_CAPABLE > 0, "STD not supported") before calling this function
          * 
          * @param rowArray the array of rows of which you want the columns
          * @return ByteBlock the columns of the provided row array
@@ -398,6 +402,7 @@ public:
 
         /**
          * @brief Reverse an array of 8 bytes (mirror it)
+         * @warning call static_assert(STD_CAPABLE > 0, "STD not supported") before calling this function
          * 
          * @param input The array that should be mirrored
          * @return ByteBlock The mirrored array
@@ -406,12 +411,13 @@ public:
 
         /**
          * @brief rotate an byte[8] array by 180 degrees
+         * @warning call static_assert(STD_CAPABLE > 0, "STD not supported") before calling this function
          * 
          * @param input the array that will be rotated
          * @return ByteBlock The rotated array
          */
         ByteBlock rotate180(ByteBlock input);
-        
+
     #endif
 };
 
