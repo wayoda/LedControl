@@ -8,8 +8,8 @@ on:
 jobs:
   doxygen:
     runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, '--build-docs')"
     steps:
-    - if: "contains(github.event.head_commit.message, '--build-docs')"
     - uses: actions/checkout@v1
     - name: install dependencies
       run: sudo apt install doxygen graphviz
