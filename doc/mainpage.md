@@ -22,8 +22,9 @@ All help regarding compatibility with more boards is welcome.
 
 The following links lead to their respective documentation:
 
-* [LedController class](https://noah1510.github.io/LedController/d9/def/class_led_controller.html)
-* [Installation](https://noah1510.github.io/LedController/d6/da3/md_doc_install.html)
+* [LedController class](d9/def/class_led_controller.html)
+* [Installation](d6/da3/md_doc_install.html)
+* [Usage introduction](dc/dc4/md_doc_usage.html)
 
 ## Hardware SPI Pin Assignments
 

@@ -1,5 +1,7 @@
 # Installation instructions
 
+If you want to see how to use the library look [here](dc/dc4/md_doc_usage.html)
+
 ## Arduino Ide
 
 The library is in the Arduino library manager.
