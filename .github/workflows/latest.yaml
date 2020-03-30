@@ -9,6 +9,7 @@ jobs:
   doxygen:
     runs-on: ubuntu-latest
     steps:
+    - if: "contains(github.event.head_commit.message, '--build-docs')"
     - uses: actions/checkout@v1
     - name: install dependencies
       run: sudo apt install doxygen graphviz
