@@ -31,6 +31,7 @@ using C_ByteRow = byte[MAX_SEGMENTS];
 #if (STD_CAPABLE > 0)
 
     #include <array>
+
     #define ByteBlock std::array<byte,8>
     #define Matrix std::array< std::array<byte,8>, MAX_SEGMENTS>
     #define ByteRow std::array<byte,MAX_SEGMENTS>

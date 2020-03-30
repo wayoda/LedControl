@@ -457,83 +457,53 @@ void LedController::rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput){
 //If the compiler supports the std add std functions
 #if (STD_CAPABLE > 0)
 
-    ByteBlock LedController::makeColumns(ByteBlock rowArray){
-        ByteBlock columnArray;
-
-        for(unsigned int i = 0; i < 8;i++){
-            columnArray[i] = 0x00;
-            for(unsigned int j = 0; j < 8; j++){
-                columnArray[i] |= (0x01 & ( rowArray[j] >> (7-i) )) << (7-j);
-            }
+    ByteBlock makeCppByteBlock(C_ByteBlock C_arr){
+        ByteBlock returnValue;
+        for(unsigned int i = 0; i < 8; i++){
+            returnValue[i] = C_arr[i];
         }
+        return returnValue;
+    }
 
-        return columnArray;
+    ByteBlock LedController::makeColumns(ByteBlock rowArray){
+        C_ByteBlock columnArray;
+
+        makeColumns(rowArray.data(), &columnArray);
+
+        return makeCppByteBlock(columnArray);
     }
 
     ByteRow LedController::moveDown(ByteRow shiftedInRow ){
-        auto retVal = ByteRow(emptyRow);
-        for(unsigned int i = 0; i < SegmentCount;i++){
-            retVal[i] = LedStates[i][0];
-        }
+        C_ByteRow shiftedOutRow;
 
-        for (unsigned int i = 0; i < 7; i++){
-            for(unsigned int seg = 0; seg < SegmentCount; seg++){
-                LedStates[seg][i] = LedStates[seg][i+1];
-            }
-            
-        }
+        moveDown(shiftedInRow.data(), &shiftedOutRow);
 
-        for(unsigned int i = 0; i < SegmentCount;i++){
-            LedStates[i][7] = shiftedInRow[i];
-        }
-
-        refreshSegments();
-
-        return retVal;
-        
+        return makeCppByteBlock(shiftedOutRow);        
     }
 
     ByteRow LedController::moveUp(ByteRow shiftedInRow ){
-        auto retVal = ByteRow(emptyRow);
-        for(unsigned int i = 0; i < SegmentCount;i++){
-            retVal[i] = LedStates[i][7];
-        }
+        C_ByteRow shiftedOutRow;
 
-        for (unsigned int i = 7; i > 0; i--){
-            for(unsigned int seg = 0; seg < SegmentCount; seg++){
-                LedStates[seg][i] = LedStates[seg][i-1];
-            }
-            
-        }
+        moveUp(shiftedInRow.data(), &shiftedOutRow);
 
-        for(unsigned int i = 0; i < SegmentCount;i++){
-            LedStates[i][0] = shiftedInRow[i];
-        }
-
-        refreshSegments();
-
-        return retVal;
+        return makeCppByteBlock(shiftedOutRow);
         
     }
 
     ByteBlock LedController::reverse(ByteBlock input){
-        decltype(input) ret;
+        C_ByteRow output;
 
-        for(unsigned int i = 0; i < input.size();i++){
-            ret[i] = reverse(input[i]);
-        }
+        reverse(input.data(), &output);
 
-        return ret;
+        return makeCppByteBlock(output);
     }
 
     ByteBlock LedController::rotate180(ByteBlock input){
-        decltype(input) ret;
+        C_ByteRow output;
 
-        for(unsigned int i = 0; i < input.size();i++){
-            ret[input.size()-(i+1)] = reverse(input[i]);
-        }
+        rotate180(input.data(), &output);
 
-        return ret;
+        return makeCppByteBlock(output);
     }
 
 #else
