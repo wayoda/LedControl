@@ -51,6 +51,11 @@ jobs:
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoHwSPI/LedControllerDemoHwSPI.ino"
           python -m platformio ci --lib="." ${boards} --keep-build-dir
 
+      - name: build and test 7-Segment Display
+        run: |
+          export PLATFORMIO_CI_SRC="examples/LCDemo7Segment/LCDemo7Segment.ino"
+          python -m platformio ci --lib="." ${boards} --keep-build-dir
+
       - name: pack repo
         run: |
           zip -r latest.zip src License README.md library.properties keywords.txt .vscode examples

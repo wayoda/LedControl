@@ -1,5 +1,5 @@
 //We always have to include the library
-#include "LedControl.h"
+#include "LedController.hpp"
 
 /*
  Now we need a LedControl to work with.
@@ -9,7 +9,7 @@
  pin 10 is connected to LOAD 
  We have only a single MAX72XX.
  */
-LedControl lc=LedControl(12,11,10,1);
+LedController lc=LedController(12,11,10,1);
 
 /* we always wait a bit between updates of the display */
 unsigned long delaytime=250;
@@ -19,11 +19,11 @@ void setup() {
    The MAX72XX is in power-saving mode on startup,
    we have to do a wakeup call
    */
-  lc.shutdown(0,false);
+  lc.shutdownAllSegments();
   /* Set the brightness to a medium values */
-  lc.setIntensity(0,8);
+  lc.setIntensity(8);
   /* and clear the display */
-  lc.clearDisplay(0);
+  lc.clearMatrix();
 }
 
 
@@ -46,7 +46,7 @@ void writeArduinoOn7Segment() {
   delay(delaytime);
   lc.setRow(0,0,0x1D);
   delay(delaytime);
-  lc.clearDisplay(0);
+  lc.clearMatrix();
   delay(delaytime);
 } 
 
@@ -63,7 +63,7 @@ void scrollDigits() {
     lc.setDigit(0,0,i+3,false);
     delay(delaytime);
   }
-  lc.clearDisplay(0);
+  lc.clearMatrix();
   delay(delaytime);
 }
 
