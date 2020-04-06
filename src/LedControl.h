@@ -182,6 +182,10 @@ class LedControl {
          * dp	sets the decimal point.
          */
         void setChar(int addr, int digit, char value, boolean dp);
+
+        /*
+         */
+        void setNumber(int addr, unsigned long value, byte points);
 };
 
 #endif	//LedControl.h
