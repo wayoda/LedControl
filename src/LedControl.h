@@ -186,6 +186,8 @@ class LedControl {
         /*
          */
         void setNumber(int addr, unsigned long value, byte points);
+
+        void setString(int addr, char* value, byte points);
 };
 
 #endif	//LedControl.h

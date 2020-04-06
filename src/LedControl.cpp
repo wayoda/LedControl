@@ -222,6 +222,16 @@ void LedControl::setChar(int addr, int digit, char value, boolean dp) {
     spiTransfer(addr, digit+1,v);
 }
 
+void LedControl::setString(int addr, char* value, byte points) {
+  short valuel = strlen(value);
+  for (int i=0; i<8-valuel; i++) {
+    setChar(addr, 7-i, ' ', points&(0x01<<(7-i)));
+  }
+  for (int i=0; i<8 && i<valuel; i++) {
+    setChar(addr, i, value[valuel-i-1], points&(0x01<<i));
+  }
+}
+
 void LedControl::spiTransfer(int addr, volatile byte opcode, volatile byte data) {
     //Create an array with the data to shift out
     int offset=addr*2;
