@@ -19,7 +19,7 @@ void setup() {
    The MAX72XX is in power-saving mode on startup,
    we have to do a wakeup call
    */
-  lc.shutdownAllSegments();
+  lc.activateAllSegments();
   /* Set the brightness to a medium values */
   lc.setIntensity(8);
   /* and clear the display */
