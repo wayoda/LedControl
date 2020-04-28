@@ -499,7 +499,7 @@ void LedController::rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput){
     }
 
     ByteBlock LedController::reverse(ByteBlock input){
-        C_ByteRow output;
+        C_ByteBlock output;
 
         reverse(input.data(), &output);
 
@@ -507,7 +507,7 @@ void LedController::rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput){
     }
 
     ByteBlock LedController::rotate180(ByteBlock input){
-        C_ByteRow output;
+        C_ByteBlock output;
 
         rotate180(input.data(), &output);
 
