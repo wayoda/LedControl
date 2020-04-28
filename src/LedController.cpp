@@ -465,6 +465,14 @@ void LedController::rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput){
         return returnValue;
     }
 
+    ByteRow makeCppByteRow(C_ByteRow C_arr){
+        ByteRow returnValue;
+        for(unsigned int i = 0; i < MAX_SEGMENTS; i++){
+            returnValue[i] = C_arr[i];
+        }
+        return returnValue;
+    }
+
     ByteBlock LedController::makeColumns(ByteBlock rowArray){
         C_ByteBlock columnArray;
 
@@ -478,7 +486,7 @@ void LedController::rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput){
 
         moveDown(shiftedInRow.data(), &shiftedOutRow);
 
-        return makeCppByteBlock(shiftedOutRow);        
+        return makeCppByteRow(shiftedOutRow);        
     }
 
     ByteRow LedController::moveUp(ByteRow shiftedInRow ){
@@ -486,7 +494,7 @@ void LedController::rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput){
 
         moveUp(shiftedInRow.data(), &shiftedOutRow);
 
-        return makeCppByteBlock(shiftedOutRow);
+        return makeCppByteRow(shiftedOutRow);
         
     }
 
