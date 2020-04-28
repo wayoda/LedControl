@@ -3,25 +3,36 @@
 #define MAX_SEGMENTS 8
 
 #if (ARDUINO >= 100)
-#include <Arduino.h>
+    #include <Arduino.h>
 #else
-#include <WProgram.h>
+    #include <WProgram.h>
 #endif
 
 using C_ByteBlock = byte[8];
 using C_Matrix = byte[MAX_SEGMENTS][8];
 using C_ByteRow = byte[MAX_SEGMENTS];
 
-#if (defined(__AVR__) || defined(ARDUINO_SAM_DUE))
+#ifdef __has_include
 
+    #define INCLUDED_PGMSPACE
+    #if(__has_include(<avr/pgmspace.h>))
+        #include <avr/pgmspace.h>
+    #else
+        #include <pgmspace.h>
+    #endif
+
+    #if(__has_include(<array>))
+        #include <array>
+        #define STD_CAPABLE 1
+    #else
+        #define STD_CAPABLE 0
+    #endif
+
+#endif
+
+#ifndef INCLUDED_PGMSPACE
     #include <avr/pgmspace.h>
-
-#else
-
-    #include <pgmspace.h>
-
-    #define STD_CAPABLE 1
-    
+    #define INCLUDED_PGMSPACE
 #endif
 
 #ifndef STD_CAPABLE
