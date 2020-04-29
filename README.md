@@ -12,9 +12,14 @@ The CI automatically tests the following boards(PlatformIO boards names):
 * ATmega1280
 * leonardo
 
+The following boards were able to compile on my machine once:
+
+* nano_every
+
 The following boards do **not** work at the moment:
 
 * due
+* genuino101
 
 All help regarding compatibility with more boards is welcome.
 
