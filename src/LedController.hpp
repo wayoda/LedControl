@@ -1,6 +1,8 @@
 #pragma once
 
-#define MAX_SEGMENTS 8
+#ifndef MAX_SEGMENTS
+    #define MAX_SEGMENTS 8
+#endif 
 
 #if (ARDUINO >= 100)
     #include <Arduino.h>
