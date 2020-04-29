@@ -3,7 +3,7 @@ name: "CI"
 on:
   push:
     branches-ignore:
-      - maser
+      - master
 
 jobs:
   pre-release:
