@@ -68,3 +68,9 @@ jobs:
           files: |
             License
             latest.zip
+            
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: build-artifact-${{ matrix.os }}-${{ matrix.compiler }}
+          path: .

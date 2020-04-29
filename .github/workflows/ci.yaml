@@ -1,28 +1,13 @@
-name: "tagged-release"
+name: "CI"
 
 on:
   push:
-    tags:
-      - "v*"
+    branches-ignore:
+      - maser
 
 jobs:
-  doxygen:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: install dependencies
-      run: sudo apt install doxygen graphviz
-    - name: generate docs
-      run: doxygen
-    - name: Deploy
-      uses: s0/git-publish-subdir-action@master
-      env:
-        REPO: self
-        BRANCH: gh-pages
-        FOLDER: doc/html
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  tagged-release:
-    name: "Tagged Release"
+  pre-release:
+    name: "Pre Release latest"
     runs-on: "ubuntu-latest"
     env:
       boards: "-b esp32dev -b d1_mini -b uno -b ATmega1280 -b leonardo"
@@ -33,7 +18,7 @@ jobs:
           pip install -U wheel
           pip install -U platformio
           python -m platformio update
-
+          
       - name: build and test Demo Rocket
         run: |
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoRocket/LedControllerDemoRocket.ino"
@@ -54,19 +39,8 @@ jobs:
           export PLATFORMIO_CI_SRC="examples/LCDemo7Segment/LCDemo7Segment.ino"
           python -m platformio ci --lib="." ${boards} --keep-build-dir
 
-      - name: pack repo
-        run: |
-          zip -r release.zip License README.md library.properties keywords.txt .vscode examples
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          files: |
-            License
-            release.zip
-            
       - uses: actions/upload-artifact@v1
-        if: failure()
+        if: always()
         with:
-          name: build-artifact-${{ matrix.os }}-${{ matrix.compiler }}
+          name: build-artifact
           path: .
