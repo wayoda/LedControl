@@ -246,6 +246,15 @@ public:
     void setRow(unsigned int segmentNumber, unsigned int row, byte value);
 
     /**
+     * @brief get one Row of one segment.
+     * 
+     * @param segmentNumber The Segment which should be modified 
+     * @param row The row which should be modified 
+     * @return value each bit set to 1 will light up the corresponding Led.
+     */
+    byte getRow(unsigned int segmentNumber, unsigned int row);
+
+    /**
      * @brief Set a single led to a given value
      * 
      * @param segmentNumber the segment number of the desired led

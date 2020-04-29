@@ -219,8 +219,16 @@ void LedController::setRow(unsigned int segmentNumber, unsigned int row, byte va
     spiTransfer(segmentNumber, row+1, LedStates[segmentNumber][row]);
 }
 
+byte LedController::getRow(unsigned int segmentNumber, unsigned int row){
+    if(segmentNumber >= SegmentCount || row > 7){
+        return 0x00;
+    }
+    
+    return LedStates[segmentNumber][row];
+}
+
  
- void LedController::setLed(unsigned int segmentNumber, unsigned int row, unsigned int column, boolean state) {
+void LedController::setLed(unsigned int segmentNumber, unsigned int row, unsigned int column, boolean state) {
     if( row > 7 || column > 7 || segmentNumber >= SegmentCount){ return;};
 
     byte val=B10000000 >> column;
