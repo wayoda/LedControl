@@ -214,6 +214,10 @@ void LedController::setRow(unsigned int segmentNumber, unsigned int row, byte va
     if(segmentNumber >= SegmentCount || row > 7){
         return;
     }
+
+    if(LedStates[segmentNumber][row] == value){
+        return;
+    }
     
     LedStates[segmentNumber][row] = value;
     spiTransfer(segmentNumber, row+1, LedStates[segmentNumber][row]);
