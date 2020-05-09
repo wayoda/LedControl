@@ -1,9 +1,5 @@
 #pragma once
 
-#ifndef MAX_SEGMENTS
-    #define MAX_SEGMENTS 8
-#endif 
-
 #if (ARDUINO >= 100)
     #include <Arduino.h>
 #else
@@ -11,8 +7,6 @@
 #endif
 
 using C_ByteBlock = byte[8];
-using C_Matrix = byte[MAX_SEGMENTS][8];
-using C_ByteRow = byte[MAX_SEGMENTS];
 
 #ifdef __has_include
 
@@ -46,14 +40,10 @@ using C_ByteRow = byte[MAX_SEGMENTS];
     #include <array>
 
     #define ByteBlock std::array<byte,8>
-    #define Matrix std::array< std::array<byte,8>, MAX_SEGMENTS>
-    #define ByteRow std::array<byte,MAX_SEGMENTS>
 
 #else
 
     using ByteBlock = C_ByteBlock;
-    using Matrix = C_Matrix;
-    using ByteRow = C_ByteRow;
 
 #endif
 
@@ -91,7 +81,8 @@ const static byte charTable [] PROGMEM  = {
 class LedController{
 private:
 
-    Matrix LedStates;
+    ByteBlock* LedStates;
+    //Matrix LedStates;
 
     ///The pin for the data transfer (DIN)
     unsigned int SPI_MOSI;
@@ -126,7 +117,7 @@ private:
     void spiTransfer(unsigned int segment, byte opcode, byte data);
 
     ///The array for shifting the data to the devices
-    byte spidata[MAX_SEGMENTS*2];
+    byte* spidata;
 
     /**
      * @brief Set the brightness of the segment.
@@ -136,9 +127,9 @@ private:
      */
     void setIntensity(unsigned int segmentNumber, unsigned int newIntesityLevel);
 
-    ByteRow emptyRow;
+    byte* emptyRow;
 
-    int createEmptyRow(C_ByteRow* row);
+    int createEmptyRow(byte** row);
 
 public:
 
@@ -160,6 +151,12 @@ public:
      * @param useHardwareSpi true if you want to use hardware SPI (view https://www.arduino.cc/en/Reference/SPI for pin config)
      */
     LedController(unsigned int dataPin, unsigned int clkPin, unsigned int csPin, unsigned int numSegments = 4, bool useHardwareSpi = false);
+
+    /**
+     * @brief Destroy the Led Controller object and free the memory
+     * 
+     */
+    ~LedController();
 
     /**
      * @brief Set the Intensity of the whole matrix to the given value.
@@ -333,7 +330,7 @@ public:
      * @param shiftedInRow The row that will be shifted in on the bottom (default 0x00)
      * @param shiftedOutRow The address of the row that will be shifted out on the bottom 
      */
-    void moveUp(C_ByteRow shiftedInRow, C_ByteRow* shiftedOutRow);
+    void moveUp(byte* shiftedInRow, byte** shiftedOutRow);
 
     /**
      * @brief moves the data down by one
@@ -341,21 +338,21 @@ public:
      * @param shiftedInRow The row that will be shifted in on the top (default 0x00)
      * @param shiftedOutRow The address of the row that will be shifted out on the bottom
      */
-    void moveDown(C_ByteRow shiftedInRow, C_ByteRow* shiftedOutRow);
+    void moveDown(byte* shiftedInRow, byte** shiftedOutRow);
 
     /**
      * @brief moves the data up by oneand 0x00 will be shifted in
      * 
      * @param shiftedOutRow The address of the row that will be shifted out on the bottom
      */
-    void moveUp(C_ByteRow* shiftedOutRow);
+    void moveUp(byte** shiftedOutRow);
 
     /**
      * @brief moves the data down by one and 0x00 will be shifted in
      * 
      * @param shiftedOutRow The address of the row that will be shifted out on the bottom
      */
-    void moveDown(C_ByteRow* shiftedOutRow);
+    void moveDown(byte** shiftedOutRow);
 
     /**
      * @brief moves the data up by one and 0x00 will be shifted in
@@ -395,24 +392,6 @@ public:
     void rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput);
 
     #if (STD_CAPABLE > 0)
-
-        /**
-         * @brief moves the data up by one
-         * @warning call static_assert(STD_CAPABLE > 0, "STD not supported") before calling this function
-         * 
-         * @param shiftedInRow The row that will be shifted in on the bottom 
-         * @return ByteRow The row the will be shifted out on the top
-         */
-        ByteRow moveUp(ByteRow shiftedInRow);
-
-        /**
-         * @brief moves the data down by one
-         * @warning call static_assert(STD_CAPABLE > 0, "STD not supported") before calling this function
-         * 
-         * @param shiftedInRow The row that will be shifted in on the top (default 0x00)
-         * @return ByteRow The row the will be shifted out on the bottom
-         */
-        ByteRow moveDown(ByteRow shiftedInRow);
 
         /**
          * @brief Turns an array of rows into an array of columns
