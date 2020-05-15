@@ -7,7 +7,7 @@
 
 LedController lc = LedController();  
 
-C_ByteBlock rocket= {
+ByteBlock rocket= {
   B00000000,
   B00001111,
   B00111110,
@@ -18,7 +18,7 @@ C_ByteBlock rocket= {
   B00000000
 };
 
-C_ByteBlock rocketColumns;
+ByteBlock rocketColumns;
 
 //sets all rows on all displays to 0
 void switchLED(){

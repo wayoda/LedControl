@@ -6,7 +6,7 @@
     #include <WProgram.h>
 #endif
 
-using C_ByteBlock = byte[8];
+using ByteBlock = byte[8];
 
 #ifdef __has_include
 
@@ -23,9 +23,6 @@ using C_ByteBlock = byte[8];
     #include <avr/pgmspace.h>
     #define INCLUDED_PGMSPACE
 #endif
-
-///@waring ByteBlock will be removed in future version please use C_ByteBlock instead
-using ByteBlock = C_ByteBlock;
 
 #include <SPI.h>
 
@@ -53,7 +50,7 @@ const static byte charTable [] PROGMEM  = {
  * @details This Controller Class is mainly target at led matracies consisting of more than 1 segment.
     * While it can also handle 7-Segment Displays it is not tested that well.
  * @warning This object is not thread safe yet.
- * @note If your compiler is STD_CAPABLE the ByteBlock is of the type std::array<byte,8> instead of C_ByteBlock.
+ * @note If your compiler is STD_CAPABLE the ByteBlock is of the type std::array<byte,8> instead of ByteBlock.
  * @note Check if your code has support for the std by calling: static_assert(STD_CAPABLE > 0, "STD not supported")
  * 
  * @todo make it threading safe
@@ -62,7 +59,7 @@ class LedController{
 protected:
 
     ///The state of all the Leds
-    C_ByteBlock* LedStates = nullptr;
+    ByteBlock* LedStates = nullptr;
 
     ///The pin for the data transfer (DIN)
     unsigned int SPI_MOSI = 0;
@@ -105,11 +102,24 @@ protected:
      */
     void setIntensity(unsigned int segmentNumber, unsigned int newIntesityLevel);
 
+    /**
+     * @brief True if the LedController is fully initilized
+     * 
+     */
     bool initilized = false;
 
+    /**
+     * @brief contains a row full of 0x00
+     * 
+     */
     byte* emptyRow = nullptr;
 
-    int createEmptyRow(byte** row);
+    /**
+     * @brief this copies an empty row into row
+     * 
+     * @param row the pointer to the byte array that should be used
+     */
+    void createEmptyRow(byte** row);
 
 public:
 
@@ -191,7 +201,7 @@ public:
      * @param segmentindex the Segment number of the desired segment
      * @param data an array containing the data for all the pixels that should be displayed on that segment
      */
-    void displayOnSegment(unsigned int segmentindex, C_ByteBlock data);
+    void displayOnSegment(unsigned int segmentindex, ByteBlock data);
 
 
     /**
@@ -200,7 +210,7 @@ public:
      * @param segmentindex the index of whose data you want to have
      * @param resultLocation the location where the data should be stored
      */
-    void getSegmentData(unsigned int segmentindex, C_ByteBlock* resultLocation);
+    void getSegmentData(unsigned int segmentindex, ByteBlock* resultLocation);
 
     /**
      * @brief activates all segments, sets to same intensity and cleas them
@@ -402,7 +412,7 @@ public:
      * @param rowArray the array of rows of which you want the columns
      * @param columnArray The address where the result will be stored
      */
-    void makeColumns(C_ByteBlock rowArray, C_ByteBlock* columnArray);
+    void makeColumns(ByteBlock rowArray, ByteBlock* columnArray);
 
     /**
      * @brief Reverse an array of 8 bytes (mirror it)
@@ -410,7 +420,7 @@ public:
      * @param input The array that should be mirrored
      * @param reversedInput The address where the result will be stored
      */
-    void reverse(C_ByteBlock input, C_ByteBlock* reversedInput);
+    void reverse(ByteBlock input, ByteBlock* reversedInput);
 
     /**
      * @brief rotate an byte[8] array by 180 degrees
@@ -418,7 +428,7 @@ public:
      * @param input the array that will be rotated
      * @param rotatedInput The address where the result will be stored
      */
-    void rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput);
+    void rotate180(ByteBlock input, ByteBlock* rotatedInput);
 
 };
 

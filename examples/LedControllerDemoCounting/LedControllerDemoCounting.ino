@@ -8,7 +8,7 @@
 
 LedController lc; 
 
-C_ByteBlock digits[10] = {
+ByteBlock digits[10] = {
   {
     B00000000,
     B00011000,
