@@ -21,9 +21,7 @@ LedController::~LedController(){
     delete[] spidata;
 }
 
-LedController::LedController(){
-    initilized = false;
-};
+LedController::LedController(){};
 
 LedController::LedController(unsigned int csPin, unsigned int numSegments):LedController::LedController(MOSI,SCK,csPin,numSegments,true){};
 
@@ -105,6 +103,10 @@ bool LedController::isInitilized(){
 }
 
 void LedController::resetMatrix(){
+    if(!initilized){
+        return;
+    }
+
     activateAllSegments();
     setIntensity(1);
     clearMatrix();
@@ -112,13 +114,17 @@ void LedController::resetMatrix(){
 
 
 void LedController::clearMatrix(){
+    if(!initilized){
+        return;
+    }
+
     for(unsigned int i = 0;i < SegmentCount;i++){
         clearSegment(i);   // Clear Segments
     }
 }
 
 void LedController::setIntensity(unsigned int newIntesityLevel){
-    if(newIntesityLevel > 15){
+    if(newIntesityLevel > 15 || !initilized){
         return;
     }
 
@@ -131,7 +137,7 @@ void LedController::setIntensity(unsigned int newIntesityLevel){
 }
 
 void LedController::setIntensity(unsigned int segmentNumber, unsigned int newIntesityLevel){
-    if (newIntesityLevel > 15 || segmentNumber >= SegmentCount){
+    if (newIntesityLevel > 15 || !initilized || segmentNumber >= SegmentCount){
         return;
     }
 
@@ -139,7 +145,7 @@ void LedController::setIntensity(unsigned int segmentNumber, unsigned int newInt
 }
 
 void LedController::displayOnSegment(unsigned int segmentindex, ByteBlock data){
-    if(segmentindex >= SegmentCount){
+    if(!initilized || segmentindex >= SegmentCount){
         return;
     }
 
@@ -149,11 +155,15 @@ void LedController::displayOnSegment(unsigned int segmentindex, ByteBlock data){
 }
 
 unsigned int LedController::getSegmentCount(){
+    if(!initilized){
+        return 0;
+    }
+
     return SegmentCount;
 }
 
 void LedController::shutdownSegment(unsigned int segmentNumber){
-    if(segmentNumber >= SegmentCount){
+    if(!initilized || segmentNumber >= SegmentCount){
         return;
     }
 
@@ -161,7 +171,7 @@ void LedController::shutdownSegment(unsigned int segmentNumber){
 }
 
 void LedController::activateSegment(unsigned int segmentNumber){
-    if(segmentNumber >= SegmentCount){
+    if(!initilized || segmentNumber >= SegmentCount){
         return;
     }
 
@@ -169,19 +179,27 @@ void LedController::activateSegment(unsigned int segmentNumber){
 }
 
 void LedController::shutdownAllSegments(){
+    if(!initilized){
+        return;
+    }
+
     for(unsigned int i = 0; i < SegmentCount;i++){
         shutdownSegment(i);
     }
 }
 
 void LedController::activateAllSegments(){
+    if(!initilized){
+        return;
+    }
+
     for(unsigned int i = 0; i < SegmentCount;i++){
         activateSegment(i);
     }
 }
 
 void LedController::spiTransfer(unsigned int segment, byte opcode, byte data) {
-    if(segment >= SegmentCount){
+    if(!initilized || segment >= SegmentCount){
         return;
     }
 
@@ -223,12 +241,12 @@ void LedController::spiTransfer(unsigned int segment, byte opcode, byte data) {
 }   
 
 void LedController::setScanLimit(unsigned int segmentNumber, unsigned int limit){
-    if(segmentNumber >= SegmentCount){return;};
+    if(!initilized || segmentNumber >= SegmentCount){return;};
     if(limit < 8) {spiTransfer(segmentNumber, OP_SCANLIMIT, limit); };
 }
 
 void LedController::clearSegment(unsigned int segmentNumber){
-    if(segmentNumber>=SegmentCount){
+    if(!initilized || segmentNumber>=SegmentCount){
         return;
     }
 
@@ -239,11 +257,7 @@ void LedController::clearSegment(unsigned int segmentNumber){
 }
 
 void LedController::setRow(unsigned int segmentNumber, unsigned int row, byte value){
-    if(segmentNumber >= SegmentCount || row > 7){
-        return;
-    }
-
-    if(LedStates[segmentNumber][row] == value){
+    if(!initilized || segmentNumber >= SegmentCount || row > 7 || LedStates[segmentNumber][row] == value){
         return;
     }
     
@@ -252,7 +266,7 @@ void LedController::setRow(unsigned int segmentNumber, unsigned int row, byte va
 }
 
 byte LedController::getRow(unsigned int segmentNumber, unsigned int row){
-    if(segmentNumber >= SegmentCount || row > 7){
+    if(!initilized || segmentNumber >= SegmentCount || row > 7){
         return 0x00;
     }
     
@@ -261,7 +275,7 @@ byte LedController::getRow(unsigned int segmentNumber, unsigned int row){
 
  
 void LedController::setLed(unsigned int segmentNumber, unsigned int row, unsigned int column, boolean state) {
-    if( row > 7 || column > 7 || segmentNumber >= SegmentCount){ return;};
+    if(!initilized ||  row > 7 || column > 7 || segmentNumber >= SegmentCount){ return;};
 
     byte val=B10000000 >> column;
 
@@ -276,10 +290,10 @@ void LedController::setLed(unsigned int segmentNumber, unsigned int row, unsigne
 
 
 void LedController::setColumn(unsigned int segmentNumber, unsigned int col, byte value) {
+    if(!initilized || segmentNumber >= SegmentCount || col > 7){return;};
+    
     byte val;
 
-    if( segmentNumber >= SegmentCount || col > 7){return;};
-    
     for(int row=0;row<8;row++) {
         //val = value & (0x01 << row);
         val=value >> (7-row);
@@ -289,7 +303,7 @@ void LedController::setColumn(unsigned int segmentNumber, unsigned int col, byte
 }
 
 void LedController::setDigit(unsigned int segmentNumber, unsigned int digit, byte value, boolean dp) {
-    if(segmentNumber >= SegmentCount || digit > 7 || value > 15) {return;};
+    if(!initilized || segmentNumber >= SegmentCount || digit > 7 || value > 15) {return;};
 
     byte v = pgm_read_byte_near(charTable + value); 
     if(dp) {v |= B10000000; };
@@ -298,7 +312,7 @@ void LedController::setDigit(unsigned int segmentNumber, unsigned int digit, byt
 }
 
 void LedController::setChar(unsigned int segmentNumber, unsigned int digit, char value, boolean dp) {
-    if(segmentNumber >= SegmentCount || digit>7) {return;};
+    if(!initilized || segmentNumber >= SegmentCount || digit>7) {return;};
     
     byte index = (byte)value;
     if(index >127) {
@@ -314,6 +328,10 @@ void LedController::setChar(unsigned int segmentNumber, unsigned int digit, char
 }
 
 void LedController::refreshSegments(){
+    if(!initilized){
+        return;
+    }
+
     for(unsigned int seg = 0; seg < SegmentCount; seg++){
         for(unsigned int row = 0; row < 8; row++){
             spiTransfer(seg, row+1, LedStates[seg][row]);
@@ -322,6 +340,10 @@ void LedController::refreshSegments(){
 }
 
 byte LedController::moveRight(byte shiftedInColumn){
+    if(!initilized){
+        return 0x00;
+    }
+
     byte returnValue = 0x00;
 
     for(unsigned int i = 0; i < 8;i++){
@@ -357,6 +379,10 @@ byte LedController::reverse(byte var){
 }
 
 byte LedController::moveLeft(byte shiftedInColumn){
+    if(!initilized){
+        return;
+    }
+
     byte returnValue = 0x00;
 
     for(unsigned int i = 0; i < 8;i++){
@@ -383,7 +409,7 @@ byte LedController::moveLeft(byte shiftedInColumn){
 //The plain C array functions
 
 int LedController::createEmptyRow(byte** row){
-    if(row == nullptr || *row == nullptr){return 0;};
+    if(!initilized || row == nullptr || *row == nullptr){return 0;};
 
     for(unsigned int i = 0; i < SegmentCount;i++){
         (*row)[i] = 0x00;
@@ -393,7 +419,7 @@ int LedController::createEmptyRow(byte** row){
 }
 
 void LedController::makeColumns(C_ByteBlock rowArray, C_ByteBlock* columnArray){
-    if(columnArray == nullptr){return; };
+    if(!initilized || columnArray == nullptr){return; };
 
     for(unsigned int i = 0; i < 8;i++){
         (*columnArray)[i] = 0x00;
@@ -405,6 +431,10 @@ void LedController::makeColumns(C_ByteBlock rowArray, C_ByteBlock* columnArray){
 }
 
 void LedController::moveDown(byte* shiftedInRow, byte** shiftedOutRow){
+    if(!initilized){
+        return;
+    }
+
     if(createEmptyRow(shiftedOutRow) != 0){
         for(unsigned int i = 0; i < SegmentCount;i++){
             (*shiftedOutRow)[i] = LedStates[i][0];
@@ -427,6 +457,10 @@ void LedController::moveDown(byte* shiftedInRow, byte** shiftedOutRow){
 }
 
 void LedController::moveUp(byte* shiftedInRow, byte** shiftedOutRow){
+    if(!initilized){
+        return;
+    }
+
     if(createEmptyRow(shiftedOutRow) != 0){
         for(unsigned int i = 0; i < SegmentCount;i++){
             (*shiftedOutRow)[i] = LedStates[i][7];
@@ -449,6 +483,10 @@ void LedController::moveUp(byte* shiftedInRow, byte** shiftedOutRow){
 }
 
 void LedController::moveUp(byte** shiftedOutRow){
+    if(!initilized){
+        return;
+    }
+
     byte* inVal = new byte[SegmentCount];
     createEmptyRow(&inVal);
     moveUp(inVal,shiftedOutRow);
@@ -456,6 +494,10 @@ void LedController::moveUp(byte** shiftedOutRow){
 }
 
 void LedController::moveDown(byte** shiftedOutRow){
+    if(!initilized){
+        return;
+    }
+
     byte* inVal = new byte[SegmentCount];
     createEmptyRow(&inVal);
     moveDown(inVal,shiftedOutRow);
@@ -463,6 +505,10 @@ void LedController::moveDown(byte** shiftedOutRow){
 }
 
 void LedController::moveDown(){
+    if(!initilized){
+        return;
+    }
+
     byte* inVal = new byte[SegmentCount];
     createEmptyRow(&inVal);
     moveDown(inVal,nullptr);
@@ -470,6 +516,10 @@ void LedController::moveDown(){
 }
 
 void LedController::moveUp(){
+    if(!initilized){
+        return;
+    }
+
     byte* inVal = new byte[SegmentCount];
     createEmptyRow(&inVal);
     moveUp(inVal,nullptr);
@@ -534,8 +584,6 @@ void LedController::rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput){
         return makeCppByteBlock(output);
     }
 
-#else
-
-    
+#else    
 
 #endif
