@@ -34,27 +34,27 @@ jobs:
         run: | 
           pip install -U wheel
           pip install -U platformio
-          python -m platformio update
+          python3 -m platformio update
           
       - name: build and test Demo Rocket
         run: |
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoRocket/LedControllerDemoRocket.ino"
-          python -m platformio ci --lib="." ${boards} --keep-build-dir
+          python3 -m platformio ci --lib="." ${boards} --keep-build-dir
 
       - name: build and test Demo Counting
         run: |
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoCounting/LedControllerDemoCounting.ino"
-          python -m platformio ci --lib="." ${boards} --keep-build-dir
+          python3 -m platformio ci --lib="." ${boards} --keep-build-dir
 
       - name: build and test Demo HwSPI
         run: |
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoHwSPI/LedControllerDemoHwSPI.ino"
-          python -m platformio ci --lib="." ${boards} --keep-build-dir
+          python3 -m platformio ci --lib="." ${boards} --keep-build-dir
 
       - name: build and test 7-Segment Display
         run: |
           export PLATFORMIO_CI_SRC="examples/LCDemo7Segment/LCDemo7Segment.ino"
-          python -m platformio ci --lib="." ${boards} --keep-build-dir
+          python3 -m platformio ci --lib="." ${boards} --keep-build-dir
 
       - name: pack repo
         run: |
