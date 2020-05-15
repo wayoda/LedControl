@@ -37,7 +37,7 @@ LedController::LedController(
 }
 
 LedController::LedController(const LedController& other){
-    if(this->initilized || !other.initilized){
+    if(!other.initilized){
         return;
     }
 
@@ -45,17 +45,17 @@ LedController::LedController(const LedController& other){
 
     for(unsigned int i = 0; i < SegmentCount;i++){
         for(unsigned int j = 0; i < 8;i++){
-            this->LedStates[i][j] = other.LedStates[i][j];
+            LedStates[i][j] = other.LedStates[i][j];
         }
     }
 
     for(unsigned int i = 0; i < SegmentCount * 2;i++){
-        this->spidata[i] = other.spidata[i];
+        spidata[i] = other.spidata[i];
     }
 
-    other.~LedController();
+    //other.~LedController();
 
-    this->refreshSegments();
+    refreshSegments();
 
 }
 
@@ -74,6 +74,8 @@ void LedController::init(
         return;
     }
 
+    Serial.println("Beginning inilization");
+
     SPI_MOSI = dataPin;
     SPI_CLK = clkPin;
     SPI_CS = csPin;
@@ -82,8 +84,9 @@ void LedController::init(
 
     LedStates = new ByteBlock[SegmentCount];
     spidata = new byte[SegmentCount*2];
+    emptyRow = new byte[SegmentCount];
 
-    for(unsigned int i = 0; i < SegmentCount*2*2;i++){
+    for(unsigned int i = 0; i < SegmentCount*2;i++){
         spidata[i] = 0x00;
     }
 
@@ -122,6 +125,8 @@ void LedController::init(
 
         setIntensity(i,1);
     }
+
+    Serial.println("finished initilization");
 
     initilized = true;
 }
