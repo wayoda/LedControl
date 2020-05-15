@@ -5,9 +5,9 @@
 
 #define delayTime 200 // Delay between Frames
 
-LedController lc = LedController(CS,Segments);  // Pins: DIN,CLK,CS, # of Display connected
+LedController lc = LedController();  
 
-ByteBlock rocket= {
+C_ByteBlock rocket= {
   B00000000,
   B00001111,
   B00111110,
@@ -18,7 +18,7 @@ ByteBlock rocket= {
   B00000000
 };
 
-ByteBlock rocketColumns;
+C_ByteBlock rocketColumns;
 
 //sets all rows on all displays to 0
 void switchLED(){
@@ -32,12 +32,9 @@ void switchLED(){
 }
 
 void setup(){
+  lc.init(CS,Segments);// Pins: CS, # of Display connected
 
-  #if STD_CAPABLE > 0
-    rocketColumns = lc.makeColumns(rocket);
-  #else
-    lc.makeColumns(rocket, &rocketColumns);
-  #endif
+  lc.makeColumns(rocket, &rocketColumns);
 
   pinMode(13, OUTPUT);
 

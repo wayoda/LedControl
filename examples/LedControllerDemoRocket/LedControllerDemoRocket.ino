@@ -10,7 +10,7 @@
 
 LedController lc = LedController();  
 
-ByteBlock rocket= {
+C_ByteBlock rocket= {
   B00000000,
   B00001111,
   B00111110,
@@ -21,7 +21,7 @@ ByteBlock rocket= {
   B00000000
 };
 
-ByteBlock rocketColumns;
+C_ByteBlock rocketColumns;
 
 //sets all rows on all displays to 0
 void switchLED(){
@@ -38,11 +38,9 @@ void setup(){
 
   lc.init(DIN,CLK,CS,Segments); // Pins: DIN,CLK,CS, # of Display connected
 
-  #if STD_CAPABLE > 0
-    rocketColumns = lc.makeColumns(rocket);
-  #else
-    lc.makeColumns(rocket, &rocketColumns);
-  #endif
+
+  lc.makeColumns(rocket, &rocketColumns);
+ 
 
   pinMode(13, OUTPUT);
     

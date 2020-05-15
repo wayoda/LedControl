@@ -17,13 +17,6 @@ using C_ByteBlock = byte[8];
         #include <pgmspace.h>
     #endif
 
-    #if(__has_include(<array>))
-        #include <array>
-        #define STD_CAPABLE 1
-    #else
-        #define STD_CAPABLE 0
-    #endif
-
 #endif
 
 #ifndef INCLUDED_PGMSPACE
@@ -31,21 +24,8 @@ using C_ByteBlock = byte[8];
     #define INCLUDED_PGMSPACE
 #endif
 
-#ifndef STD_CAPABLE
-    #define STD_CAPABLE 0
-#endif
-
-#if (STD_CAPABLE > 0)
-
-    #include <array>
-
-    #define ByteBlock std::array<byte,8>
-
-#else
-
-    using ByteBlock = C_ByteBlock;
-
-#endif
+///@waring ByteBlock will be removed in future version please use C_ByteBlock instead
+using ByteBlock = C_ByteBlock;
 
 #include <SPI.h>
 
@@ -79,27 +59,25 @@ const static byte charTable [] PROGMEM  = {
  * @todo make it threading safe
  */
 class LedController{
-private:
+protected:
 
-    ByteBlock* LedStates;
-    //Matrix LedStates;
+    ///The state of all the Leds
+    C_ByteBlock* LedStates = nullptr;
 
     ///The pin for the data transfer (DIN)
-    unsigned int SPI_MOSI;
+    unsigned int SPI_MOSI = 0;
 
     ///The pin for the chip select signal (CS)
-    unsigned int SPI_CS;
+    unsigned int SPI_CS = 0;
 
     ///The pin for the clock signal (CLK)
-    unsigned int SPI_CLK;
+    unsigned int SPI_CLK = 0;
 
     ///The number of connected Segments
-    unsigned int SegmentCount;
+    unsigned int SegmentCount = 0;
 
     ///True if hardware spi should be use (a lot faster  but you cannot use any pin you want)
     bool useHardwareSpi = false;
-
-    ///The mutex for the intensity level, needed to make it threading safe.
 
     /**
      * @brief The current brightness level of the leds.
@@ -117,7 +95,7 @@ private:
     void spiTransfer(unsigned int segment, byte opcode, byte data);
 
     ///The array for shifting the data to the devices
-    byte* spidata;
+    byte* spidata = nullptr;
 
     /**
      * @brief Set the brightness of the segment.
@@ -129,7 +107,7 @@ private:
 
     bool initilized = false;
 
-    byte* emptyRow;
+    byte* emptyRow = nullptr;
 
     int createEmptyRow(byte** row);
 
@@ -167,6 +145,21 @@ public:
     ~LedController();
 
     /**
+     * @brief The copy constructor for the LedController
+     * 
+     * @param other the LedController which should have its state copied
+     */
+    LedController(const LedController& other);
+
+    /**
+     * @brief initilizes the LedController for use with hardware SPI
+     * 
+     * @param csPin The pin to select the led matrix
+     * @param numSegments the number of connected segments (defualt 4)
+     */
+    void init(unsigned int csPin, unsigned int numSegments = 4);
+
+    /**
      * @brief initilizes the LedController
      * 
      * @param dataPin pin on the Arduino where data gets shifted out (DIN)
@@ -198,7 +191,16 @@ public:
      * @param segmentindex the Segment number of the desired segment
      * @param data an array containing the data for all the pixels that should be displayed on that segment
      */
-    void displayOnSegment(unsigned int segmentindex, ByteBlock data);
+    void displayOnSegment(unsigned int segmentindex, C_ByteBlock data);
+
+
+    /**
+     * @brief Get the Segment Data of a specific Segment
+     * 
+     * @param segmentindex the index of whose data you want to have
+     * @param resultLocation the location where the data should be stored
+     */
+    void getSegmentData(unsigned int segmentindex, C_ByteBlock* resultLocation);
 
     /**
      * @brief activates all segments, sets to same intensity and cleas them
@@ -418,35 +420,5 @@ public:
      */
     void rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput);
 
-    #if (STD_CAPABLE > 0)
-
-        /**
-         * @brief Turns an array of rows into an array of columns
-         * @warning call static_assert(STD_CAPABLE > 0, "STD not supported") before calling this function
-         * 
-         * @param rowArray the array of rows of which you want the columns
-         * @return ByteBlock the columns of the provided row array
-         */
-        ByteBlock makeColumns(ByteBlock rowArray);
-
-        /**
-         * @brief Reverse an array of 8 bytes (mirror it)
-         * @warning call static_assert(STD_CAPABLE > 0, "STD not supported") before calling this function
-         * 
-         * @param input The array that should be mirrored
-         * @return ByteBlock The mirrored array
-         */
-        ByteBlock reverse(ByteBlock input);
-
-        /**
-         * @brief rotate an byte[8] array by 180 degrees
-         * @warning call static_assert(STD_CAPABLE > 0, "STD not supported") before calling this function
-         * 
-         * @param input the array that will be rotated
-         * @return ByteBlock The rotated array
-         */
-        ByteBlock rotate180(ByteBlock input);
-
-    #endif
 };
 

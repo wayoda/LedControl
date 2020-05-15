@@ -17,6 +17,7 @@
 #define OP_DISPLAYTEST 15
 
 LedController::~LedController(){
+    initilized = false;
     delete[] LedStates;
     delete[] spidata;
 }
@@ -33,6 +34,33 @@ LedController::LedController(
     bool useHardwareSpiParam
 ){
     init(dataPin,clkPin,csPin,numSegments,useHardwareSpiParam); 
+}
+
+LedController::LedController(const LedController& other){
+    if(this->initilized || !other.initilized){
+        return;
+    }
+
+    init(other.SPI_MOSI, other.SPI_CLK, other.SPI_CS, other.SegmentCount, other.useHardwareSpi);
+
+    for(unsigned int i = 0; i < SegmentCount;i++){
+        for(unsigned int j = 0; i < 8;i++){
+            this->LedStates[i][j] = other.LedStates[i][j];
+        }
+    }
+
+    for(unsigned int i = 0; i < SegmentCount * 2;i++){
+        this->spidata[i] = other.spidata[i];
+    }
+
+    other.~LedController();
+
+    this->refreshSegments();
+
+}
+
+void LedController::init(unsigned int csPin, unsigned int numSegments){
+    return init(MOSI,SCK,csPin,numSegments,true);
 }
 
 void LedController::init(
@@ -52,7 +80,7 @@ void LedController::init(
     SegmentCount = numSegments;
     useHardwareSpi = useHardwareSpiParam;
 
-    LedStates = new ByteBlock[SegmentCount];
+    LedStates = new C_ByteBlock[SegmentCount];
     spidata = new byte[SegmentCount*2];
 
     for(unsigned int i = 0; i < SegmentCount*2*2;i++){
@@ -112,7 +140,6 @@ void LedController::resetMatrix(){
     clearMatrix();
 }
 
-
 void LedController::clearMatrix(){
     if(!initilized){
         return;
@@ -144,13 +171,23 @@ void LedController::setIntensity(unsigned int segmentNumber, unsigned int newInt
     spiTransfer(segmentNumber, OP_INTENSITY,newIntesityLevel);
 }
 
-void LedController::displayOnSegment(unsigned int segmentindex, ByteBlock data){
+void LedController::displayOnSegment(unsigned int segmentindex, C_ByteBlock data){
     if(!initilized || segmentindex >= SegmentCount){
         return;
     }
 
     for(int i=0;i < 8;i++){
         setRow(segmentindex,i,data[i]);
+    }
+}
+
+void LedController::getSegmentData(unsigned int segmentindex, C_ByteBlock* resultLocation){
+    if(!initilized || segmentindex >= SegmentCount || resultLocation == nullptr){
+        return;
+    }
+
+    for(unsigned int i = 0; i < 8;i++){
+        (*resultLocation)[i] = LedStates[segmentindex][i];
     }
 }
 
@@ -380,7 +417,7 @@ byte LedController::reverse(byte var){
 
 byte LedController::moveLeft(byte shiftedInColumn){
     if(!initilized){
-        return;
+        return 0x00;
     }
 
     byte returnValue = 0x00;
@@ -547,43 +584,3 @@ void LedController::rotate180(C_ByteBlock input, C_ByteBlock* rotatedInput){
         (*rotatedInput)[7 - i] = reverse(input[i]);
     }
 }
-
-
-//If the compiler supports the std add std functions
-#if (STD_CAPABLE > 0)
-
-    ByteBlock makeCppByteBlock(C_ByteBlock C_arr){
-        ByteBlock returnValue;
-        for(unsigned int i = 0; i < 8; i++){
-            returnValue[i] = C_arr[i];
-        }
-        return returnValue;
-    }
-
-    ByteBlock LedController::makeColumns(ByteBlock rowArray){
-        C_ByteBlock columnArray;
-
-        makeColumns(rowArray.data(), &columnArray);
-
-        return makeCppByteBlock(columnArray);
-    }
-
-    ByteBlock LedController::reverse(ByteBlock input){
-        C_ByteBlock output;
-
-        reverse(input.data(), &output);
-
-        return makeCppByteBlock(output);
-    }
-
-    ByteBlock LedController::rotate180(ByteBlock input){
-        C_ByteBlock output;
-
-        rotate180(input.data(), &output);
-
-        return makeCppByteBlock(output);
-    }
-
-#else    
-
-#endif
