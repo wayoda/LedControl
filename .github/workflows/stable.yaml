@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: install platform io
         run: | 
-          pip3 install -U setuptool
+          pip3 install -U setuptools
           pip3 install -U wheel
           pip3 install -U platformio
           python3 -m platformio update

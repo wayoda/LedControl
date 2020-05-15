@@ -471,7 +471,7 @@ void LedController::moveDown(byte* shiftedInRow, byte** shiftedOutRow){
     }
 
     createEmptyRow(shiftedOutRow);
-    if(*shiftedOutRow != nullptr){
+    if(shiftedOutRow != nullptr && *shiftedOutRow != nullptr){
         for(unsigned int i = 0; i < SegmentCount;i++){
             (*shiftedOutRow)[i] = LedStates[i][0];
         }
@@ -498,7 +498,7 @@ void LedController::moveUp(byte* shiftedInRow, byte** shiftedOutRow){
     }
 
     createEmptyRow(shiftedOutRow);
-    if(*shiftedOutRow != nullptr){
+    if(shiftedOutRow != nullptr && *shiftedOutRow != nullptr){
         for(unsigned int i = 0; i < SegmentCount;i++){
             (*shiftedOutRow)[i] = LedStates[i][7];
         }
