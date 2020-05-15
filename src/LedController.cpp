@@ -21,6 +21,10 @@ LedController::~LedController(){
     delete[] spidata;
 }
 
+LedController::LedController(){
+    initilized = false;
+};
+
 LedController::LedController(unsigned int csPin, unsigned int numSegments):LedController::LedController(MOSI,SCK,csPin,numSegments,true){};
 
 LedController::LedController(
@@ -30,6 +34,20 @@ LedController::LedController(
     unsigned int numSegments, 
     bool useHardwareSpiParam
 ){
+    init(dataPin,clkPin,csPin,numSegments,useHardwareSpiParam); 
+}
+
+void LedController::init(
+    unsigned int dataPin, 
+    unsigned int clkPin, 
+    unsigned int csPin, 
+    unsigned int numSegments, 
+    bool useHardwareSpiParam
+){
+    if(initilized){
+        return;
+    }
+
     SPI_MOSI = dataPin;
     SPI_CLK = clkPin;
     SPI_CS = csPin;
@@ -78,6 +96,12 @@ LedController::LedController(
 
         setIntensity(i,1);
     }
+
+    initilized = true;
+}
+
+bool LedController::isInitilized(){
+    return initilized;
 }
 
 void LedController::resetMatrix(){

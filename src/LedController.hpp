@@ -127,11 +127,19 @@ private:
      */
     void setIntensity(unsigned int segmentNumber, unsigned int newIntesityLevel);
 
+    bool initilized = false;
+
     byte* emptyRow;
 
     int createEmptyRow(byte** row);
 
 public:
+
+    /**
+     * @brief Construct a new LedController without initilizing anything.
+     * 
+     */
+    LedController();
 
     /**
      * @brief Construct a new LedController for use with hardware SPI
@@ -157,6 +165,25 @@ public:
      * 
      */
     ~LedController();
+
+    /**
+     * @brief initilizes the LedController
+     * 
+     * @param dataPin pin on the Arduino where data gets shifted out (DIN)
+     * @param clkPin pin for the clock (CLK)
+     * @param csPin pin for selecting the device (CS)
+     * @param numSegments The number of segments that will be controlled by the controller (default 4)
+     * @param useHardwareSpi true if you want to use hardware SPI (view https://www.arduino.cc/en/Reference/SPI for pin config)
+     */
+    void init(unsigned int dataPin, unsigned int clkPin, unsigned int csPin, unsigned int numSegments = 4, bool useHardwareSpi = false);
+
+    /**
+     * @brief returns the status of the LedController
+     * 
+     * @return true the LedController is initilized
+     * @return false the LedController is not initilized
+     */
+    bool isInitilized();
 
     /**
      * @brief Set the Intensity of the whole matrix to the given value.

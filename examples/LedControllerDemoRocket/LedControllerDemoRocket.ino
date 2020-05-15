@@ -8,7 +8,7 @@
 
 #define delayTime 200 // Delay between Frames
 
-LedController lc = LedController(DIN,CLK,CS,Segments);  // Pins: DIN,CLK,CS, # of Display connected
+LedController lc = LedController();  
 
 ByteBlock rocket= {
   B00000000,
@@ -35,6 +35,8 @@ void switchLED(){
 }
 
 void setup(){
+
+  lc.init(DIN,CLK,CS,Segments); // Pins: DIN,CLK,CS, # of Display connected
 
   #if STD_CAPABLE > 0
     rocketColumns = lc.makeColumns(rocket);
