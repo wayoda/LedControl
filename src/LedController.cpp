@@ -20,6 +20,7 @@ LedController::~LedController(){
     initilized = false;
     delete[] LedStates;
     delete[] spidata;
+    delete[] emptyRow;
 }
 
 LedController::LedController(){};
@@ -104,6 +105,7 @@ void LedController::init(
     pinMode(SPI_CLK,OUTPUT);
 
     pinMode(SPI_CS,OUTPUT);
+    digitalWrite(SPI_CS,LOW);
 
     if(useHardwareSpi){
         SPI.setBitOrder(MSBFIRST);
@@ -113,6 +115,7 @@ void LedController::init(
 
     digitalWrite(SPI_CS,HIGH);
     
+    initilized = true;
     for(unsigned int i=0;i < SegmentCount;i++) {
         spiTransfer(i,OP_DISPLAYTEST,0);
         //scanlimit is set to max on startup
@@ -128,7 +131,6 @@ void LedController::init(
 
     Serial.println("finished initilization");
 
-    initilized = true;
 }
 
 bool LedController::isInitilized(){
@@ -250,7 +252,7 @@ void LedController::spiTransfer(unsigned int segment, byte opcode, byte data) {
     unsigned int maxbytes = SegmentCount*2;
 
     for(unsigned int i=0;i < maxbytes;i++){
-        spidata[i]=(byte)0;
+        spidata[i]=0x00;
     }
 
     //put our device data into the array
