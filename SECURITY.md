@@ -6,7 +6,7 @@ The versions below will get security fixes if they are reported.
 There will be a seperate branch for the continued version (eg. a branch 1.5.x).
 All fixes will also be applied to the master branch if applicable, so the latest version should have all the features and fixes.
 
-Because of several problems in versions previous to 1.5, I will not provide fixes for them.
+Because of several problems in versions older than 1.5, I will not provide fixes for them.
 Please consider updating, 1.5 is backwards compatible with older version.
 
 | Version | Supported          |

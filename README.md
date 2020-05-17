@@ -23,6 +23,19 @@ The following boards do **not** work at the moment:
 
 All help regarding compatibility with more boards is welcome.
 
+## Important Notes
+
+### Migration from 1.6.x to 1.7.x
+
+There were a few more drastic changes in version 1.7.0 compared to 1.6.x, if you want use 1.7.x make sure your project is compatible with the latest version.
+It is now possible to just create an empty LedController using `LedController()` and initilize it later using the `init` method.
+View the documentation for more information.
+
+There is no longer support for the use of std::array, so the functions that where able to return an ByteBlock, can no longer do that, so you have to pass a pointer to an ByteBlock as a secondary parameter.
+Since there is no longer a limit on the amount of segments a controller can have, the size of most arrays is not known at compile time, and therefore all internal data has to be stored on the heap.
+Please check the size of the arrays you pass as location to store the result in.
+If it is now large enough, nothing will be displayed and fail silently.
+
 ## Documentation
 
 Documentation for the library is on the [Github Project Pages](http://noah1510.github.io/LedController/)
