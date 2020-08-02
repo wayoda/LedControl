@@ -126,7 +126,7 @@ void LedController::init(
         //we go into shutdown-mode on startup
         activateSegment(i);
 
-        setIntensity(i,1);
+        setIntensity(i,this->IntensityLevel);
     }
 
     Serial.println("finished initilization");
@@ -374,6 +374,19 @@ void LedController::setChar(unsigned int segmentNumber, unsigned int digit, char
 void LedController::refreshSegments(){
     if(!initilized){
         return;
+    }
+
+    for(unsigned int i=0;i < SegmentCount;i++) {
+        spiTransfer(i,OP_DISPLAYTEST,0);
+        //scanlimit is set to max on startup
+        setScanLimit(i,7);
+        //decode is done in source
+        spiTransfer(i,OP_DECODEMODE,0);
+        clearSegment(i);
+        //we go into shutdown-mode on startup
+        activateSegment(i);
+
+        setIntensity(i,this->IntensityLevel);
     }
 
     for(unsigned int seg = 0; seg < SegmentCount; seg++){
