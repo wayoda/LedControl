@@ -333,10 +333,30 @@ public:
     void setChar(unsigned int segmentNumber, unsigned int digit, char value, boolean dp);
 
     /**
-     * @brief refreshes all segments displaying the internally stored state of the segments.
+     * @brief refreshes all segments by first resetting them and then updating them.
      * 
      */
     void refreshSegments();
+
+    /**
+     * @brief refreshes a given segment by first resetting it and then updating it.
+     * 
+     * @param segmentNumber the segment that will be resetted
+     */
+    void refreshSegment(unsigned int segmentNumber);
+
+    /**
+     * @brief update all segments by displaying the internally stored state of the segments.
+     * 
+     */
+    void updateSegments();
+
+    /**
+     * @brief update a given segment by displaying the internally stored state of the segment.
+     * 
+     * @param segmentNumber the segment that will be updated
+     */
+    void updateSegment(unsigned int segmentNumber);
 
     /**
      * @brief moves the data left by one

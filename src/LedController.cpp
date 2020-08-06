@@ -126,7 +126,7 @@ void LedController::init(
         //we go into shutdown-mode on startup
         activateSegment(i);
 
-        setIntensity(i,1);
+        setIntensity(i,this->IntensityLevel);
     }
 
     Serial.println("finished initilization");
@@ -376,10 +376,49 @@ void LedController::refreshSegments(){
         return;
     }
 
+    for(unsigned int i=0;i < SegmentCount;i++) {
+        refreshSegment(i);
+    }
+
+}
+
+void LedController::refreshSegment(unsigned int segmentNumber){
+    if(!initilized){
+        return;
+    }
+
+    spiTransfer(segmentNumber,OP_DISPLAYTEST,0);
+    //scanlimit is set to max on startup
+    setScanLimit(segmentNumber,7);
+    //decode is done in source
+    spiTransfer(segmentNumber,OP_DECODEMODE,0);
+    clearSegment(segmentNumber);
+    //we go into shutdown-mode on startup
+    activateSegment(segmentNumber);
+
+    setIntensity(segmentNumber,this->IntensityLevel);
+
+    updateSegment(segmentNumber);
+    
+}
+
+void LedController::updateSegments(){
+    if(!initilized){
+        return;
+    }
+
     for(unsigned int seg = 0; seg < SegmentCount; seg++){
-        for(unsigned int row = 0; row < 8; row++){
-            spiTransfer(seg, row+1, LedStates[seg][row]);
-        }
+        updateSegment(seg);
+    }
+}
+
+void LedController::updateSegment(unsigned int segmentNumber){
+    if(!initilized){
+        return;
+    }
+
+    for(unsigned int row = 0; row < 8; row++){
+        spiTransfer(segmentNumber, row+1, LedStates[segmentNumber][row]);
     }
 }
 
@@ -406,7 +445,7 @@ byte LedController::moveRight(byte shiftedInColumn){
 
     setColumn(0,7,shiftedInColumn);
 
-    refreshSegments();
+    updateSegments();
 
     return returnValue;
 }
@@ -445,7 +484,7 @@ byte LedController::moveLeft(byte shiftedInColumn){
 
     setColumn(SegmentCount-1,0,shiftedInColumn);
 
-    refreshSegments();
+    updateSegments();
 
     return returnValue;
 }
@@ -495,7 +534,7 @@ void LedController::moveDown(byte* shiftedInRow, byte** shiftedOutRow){
         LedStates[i][7] = shiftedInRow[i];
     }
 
-    refreshSegments();
+    updateSegments();
     
 }
 
@@ -522,7 +561,7 @@ void LedController::moveUp(byte* shiftedInRow, byte** shiftedOutRow){
         LedStates[i][0] = shiftedInRow[i];
     }
 
-    refreshSegments();
+    updateSegments();
     
 }
 
