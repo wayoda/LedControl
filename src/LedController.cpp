@@ -98,6 +98,11 @@ void LedController::init(controller_configuration configuration) {
 
   conf = configuration;
 
+  if(conf.useHardwareSpi){
+    conf.SPI_CLK = SCK;
+    conf.SPI_MOSI = MOSI;
+  }
+
   LedStates = new ByteBlock[conf.SegmentCount];
   spidata = new byte[conf.SegmentCount * 2];
   emptyRow = new byte[conf.SegmentCount];

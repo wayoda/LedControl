@@ -75,10 +75,7 @@ public:
 
   static bool isValidConfig(controller_configuration conf){
       // checking the clk amd mosi pins
-        if (conf.useHardwareSpi) {
-            conf.SPI_CLK = SCK;
-            conf.SPI_MOSI = MOSI;
-        } else {
+        if (!conf.useHardwareSpi) {
             if (conf.SPI_CLK == 0) {
                 Serial.println( "No CLK Pin given. Specify one or set useHardwareSpi to true");
                 return false;
@@ -88,6 +85,7 @@ public:
                 Serial.println("No MOSI Pin given. Specify one or set useHardwareSpi to true");
                 return false;
             }
+            
         }
 
         // checking the cs pin(s)
