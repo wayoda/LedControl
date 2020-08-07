@@ -1,27 +1,27 @@
 #pragma once
 
 #if (ARDUINO >= 100)
-    #include <Arduino.h>
+#include <Arduino.h>
 #else
-    #include <WProgram.h>
+#include <WProgram.h>
 #endif
 
 using ByteBlock = byte[8];
 
 #ifdef __has_include
 
-    #define INCLUDED_PGMSPACE
-    #if(__has_include(<avr/pgmspace.h>))
-        #include <avr/pgmspace.h>
-    #else
-        #include <pgmspace.h>
-    #endif
+#define INCLUDED_PGMSPACE
+#if(__has_include(<avr/pgmspace.h>))
+#include <avr/pgmspace.h>
+#else
+#include <pgmspace.h>
+#endif
 
 #endif
 
 #ifndef INCLUDED_PGMSPACE
-    #include <avr/pgmspace.h>
-    #define INCLUDED_PGMSPACE
+#include <avr/pgmspace.h>
+#define INCLUDED_PGMSPACE
 #endif
 
 #include <SPI.h>
@@ -33,10 +33,10 @@ using ByteBlock = byte[8];
  * @details This Controller Class is mainly target at led matracies consisting of more than 1 segment.
     * While it can also handle 7-Segment Displays it is not tested that well.
  * @warning This object is not thread safe yet.
- * 
+ *
  * @todo make it threading safe
  */
-class LedController{
+class LedController {
 protected:
 
     ///The state of all the Leds
@@ -44,14 +44,14 @@ protected:
 
     /**
      * @brief The configuration of the LedController
-     * 
+     *
      */
     controller_configuration conf;
 
     /**
      * @brief This function transfers one command to the attached module
-     * 
-     * @param segment The segment that should execute this command 
+     *
+     * @param segment The segment that should execute this command
      * @param opcode The command thCLKat should be executed
      * @param data The data needed for that command
      */
@@ -62,7 +62,7 @@ protected:
 
     /**
      * @brief Set the brightness of the segment.
-     * 
+     *
      * @param segmentNumber the address of the segment to control
      * @param newIntesityLevel the brightness of the display. (0..15)
      */
@@ -70,19 +70,19 @@ protected:
 
     /**
      * @brief True if the LedController is fully initilized
-     * 
+     *
      */
     bool initilized = false;
 
     /**
      * @brief contains a row full of 0x00
-     * 
+     *
      */
     byte* emptyRow = nullptr;
 
     /**
      * @brief this copies an empty row into row
-     * 
+     *
      * @param row the pointer to the byte array that should be used
      */
     void createEmptyRow(byte** row);
@@ -91,13 +91,13 @@ public:
 
     /**
      * @brief Construct a new LedController without initilizing anything.
-     * 
+     *
      */
     LedController();
 
     /**
      * @brief Construct a new LedController for use with hardware SPI
-     * 
+     *
      * @param csPin The pin to select the led matrix
      * @param numSegments the number of connected segments (defualt 4)
      */
@@ -105,7 +105,7 @@ public:
 
     /**
      * @brief Construct a new LedController object
-     * 
+     *
      * @param dataPin pin on the Arduino where data gets shifted out (DIN)
      * @param clkPin pin for the clock (CLK)
      * @param csPin pin for selecting the device (CS)
@@ -116,32 +116,32 @@ public:
 
     /**
      * @brief Construct a new Led Controller from a given configuration
-     * 
+     *
      * @param configuration the configuration that should be used for the Controller
      */
     LedController(controller_configuration configuration);
 
     /**
-     * @brief 
-     * 
+     * @brief
+     *
      */
 
     /**
      * @brief Destroy the Led Controller object and free the memory
-     * 
+     *
      */
     ~LedController();
 
     /**
      * @brief The copy constructor for the LedController
-     * 
+     *
      * @param other the LedController which should have its state copied
      */
     LedController(const LedController& other);
 
     /**
      * @brief initilizes the LedController for use with hardware SPI
-     * 
+     *
      * @param csPin The pin to select the led matrix
      * @param numSegments the number of connected segments (defualt 4)
      */
@@ -149,7 +149,7 @@ public:
 
     /**
      * @brief initilizes the LedController
-     * 
+     *
      * @param dataPin pin on the Arduino where data gets shifted out (DIN)
      * @param clkPin pin for the clock (CLK)
      * @param csPin pin for selecting the device (CS)
@@ -160,14 +160,14 @@ public:
 
     /**
      * @brief initilizes the LedController wit ha given configuration
-     * 
-     * @param configuration 
+     *
+     * @param configuration
      */
     void init(controller_configuration configuration);
 
     /**
      * @brief returns the status of the LedController
-     * 
+     *
      * @return true the LedController is initilized
      * @return false the LedController is not initilized
      */
@@ -182,7 +182,7 @@ public:
 
     /**
      * @brief Display 8 lines on the given segment
-     * 
+     *
      * @param segmentindex the Segment number of the desired segment
      * @param data an array containing the data for all the pixels that should be displayed on that segment
      */
@@ -191,7 +191,7 @@ public:
 
     /**
      * @brief Get the Segment Data of a specific Segment
-     * 
+     *
      * @param segmentindex the index of whose data you want to have
      * @param resultLocation the location where the data should be stored
      */
@@ -199,49 +199,49 @@ public:
 
     /**
      * @brief activates all segments, sets to same intensity and cleas them
-     * 
+     *
      */
     void resetMatrix();
 
     /**
      * @brief clears all segments, turning all LEDs off.
-     * 
+     *
      */
     void clearMatrix();
 
     /**
      * @brief Get the number of configured segments
-     * 
+     *
      * @return unsigned int The number of configured segments
      */
     unsigned int getSegmentCount();
-    
+
     /**
      * @brief Set the segment in power-down mode.
-     * 
+     *
      * @param segmentNumber The segment to control
      */
     void shutdownSegment(unsigned int segmentNumber);
 
     /**
      * @brief Get the segment out of power-down mode for normal operation.
-     * 
+     *
      * @param segmentNumber The segment to control
      */
     void activateSegment(unsigned int segmentNumber);
 
     /**
      * @brief Set all segments into power-down mode
-     * 
+     *
      */
     void shutdownAllSegments();
 
     /**
      * @brief Get all segments out of power-down mode for normal operation.
-     * 
+     *
      */
     void activateAllSegments();
-    
+
     /**
      * @brief Set the number of digits (or rows) to be displayed.
      * @note See datasheet for sideeffects of the scanlimit on the brightness of the display.
@@ -252,32 +252,32 @@ public:
 
     /**
      * @brief clears a given segment, turning all its LEDs off.
-     * 
+     *
      * @param segmentNumber The segment to control.
      */
     void clearSegment(unsigned int segmentNumber);
 
     /**
      * @brief Set one Row of one segment.
-     * 
-     * @param segmentNumber The Segment which should be modified 
-     * @param row The row which should be modified 
+     *
+     * @param segmentNumber The Segment which should be modified
+     * @param row The row which should be modified
      * @param value each bit set to 1 will light up the corresponding Led.
      */
     void setRow(unsigned int segmentNumber, unsigned int row, byte value);
 
     /**
      * @brief get one Row of one segment.
-     * 
-     * @param segmentNumber The Segment which should be modified 
-     * @param row The row which should be modified 
+     *
+     * @param segmentNumber The Segment which should be modified
+     * @param row The row which should be modified
      * @return value each bit set to 1 will light up the corresponding Led.
      */
     byte getRow(unsigned int segmentNumber, unsigned int row);
 
     /**
      * @brief Set a single led to a given value
-     * 
+     *
      * @param segmentNumber the segment number of the desired led
      * @param row the row of the desired led (0..7)
      * @param column the column of the desired led (0..7)
@@ -287,7 +287,7 @@ public:
 
     /**
      * @brief Set one column of a given segment
-     * 
+     *
      * @param segmentNumber The desired Segment number
      * @param col The desired column
      * @param value The value, this column should have
@@ -296,56 +296,56 @@ public:
 
     /**
      * @brief Set a hexadecimal digit on a 7-Segment Display
-     * 
+     *
      * @param segmentNumber The number of the desired Segment
      * @param digit the position of the digit on the Segment (0..7)
      * @param value the value to be displayed. (0x00..0x0F)
      * @param dp if true sets the decimal point
      */
     void setDigit(unsigned int segmentNumber, unsigned int digit, byte value, boolean dp);
-    
+
     /**
      * @brief Set the Display a character on a 7-Segment display.
      * @note There are only a few characters that make sense here :
-         *	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 
-         *  'A', 'b', 'c', 'd', 'E', 'F', 'H', 'L', 'P', 
-         *  '.', '-', '_', ' ' 
+         *	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+         *  'A', 'b', 'c', 'd', 'E', 'F', 'H', 'L', 'P',
+         *  '.', '-', '_', ' '
      * @param segmentNumber The number of the desired segment
      * @param digit the position of the character on the segment (0..7)
-     * @param value the character to be displayed. 
+     * @param value the character to be displayed.
      * @param dp dp if true sets the decimal point
      */
     void setChar(unsigned int segmentNumber, unsigned int digit, char value, boolean dp);
 
     /**
      * @brief refreshes all segments by first resetting them and then updating them.
-     * 
+     *
      */
     void refreshSegments();
 
     /**
      * @brief refreshes a given segment by first resetting it and then updating it.
-     * 
+     *
      * @param segmentNumber the segment that will be resetted
      */
     void refreshSegment(unsigned int segmentNumber);
 
     /**
      * @brief update all segments by displaying the internally stored state of the segments.
-     * 
+     *
      */
     void updateSegments();
 
     /**
      * @brief update a given segment by displaying the internally stored state of the segment.
-     * 
+     *
      * @param segmentNumber the segment that will be updated
      */
     void updateSegment(unsigned int segmentNumber);
 
     /**
      * @brief moves the data left by one
-     * 
+     *
      * @param shiftedInColumn The column that will be shifted in on the right (default 0x00)
      * @return byte The column that gets shifted out on the left
      */
@@ -354,7 +354,7 @@ public:
 
     /**
      * @brief moves the data left by one
-     * 
+     *
      * @param shiftedInColumn The column that will be shifted in on the left (default 0x00)
      * @return byte The column that gets shifted out on the right
      */
@@ -362,7 +362,7 @@ public:
 
     /**
      * @brief This function changes to bitorder of a byte (useful to mirror "images" you want to display)
-     * 
+     *
      * @param input The byte that should be reversed
      * @return byte The reversed byte
      */
@@ -370,15 +370,15 @@ public:
 
     /**
      * @brief moves the data up by one
-     * 
+     *
      * @param shiftedInRow The row that will be shifted in on the bottom (default 0x00)
-     * @param shiftedOutRow The address of the row that will be shifted out on the bottom 
+     * @param shiftedOutRow The address of the row that will be shifted out on the bottom
      */
     void moveUp(byte* shiftedInRow, byte** shiftedOutRow);
 
     /**
      * @brief moves the data down by one
-     * 
+     *
      * @param shiftedInRow The row that will be shifted in on the top (default 0x00)
      * @param shiftedOutRow The address of the row that will be shifted out on the bottom
      */
@@ -386,34 +386,34 @@ public:
 
     /**
      * @brief moves the data up by oneand 0x00 will be shifted in
-     * 
+     *
      * @param shiftedOutRow The address of the row that will be shifted out on the bottom
      */
     void moveUp(byte** shiftedOutRow);
 
     /**
      * @brief moves the data down by one and 0x00 will be shifted in
-     * 
+     *
      * @param shiftedOutRow The address of the row that will be shifted out on the bottom
      */
     void moveDown(byte** shiftedOutRow);
 
     /**
      * @brief moves the data up by one and 0x00 will be shifted in
-     * 
+     *
      */
     void moveUp();
 
     /**
      * @brief moves the data down by one and 0x00 will be shifted in
-     * 
+     *
      * @return ByteRow The row the will be shifted out on the bottom
      */
     void moveDown();
 
     /**
      * @brief Turns an array of rows into an array of columns
-     * 
+     *
      * @param rowArray the array of rows of which you want the columns
      * @param columnArray The address where the result will be stored
      */
@@ -421,7 +421,7 @@ public:
 
     /**
      * @brief Reverse an array of 8 bytes (mirror it)
-     * 
+     *
      * @param input The array that should be mirrored
      * @param reversedInput The address where the result will be stored
      */
@@ -429,7 +429,7 @@ public:
 
     /**
      * @brief rotate an byte[8] array by 180 degrees
-     * 
+     *
      * @param input the array that will be rotated
      * @param rotatedInput The address where the result will be stored
      */
@@ -437,7 +437,7 @@ public:
 
     /**
      * @brief Get the Config of the Led Controller
-     * 
+     *
      * @return controlller_configuration the configuration
      */
     controller_configuration getConfig();
