@@ -42,15 +42,15 @@ LedController::LedController(const LedController& other){
         return;
     }
 
-    init(other.SPI_MOSI, other.SPI_CLK, other.SPI_CS, other.SegmentCount, other.useHardwareSpi);
+    init(other.conf.SPI_MOSI, other.conf.SPI_CLK, other.conf.SPI_CS, other.conf.SegmentCount, other.conf.useHardwareSpi);
 
-    for(unsigned int i = 0; i < SegmentCount;i++){
+    for(unsigned int i = 0; i < conf.SegmentCount;i++){
         for(unsigned int j = 0; i < 8;i++){
             LedStates[i][j] = other.LedStates[i][j];
         }
     }
 
-    for(unsigned int i = 0; i < SegmentCount * 2;i++){
+    for(unsigned int i = 0; i < conf.SegmentCount * 2;i++){
         spidata[i] = other.spidata[i];
     }
 
@@ -77,46 +77,46 @@ void LedController::init(
 
     Serial.println("Beginning inilization");
 
-    SPI_MOSI = dataPin;
-    SPI_CLK = clkPin;
-    SPI_CS = csPin;
-    SegmentCount = numSegments;
-    useHardwareSpi = useHardwareSpiParam;
+    conf.SPI_MOSI = dataPin;
+    conf.SPI_CLK = clkPin;
+    conf.SPI_CS = csPin;
+    conf.SegmentCount = numSegments;
+    conf.useHardwareSpi = useHardwareSpiParam;
 
-    LedStates = new ByteBlock[SegmentCount];
-    spidata = new byte[SegmentCount*2];
-    emptyRow = new byte[SegmentCount];
+    LedStates = new ByteBlock[conf.SegmentCount];
+    spidata = new byte[conf.SegmentCount*2];
+    emptyRow = new byte[conf.SegmentCount];
 
-    for(unsigned int i = 0; i < SegmentCount*2;i++){
+    for(unsigned int i = 0; i < conf.SegmentCount*2;i++){
         spidata[i] = 0x00;
     }
 
-    for(unsigned int j = 0; j < SegmentCount;j++){
+    for(unsigned int j = 0; j < conf.SegmentCount;j++){
         for(unsigned int i = 0; i < 8;i++){
             LedStates[j][i] = 0x00;
         }
     }
 
-    for(unsigned int i = 0; i < SegmentCount;i++){
+    for(unsigned int i = 0; i < conf.SegmentCount;i++){
         emptyRow[i]=0x00;
     }
 
-    pinMode(SPI_MOSI,OUTPUT);
-    pinMode(SPI_CLK,OUTPUT);
+    pinMode(conf.SPI_MOSI,OUTPUT);
+    pinMode(conf.SPI_CLK,OUTPUT);
 
-    pinMode(SPI_CS,OUTPUT);
-    digitalWrite(SPI_CS,LOW);
+    pinMode(conf.SPI_CS,OUTPUT);
+    digitalWrite(conf.SPI_CS,LOW);
 
-    if(useHardwareSpi){
+    if(conf.useHardwareSpi){
         SPI.setBitOrder(MSBFIRST);
 		SPI.setDataMode(SPI_MODE0);
 		SPI.begin();
     }
 
-    digitalWrite(SPI_CS,HIGH);
+    digitalWrite(conf.SPI_CS,HIGH);
     
     initilized = true;
-    for(unsigned int i=0;i < SegmentCount;i++) {
+    for(unsigned int i=0;i < conf.SegmentCount;i++) {
         spiTransfer(i,OP_DISPLAYTEST,0);
         //scanlimit is set to max on startup
         setScanLimit(i,7);
@@ -126,7 +126,7 @@ void LedController::init(
         //we go into shutdown-mode on startup
         activateSegment(i);
 
-        setIntensity(i,this->IntensityLevel);
+        setIntensity(i,this->conf.IntensityLevel);
     }
 
     Serial.println("finished initilization");
@@ -152,7 +152,7 @@ void LedController::clearMatrix(){
         return;
     }
 
-    for(unsigned int i = 0;i < SegmentCount;i++){
+    for(unsigned int i = 0;i < conf.SegmentCount;i++){
         clearSegment(i);   // Clear Segments
     }
 }
@@ -163,15 +163,15 @@ void LedController::setIntensity(unsigned int newIntesityLevel){
     }
 
     //std::lock_guard<std::mutex> lock(mut_IntensityLevel);
-    IntensityLevel = newIntesityLevel;
+    conf.IntensityLevel = newIntesityLevel;
 
-    for(unsigned int i=0;i < SegmentCount;i++){
-        setIntensity(i,IntensityLevel);
+    for(unsigned int i=0;i < conf.SegmentCount;i++){
+        setIntensity(i,conf.IntensityLevel);
     }
 }
 
 void LedController::setIntensity(unsigned int segmentNumber, unsigned int newIntesityLevel){
-    if (newIntesityLevel > 15 || !initilized || segmentNumber >= SegmentCount){
+    if (newIntesityLevel > 15 || !initilized || segmentNumber >= conf.SegmentCount){
         return;
     }
 
@@ -179,7 +179,7 @@ void LedController::setIntensity(unsigned int segmentNumber, unsigned int newInt
 }
 
 void LedController::displayOnSegment(unsigned int segmentindex, ByteBlock data){
-    if(!initilized || segmentindex >= SegmentCount){
+    if(!initilized || segmentindex >= conf.SegmentCount){
         return;
     }
 
@@ -189,7 +189,7 @@ void LedController::displayOnSegment(unsigned int segmentindex, ByteBlock data){
 }
 
 void LedController::getSegmentData(unsigned int segmentindex, ByteBlock* resultLocation){
-    if(!initilized || segmentindex >= SegmentCount || resultLocation == nullptr){
+    if(!initilized || segmentindex >= conf.SegmentCount || resultLocation == nullptr){
         return;
     }
 
@@ -203,11 +203,11 @@ unsigned int LedController::getSegmentCount(){
         return 0;
     }
 
-    return SegmentCount;
+    return conf.SegmentCount;
 }
 
 void LedController::shutdownSegment(unsigned int segmentNumber){
-    if(!initilized || segmentNumber >= SegmentCount){
+    if(!initilized || segmentNumber >= conf.SegmentCount){
         return;
     }
 
@@ -215,7 +215,7 @@ void LedController::shutdownSegment(unsigned int segmentNumber){
 }
 
 void LedController::activateSegment(unsigned int segmentNumber){
-    if(!initilized || segmentNumber >= SegmentCount){
+    if(!initilized || segmentNumber >= conf.SegmentCount){
         return;
     }
 
@@ -227,7 +227,7 @@ void LedController::shutdownAllSegments(){
         return;
     }
 
-    for(unsigned int i = 0; i < SegmentCount;i++){
+    for(unsigned int i = 0; i < conf.SegmentCount;i++){
         shutdownSegment(i);
     }
 }
@@ -237,19 +237,19 @@ void LedController::activateAllSegments(){
         return;
     }
 
-    for(unsigned int i = 0; i < SegmentCount;i++){
+    for(unsigned int i = 0; i < conf.SegmentCount;i++){
         activateSegment(i);
     }
 }
 
 void LedController::spiTransfer(unsigned int segment, byte opcode, byte data) {
-    if(!initilized || segment >= SegmentCount){
+    if(!initilized || segment >= conf.SegmentCount){
         return;
     }
 
     //Create an array with the data to shift out
     unsigned int offset = segment*2;
-    unsigned int maxbytes = SegmentCount*2;
+    unsigned int maxbytes = conf.SegmentCount*2;
 
     for(unsigned int i=0;i < maxbytes;i++){
         spidata[i]=0x00;
@@ -260,37 +260,37 @@ void LedController::spiTransfer(unsigned int segment, byte opcode, byte data) {
     spidata[offset]=data;
 
     //enable the line 
-    digitalWrite(SPI_CS,LOW);
+    digitalWrite(conf.SPI_CS,LOW);
 
-    if(useHardwareSpi){
+    if(conf.useHardwareSpi){
         SPI.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
     }
 
     //Now shift out the data 
     for(int i=maxbytes;i > 0;i--){
-        if(useHardwareSpi){
+        if(conf.useHardwareSpi){
             SPI.transfer(spidata[i-1]);
         }else{
-            shiftOut(SPI_MOSI,SPI_CLK,MSBFIRST,spidata[i-1]);
+            shiftOut(conf.SPI_MOSI,conf.SPI_CLK,MSBFIRST,spidata[i-1]);
         }
     }
 
-    if(useHardwareSpi){
+    if(conf.useHardwareSpi){
         SPI.endTransaction();
     }
 
     //latch the data onto the display
-    digitalWrite(SPI_CS,HIGH);
+    digitalWrite(conf.SPI_CS,HIGH);
 
 }   
 
 void LedController::setScanLimit(unsigned int segmentNumber, unsigned int limit){
-    if(!initilized || segmentNumber >= SegmentCount){return;};
+    if(!initilized || segmentNumber >= conf.SegmentCount){return;};
     if(limit < 8) {spiTransfer(segmentNumber, OP_SCANLIMIT, limit); };
 }
 
 void LedController::clearSegment(unsigned int segmentNumber){
-    if(!initilized || segmentNumber>=SegmentCount){
+    if(!initilized || segmentNumber>=conf.SegmentCount){
         return;
     }
 
@@ -301,7 +301,7 @@ void LedController::clearSegment(unsigned int segmentNumber){
 }
 
 void LedController::setRow(unsigned int segmentNumber, unsigned int row, byte value){
-    if(!initilized || segmentNumber >= SegmentCount || row > 7 || LedStates[segmentNumber][row] == value){
+    if(!initilized || segmentNumber >= conf.SegmentCount || row > 7 || LedStates[segmentNumber][row] == value){
         return;
     }
     
@@ -310,7 +310,7 @@ void LedController::setRow(unsigned int segmentNumber, unsigned int row, byte va
 }
 
 byte LedController::getRow(unsigned int segmentNumber, unsigned int row){
-    if(!initilized || segmentNumber >= SegmentCount || row > 7){
+    if(!initilized || segmentNumber >= conf.SegmentCount || row > 7){
         return 0x00;
     }
     
@@ -319,7 +319,7 @@ byte LedController::getRow(unsigned int segmentNumber, unsigned int row){
 
  
 void LedController::setLed(unsigned int segmentNumber, unsigned int row, unsigned int column, boolean state) {
-    if(!initilized ||  row > 7 || column > 7 || segmentNumber >= SegmentCount){ return;};
+    if(!initilized ||  row > 7 || column > 7 || segmentNumber >= conf.SegmentCount){ return;};
 
     byte val=B10000000 >> column;
 
@@ -334,7 +334,7 @@ void LedController::setLed(unsigned int segmentNumber, unsigned int row, unsigne
 
 
 void LedController::setColumn(unsigned int segmentNumber, unsigned int col, byte value) {
-    if(!initilized || segmentNumber >= SegmentCount || col > 7){return;};
+    if(!initilized || segmentNumber >= conf.SegmentCount || col > 7){return;};
     
     byte val;
 
@@ -347,7 +347,7 @@ void LedController::setColumn(unsigned int segmentNumber, unsigned int col, byte
 }
 
 void LedController::setDigit(unsigned int segmentNumber, unsigned int digit, byte value, boolean dp) {
-    if(!initilized || segmentNumber >= SegmentCount || digit > 7 || value > 15) {return;};
+    if(!initilized || segmentNumber >= conf.SegmentCount || digit > 7 || value > 15) {return;};
 
     byte v = pgm_read_byte_near(charTable + value); 
     if(dp) {v |= B10000000; };
@@ -356,7 +356,7 @@ void LedController::setDigit(unsigned int segmentNumber, unsigned int digit, byt
 }
 
 void LedController::setChar(unsigned int segmentNumber, unsigned int digit, char value, boolean dp) {
-    if(!initilized || segmentNumber >= SegmentCount || digit>7) {return;};
+    if(!initilized || segmentNumber >= conf.SegmentCount || digit>7) {return;};
     
     byte index = (byte)value;
     if(index >127) {
@@ -376,7 +376,7 @@ void LedController::refreshSegments(){
         return;
     }
 
-    for(unsigned int i=0;i < SegmentCount;i++) {
+    for(unsigned int i=0;i < conf.SegmentCount;i++) {
         refreshSegment(i);
     }
 
@@ -396,7 +396,7 @@ void LedController::refreshSegment(unsigned int segmentNumber){
     //we go into shutdown-mode on startup
     activateSegment(segmentNumber);
 
-    setIntensity(segmentNumber,this->IntensityLevel);
+    setIntensity(segmentNumber,this->conf.IntensityLevel);
 
     updateSegment(segmentNumber);
     
@@ -407,7 +407,7 @@ void LedController::updateSegments(){
         return;
     }
 
-    for(unsigned int seg = 0; seg < SegmentCount; seg++){
+    for(unsigned int seg = 0; seg < conf.SegmentCount; seg++){
         updateSegment(seg);
     }
 }
@@ -430,10 +430,10 @@ byte LedController::moveRight(byte shiftedInColumn){
     byte returnValue = 0x00;
 
     for(unsigned int i = 0; i < 8;i++){
-        if(LedStates[SegmentCount-1][i] & 0x80){returnValue |= 0x01 << i; };
+        if(LedStates[conf.SegmentCount-1][i] & 0x80){returnValue |= 0x01 << i; };
     }
 
-    for(int seg = SegmentCount-1;seg >= 0;seg--){
+    for(int seg = conf.SegmentCount-1;seg >= 0;seg--){
         for(int row=0;row < 8;row++){
             LedStates[seg][row] = LedStates[seg][row]<<1;
 
@@ -469,20 +469,20 @@ byte LedController::moveLeft(byte shiftedInColumn){
     byte returnValue = 0x00;
 
     for(unsigned int i = 0; i < 8;i++){
-        if(LedStates[SegmentCount-1][i] & 0x80){returnValue |= 0x01 << i; };
+        if(LedStates[conf.SegmentCount-1][i] & 0x80){returnValue |= 0x01 << i; };
     }
 
-    for(unsigned int seg = 0;seg < SegmentCount;seg++){
+    for(unsigned int seg = 0;seg < conf.SegmentCount;seg++){
         for(unsigned int row=0;row < 8;row++){
             LedStates[seg][row] = LedStates[seg][row]>>1;
 
-            if(seg != SegmentCount-1 && LedStates[seg+1][row] & 0x01){ LedStates[seg][row] |= 0x80; };
+            if(seg != conf.SegmentCount-1 && LedStates[seg+1][row] & 0x01){ LedStates[seg][row] |= 0x80; };
 
         }
 
     }
 
-    setColumn(SegmentCount-1,0,shiftedInColumn);
+    setColumn(conf.SegmentCount-1,0,shiftedInColumn);
 
     updateSegments();
 
@@ -494,7 +494,7 @@ byte LedController::moveLeft(byte shiftedInColumn){
 void LedController::createEmptyRow(byte** row){
     if(!initilized || row == nullptr || *row == nullptr){return;};
 
-    for(unsigned int i = 0; i < SegmentCount;i++){
+    for(unsigned int i = 0; i < conf.SegmentCount;i++){
         (*row)[i] = 0x00;
     }
 }
@@ -518,19 +518,19 @@ void LedController::moveDown(byte* shiftedInRow, byte** shiftedOutRow){
 
     createEmptyRow(shiftedOutRow);
     if(shiftedOutRow != nullptr && *shiftedOutRow != nullptr){
-        for(unsigned int i = 0; i < SegmentCount;i++){
+        for(unsigned int i = 0; i < conf.SegmentCount;i++){
             (*shiftedOutRow)[i] = LedStates[i][0];
         }
     }
 
     for (unsigned int i = 0; i < 7; i++){
-        for(unsigned int seg = 0; seg < SegmentCount; seg++){
+        for(unsigned int seg = 0; seg < conf.SegmentCount; seg++){
             LedStates[seg][i] = LedStates[seg][i+1];
         }
         
     }
 
-    for(unsigned int i = 0; i < SegmentCount;i++){
+    for(unsigned int i = 0; i < conf.SegmentCount;i++){
         LedStates[i][7] = shiftedInRow[i];
     }
 
@@ -545,19 +545,19 @@ void LedController::moveUp(byte* shiftedInRow, byte** shiftedOutRow){
 
     createEmptyRow(shiftedOutRow);
     if(shiftedOutRow != nullptr && *shiftedOutRow != nullptr){
-        for(unsigned int i = 0; i < SegmentCount;i++){
+        for(unsigned int i = 0; i < conf.SegmentCount;i++){
             (*shiftedOutRow)[i] = LedStates[i][7];
         }
     }
 
     for (unsigned int i = 7; i > 0; i--){
-        for(unsigned int seg = 0; seg < SegmentCount; seg++){
+        for(unsigned int seg = 0; seg < conf.SegmentCount; seg++){
             LedStates[seg][i] = LedStates[seg][i-1];
         }
         
     }
 
-    for(unsigned int i = 0; i < SegmentCount;i++){
+    for(unsigned int i = 0; i < conf.SegmentCount;i++){
         LedStates[i][0] = shiftedInRow[i];
     }
 
@@ -570,7 +570,7 @@ void LedController::moveUp(byte** shiftedOutRow){
         return;
     }
 
-    byte* inVal = new byte[SegmentCount];
+    byte* inVal = new byte[conf.SegmentCount];
     createEmptyRow(&inVal);
     moveUp(inVal,shiftedOutRow);
     delete[] inVal;
@@ -581,7 +581,7 @@ void LedController::moveDown(byte** shiftedOutRow){
         return;
     }
 
-    byte* inVal = new byte[SegmentCount];
+    byte* inVal = new byte[conf.SegmentCount];
     createEmptyRow(&inVal);
     moveDown(inVal,shiftedOutRow);
     delete[] inVal;
@@ -592,7 +592,7 @@ void LedController::moveDown(){
         return;
     }
 
-    byte* inVal = new byte[SegmentCount];
+    byte* inVal = new byte[conf.SegmentCount];
     createEmptyRow(&inVal);
     moveDown(inVal,nullptr);
     delete[] inVal;
@@ -603,7 +603,7 @@ void LedController::moveUp(){
         return;
     }
 
-    byte* inVal = new byte[SegmentCount];
+    byte* inVal = new byte[conf.SegmentCount];
     createEmptyRow(&inVal);
     moveUp(inVal,nullptr);
     delete[] inVal;
@@ -629,4 +629,8 @@ void LedController::rotate180(ByteBlock input, ByteBlock* rotatedInput){
     for(unsigned int i = 0; i < 8;i++){
         (*rotatedInput)[7 - i] = reverse(input[i]);
     }
+}
+
+controller_configuration LedController::getConfig(){
+    return conf;
 }

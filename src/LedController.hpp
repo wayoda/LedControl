@@ -26,24 +26,7 @@ using ByteBlock = byte[8];
 
 #include <SPI.h>
 
-const static byte charTable [] PROGMEM  = {
-    B01111110,B00110000,B01101101,B01111001,B00110011,B01011011,B01011111,B01110000,
-    B01111111,B01111011,B01110111,B00011111,B00001101,B00111101,B01001111,B01000111,
-    B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
-    B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,
-	B00000000,B10110000,B00100010,B00111111,B01011011,B10100101,B00110001,B00000010,
-	B01001010,B01101000,B01000010,B00000111,B00000100,B00000001,B10000000,B00100101,
-	B01111110,B00110000,B01101101,B01111001,B00110011,B01011011,B01011111,B01110000,
-	B01111111,B01111011,B01001000,B01011000,B01000011,B00001001,B01100001,B11100101,
-	B01111101,B01110111,B00011111,B01001110,B00111101,B01001111,B01000111,B01011110,
-	B00110111,B00000110,B00111100,B01010111,B00001110,B01010100,B01110110,B01111110,
-	B01100111,B01101011,B01100110,B01011011,B00001111,B00111110,B00111110,B00101010,
-	B00110111,B00111011,B01101101,B01001110,B00010011,B01111000,B01100010,B00001000,
-	B00100000,B01111101,B00011111,B00001101,B00111101,B01101111,B01000111,B01111011,
-	B00010111,B00000100,B00011000,B01010111,B00000110,B00010100,B00010101,B00011101,
-	B01100111,B01110011,B00000101,B01011011,B00001111,B00011100,B00011100,B00010100,
-	B00110111,B00111011,B01101101,B00110001,B00000110,B00000111,B01000000,B00000000
-};
+#include <LedController_config.hpp>
 
 /**
  * @brief This class provied a control interface for MAX7219 and MAX7221 Led display drivers.
@@ -61,26 +44,11 @@ protected:
     ///The state of all the Leds
     ByteBlock* LedStates = nullptr;
 
-    ///The pin for the data transfer (DIN)
-    unsigned int SPI_MOSI = 0;
-
-    ///The pin for the chip select signal (CS)
-    unsigned int SPI_CS = 0;
-
-    ///The pin for the clock signal (CLK)
-    unsigned int SPI_CLK = 0;
-
-    ///The number of connected Segments
-    unsigned int SegmentCount = 0;
-
-    ///True if hardware spi should be use (a lot faster  but you cannot use any pin you want)
-    bool useHardwareSpi = false;
-
     /**
-     * @brief The current brightness level of the leds.
-     * @warning The value needs to be between 0 and 15 (inclusive bounds).
+     * @brief The configuration of the LedController
+     * 
      */
-    unsigned int IntensityLevel = 1;
+    controller_configuration conf;
 
     /**
      * @brief This function transfers one command to the attached module
@@ -147,6 +115,11 @@ public:
      * @param useHardwareSpi true if you want to use hardware SPI (view https://www.arduino.cc/en/Reference/SPI for pin config)
      */
     LedController(unsigned int dataPin, unsigned int clkPin, unsigned int csPin, unsigned int numSegments = 4, bool useHardwareSpi = false);
+
+    /**
+     * @brief 
+     * 
+     */
 
     /**
      * @brief Destroy the Led Controller object and free the memory
@@ -449,6 +422,13 @@ public:
      * @param rotatedInput The address where the result will be stored
      */
     void rotate180(ByteBlock input, ByteBlock* rotatedInput);
+
+    /**
+     * @brief Get the Config of the Led Controller
+     * 
+     * @return controlller_configuration the configuration
+     */
+    controller_configuration getConfig();
 
 };
 
