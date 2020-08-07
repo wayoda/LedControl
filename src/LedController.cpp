@@ -90,47 +90,13 @@ void LedController::init(controller_configuration configuration) {
     return;
   }
 
-  conf = configuration;
-
-  // checking the clk amd mosi pins
-  if (conf.useHardwareSpi) {
-    conf.SPI_CLK = SCK;
-    conf.SPI_MOSI = MOSI;
-  } else {
-    if (conf.SPI_CLK == 0) {
-      Serial.println(
-          "No CLK Pin given. Specify one or set useHardwareSpi to true");
+  if(!controller_configuration::isValidConfig(configuration)){
       return;
-    }
-
-    if (conf.SPI_MOSI == 0) {
-      Serial.println(
-          "No MOSI Pin given. Specify one or set useHardwareSpi to true");
-      return;
-    }
-  }
-
-  // checking the cs pin(s)
-  if (conf.SPI_CS == 0 && conf.row_SPI_CS == nullptr) {
-    Serial.println("No CS Pin given");
-    return;
-  }
-
-  if (conf.row_SPI_CS != nullptr &&
-      sizeof(conf.row_SPI_CS) != sizeof(unsigned int) * conf.rows) {
-    Serial.println("Wrong row_SPI_CS size, it does not match conf.rows");
-
-    if (conf.SPI_CS != 0) {
-      Serial.println("Falling back to SPI_CS for every row (assuming all "
-                     "segments are connected in series)");
-    } else {
-      Serial.println("Falling back to SPI_CS not possible because it is 0");
-    }
-
-    return;
   }
 
   Serial.println("Beginning inilization");
+
+  conf = configuration;
 
   LedStates = new ByteBlock[conf.SegmentCount];
   spidata = new byte[conf.SegmentCount * 2];
@@ -174,18 +140,7 @@ void LedController::init(controller_configuration configuration) {
   digitalWrite(conf.SPI_CS, HIGH);
 
   initilized = true;
-  for (unsigned int i = 0; i < conf.SegmentCount; i++) {
-    spiTransfer(i, OP_DISPLAYTEST, 0);
-    // scanlimit is set to max on startup
-    setScanLimit(i, 7);
-    // decode is done in source
-    spiTransfer(i, OP_DECODEMODE, 0);
-    clearSegment(i);
-    // we go into shutdown-mode on startup
-    activateSegment(i);
-
-    setIntensity(i, this->conf.IntensityLevel);
-  }
+  refreshSegments();
 
   Serial.println("finished initilization");
 }
