@@ -35,7 +35,7 @@ LedController::LedController(unsigned int dataPin, unsigned int clkPin,
   init(dataPin, clkPin, csPin, numSegments, useHardwareSpiParam);
 }
 
-LedController::LedController(controller_configuration config) { init(config); };
+LedController::LedController(const controller_configuration& config) { init(config); };
 
 LedController::LedController(const LedController &other) {
   if (!other.initilized) {
@@ -85,7 +85,7 @@ void LedController::init(unsigned int dataPin, unsigned int clkPin,
   init(config);
 }
 
-void LedController::init(controller_configuration configuration) {
+void LedController::init(const controller_configuration& configuration) {
   if (initilized) {
     return;
   }

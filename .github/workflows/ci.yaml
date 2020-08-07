@@ -41,7 +41,7 @@ jobs:
           python3 -m platformio ci --lib="." ${boards} --keep-build-dir
 
       - uses: actions/upload-artifact@v1
-        if: always()
+        if: failure()
         with:
           name: build-artifact
           path: .

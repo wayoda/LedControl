@@ -73,7 +73,7 @@ public:
    */
   unsigned int *row_SPI_CS = nullptr;
 
-  static bool isValidConfig(controller_configuration conf){
+  static bool isValidConfig(const controller_configuration& conf){
       // checking the clk amd mosi pins
         if (!conf.useHardwareSpi) {
             if (conf.SPI_CLK == 0) {
