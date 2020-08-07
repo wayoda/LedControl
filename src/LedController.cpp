@@ -25,7 +25,9 @@ LedController::~LedController(){
 
 LedController::LedController(){};
 
-LedController::LedController(unsigned int csPin, unsigned int numSegments):LedController::LedController(MOSI,SCK,csPin,numSegments,true){};
+LedController::LedController(unsigned int csPin, unsigned int numSegments){
+    init(csPin,numSegments);
+};
 
 LedController::LedController(
     unsigned int dataPin, 
@@ -37,12 +39,16 @@ LedController::LedController(
     init(dataPin,clkPin,csPin,numSegments,useHardwareSpiParam); 
 }
 
+LedController::LedController(controller_configuration config){
+    init(config);
+};
+
 LedController::LedController(const LedController& other){
     if(!other.initilized){
         return;
     }
 
-    init(other.conf.SPI_MOSI, other.conf.SPI_CLK, other.conf.SPI_CS, other.conf.SegmentCount, other.conf.useHardwareSpi);
+    init(other.conf);
 
     for(unsigned int i = 0; i < conf.SegmentCount;i++){
         for(unsigned int j = 0; i < 8;i++){
@@ -54,14 +60,18 @@ LedController::LedController(const LedController& other){
         spidata[i] = other.spidata[i];
     }
 
-    //other.~LedController();
-
     refreshSegments();
 
 }
 
 void LedController::init(unsigned int csPin, unsigned int numSegments){
-    return init(MOSI,SCK,csPin,numSegments,true);
+    controller_configuration config;
+
+    config.SegmentCount = numSegments;
+    config.SPI_CS = csPin;
+    config.useHardwareSpi = true;
+
+    return init(config);
 }
 
 void LedController::init(
@@ -75,13 +85,60 @@ void LedController::init(
         return;
     }
 
-    Serial.println("Beginning inilization");
+    controller_configuration config;
 
-    conf.SPI_MOSI = dataPin;
-    conf.SPI_CLK = clkPin;
-    conf.SPI_CS = csPin;
-    conf.SegmentCount = numSegments;
-    conf.useHardwareSpi = useHardwareSpiParam;
+    config.SPI_MOSI = dataPin;
+    config.SPI_CLK = clkPin;
+    config.SPI_CS = csPin;
+    config.SegmentCount = numSegments;
+    config.useHardwareSpi = useHardwareSpiParam; 
+
+    init(config);
+
+}
+
+void LedController::init(controller_configuration configuration){
+    if(initilized){
+        return;
+    }
+
+    conf = configuration;
+
+    //checking the clk amd mosi pins
+    if(conf.useHardwareSpi){
+        conf.SPI_CLK = SCK;
+        conf.SPI_MOSI = MOSI;
+    }else{
+        if(conf.SPI_CLK == 0){
+            Serial.println("No CLK Pin given. Specify one or set useHardwareSpi to true");
+            return;
+        }
+
+        if(conf.SPI_MOSI == 0){
+            Serial.println("No MOSI Pin given. Specify one or set useHardwareSpi to true");
+            return;
+        }
+    }
+
+    //checking the cs pin(s)
+    if(conf.SPI_CS == 0 && conf.row_SPI_CS == nullptr){
+        Serial.println("No CS Pin given");
+        return;
+    }
+
+    if(conf.row_SPI_CS != nullptr && sizeof(conf.row_SPI_CS) != sizeof(unsigned int) * conf.rows){
+        Serial.println("Wrong row_SPI_CS size, it does not match conf.rows");
+
+        if(conf.SPI_CS != 0){
+            Serial.println("Falling back to SPI_CS for every row (assuming all segments are connected in series)");
+        }else{
+            Serial.println("Falling back to SPI_CS not possible because it is 0");
+        }
+
+        return;
+    }
+
+    Serial.println("Beginning inilization");
 
     LedStates = new ByteBlock[conf.SegmentCount];
     spidata = new byte[conf.SegmentCount*2];
@@ -107,6 +164,15 @@ void LedController::init(
     pinMode(conf.SPI_CS,OUTPUT);
     digitalWrite(conf.SPI_CS,LOW);
 
+    /*
+    if(conf.row_SPI_CS != nullptr){
+        for(unsigned int i = 0; i < conf.rows;i++){
+            pinMode(conf.row_SPI_CS[i],OUTPUT);
+            digitalWrite(conf.row_SPI_CS[i],LOW);
+        }
+    }
+    */
+
     if(conf.useHardwareSpi){
         SPI.setBitOrder(MSBFIRST);
 		SPI.setDataMode(SPI_MODE0);
@@ -130,7 +196,6 @@ void LedController::init(
     }
 
     Serial.println("finished initilization");
-
 }
 
 bool LedController::isInitilized(){

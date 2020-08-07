@@ -12,19 +12,37 @@
  */
 class controller_configuration{
 public:
-    ///The pin for the data transfer (DIN)
+
+    /**
+     * @brief The pin for the data transfer (MOSI on board and DIN on Matrix)
+     * @warning if this is 0 and useHardwareSpi is false the initilization will fail
+     */
     unsigned int SPI_MOSI = 0;
 
-    ///The pin for the chip select signal (CS)
+    /**
+     * @brief The pin for the chip select signal (CS).
+     * @warning this has to be set if it is 0 the initlization will fail.
+     */
     unsigned int SPI_CS = 0;
 
-    ///The pin for the clock signal (CLK)
+    /**
+     * @brief The pin for the clock signal (CLK)
+     * @warning if this is 0 and useHardwareSpi is false the initilization will fail
+     */
     unsigned int SPI_CLK = 0;
-
-    ///The number of connected Segments
+    
+    /**
+     * @brief The total number of connected Segments.
+     * @warning while in theory it can be any number be careful not to run out of memory.
+     * 
+     */
     unsigned int SegmentCount = 4;
-
-    ///True if hardware spi should be use (a lot faster but you cannot use any pin you want)
+    
+    /**
+     * @brief true if you want to use hardware SPI (view https://www.arduino.cc/en/Reference/SPI for pin config).
+     * While this is a lot faster you cannot use every pin for the MOSI and CLK signal.
+     * SPI_MOSI and SPI_CLK will be set automatically if this is true.
+     */
     bool useHardwareSpi = false;
 
     /**
@@ -33,8 +51,21 @@ public:
      */
     unsigned int IntensityLevel = 1;
 
-    ///(corrently unused) The number of rows the Matrix should have
+    /**
+     * @brief The number of rows the Matrix should have.
+     * @warning Currently not in use, will be used in v2.0.0
+     * @note The matrix has to be a rectangle if this is not the case the number of rows will be set to 1.
+     * 
+     */
     unsigned int rows = 1;
+
+    /**
+     * @brief This Arrays specifies which Pin to use for each row if nullptr SPI_CS will be used.
+     * @note If this array is not a nullptr it is assumed it is the same length as the number of rows.
+     * @warning Currently not in use, will be used in v2.0.0
+     * 
+     */
+    unsigned int* row_SPI_CS = nullptr;
 };
 
 

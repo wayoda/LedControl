@@ -33,8 +33,6 @@ using ByteBlock = byte[8];
  * @details This Controller Class is mainly target at led matracies consisting of more than 1 segment.
     * While it can also handle 7-Segment Displays it is not tested that well.
  * @warning This object is not thread safe yet.
- * @note If your compiler is STD_CAPABLE the ByteBlock is of the type std::array<byte,8> instead of ByteBlock.
- * @note Check if your code has support for the std by calling: static_assert(STD_CAPABLE > 0, "STD not supported")
  * 
  * @todo make it threading safe
  */
@@ -117,6 +115,13 @@ public:
     LedController(unsigned int dataPin, unsigned int clkPin, unsigned int csPin, unsigned int numSegments = 4, bool useHardwareSpi = false);
 
     /**
+     * @brief Construct a new Led Controller from a given configuration
+     * 
+     * @param configuration the configuration that should be used for the Controller
+     */
+    LedController(controller_configuration configuration);
+
+    /**
      * @brief 
      * 
      */
@@ -152,6 +157,13 @@ public:
      * @param useHardwareSpi true if you want to use hardware SPI (view https://www.arduino.cc/en/Reference/SPI for pin config)
      */
     void init(unsigned int dataPin, unsigned int clkPin, unsigned int csPin, unsigned int numSegments = 4, bool useHardwareSpi = false);
+
+    /**
+     * @brief initilizes the LedController wit ha given configuration
+     * 
+     * @param configuration 
+     */
+    void init(controller_configuration configuration);
 
     /**
      * @brief returns the status of the LedController
