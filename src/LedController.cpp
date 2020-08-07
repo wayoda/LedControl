@@ -35,7 +35,9 @@ LedController::LedController(unsigned int dataPin, unsigned int clkPin,
   init(dataPin, clkPin, csPin, numSegments, useHardwareSpiParam);
 }
 
-LedController::LedController(const controller_configuration& config) { init(config); };
+LedController::LedController(const controller_configuration &config) {
+  init(config);
+};
 
 LedController::LedController(const LedController &other) {
   if (!other.initilized) {
@@ -85,20 +87,20 @@ void LedController::init(unsigned int dataPin, unsigned int clkPin,
   init(config);
 }
 
-void LedController::init(const controller_configuration& configuration) {
+void LedController::init(const controller_configuration &configuration) {
   if (initilized) {
     return;
   }
 
-  if(!controller_configuration::isValidConfig(configuration)){
-      return;
+  if (!controller_configuration::isValidConfig(configuration)) {
+    return;
   }
 
   Serial.println("Beginning inilization");
 
   conf = configuration;
 
-  if(conf.useHardwareSpi){
+  if (conf.useHardwareSpi) {
     conf.SPI_CLK = SCK;
     conf.SPI_MOSI = MOSI;
   }

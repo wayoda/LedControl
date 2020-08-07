@@ -123,7 +123,7 @@ public:
    * @param configuration the configuration that should be used for the
    * Controller
    */
-  LedController(const controller_configuration& configuration);
+  LedController(const controller_configuration &configuration);
 
   /**
    * @brief
@@ -170,7 +170,7 @@ public:
    *
    * @param configuration
    */
-  void init(const controller_configuration& configuration);
+  void init(const controller_configuration &configuration);
 
   /**
    * @brief returns the status of the LedController
