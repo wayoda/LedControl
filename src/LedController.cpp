@@ -100,6 +100,12 @@ void LedController::init(const controller_configuration &configuration) {
 
   conf = configuration;
 
+  if ((conf.rows == 0 || conf.rows == 1) && conf.row_SPI_CS == nullptr){
+    conf.rows = 1;
+    conf.row_SPI_CS = new unsigned int [1];
+    conf.row_SPI_CS[0] = conf.SPI_CS;
+  }
+
   if (conf.useHardwareSpi) {
     conf.SPI_CLK = SCK;
     conf.SPI_MOSI = MOSI;
@@ -125,18 +131,13 @@ void LedController::init(const controller_configuration &configuration) {
 
   pinMode(conf.SPI_MOSI, OUTPUT);
   pinMode(conf.SPI_CLK, OUTPUT);
-
-  pinMode(conf.SPI_CS, OUTPUT);
-  digitalWrite(conf.SPI_CS, LOW);
-
-  /*
+ 
   if(conf.row_SPI_CS != nullptr){
       for(unsigned int i = 0; i < conf.rows;i++){
           pinMode(conf.row_SPI_CS[i],OUTPUT);
           digitalWrite(conf.row_SPI_CS[i],LOW);
       }
   }
-  */
 
   if (conf.useHardwareSpi) {
     SPI.setBitOrder(MSBFIRST);
@@ -144,7 +145,11 @@ void LedController::init(const controller_configuration &configuration) {
     SPI.begin();
   }
 
-  digitalWrite(conf.SPI_CS, HIGH);
+  if(conf.row_SPI_CS != nullptr){
+      for(unsigned int i = 0; i < conf.rows;i++){
+          digitalWrite(conf.row_SPI_CS[i],HIGH);
+      }
+  }
 
   initilized = true;
   refreshSegments();
@@ -282,7 +287,8 @@ void LedController::spiTransfer(unsigned int segment, byte opcode, byte data) {
   spidata[offset] = data;
 
   // enable the line
-  digitalWrite(conf.SPI_CS, LOW);
+  auto row = conf.SegmentCount / segment;
+  digitalWrite(conf.row_SPI_CS[row], LOW);
 
   if (conf.useHardwareSpi) {
     SPI.beginTransaction(SPISettings(conf.spiTransferSpeed, MSBFIRST, SPI_MODE0));
@@ -302,7 +308,7 @@ void LedController::spiTransfer(unsigned int segment, byte opcode, byte data) {
   }
 
   // latch the data onto the display
-  digitalWrite(conf.SPI_CS, HIGH);
+  digitalWrite(conf.row_SPI_CS[row], HIGH);
 }
 
 void LedController::setScanLimit(unsigned int segmentNumber,
