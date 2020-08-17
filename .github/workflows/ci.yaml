@@ -9,7 +9,7 @@ on:
 jobs:
   pre-release:
     name: "Pre Release latest"
-    runs-on: "ubuntu-latest"
+    runs-on: "ubuntu-20.04"
     env:
       boards: "-b esp32dev -b d1_mini -b uno -b ATmega1280 -b leonardo"
     steps:

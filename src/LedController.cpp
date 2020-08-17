@@ -95,9 +95,6 @@ void LedController::init(const controller_configuration &configuration) {
   if (!configuration.isValid()) {
     return;
   }
-
-  Serial.println("Beginning inilization");
-
   conf = configuration;
 
   if ((conf.rows == 0 || conf.rows == 1) && conf.row_SPI_CS == nullptr){
@@ -109,24 +106,6 @@ void LedController::init(const controller_configuration &configuration) {
   if (conf.useHardwareSpi) {
     conf.SPI_CLK = SCK;
     conf.SPI_MOSI = MOSI;
-  }
-
-  LedStates = new ByteBlock[conf.SegmentCount];
-  spidata = new byte[conf.SegmentCount * 2];
-  emptyRow = new byte[conf.SegmentCount];
-
-  for (unsigned int i = 0; i < conf.SegmentCount * 2; i++) {
-    spidata[i] = 0x00;
-  }
-
-  for (unsigned int j = 0; j < conf.SegmentCount; j++) {
-    for (unsigned int i = 0; i < 8; i++) {
-      LedStates[j][i] = 0x00;
-    }
-  }
-
-  for (unsigned int i = 0; i < conf.SegmentCount; i++) {
-    emptyRow[i] = 0x00;
   }
 
   pinMode(conf.SPI_MOSI, OUTPUT);
@@ -153,8 +132,26 @@ void LedController::init(const controller_configuration &configuration) {
 
   initilized = true;
   refreshSegments();
+}
 
-  Serial.println("finished initilization");
+void LedController::resetBuffers(){
+  LedStates = new ByteBlock[conf.SegmentCount];
+  spidata = new byte[conf.SegmentCount * 2];
+  emptyRow = new byte[conf.SegmentCount];
+
+  for (unsigned int i = 0; i < conf.SegmentCount * 2; i++) {
+    spidata[i] = 0x00;
+  }
+
+  for (unsigned int j = 0; j < conf.SegmentCount; j++) {
+    for (unsigned int i = 0; i < 8; i++) {
+      LedStates[j][i] = 0x00;
+    }
+  }
+
+  for (unsigned int i = 0; i < conf.SegmentCount; i++) {
+    emptyRow[i] = 0x00;
+  }
 }
 
 bool LedController::isInitilized() { return initilized; }

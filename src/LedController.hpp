@@ -88,6 +88,12 @@ protected:
    */
   void createEmptyRow(byte **row);
 
+  /**
+   * @brief initilize the internal buffers of the Controller.
+   * 
+   */
+  void resetBuffers();
+
 public:
   /**
    * @brief Construct a new LedController without initilizing anything.
