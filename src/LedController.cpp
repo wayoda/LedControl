@@ -285,7 +285,7 @@ void LedController::spiTransfer(unsigned int segment, byte opcode, byte data) {
   digitalWrite(conf.SPI_CS, LOW);
 
   if (conf.useHardwareSpi) {
-    SPI.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
+    SPI.beginTransaction(SPISettings(conf.spiTransferSpeed, MSBFIRST, SPI_MODE0));
   }
 
   // Now shift out the data
