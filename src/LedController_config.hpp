@@ -73,6 +73,48 @@ public:
    */
   unsigned int *row_SPI_CS = nullptr;
 
+  /**
+   * @brief Only send data if something changed if true.
+   * If this is true, new data will only be sent if the data given differes from the data internally stored.
+   */
+  bool onlySendOnChange = true;
+
+  /**
+   * @brief check of this configuration is valid
+   * 
+   * @return true the configuration is valid
+   * @return false the configuration is not valid
+   */
+  bool isValid() const{
+    return isValidConfig(*this);
+  }
+
+  /**
+   * @brief This function returns a copy of this configuration
+   * 
+   * @return controller_configuration a copy of the configuration
+   */
+  controller_configuration copy() const{
+    controller_configuration conf;
+    conf.IntensityLevel = this->IntensityLevel;
+    conf.onlySendOnChange = this->onlySendOnChange;
+    conf.row_SPI_CS = this->row_SPI_CS;
+    conf.rows = this->rows;
+    conf.SegmentCount = this->SegmentCount;
+    conf.SPI_CLK = this->SPI_CLK;
+    conf.SPI_CS = this->SPI_CS;
+    conf.SPI_MOSI = this->SPI_MOSI;
+    conf.useHardwareSpi = this->useHardwareSpi;
+    return conf;
+  }
+
+  /**
+   * @brief check if a given configuragtion is valid
+   * 
+   * @param conf the configuration that should be checked
+   * @return true the configuration is valid
+   * @return false the configuration is not valid 
+   */
   static bool isValidConfig(const controller_configuration &conf) {
     // checking the clk amd mosi pins
     if (!conf.useHardwareSpi) {

@@ -228,7 +228,7 @@
             ],
             "intelliSenseMode": "clang-x64",
             "cStandard": "c99",
-            "cppStandard": "c++11",
+            "cppStandard": "c++14",
             "compilerPath": "~/.platformio/packages/toolchain-xtensa32/bin/xtensa-esp32-elf-gcc",
             "compilerArgs": [
                 "-mlongcalls",

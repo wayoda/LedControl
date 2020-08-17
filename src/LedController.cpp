@@ -92,7 +92,7 @@ void LedController::init(const controller_configuration &configuration) {
     return;
   }
 
-  if (!controller_configuration::isValidConfig(configuration)) {
+  if (!configuration.isValid()) {
     return;
   }
 
@@ -329,7 +329,7 @@ void LedController::clearSegment(unsigned int segmentNumber) {
 void LedController::setRow(unsigned int segmentNumber, unsigned int row,
                            byte value) {
   if (!initilized || segmentNumber >= conf.SegmentCount || row > 7 ||
-      LedStates[segmentNumber][row] == value) {
+      (conf.onlySendOnChange && LedStates[segmentNumber][row] == value)) {
     return;
   }
 
