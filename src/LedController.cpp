@@ -97,6 +97,14 @@ void LedController::init(const controller_configuration &configuration) {
   }
   conf = configuration;
 
+  initConf();
+  initSPI();
+
+  initilized = true;
+  refreshSegments();
+}
+
+void LedController::initConf(){
   if ((conf.rows == 0 || conf.rows == 1) && conf.row_SPI_CS == nullptr){
     conf.rows = 1;
     conf.row_SPI_CS = new unsigned int [1];
@@ -108,6 +116,10 @@ void LedController::init(const controller_configuration &configuration) {
     conf.SPI_MOSI = MOSI;
   }
 
+  resetBuffers();
+}
+
+void LedController::initSPI(){
   pinMode(conf.SPI_MOSI, OUTPUT);
   pinMode(conf.SPI_CLK, OUTPUT);
  
@@ -129,9 +141,6 @@ void LedController::init(const controller_configuration &configuration) {
           digitalWrite(conf.row_SPI_CS[i],HIGH);
       }
   }
-
-  initilized = true;
-  refreshSegments();
 }
 
 void LedController::resetBuffers(){

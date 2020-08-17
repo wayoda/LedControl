@@ -94,6 +94,18 @@ protected:
    */
   void resetBuffers();
 
+  /**
+   * @brief initilize the spi outputs
+   * 
+   */
+  void initSPI();
+
+  /**
+   * @brief initilize the configuration
+   * 
+   */
+  void initConf();
+
 public:
   /**
    * @brief Construct a new LedController without initilizing anything.
