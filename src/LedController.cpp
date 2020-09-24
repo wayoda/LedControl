@@ -293,7 +293,15 @@ void LedController::spiTransfer(unsigned int segment, byte opcode, byte data) {
   spidata[offset] = data;
 
   // enable the line
-  auto row = conf.SegmentCount / segment;
+  unsigned int row = 0;
+  if (conf.rows != 0 && conf.SegmentCount != 0){
+    row = segment / (conf.SegmentCount / conf.rows);
+  }
+  
+  if(row >= conf.rows){
+    row = 0;
+  }
+  
   digitalWrite(conf.row_SPI_CS[row], LOW);
 
   if (conf.useHardwareSpi) {
