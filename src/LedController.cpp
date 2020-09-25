@@ -293,17 +293,11 @@ void LedController::spiTransfer(unsigned int segment, byte opcode, byte data) {
   spidata[offset] = data;
 
   // enable the line
-  unsigned int row = 0;
-  if (conf.rows != 0 && conf.SegmentCount != 0){
-    row = segment / (conf.SegmentCount / conf.rows);
-  }
-  
-  if(row >= conf.rows){
-    row = 0;
-  }
+  auto row = conf.getRow(segment);
   
   digitalWrite(conf.row_SPI_CS[row], LOW);
 
+  //init the spi transfer if hardware should be used
   if (conf.useHardwareSpi) {
     SPI.beginTransaction(SPISettings(conf.spiTransferSpeed, MSBFIRST, SPI_MODE0));
   }
@@ -317,6 +311,7 @@ void LedController::spiTransfer(unsigned int segment, byte opcode, byte data) {
     }
   }
 
+  //end the spi transfer if hardware should be used
   if (conf.useHardwareSpi) {
     SPI.endTransaction();
   }
@@ -532,7 +527,7 @@ byte LedController::moveLeft(byte shiftedInColumn) {
   byte returnValue = 0x00;
 
   for (unsigned int i = 0; i < 8; i++) {
-    if (LedStates[conf.SegmentCount - 1][i] & 0x80) {
+    if (LedStates[conf.SegmentCount - 1][i] & 0x01) {
       returnValue |= 0x01 << i;
     };
   }

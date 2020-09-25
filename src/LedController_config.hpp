@@ -1,9 +1,9 @@
 #pragma once
 
-#if (ARDUINO >= 100)
-#include <Arduino.h>
+#if (ARDUINO >= 100) || __has_include( <Arduino.h> )
+  #include <Arduino.h>
 #else
-#include <WProgram.h>
+  #include <WProgram.h>
 #endif
 
 /**
@@ -93,6 +93,25 @@ public:
    */
   bool isValid() const{
     return isValidConfig(*this);
+  }
+
+  /**
+   * @brief This function returns the row a given segment is in.
+   * 
+   * @param segmentNumber The index of the segment which you want the row of.
+   * @return unsigned int The row the given segment is in.
+   */
+  unsigned int getRow(unsigned int segmentNumber) const{
+    unsigned int row = 0;
+    if (rows != 0 && SegmentCount != 0){
+      row = segmentNumber / (SegmentCount / rows);
+    }
+    
+    if(row >= rows){
+      row = 0;
+    }
+
+    return row;
   }
 
   /**
