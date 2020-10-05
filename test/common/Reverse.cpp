@@ -1,5 +1,34 @@
-#include <unity.h>
+#define SPI_OUTPUT
 #include "LedController.hpp"
+#include <unity.h>
+
+void test_reverse_simple();
+void reverse_Block();
+void process();
+
+#ifdef ARDUINO
+
+#include <Arduino.h>
+void setup() {
+    delay(2000);
+    process();
+}
+
+void loop() {
+    digitalWrite(13, HIGH);
+    delay(100);
+    digitalWrite(13, LOW);
+    delay(500);
+}
+
+#else
+
+int main(int argc, char **argv) {
+    process();
+    return 0;
+}
+
+#endif
 
 void test_reverse_simple(){
     LedController control = LedController();
@@ -27,15 +56,4 @@ void process(){
     UNITY_END();
 }
 
-#include <Arduino.h>
-void setup() {
-    delay(2000);
-    process();
-}
 
-void loop() {
-    digitalWrite(13, HIGH);
-    delay(100);
-    digitalWrite(13, LOW);
-    delay(500);
-}
