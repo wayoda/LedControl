@@ -3,7 +3,11 @@
 #if (ARDUINO >= 100)
 #include <Arduino.h>
 #else
+#if __has_include("ArduinoFake.h")
+#include "ArduinoFake.h"
+#else
 #include <WProgram.h>
+#endif
 #endif
 
 using ByteBlock = byte[8];
@@ -14,13 +18,20 @@ using ByteBlock = byte[8];
 #if (__has_include(<avr/pgmspace.h>))
 #include <avr/pgmspace.h>
 #else
+#if (__has_include(<pgmspace.h>))
+#define INCLUDED_PGMSPACE
 #include <pgmspace.h>
+#else
+#define INCLUDED_PGMSPACE
+#define pgm_read_byte(addr)   (*(const unsigned char *)(addr))
+#define pgm_read_byte_near(addr)  pgm_read_byte(addr)
+#endif
 #endif
 
 #endif
 
 #ifndef INCLUDED_PGMSPACE
-#include <avr/pgmspace.h>
+#include <pgmspace.h>
 #define INCLUDED_PGMSPACE
 #endif
 

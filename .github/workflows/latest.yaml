@@ -57,6 +57,9 @@ jobs:
           export PLATFORMIO_CI_SRC="examples/LCDemo7Segment/LCDemo7Segment.ino"
           python3 -m platformio ci --lib="." ${boards} --keep-build-dir
 
+      - name: run tests
+        run: python3 -m platformio test -e native
+        
       - name: pack repo
         run: |
           zip -r latest.zip src License README.md library.properties keywords.txt .vscode examples

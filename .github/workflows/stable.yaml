@@ -55,6 +55,9 @@ jobs:
           export PLATFORMIO_CI_SRC="examples/LCDemo7Segment/LCDemo7Segment.ino"
           python3 -m platformio ci --lib="." ${boards} --keep-build-dir
           
+      - name: run tests
+        run: python3 -m platformio test -e native
+        
       - name: Check code meets quality standards
         id: code-inspector
         uses: codeinspectorio/github-action@master

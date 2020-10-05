@@ -41,6 +41,9 @@ jobs:
           export PLATFORMIO_CI_SRC="examples/LCDemo7Segment/LCDemo7Segment.ino"
           python3 -m platformio ci --lib="." ${boards} --keep-build-dir
 
+      - name: run tests
+        run: python3 -m platformio test -e native
+
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
