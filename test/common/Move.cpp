@@ -2,27 +2,15 @@
 
 #include <iostream>
 
-controller_configuration& get_conf(){
-    static controller_configuration conf;
-    if(!conf.isValid()){
-        PRINTLN("expected fail message. Creating default configuration.");
-        conf.SegmentCount = 4;
-        conf.SPI_CS = 16;
-        conf.SPI_CLK = 15;
-        conf.SPI_MOSI = 14;
-        conf.row_SPI_CS = nullptr;
-        conf.rows = 1;
-        conf.useHardwareSpi = false;
-    }
+byte in_array[4] = {
+    B00000001,
+    B00001000,
+    B00100000,
+    B10000000
+};
 
-    return conf;
-}
-
-void test_left_right(){
+void test_left_right(controller_configuration& conf){
     try{
-        controller_configuration conf = get_conf();
-        TEST_ASSERT_TRUE(conf.isValid());
-
         LedController control = LedController(conf);
 
         auto in = B00000101;
@@ -35,11 +23,8 @@ void test_left_right(){
     #endif
 }
 
-void test_right_left(){
+void test_right_left(controller_configuration& conf){
     try{
-        controller_configuration conf = get_conf();
-        TEST_ASSERT_TRUE(conf.isValid());
-
         LedController control = LedController(conf);
 
         auto in = B00000101;
@@ -52,21 +37,15 @@ void test_right_left(){
     #endif
 }
 
-void test_up_down(){
+void test_up_down(controller_configuration& conf){
     try{
-        controller_configuration conf = get_conf();
         LedController control = LedController(conf);
 
-        byte in[4];
-        in[0] = B00000001;
-        in[1] = B00001000;
-        in[2] = B00100000;
-        in[3] = B10000000;
-        control.moveUp(in,nullptr);
+        control.moveUp(in_array,nullptr);
         byte* out = new byte[4];
-        control.moveDown(in,&out);
+        control.moveDown(in_array,&out);
         for(unsigned int i = 0; i < 4;i++){
-            TEST_ASSERT_EQUAL(in[i],out[i]);
+            TEST_ASSERT_EQUAL(in_array[i],out[i]);
         }
         delete out;
     }
@@ -76,21 +55,15 @@ void test_up_down(){
     #endif
 }
 
-void test_down_up(){
+void test_down_up(controller_configuration& conf){
     try{
-        controller_configuration conf = get_conf();
         LedController control = LedController(conf);
 
-        byte in[4];
-        in[0] = B00000001;
-        in[1] = B00001000;
-        in[2] = B00100000;
-        in[3] = B10000000;
-        control.moveDown(in,nullptr);
+        control.moveDown(in_array,nullptr);
         byte* out = new byte[4];
-        control.moveUp(in,&out);
+        control.moveUp(in_array,&out);
         for(unsigned int i = 0; i < 4;i++){
-            TEST_ASSERT_EQUAL(in[i],out[i]);
+            TEST_ASSERT_EQUAL(in_array[i],out[i]);
         }
         delete out;
     }
@@ -98,4 +71,42 @@ void test_down_up(){
     #ifndef ARDUINO
     CATCH_FAKEIT
     #endif
+}
+
+void test_left_right_default(){
+    test_left_right(get_conf());
+}
+void test_right_left_default(){
+    test_right_left(get_conf());
+}
+void test_up_down_default(){
+    test_up_down(get_conf());
+}
+void test_down_up_default(){
+    test_down_up(get_conf());
+}
+
+void test_left_right_SPI(){
+    test_left_right(get_conf_SPI());
+}
+void test_right_left_SPI(){
+    test_right_left(get_conf_SPI());
+}
+void test_up_down_SPI(){
+    test_up_down(get_conf_SPI());
+}
+void test_down_up_SPI(){
+    test_down_up(get_conf_SPI());
+}
+
+void run_move_tests(){
+    RUN_TEST(test_left_right_default);
+    RUN_TEST(test_right_left_default);
+    RUN_TEST(test_up_down_default);
+    RUN_TEST(test_down_up_default);
+    
+    RUN_TEST(test_left_right_SPI);
+    RUN_TEST(test_right_left_SPI);
+    RUN_TEST(test_up_down_SPI);
+    RUN_TEST(test_down_up_SPI);
 }

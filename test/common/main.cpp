@@ -1,16 +1,12 @@
 #include "Move.hpp"
 #include "Reverse.hpp"
 
-//TODO: get native test working
-
 void process(){
     UNITY_BEGIN();
     RUN_TEST(test_reverse_simple);
     RUN_TEST(reverse_Block);
-    RUN_TEST(test_left_right);
-    RUN_TEST(test_right_left);
-    RUN_TEST(test_up_down);
-    RUN_TEST(test_down_up);
+
+    run_move_tests();
     UNITY_END();
 }
 
