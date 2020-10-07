@@ -219,6 +219,15 @@ void LedController::displayOnSegment(unsigned int segmentindex,
   }
 }
 
+void LedController::displayOnSegment(unsigned int column, unsigned int row_num, ByteBlock data){
+  displayOnSegment(conf.getSegmentNumber(column,row_num),data);
+}
+
+void LedController::getSegmentData(unsigned int column, unsigned int row_num, ByteBlock* resultLocation){
+  getSegmentData(conf.getSegmentNumber(column,row_num),resultLocation);
+}
+
+
 void LedController::getSegmentData(unsigned int segmentindex,
                                    ByteBlock *resultLocation) {
   if (!initilized || segmentindex >= conf.SegmentCount ||

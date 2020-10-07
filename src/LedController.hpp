@@ -227,6 +227,25 @@ public:
   void displayOnSegment(unsigned int segmentindex, ByteBlock data);
 
   /**
+   * @brief  Display 8 lines on the given segment
+   * 
+   * @param column the column where the wanted segment is
+   * @param row_num the row where the wanted segment is
+   * @param data an array containing the data for all the pixels that should be
+   * displayed on that segment
+   */
+  void displayOnSegment(unsigned int column, unsigned int row_num, ByteBlock data);
+
+  /**
+   * @brief Get the Segment Data of a specific Segment
+   * 
+   * @param column the column where the wanted segment is
+   * @param row_num the row where the wanted segment is
+   * @param resultLocation the location where the data should be stored
+   */
+  void getSegmentData(unsigned int column, unsigned int row_num, ByteBlock* resultLocation);
+
+  /**
    * @brief Get the Segment Data of a specific Segment
    *
    * @param segmentindex the index of whose data you want to have
