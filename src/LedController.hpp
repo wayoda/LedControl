@@ -391,8 +391,31 @@ public:
   /**
    * @brief moves the data left by one
    *
-   * @param shiftedInColumn The column that will be shifted in on the right
+   * @param shiftedInColumn The column that will be shifted to the right
    * (default 0x00)
+   * @param row_num The row that will be shifted to the right
+   * @warning ONLY moves one row
+   * @return byte The column that gets shifted out on the left
+   */
+  byte moveRowLeft(byte shiftedInColumn = 0x00, unsigned int row_num = 0);
+
+  /**
+   * @brief moves the data left by one
+   *
+   * @param shiftedInColumn The column that will be shifted to the left
+   * (default 0x00)
+   * @param row_num The row that will be shifted to the left
+   * @warning ONLY moves one row
+   * @return byte The column that gets shifted out on the right
+   */
+  byte moveRowRight(byte shiftedInColumn = 0x00, unsigned int row_num = 0);
+
+  /**
+   * @brief moves the data left by one
+   *
+   * @param shiftedInColumn The column that will be shifted to the right
+   * (default 0x00)
+   * @warning ONLY moves row 0, this function exists for backwards compatibility
    * @return byte The column that gets shifted out on the left
    */
   byte moveLeft(byte shiftedInColumn = 0x00);
@@ -400,11 +423,32 @@ public:
   /**
    * @brief moves the data left by one
    *
-   * @param shiftedInColumn The column that will be shifted in on the left
+   * @param shiftedInColumn The column that will be shifted to the left
    * (default 0x00)
+   * @warning ONLY moves row 0, this function exists for backwards compatibility
    * @return byte The column that gets shifted out on the right
    */
   byte moveRight(byte shiftedInColumn = 0x00);
+
+  /**
+   * @brief moves all rows to the left.
+   * The passed Arrays need to have the same length as the number of rows, or be a nullptr.
+   * If shiftedInColumn is a nullptr, 0x00 will be used for all rows.
+   * 
+   * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
+   * @param shiftedOutColumn This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
+   */
+  void moveLeft(byte* shiftedInColumn, byte** shiftedOutColumn);
+
+  /**
+   * @brief moves all rows to the right.
+   * The passed Arrays need to have the same length as the number of rows, or be a nullptr.
+   * If shiftedInColumn is a nullptr, 0x00 will be used for all rows.
+   * 
+   * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
+   * @param shiftedOutColumn This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
+   */
+  void moveRight(byte* shiftedInColumn, byte** shiftedOutColumn);
 
   /**
    * @brief This function changes to bitorder of a byte (useful to mirror

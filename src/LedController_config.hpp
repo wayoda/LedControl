@@ -123,6 +123,24 @@ public:
   }
 
   /**
+   * @brief Get the length each row has.
+   * 
+   * @return unsigned int the length of each row
+   */
+  unsigned int getRowLen() const{
+    unsigned int len = 0;
+    if (rows != 0 && SegmentCount % rows == 0){
+      len = SegmentCount / rows;
+    }
+
+    return len;
+  }
+
+  unsigned int getSegmentNumber(unsigned int column, unsigned int row){
+    return row * getRowLen() + column;
+  }
+
+  /**
    * @brief This function returns a copy of this configuration
    * 
    * @return controller_configuration a copy of the configuration

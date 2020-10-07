@@ -479,64 +479,108 @@ void LedController::updateSegment(unsigned int segmentNumber) {
   }
 }
 
-byte LedController::moveRight(byte shiftedInColumn) {
-  if (!initilized) {
+byte LedController::moveRowRight(byte shiftedInColumn, unsigned int row_num) {
+  if (!initilized || row_num >= conf.rows) {
     return 0x00;
   }
 
   byte returnValue = 0x00;
 
   for (unsigned int i = 0; i < 8; i++) {
-    if (LedStates[conf.SegmentCount - 1][i] & 0x80) {
+    if (LedStates[conf.getSegmentNumber(conf.getRowLen()-1,row_num)][i] & 0x80) {
       returnValue |= 0x80 >> i;
     };
   }
 
-  for (int seg = conf.SegmentCount - 1; seg >= 0; seg--) {
+  for (int col = conf.getRowLen(); col >= 0; col--) {
+    auto seg = conf.getSegmentNumber(col,row_num);
+    auto seg1 = conf.getSegmentNumber(col-1,row_num);
     for (int row = 0; row < 8; row++) {
       LedStates[seg][row] = LedStates[seg][row] << 1;
 
-      if (seg != 0 && LedStates[seg - 1][row] & 0x80) {
+      if (seg != 0 && LedStates[seg1][row] & 0x80) {
         LedStates[seg][row]++;
       };
     }
   }
 
-  setColumn(0, 7, shiftedInColumn);
+  setColumn(conf.getSegmentNumber(0,row_num), 7, shiftedInColumn);
 
   updateSegments();
 
   return returnValue;
 }
 
-byte LedController::moveLeft(byte shiftedInColumn) {
-  if (!initilized) {
+byte LedController::moveRowLeft(byte shiftedInColumn, unsigned int row_num) {
+  if (!initilized || row_num >= conf.rows) {
     return 0x00;
   }
 
   byte returnValue = 0x00;
 
   for (unsigned int i = 0; i < 8; i++) {
-    if (LedStates[0][i] & 0x01) {
+    if (LedStates[conf.getSegmentNumber(0,row_num)][i] & 0x01) {
       returnValue |= 0x80 >> i;
     };
   }
 
-  for (unsigned int seg = 0; seg < conf.SegmentCount; seg++) {
+  for (unsigned int col = 0; col < conf.getRowLen(); col++){
+    auto seg = conf.getSegmentNumber(col,row_num);
+    auto seg1 = conf.getSegmentNumber(col+1,row_num);
     for (unsigned int row = 0; row < 8; row++) {
       LedStates[seg][row] = LedStates[seg][row] >> 1;
 
-      if (seg != conf.SegmentCount - 1 && LedStates[seg + 1][row] & 0x01) {
+      if (seg != conf.SegmentCount - 1 && LedStates[seg1][row] & 0x01) {
         LedStates[seg][row] |= 0x80;
       };
     }
   }
 
-  setColumn(conf.SegmentCount - 1, 0, shiftedInColumn);
+  setColumn(conf.getSegmentNumber(conf.getRowLen()-1,row_num), 0, shiftedInColumn);
 
   updateSegments();
 
   return returnValue;
+}
+
+byte LedController::moveLeft(byte shiftedInColumn){
+  return moveRowLeft(shiftedInColumn,0);
+}
+
+byte LedController::moveRight(byte shiftedInColumn){
+  return moveRowRight(shiftedInColumn,0);
+}
+
+void LedController::moveLeft(byte* shiftedInColumn, byte** shiftedOutColumn){
+  if(!initilized){
+    return;
+  }
+
+  for(unsigned int i = 0; i < conf.rows; i++){
+    byte inVal = 0x00;
+    if(shiftedInColumn != nullptr && shiftedInColumn[i] != 0){inVal = shiftedInColumn[i];};
+    if(shiftedOutColumn == nullptr || shiftedOutColumn[i] == nullptr){
+      moveRowLeft(shiftedInColumn[i],i);
+    }else{
+      (*shiftedOutColumn)[i] = moveRowLeft(shiftedInColumn[i],i);
+    }
+  }
+}
+
+void LedController::moveRight(byte* shiftedInColumn, byte** shiftedOutColumn){
+  if(!initilized){
+    return;
+  }
+
+  for(unsigned int i = 0; i < conf.rows; i++){
+    byte inVal = 0x00;
+    if(shiftedInColumn != nullptr && shiftedInColumn[i] != 0){inVal = shiftedInColumn[i];};
+    if(shiftedOutColumn == nullptr || shiftedOutColumn[i] == nullptr){
+      moveRowRight(shiftedInColumn[i],i);
+    }else{
+      (*shiftedOutColumn)[i] = moveRowRight(shiftedInColumn[i],i);
+    }
+  }
 }
 
 byte LedController::reverse(byte var) {
