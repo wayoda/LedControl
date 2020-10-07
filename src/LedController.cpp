@@ -488,7 +488,7 @@ byte LedController::moveRight(byte shiftedInColumn) {
 
   for (unsigned int i = 0; i < 8; i++) {
     if (LedStates[conf.SegmentCount - 1][i] & 0x80) {
-      returnValue |= 0x01 << i;
+      returnValue |= 0x80 >> i;
     };
   }
 
@@ -509,16 +509,6 @@ byte LedController::moveRight(byte shiftedInColumn) {
   return returnValue;
 }
 
-byte LedController::reverse(byte var) {
-  byte ret = 0x00;
-  for (unsigned int i = 0; i < 8; i++) {
-    if (var & (0x01U << i)) {
-      ret |= 0x80U >> i;
-    }
-  }
-  return ret;
-}
-
 byte LedController::moveLeft(byte shiftedInColumn) {
   if (!initilized) {
     return 0x00;
@@ -527,8 +517,8 @@ byte LedController::moveLeft(byte shiftedInColumn) {
   byte returnValue = 0x00;
 
   for (unsigned int i = 0; i < 8; i++) {
-    if (LedStates[conf.SegmentCount - 1][i] & 0x01) {
-      returnValue |= 0x01 << i;
+    if (LedStates[0][i] & 0x01) {
+      returnValue |= 0x80 >> i;
     };
   }
 
@@ -549,6 +539,15 @@ byte LedController::moveLeft(byte shiftedInColumn) {
   return returnValue;
 }
 
+byte LedController::reverse(byte var) {
+  byte ret = 0x00;
+  for (unsigned int i = 0; i < 8; i++) {
+    if (var & (0x01U << i)) {
+      ret |= 0x80U >> i;
+    }
+  }
+  return ret;
+}
 // The plain C array functions
 
 void LedController::createEmptyRow(byte **row) {

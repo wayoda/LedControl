@@ -2,11 +2,15 @@
 
 #if (ARDUINO >= 100)
 #include <Arduino.h>
+#define PRINTLN(x) Serial.println(x)
 #else
 #if __has_include("ArduinoFake.h")
 #include "ArduinoFake.h"
+#include <iostream>
+#define PRINTLN(x) std::cout << x << std::endl
 #else
 #include <WProgram.h>
+#define PRINTLN(x) Serial.println(x)
 #endif
 #endif
 
@@ -156,13 +160,13 @@ public:
     // checking the clk amd mosi pins
     if (!conf.useHardwareSpi) {
       if (conf.SPI_CLK == 0) {
-        Serial.println(
+        PRINTLN(
             "No CLK Pin given. Specify one or set useHardwareSpi to true");
         return false;
       }
 
       if (conf.SPI_MOSI == 0) {
-        Serial.println(
+        PRINTLN(
             "No MOSI Pin given. Specify one or set useHardwareSpi to true");
         return false;
       }
@@ -170,19 +174,19 @@ public:
 
     // checking the cs pin(s)
     if (conf.SPI_CS == 0 && conf.row_SPI_CS == nullptr) {
-      Serial.println("No CS Pin given");
+      PRINTLN("No CS Pin given");
       return false;
     }
 
     if (conf.row_SPI_CS != nullptr &&
         sizeof(conf.row_SPI_CS) != sizeof(unsigned int) * conf.rows) {
-      Serial.println("Wrong row_SPI_CS size, it does not match conf.rows");
+      PRINTLN("Wrong row_SPI_CS size, it does not match conf.rows");
 
       if (conf.SPI_CS != 0) {
-        Serial.println("Falling back to SPI_CS for every row (assuming all "
+        PRINTLN("Falling back to SPI_CS for every row (assuming all "
                        "segments are connected in series)");
       } else {
-        Serial.println("Falling back to SPI_CS not possible because it is 0");
+        PRINTLN("Falling back to SPI_CS not possible because it is 0");
         return false;
       }
     }
