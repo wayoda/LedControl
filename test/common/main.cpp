@@ -1,5 +1,6 @@
 #include "Move.hpp"
 #include "Reverse.hpp"
+#include "Move_multi.hpp"
 
 void process(){
     UNITY_BEGIN();
@@ -7,6 +8,7 @@ void process(){
     RUN_TEST(reverse_Block);
 
     run_move_tests();
+    run_move_multi_tests();
     UNITY_END();
 }
 

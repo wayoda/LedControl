@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-byte in_array[4] = {
+static byte in_array[4] = {
     B00000001,
     B00001000,
     B00100000,
@@ -73,29 +73,29 @@ void test_down_up(controller_configuration& conf){
     #endif
 }
 
-void test_left_right_default(){
+static void test_left_right_default(){
     test_left_right(get_conf());
 }
-void test_right_left_default(){
+static void test_right_left_default(){
     test_right_left(get_conf());
 }
-void test_up_down_default(){
+static void test_up_down_default(){
     test_up_down(get_conf());
 }
-void test_down_up_default(){
+static void test_down_up_default(){
     test_down_up(get_conf());
 }
 
-void test_left_right_SPI(){
+static void test_left_right_SPI(){
     test_left_right(get_conf_SPI());
 }
-void test_right_left_SPI(){
+static void test_right_left_SPI(){
     test_right_left(get_conf_SPI());
 }
-void test_up_down_SPI(){
+static void test_up_down_SPI(){
     test_up_down(get_conf_SPI());
 }
-void test_down_up_SPI(){
+static void test_down_up_SPI(){
     test_down_up(get_conf_SPI());
 }
 

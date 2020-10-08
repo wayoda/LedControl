@@ -568,10 +568,10 @@ void LedController::moveLeft(byte* shiftedInColumn, byte** shiftedOutColumn){
   for(unsigned int i = 0; i < conf.rows; i++){
     byte inVal = 0x00;
     if(shiftedInColumn != nullptr && shiftedInColumn[i] != 0){inVal = shiftedInColumn[i];};
-    if(shiftedOutColumn == nullptr || shiftedOutColumn[i] == nullptr){
-      moveRowLeft(shiftedInColumn[i],i);
+    if(shiftedOutColumn == nullptr){
+      moveRowLeft(inVal,i);
     }else{
-      (*shiftedOutColumn)[i] = moveRowLeft(shiftedInColumn[i],i);
+      (*shiftedOutColumn)[i] = moveRowLeft(inVal,i);
     }
   }
 }
@@ -584,10 +584,10 @@ void LedController::moveRight(byte* shiftedInColumn, byte** shiftedOutColumn){
   for(unsigned int i = 0; i < conf.rows; i++){
     byte inVal = 0x00;
     if(shiftedInColumn != nullptr && shiftedInColumn[i] != 0){inVal = shiftedInColumn[i];};
-    if(shiftedOutColumn == nullptr || shiftedOutColumn[i] == nullptr){
-      moveRowRight(shiftedInColumn[i],i);
+    if(shiftedOutColumn == nullptr){
+      moveRowRight(inVal,i);
     }else{
-      (*shiftedOutColumn)[i] = moveRowRight(shiftedInColumn[i],i);
+      (*shiftedOutColumn)[i] = moveRowRight(inVal,i);
     }
   }
 }

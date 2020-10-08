@@ -14,6 +14,8 @@
 #endif
 #endif
 
+#define PRINTLN_IF(condition,x) if(condition){PRINTLN(x);}
+
 /**
  * @brief This class is ued to handle the configuration of the LedController
  *
@@ -92,6 +94,12 @@ public:
    * 
    */
   unsigned int spiTransferSpeed = 8000000;
+
+  /**
+   * @brief if this is set to true, output will be printed.
+   * 
+   */
+  bool debug_output = false;
 
   /**
    * @brief check of this configuration is valid
@@ -178,35 +186,35 @@ public:
     // checking the clk amd mosi pins
     if (!conf.useHardwareSpi) {
       if (conf.SPI_CLK == 0) {
-        PRINTLN(
-            "No CLK Pin given. Specify one or set useHardwareSpi to true");
+        PRINTLN_IF(conf.debug_output, "No CLK Pin given. Specify one or set useHardwareSpi to true");
         return false;
       }
 
       if (conf.SPI_MOSI == 0) {
-        PRINTLN(
-            "No MOSI Pin given. Specify one or set useHardwareSpi to true");
+        PRINTLN_IF(conf.debug_output, "No MOSI Pin given. Specify one or set useHardwareSpi to true");
         return false;
       }
     }
 
     // checking the cs pin(s)
     if (conf.SPI_CS == 0 && conf.row_SPI_CS == nullptr) {
-      PRINTLN("No CS Pin given");
+      PRINTLN_IF(conf.debug_output, "No CS Pin given");
       return false;
     }
 
-    if (conf.row_SPI_CS != nullptr &&
-        sizeof(conf.row_SPI_CS) != sizeof(unsigned int) * conf.rows) {
-      PRINTLN("Wrong row_SPI_CS size, it does not match conf.rows");
-
-      if (conf.SPI_CS != 0) {
-        PRINTLN("Falling back to SPI_CS for every row (assuming all "
-                       "segments are connected in series)");
-      } else {
-        PRINTLN("Falling back to SPI_CS not possible because it is 0");
-        return false;
+    if (conf.row_SPI_CS != nullptr){
+      for(unsigned int i = 0;i < conf.rows;i++){
+        if(conf.row_SPI_CS[i] == 0){
+          PRINTLN_IF(conf.debug_output, "Falling back to SPI_CS for one row");
+          if(conf.SPI_CS == 0){
+            PRINTLN_IF(conf.debug_output, "Falling back to SPI_CS not possible because it is 0");
+            return false;
+          }else{
+            conf.row_SPI_CS[i] = conf.SPI_CS;
+          }
+        }
       }
+
     }
     return true;
   }
