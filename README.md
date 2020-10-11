@@ -33,6 +33,23 @@ All help regarding compatibility with more boards is welcome.
 
 ## Important Notes
 
+### Migration from 1.7.x to 2.0.x
+
+***Please note that 2.0.x is still in development and needs some work. However all of these instructions also apply if you use the git repository on the latest commit, since a lot of the changes for 2.0.x are already in place.***
+
+First off 2.0.x is fully backwards compatible to 1.7.x and if you do not change anything it should just work better and nothing else should be differnt.
+
+2.0.x introduces the controller_configuration class.
+It can be used to set all the properties the controller should have and then be passed as argument to the init function or the constructor of the LedController.
+
+The next big feature is support for multiple rows (**This is still work in progress so some things might change before the final release**).
+Now you can connect multiple Matricies to different CS Pins and control them all using a single LedController instead of only being able to connect them all in a row.
+For this feature to work, the length of each row has to be the same, in other words it is allowed to have two rows with two segments each but not to have one row with one segment and another with two.
+To use it, create a controller_configuration, set the total number of segments and the numkber of rows to the right value.
+**A detailed documentation page will come soon.**
+
+**At the moment it is only possible to have multiple rows if they each use a different CS pin, for 2.0.0 it will be possible to have all segments in series and be able to allocate them in multiple rows. However the rows always need to have the same length!**
+
 ### Migration from 1.6.x to 1.7.x
 
 There were a few more drastic changes in version 1.7.0 compared to 1.6.x, if you want use 1.7.x make sure your project is compatible with the latest version.
@@ -42,7 +59,7 @@ View the documentation for more information.
 There is no longer support for the use of std::array, so the functions that where able to return an ByteBlock, can no longer do that, so you have to pass a pointer to an ByteBlock as a secondary parameter.
 Since there is no longer a limit on the amount of segments a controller can have, the size of most arrays is not known at compile time, and therefore all internal data has to be stored on the heap.
 Please check the size of the arrays you pass as location to store the result in.
-If it is now large enough, nothing will be displayed and fail silently.
+If it is not large enough, nothing will be displayed and fail silently.
 
 ## Documentation
 
