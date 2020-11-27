@@ -6,11 +6,24 @@
 <a href="https://frontend.code-inspector.com/project/5318/dashboard"><img src="https://www.code-inspector.com/project/5318/score/svg" alt="code quality" /></a>
 <a href="https://discord.gg/awjW3aG"><img src="https://discordapp.com/api/guilds/691968013234339881/widget.png" alt="Discord" /></a>
 <a href="https://GitHub.com/noah1510/LedController/releases/"><img src="https://img.shields.io/github/v/release/noah1510/LedController.svg" alt="stable release" /></a>
+<a href="https://gitter.im/LedControllerN/community/"><img src="https://badges.gitter.im/LedControllerN/community.svg" alt="gitter" /></a>
 </h2>
 
 LedController is an [Arduino](http://arduino.cc) library for MAX7219 and MAX7221 Led display drivers.
 The code should work with most boards and architectures but I only test it for the ESP32 Dev Module.
 Feel free to create an issue if something is missing or not working correctly.
+
+## Issues, help and contributer information
+
+If you have a feature request or find issues, feel free to open an inssue on github.
+
+In case you have other questions related to the LedController ask the on gitter: [![Gitter](https://badges.gitter.im/LedControllerN/helpdesk.svg)](https://gitter.im/LedControllerN/helpdesk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
+If you are interested in contributing to this project you can ask in the following gitter chat or simply open a pull request with the changes you deem necessary.
+A good place to start is to look at the open issues and try solving one of those labeled as good first issue.
+[![Gitter](https://badges.gitter.im/LedControllerN/dev.svg)](https://gitter.im/LedControllerN/dev?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
+## Supported boards
 
 The CI automatically tests the following boards(PlatformIO boards names):
 
