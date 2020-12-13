@@ -15,13 +15,12 @@ Feel free to create an issue if something is missing or not working correctly.
 
 ## Issues, help and contributer information
 
-If you have a feature request or find issues, feel free to open an inssue on github.
+Whatever questions or suggestions you have, please provide detailed information about what you want, what went wrong and what your environment is.
 
-In case you have other questions related to the LedController ask the on gitter: [![Gitter](https://badges.gitter.im/LedControllerN/helpdesk.svg)](https://gitter.im/LedControllerN/helpdesk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+If you have a feature request or find issues, feel free to open an issue on github.
 
-If you are interested in contributing to this project you can ask in the following gitter chat or simply open a pull request with the changes you deem necessary.
-A good place to start is to look at the open issues and try solving one of those labeled as good first issue.
-[![Gitter](https://badges.gitter.im/LedControllerN/dev.svg)](https://gitter.im/LedControllerN/dev?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+For questions that are not bugs or feature requests please start a new [discussion
+](https://github.com/noah1510/LedController/discussions).
 
 ## Supported boards
 
