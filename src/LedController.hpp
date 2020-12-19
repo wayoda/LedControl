@@ -23,8 +23,12 @@
 #include <pgmspace.h>
 #else
 #define INCLUDED_PGMSPACE
+#ifndef pgm_read_byte
 #define pgm_read_byte(addr)   (*(const unsigned char *)(addr))
+#endif
+#ifndef pgm_read_byte_near
 #define pgm_read_byte_near(addr)  pgm_read_byte(addr)
+#endif
 #endif
 #endif
 

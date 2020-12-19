@@ -93,7 +93,7 @@ public:
    * @brief The speed which with the hardware spi should transfer the data to the matrix
    * 
    */
-  unsigned int spiTransferSpeed = 8000000;
+  uint64_t spiTransferSpeed = 8000000;
 
   /**
    * @brief if this is set to true, output will be printed.
