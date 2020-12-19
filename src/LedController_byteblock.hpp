@@ -26,4 +26,11 @@ public:
         index %= 8;
         return _data[index];
     }
+
+    ByteBlock& operator= (byte newdata[8]){
+        for(uint8_t i = 0;i < 8;i++){
+            _data[i] = newdata[i];
+        }
+        return *this;
+    }
 };
