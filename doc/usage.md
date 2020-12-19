@@ -1,6 +1,6 @@
 # How to use this library
 
-**This usage introduction is still work in progress. For more details about the LedController and its functions click [here](d9/def/class_led_controller.html) or the [examples](https://github.com/noah1510/LedController/tree/master/examples).**
+**For more details about the LedController and its functions click [here](d9/def/class_led_controller.html) or the [examples](https://github.com/noah1510/LedController/tree/master/examples).**
 
 This page shows you the basic usage of the LedController and what you can do with it.
 
@@ -8,7 +8,7 @@ This page shows you the basic usage of the LedController and what you can do wit
 
 You can initilize the library in two ways: with hardware SPI or with software SPI.
 
-1. Hardware SPI is at least 10 times faste but you can only use specific pins for some signals (look [here](index.html) for which pins).
+1. Hardware SPI is at least 10 times faster but you can only use specific pins for some signals (look [here](index.html) for which pins).
 2. Software SPI is slower (which only mattesrs if you need really tight timings) but you can freely choose which (free) pins you want to use.
 
 ### Small introduction to SPI
@@ -22,30 +22,24 @@ SCLK has to be connected to CLK and MOSI to DIN.
 These signals can be shared by multiple SPI slaves even if they have nothing to do with each other.
 SS hat to be connected to CS and each Slave has its own SS pin(which can be any free pin).
 
-### Software SPI
+## Getting started
 
-The constructor for the LedController needs at least 3 arguments but accepts five.
+To get started you need to first create a new controller_configuration object.
+This is used to configure the setup of the LedController which can get complex.
+controller_configuration has no constructor and is more like an struct with methods than it is a 'real' class.
 
-1. unsigned int dataPin: The Pin which should be used for the MOSI signal.
-2. unsigned int clkPin: The pin which should be used for the SCLK signal.
-3. unsigned int csPin: The pin which should be used for the SS signal.
-4. (optional default 4) unsigned int numSegments: if your amount of segments differs from 4, specify the number.
-5. (optional default false) bool useHardwareSpi: set to true if you want to use hardware SPI with the specified ports.
+First things first, if you want to use Hardware Spi set useHardwareSpi to true, otherwise set it to false.
+If you use hardware SPI you only need to specify the CS pin, if not you also need to CLK and MOSI pins.
+Just assign the wanted values to SPI_CS, SPI_CLK and SPI_MOSI.
 
-Simply declare a global object with these parameters and you are ready to go.
+Next you need to specify the total number of segments you have.
+Just assign the total number of segments to SegmentCount.
+To keep it simple all segments are connected in series, so there is only one row.
+To see how you can use more than one row with the LedController go [here](dc/dc4/md_doc_multi_row.html).
 
-View [here](d9/def/class_led_controller.html#aaf70bc009abce437e5d07e23ba23535f) for more information.
+Now you can check if the configuration is Valid by calling the isValid() method.
+If it returns true, you can continue wit hthe next step, if not try setting debug_output and figure out what went wrong.
 
-### Hardware SPI
+Now that you have a valid configuration, you can pass it to the constructor of a new LedController object.
+You can use the setRow and setSegment to send data to the LedMatrix.
 
-The constructor for the default SPI ports (SPI interface 1) are used by this constructor.
-If you want to use different pins use the constructor for Software SPI with useHardwareSpi set to true(***please note that the number of segments has to be manually specified in this case***).
-
-This constructor only needs one argument but accepts two.
-
-1. unsigned int csPin: The pin which should be used for the SS signal.
-2. (optional default 4) unsigned int numSegments: if your amount of segments differs from 4, specify the number.
-
-Simply declare a global object with these parameters and you are ready to go.
-
-View [here](d9/def/class_led_controller.html#a48414cff463afcec44e3056f9a84fac4) for more information.
