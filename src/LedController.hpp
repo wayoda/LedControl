@@ -10,7 +10,7 @@
 #endif
 #endif
 
-using ByteBlock = byte[8];
+#include <LedController_byteblock.hpp>
 
 #ifdef __has_include
 
