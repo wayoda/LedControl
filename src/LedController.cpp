@@ -223,11 +223,11 @@ void LedController::displayOnSegment(unsigned int column, unsigned int row_num, 
   displayOnSegment(conf.getSegmentNumber(column,row_num),data);
 }
 
+// to be remvoed for version 2.2.0
 void LedController::getSegmentData(unsigned int column, unsigned int row_num, ByteBlock* resultLocation){
   getSegmentData(conf.getSegmentNumber(column,row_num),resultLocation);
 }
-
-
+// to be removed for version 2.2.0
 void LedController::getSegmentData(unsigned int segmentindex,
                                    ByteBlock *resultLocation) {
   if (!initilized || segmentindex >= conf.SegmentCount ||
@@ -238,6 +238,15 @@ void LedController::getSegmentData(unsigned int segmentindex,
   for (unsigned int i = 0; i < 8; i++) {
     (*resultLocation)[i] = LedStates[segmentindex][i];
   }
+}
+
+ByteBlock LedController::getSegmentData(unsigned int segmentindex){
+  if (!initilized || segmentindex >= conf.SegmentCount){return ByteBlock();};
+  return LedStates[segmentindex];
+}
+
+ByteBlock LedController::getSegmentData(unsigned int column, unsigned int row_num){
+  return getSegmentData(conf.getSegmentNumber(column,row_num));
 }
 
 unsigned int LedController::getSegmentCount() {
@@ -613,19 +622,6 @@ void LedController::createEmptyRow(byte **row) {
   }
 }
 
-void LedController::makeColumns(ByteBlock rowArray, ByteBlock *columnArray) {
-  if (!initilized || columnArray == nullptr) {
-    return;
-  };
-
-  for (unsigned int i = 0; i < 8; i++) {
-    (*columnArray)[i] = 0x00;
-    for (unsigned int j = 0; j < 8; j++) {
-      (*columnArray)[i] |= (0x01 & (rowArray[j] >> (7 - i))) << (7 - j);
-    }
-  }
-}
-
 void LedController::moveDown(byte *shiftedInRow, byte **shiftedOutRow) {
   if (!initilized) {
     return;
@@ -720,6 +716,21 @@ void LedController::moveUp() {
   delete[] inVal;
 }
 
+// to be removed for version 2.2.0
+void LedController::makeColumns(ByteBlock rowArray, ByteBlock *columnArray) {
+  if (!initilized || columnArray == nullptr) {
+    return;
+  };
+
+  for (unsigned int i = 0; i < 8; i++) {
+    (*columnArray)[i] = 0x00;
+    for (unsigned int j = 0; j < 8; j++) {
+      (*columnArray)[i] |= (0x01 & (rowArray[j] >> (7 - i))) << (7 - j);
+    }
+  }
+}
+
+// to be removed for version 2.2.0
 void LedController::reverse(ByteBlock input, ByteBlock *reversedInput) {
   if (reversedInput == nullptr) {
     return;
@@ -730,6 +741,7 @@ void LedController::reverse(ByteBlock input, ByteBlock *reversedInput) {
   }
 }
 
+// to be removed for version 2.2.0
 void LedController::rotate180(ByteBlock input, ByteBlock *rotatedInput) {
   if (rotatedInput == nullptr) {
     return;
@@ -738,6 +750,39 @@ void LedController::rotate180(ByteBlock input, ByteBlock *rotatedInput) {
   for (unsigned int i = 0; i < 8; i++) {
     (*rotatedInput)[7 - i] = reverse(input[i]);
   }
+}
+
+ByteBlock LedController::makeColumns(ByteBlock rowArray) {
+  auto columnArray = ByteBlock();
+
+  for (unsigned int i = 0; i < 8; i++) {
+    columnArray[i] = 0x00;
+    for (unsigned int j = 0; j < 8; j++) {
+      columnArray[i] |= (0x01 & (rowArray[j] >> (7 - i))) << (7 - j);
+    }
+  }
+
+  return columnArray;
+}
+
+ByteBlock LedController::reverse(ByteBlock input) {
+  auto reversedInput = ByteBlock();
+
+  for (unsigned int i = 0; i < 8; i++) {
+    reversedInput[i] = reverse(input[i]);
+  }
+
+  return reversedInput;
+}
+
+ByteBlock LedController::rotate180(ByteBlock input) {
+  auto rotatedInput = ByteBlock();
+
+  for (unsigned int i = 0; i < 8; i++) {
+    rotatedInput[7 - i] = reverse(input[i]);
+  }
+
+  return rotatedInput;
 }
 
 controller_configuration LedController::getConfig() { return conf; }

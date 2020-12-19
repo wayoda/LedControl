@@ -242,7 +242,7 @@ public:
 
   /**
    * @brief Get the Segment Data of a specific Segment
-   * 
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
    * @param column the column where the wanted segment is
    * @param row_num the row where the wanted segment is
    * @param resultLocation the location where the data should be stored
@@ -251,12 +251,28 @@ public:
 
   /**
    * @brief Get the Segment Data of a specific Segment
-   *
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
    * @param segmentindex the index of whose data you want to have
    * @param resultLocation the location where the data should be stored
    */
   void getSegmentData(unsigned int segmentindex, ByteBlock *resultLocation);
 
+  /**
+   * @brief Get the Segment Data of a specific Segment
+   * 
+   * @param column the column where the wanted segment is
+   * @param row_num the row where the wanted segment is
+   * @return ByteBlock the requested segment
+   */
+  ByteBlock getSegmentData(unsigned int column, unsigned int row_num);
+
+  /**
+   * @brief Get the Segment Data of a specific Segment
+   * 
+   * @param segmentindex the index of whose data you want to have
+   * @return ByteBlock the requested segment
+   */
+  ByteBlock getSegmentData(unsigned int segmentindex);
   /**
    * @brief activates all segments, sets to same intensity and cleas them
    *
@@ -533,7 +549,7 @@ public:
 
   /**
    * @brief Turns an array of rows into an array of columns
-   *
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
    * @param rowArray the array of rows of which you want the columns
    * @param columnArray The address where the result will be stored
    */
@@ -541,7 +557,7 @@ public:
 
   /**
    * @brief Reverse an array of 8 bytes (mirror it)
-   *
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
    * @param input The array that should be mirrored
    * @param reversedInput The address where the result will be stored
    */
@@ -549,11 +565,36 @@ public:
 
   /**
    * @brief rotate an byte[8] array by 180 degrees
-   *
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
    * @param input the array that will be rotated
    * @param rotatedInput The address where the result will be stored
    */
   void rotate180(ByteBlock input, ByteBlock *rotatedInput);
+
+
+  /**
+   * @brief Turns an ByteBlock of rows into an ByteBlock of columns
+   * 
+   * @param rowArray the ByteBlock of rows of which you want the columns of
+   * @return ByteBlock The Columns of the given ByteBlock
+   */
+  ByteBlock makeColumns(ByteBlock rowArray);
+
+  /**
+   * @brief Reverse an ByteBlock of 8 bytes (mirror it)
+   * 
+   * @param input The ByteBlock that should be mirrored
+   * @return ByteBlock The reversed ByteBlock
+   */
+  ByteBlock reverse(ByteBlock input);
+
+  /**
+   * @brief rotate an ByteBlock by 180 degrees
+   * 
+   * @param input the ByteBlock that will be rotated
+   * @return ByteBlock The rotated ByteBlock
+   */
+  ByteBlock rotate180(ByteBlock input);
 
   /**
    * @brief Get the Config of the Led Controller
