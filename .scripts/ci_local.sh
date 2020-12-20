@@ -1,6 +1,16 @@
 #!/bin/bash
 
-if [ $1 == '--fast' ]
+BUILDMODE="full"
+
+if [ $1 ]
+then
+    if [ $1 == '--fast' ]
+    then
+        BUILDMODE="fast"
+    fi
+fi
+
+if [ $BUILDMODE == "fast" ]
 then
     echo "doing the fast test with 2 boards and 2 examles"
     boards="-b esp32dev -b ATmega1280"
