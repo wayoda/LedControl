@@ -16,7 +16,7 @@ unsigned long delaytime=250;
 
 void setup() {
 
-  lc=LedController<1,1>(12,11,10,1);
+  lc=LedController<1,1>(12,11,10);
 
   /*
    The MAX72XX is in power-saving mode on startup,

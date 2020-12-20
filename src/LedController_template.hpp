@@ -133,9 +133,8 @@ public:
    * @brief Construct a new LedController for use with hardware SPI
    *
    * @param csPin The pin to select the led matrix
-   * @param numSegments the number of connected segments (defualt 4)
    */
-  LedController(unsigned int csPin, unsigned int numSegments = 4);
+  LedController(unsigned int csPin);
 
   /**
    * @brief Construct a new LedController object
@@ -143,13 +142,11 @@ public:
    * @param dataPin pin on the Arduino where data gets shifted out (DIN)
    * @param clkPin pin for the clock (CLK)
    * @param csPin pin for selecting the device (CS)
-   * @param numSegments The number of segments that will be controlled by the
-   * controller (default 4)
    * @param useHardwareSpi true if you want to use hardware SPI (view
    * https://www.arduino.cc/en/Reference/SPI for pin config)
    */
   LedController(unsigned int dataPin, unsigned int clkPin, unsigned int csPin,
-                unsigned int numSegments = 4, bool useHardwareSpi = false);
+                bool useHardwareSpi = false);
 
   /**
    * @brief Construct a new Led Controller from a given configuration
@@ -181,9 +178,8 @@ public:
    * @brief initilizes the LedController for use with hardware SPI
    *
    * @param csPin The pin to select the led matrix
-   * @param numSegments the number of connected segments (defualt 4)
    */
-  void init(unsigned int csPin, unsigned int numSegments = 4);
+  void init(unsigned int csPin);
 
   /**
    * @brief initilizes the LedController
@@ -191,13 +187,11 @@ public:
    * @param dataPin pin on the Arduino where data gets shifted out (DIN)
    * @param clkPin pin for the clock (CLK)
    * @param csPin pin for selecting the device (CS)
-   * @param numSegments The number of segments that will be controlled by the
-   * controller (default 4)
    * @param useHardwareSpi true if you want to use hardware SPI (view
    * https://www.arduino.cc/en/Reference/SPI for pin config)
    */
   void init(unsigned int dataPin, unsigned int clkPin, unsigned int csPin,
-            unsigned int numSegments = 4, bool useHardwareSpi = false);
+            bool useHardwareSpi = false);
 
   /**
    * @brief initilizes the LedController wit ha given configuration

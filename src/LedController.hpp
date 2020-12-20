@@ -29,15 +29,14 @@ template <size_t columns, size_t rows>
 LedController<columns,rows>::LedController(){};
 
 template <size_t columns, size_t rows>
-LedController<columns,rows>::LedController(unsigned int csPin, unsigned int numSegments) {
-  init(csPin, numSegments);
+LedController<columns,rows>::LedController(unsigned int csPin) {
+  init(csPin);
 };
 
 template <size_t columns, size_t rows>
 LedController<columns,rows>::LedController(unsigned int dataPin, unsigned int clkPin,
-                             unsigned int csPin, unsigned int numSegments,
-                             bool useHardwareSpiParam) {
-  init(dataPin, clkPin, csPin, numSegments, useHardwareSpiParam);
+                             unsigned int csPin, bool useHardwareSpiParam) {
+  init(dataPin, clkPin, csPin, useHardwareSpiParam);
 }
 
 template <size_t columns, size_t rows>
@@ -67,7 +66,7 @@ LedController<columns,rows>::LedController(const LedController &other) {
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::init(unsigned int csPin, unsigned int numSegments) {
+void LedController<columns,rows>::init(unsigned int csPin) {
   controller_configuration<columns,rows> config;
 
   config.SPI_CS = csPin;
@@ -78,8 +77,7 @@ void LedController<columns,rows>::init(unsigned int csPin, unsigned int numSegme
 
 template <size_t columns, size_t rows>
 void LedController<columns,rows>::init(unsigned int dataPin, unsigned int clkPin,
-                         unsigned int csPin, unsigned int numSegments,
-                         bool useHardwareSpiParam) {
+                         unsigned int csPin, bool useHardwareSpiParam) {
   if (initilized) {
     return;
   }

@@ -36,12 +36,10 @@ void switchLED(){
 
 void setup(){
 
-  lc.init(DIN,CLK,CS,Segments); // Pins: DIN,CLK,CS, # of Display connected
-
+  lc.init(DIN,CLK,CS); // Pins: DIN,CLK,CS, # of Display connected
 
   lc.makeColumns(rocket, &rocketColumns);
  
-
   pinMode(13, OUTPUT);
     
 }

@@ -131,7 +131,7 @@ void switchLED(){
 
 void setup(){
 
-  lc = LedController<Segments,1>(CS,Segments);// Pins: CS, # of Display connected
+  lc = LedController<Segments,1>(CS);// Pins: CS, # of Display connected
 
   pinMode(13, OUTPUT);
     

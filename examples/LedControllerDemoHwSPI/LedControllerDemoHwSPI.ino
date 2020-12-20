@@ -32,7 +32,7 @@ void switchLED(){
 }
 
 void setup(){
-  lc.init(CS,Segments);// Pins: CS, # of Display connected
+  lc.init(CS);// Pins: CS, # of Display connected
 
   lc.makeColumns(rocket, &rocketColumns);
 
