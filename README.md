@@ -13,6 +13,9 @@ LedController is an [Arduino](http://arduino.cc) library for MAX7219 and MAX7221
 The code should work with most boards and architectures but I only test it for the ESP32 Dev Module.
 Feel free to create an issue if something is missing or not working correctly.
 
+Please note that while 7-Segment Displays are supported, most functions are intended for use with LED-Matrices and are not tested with 7-Segment Displays.
+Testing and reporting of problems or even fixes are welcome.
+
 ## Issues, help and contributer information
 
 Whatever questions or suggestions you have, please provide detailed information about what you want, what went wrong and what your environment is.
@@ -49,10 +52,17 @@ All help regarding compatibility with more boards is welcome.
 
 ***Please note that 2.0.x is still in development and needs some work. However all of these instructions also apply if you use the git repository on the latest commit, since a lot of the changes for 2.0.x are already in place.***
 
-First off 2.0.x is fully backwards compatible to 1.7.x and if you do not change anything it should just work better and nothing else should be differnt.
+~~First off 2.0.x is fully backwards compatible to 1.7.x and if you do not change anything it should just work better and nothing else should be differnt.~~
+Version 2.0.x is no longer a drop in replacement for 1.7.x!
+Due to some large changes in the code base, the LedController is now a template class which requires the dimensions of your LED-Matrix as Argument so now instead of having the type `LedController`, the type is `LedController<columns,rows>`.
+This simplifies the whole interface and reduces the need for pointers.
+The examples are updated and respect these changes.
+Another side effect of this is, that you do not need to specify the total nmber of segments any more, since the dimensions are known.
+That is why that argument is removed from all constructors.
 
-2.0.x introduces the controller_configuration class.
+2.0.x introduces the controller_configuration class template.
 It can be used to set all the properties the controller should have and then be passed as argument to the init function or the constructor of the LedController.
+It needs the same dimensions as the LedController and provides a simple check for a valid configuration.
 
 The next big feature is support for multiple rows (**This is still work in progress so some things might change before the final release**).
 Now you can connect multiple Matricies to different CS Pins and control them all using a single LedController instead of only being able to connect them all in a row.

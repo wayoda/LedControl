@@ -20,8 +20,10 @@
  * @brief This class is ued to handle the configuration of the LedController
  *
  */
+template <size_t columns, size_t rows>
 class controller_configuration {
 public:
+
   /**
    * @brief The pin for the data transfer (MOSI on board and DIN on Matrix)
    * @warning if this is 0 and useHardwareSpi is false the initilization will
@@ -43,14 +45,6 @@ public:
   unsigned int SPI_CLK = 0;
 
   /**
-   * @brief The total number of connected Segments.
-   * @warning while in theory it can be any number be careful not to run out of
-   * memory.
-   *
-   */
-  unsigned int SegmentCount = 4;
-
-  /**
    * @brief true if you want to use hardware SPI (view
    * https://www.arduino.cc/en/Reference/SPI for pin config). While this is a
    * lot faster you cannot use every pin for the MOSI and CLK signal. SPI_MOSI
@@ -65,15 +59,6 @@ public:
   unsigned int IntensityLevel = 1;
 
   /**
-   * @brief The number of rows the Matrix should have.
-   * @warning Currently not in use, will be used in v2.0.0
-   * @note The matrix has to be a rectangle if this is not the case the number
-   * of rows will be set to 1.
-   *
-   */
-  unsigned int rows = 1;
-
-  /**
    * @brief This Arrays specifies which Pin to use for each row if nullptr
    * SPI_CS will be used.
    * @note If this array is not a nullptr it is assumed it is the same length as
@@ -81,7 +66,7 @@ public:
    * @warning Currently not in use, will be used in v2.0.0
    *
    */
-  unsigned int *row_SPI_CS = nullptr;
+  unsigned int row_SPI_CS[rows];
 
   /**
    * @brief Only send data if something changed if true.
@@ -102,6 +87,16 @@ public:
   bool debug_output = false;
 
   /**
+   * @brief set to false if each of your rows has a dedicated CS pin.
+   * By default this is true and it is assumed that all Segments are connected in series.
+   */
+  bool virtual_multi_row = true;
+
+  unsigned int SegmentCount(){
+    return rows*columns;
+  }
+
+  /**
    * @brief check of this configuration is valid
    * 
    * @return true the configuration is valid
@@ -119,8 +114,8 @@ public:
    */
   unsigned int getRow(unsigned int segmentNumber) const{
     unsigned int row = 0;
-    if (rows != 0 && SegmentCount != 0){
-      row = segmentNumber / (SegmentCount / rows);
+    if (rows != 0 && columns != 0){
+      row = segmentNumber / columns;
     }
     
     if(row >= rows){
@@ -136,16 +131,11 @@ public:
    * @return unsigned int the length of each row
    */
   unsigned int getRowLen() const{
-    unsigned int len = 0;
-    if (rows != 0 && SegmentCount % rows == 0){
-      len = SegmentCount / rows;
-    }
-
-    return len;
+    return columns;
   }
 
   unsigned int getSegmentNumber(unsigned int column, unsigned int row){
-    return row * getRowLen() + column;
+    return row * columns + column;
   }
 
   /**
@@ -153,16 +143,13 @@ public:
    * 
    * @return controller_configuration a copy of the configuration
    */
-  controller_configuration copy() const{
-    controller_configuration conf;
+  controller_configuration<columns,rows> copy() const{
+    controller_configuration<columns,rows> conf;
     conf.IntensityLevel = this->IntensityLevel;
     conf.onlySendOnChange = this->onlySendOnChange;
-    conf.row_SPI_CS = new unsigned int [this->rows];
     for(unsigned int i = 0; i < this->rows;i++){
       conf.row_SPI_CS[i] = this->row_SPI_CS[i];
     }
-    conf.rows = this->rows;
-    conf.SegmentCount = this->SegmentCount;
     conf.SPI_CLK = this->SPI_CLK;
     conf.SPI_CS = this->SPI_CS;
     conf.SPI_MOSI = this->SPI_MOSI;
@@ -177,9 +164,9 @@ public:
    * @return true the configuration is valid
    * @return false the configuration is not valid 
    */
-  static bool isValidConfig(const controller_configuration &conf) {
+  static bool isValidConfig(const controller_configuration<columns,rows> &conf) {
     //check if the dimenstions are valid
-    if (conf.SegmentCount % conf.rows != 0){
+    if (rows == 0 || columns == 0){
       return false;
     }
 
@@ -202,20 +189,31 @@ public:
       return false;
     }
 
-    if (conf.row_SPI_CS != nullptr){
-      for(unsigned int i = 0;i < conf.rows;i++){
+    if (conf.virtual_multi_row){
+      auto cs = conf.SPI_CS;
+      if (cs == 0){
+        cs = conf.row_SPI_CS[0];
+      }
+      if (cs == 0){
+        PRINTLN_IF(conf.debug_output, "No valid cs pin for a virtual multi row.");
+        return false;
+      }
+      for(unsigned int i = 0;i < rows;i++){
+        if(conf.row_SPI_CS[i] != cs && conf.row_SPI_CS[i]!=0){
+          PRINTLN_IF(conf.debug_output, "Invalid row_SPI_CS setting found!\nThey should equal SPI_CS or 0 for virtual multi row.");
+        }
+        
+      }
+    }else{
+      for(unsigned int i = 0; i < rows;i++){
         if(conf.row_SPI_CS[i] == 0){
-          PRINTLN_IF(conf.debug_output, "Falling back to SPI_CS for one row");
-          if(conf.SPI_CS == 0){
-            PRINTLN_IF(conf.debug_output, "Falling back to SPI_CS not possible because it is 0");
-            return false;
-          }else{
-            conf.row_SPI_CS[i] = conf.SPI_CS;
-          }
+          PRINTLN_IF(conf.debug_output, "Invalid value in row_SPI_CS found. 0 is not allowed.");
+          return false;
         }
       }
-
     }
+    
+    
     return true;
   }
 };

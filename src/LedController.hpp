@@ -1,605 +1,843 @@
 #pragma once
-
-#if (ARDUINO >= 100)
-#include <Arduino.h>
-#else
-#if __has_include("ArduinoFake.h")
-#include "ArduinoFake.h"
-#else
-#include <WProgram.h>
-#endif
-#endif
-
-#include <LedController_byteblock.hpp>
-
-#ifdef __has_include
-
-#define INCLUDED_PGMSPACE
-#if (__has_include(<avr/pgmspace.h>))
-#include <avr/pgmspace.h>
-#else
-#if (__has_include(<pgmspace.h>))
-#define INCLUDED_PGMSPACE
-#include <pgmspace.h>
-#else
-#define INCLUDED_PGMSPACE
-#ifndef pgm_read_byte
-#define pgm_read_byte(addr)   (*(const unsigned char *)(addr))
-#endif
-#ifndef pgm_read_byte_near
-#define pgm_read_byte_near(addr)  pgm_read_byte(addr)
-#endif
-#endif
-#endif
-
-#endif
-
-#ifndef INCLUDED_PGMSPACE
-#include <pgmspace.h>
-#define INCLUDED_PGMSPACE
-#endif
-
-#include <SPI.h>
-
-#include <LedController_config.hpp>
-
-/**
- * @brief This class provied a control interface for MAX7219 and MAX7221 Led
- * display drivers.
- * @details This Controller Class is mainly target at led matracies consisting
- * of more than 1 segment. While it can also handle 7-Segment Displays it is not
- * tested that well.
- * @warning This object is not thread safe yet.
- *
- * @todo make it threading safe
- */
-class LedController {
-protected:
-  /// The state of all the Leds
-  ByteBlock *LedStates = nullptr;
-
-  /**
-   * @brief The configuration of the LedController
-   *
-   */
-  controller_configuration conf;
-
-  /**
-   * @brief This function transfers one command to the attached module
-   *
-   * @param segment The segment that should execute this command
-   * @param opcode The command thCLKat should be executed
-   * @param data The data needed for that command
-   */
-  void spiTransfer(unsigned int segment, byte opcode, byte data);
-
-  /// The array for shifting the data to the devices
-  byte *spidata = nullptr;
-
-  /**
-   * @brief Set the brightness of the segment.
-   *
-   * @param segmentNumber the address of the segment to control
-   * @param newIntesityLevel the brightness of the display. (0..15)
-   */
-  void setIntensity(unsigned int segmentNumber, unsigned int newIntesityLevel);
-
-  /**
-   * @brief True if the LedController is fully initilized
-   *
-   */
-  bool initilized = false;
-
-  /**
-   * @brief contains a row full of 0x00
-   *
-   */
-  byte *emptyRow = nullptr;
-
-  /**
-   * @brief this copies an empty row into row
-   *
-   * @param row the pointer to the byte array that should be used
-   */
-  void createEmptyRow(byte **row);
-
-  /**
-   * @brief initilize the internal buffers of the Controller.
-   * 
-   */
-  void resetBuffers();
-
-  /**
-   * @brief initilize the spi outputs
-   * 
-   */
-  void initSPI();
-
-  /**
-   * @brief initilize the configuration
-   * 
-   */
-  void initConf();
-
-public:
-  /**
-   * @brief Construct a new LedController without initilizing anything.
-   *
-   */
-  LedController();
-
-  /**
-   * @brief Construct a new LedController for use with hardware SPI
-   *
-   * @param csPin The pin to select the led matrix
-   * @param numSegments the number of connected segments (defualt 4)
-   */
-  LedController(unsigned int csPin, unsigned int numSegments = 4);
-
-  /**
-   * @brief Construct a new LedController object
-   *
-   * @param dataPin pin on the Arduino where data gets shifted out (DIN)
-   * @param clkPin pin for the clock (CLK)
-   * @param csPin pin for selecting the device (CS)
-   * @param numSegments The number of segments that will be controlled by the
-   * controller (default 4)
-   * @param useHardwareSpi true if you want to use hardware SPI (view
-   * https://www.arduino.cc/en/Reference/SPI for pin config)
-   */
-  LedController(unsigned int dataPin, unsigned int clkPin, unsigned int csPin,
-                unsigned int numSegments = 4, bool useHardwareSpi = false);
-
-  /**
-   * @brief Construct a new Led Controller from a given configuration
-   *
-   * @param configuration the configuration that should be used for the
-   * Controller
-   */
-  LedController(const controller_configuration &configuration);
-
-  /**
-   * @brief
-   *
-   */
-
-  /**
-   * @brief Destroy the Led Controller object and free the memory
-   *
-   */
-  ~LedController();
-
-  /**
-   * @brief The copy constructor for the LedController
-   *
-   * @param other the LedController which should have its state copied
-   */
-  LedController(const LedController &other);
-
-  /**
-   * @brief initilizes the LedController for use with hardware SPI
-   *
-   * @param csPin The pin to select the led matrix
-   * @param numSegments the number of connected segments (defualt 4)
-   */
-  void init(unsigned int csPin, unsigned int numSegments = 4);
-
-  /**
-   * @brief initilizes the LedController
-   *
-   * @param dataPin pin on the Arduino where data gets shifted out (DIN)
-   * @param clkPin pin for the clock (CLK)
-   * @param csPin pin for selecting the device (CS)
-   * @param numSegments The number of segments that will be controlled by the
-   * controller (default 4)
-   * @param useHardwareSpi true if you want to use hardware SPI (view
-   * https://www.arduino.cc/en/Reference/SPI for pin config)
-   */
-  void init(unsigned int dataPin, unsigned int clkPin, unsigned int csPin,
-            unsigned int numSegments = 4, bool useHardwareSpi = false);
-
-  /**
-   * @brief initilizes the LedController wit ha given configuration
-   *
-   * @param configuration
-   */
-  void init(const controller_configuration &configuration);
-
-  /**
-   * @brief returns the status of the LedController
-   *
-   * @return true the LedController is initilized
-   * @return false the LedController is not initilized
-   */
-  bool isInitilized();
-
-  /**
-   * @brief Set the Intensity of the whole matrix to the given value.
-   * @note if you want to save more energy disable segments you don't need or
-   * lower the brightness.
-   * @param newIntesityLevel the new brightness of the matrix. (0..15)
-   */
-  void setIntensity(unsigned int newIntesityLevel);
-
-  /**
-   * @brief Display 8 lines on the given segment
-   *
-   * @param segmentindex the Segment number of the desired segment
-   * @param data an array containing the data for all the pixels that should be
-   * displayed on that segment
-   */
-  void displayOnSegment(unsigned int segmentindex, ByteBlock data);
-
-  /**
-   * @brief  Display 8 lines on the given segment
-   * 
-   * @param column the column where the wanted segment is
-   * @param row_num the row where the wanted segment is
-   * @param data an array containing the data for all the pixels that should be
-   * displayed on that segment
-   */
-  void displayOnSegment(unsigned int column, unsigned int row_num, ByteBlock data);
-
-  /**
-   * @brief Get the Segment Data of a specific Segment
-   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
-   * @param column the column where the wanted segment is
-   * @param row_num the row where the wanted segment is
-   * @param resultLocation the location where the data should be stored
-   */
-  void getSegmentData(unsigned int column, unsigned int row_num, ByteBlock* resultLocation);
-
-  /**
-   * @brief Get the Segment Data of a specific Segment
-   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
-   * @param segmentindex the index of whose data you want to have
-   * @param resultLocation the location where the data should be stored
-   */
-  void getSegmentData(unsigned int segmentindex, ByteBlock *resultLocation);
-
-  /**
-   * @brief Get the Segment Data of a specific Segment
-   * 
-   * @param column the column where the wanted segment is
-   * @param row_num the row where the wanted segment is
-   * @return ByteBlock the requested segment
-   */
-  ByteBlock getSegmentData(unsigned int column, unsigned int row_num);
-
-  /**
-   * @brief Get the Segment Data of a specific Segment
-   * 
-   * @param segmentindex the index of whose data you want to have
-   * @return ByteBlock the requested segment
-   */
-  ByteBlock getSegmentData(unsigned int segmentindex);
-  /**
-   * @brief activates all segments, sets to same intensity and cleas them
-   *
-   */
-  void resetMatrix();
-
-  /**
-   * @brief clears all segments, turning all LEDs off.
-   *
-   */
-  void clearMatrix();
-
-  /**
-   * @brief Get the number of configured segments
-   *
-   * @return unsigned int The number of configured segments
-   */
-  unsigned int getSegmentCount();
-
-  /**
-   * @brief Set the segment in power-down mode.
-   *
-   * @param segmentNumber The segment to control
-   */
-  void shutdownSegment(unsigned int segmentNumber);
-
-  /**
-   * @brief Get the segment out of power-down mode for normal operation.
-   *
-   * @param segmentNumber The segment to control
-   */
-  void activateSegment(unsigned int segmentNumber);
-
-  /**
-   * @brief Set all segments into power-down mode
-   *
-   */
-  void shutdownAllSegments();
-
-  /**
-   * @brief Get all segments out of power-down mode for normal operation.
-   *
-   */
-  void activateAllSegments();
-
-  /**
-   * @brief Set the number of digits (or rows) to be displayed.
-   * @note See datasheet for sideeffects of the scanlimit on the brightness of
-   * the display.
-   * @param segmentNumber The segment which should be addressed
-   * @param limit The number of digits to be displayed (0..7)
-   */
-  void setScanLimit(unsigned int segmentNumber, unsigned int limit);
-
-  /**
-   * @brief clears a given segment, turning all its LEDs off.
-   *
-   * @param segmentNumber The segment to control.
-   */
-  void clearSegment(unsigned int segmentNumber);
-
-  /**
-   * @brief Set one Row of one segment.
-   *
-   * @param segmentNumber The Segment which should be modified
-   * @param row The row which should be modified
-   * @param value each bit set to 1 will light up the corresponding Led.
-   */
-  void setRow(unsigned int segmentNumber, unsigned int row, byte value);
-
-  /**
-   * @brief get one Row of one segment.
-   *
-   * @param segmentNumber The Segment which should be modified
-   * @param row The row which should be modified
-   * @return value each bit set to 1 will light up the corresponding Led.
-   */
-  byte getRow(unsigned int segmentNumber, unsigned int row);
-
-  /**
-   * @brief Set a single led to a given value
-   *
-   * @param segmentNumber the segment number of the desired led
-   * @param row the row of the desired led (0..7)
-   * @param column the column of the desired led (0..7)
-   * @param state true if it should be on otherwise false
-   */
-  void setLed(unsigned int segmentNumber, unsigned int row, unsigned int column,
-              boolean state);
-
-  /**
-   * @brief Set one column of a given segment
-   *
-   * @param segmentNumber The desired Segment number
-   * @param col The desired column
-   * @param value The value, this column should have
-   */
-  void setColumn(unsigned int segmentNumber, unsigned int col, byte value);
-
-  /**
-   * @brief Set a hexadecimal digit on a 7-Segment Display
-   *
-   * @param segmentNumber The number of the desired Segment
-   * @param digit the position of the digit on the Segment (0..7)
-   * @param value the value to be displayed. (0x00..0x0F)
-   * @param dp if true sets the decimal point
-   */
-  void setDigit(unsigned int segmentNumber, unsigned int digit, byte value,
-                boolean dp);
-
-  /**
-   * @brief Set the Display a character on a 7-Segment display.
-   * @note There are only a few characters that make sense here :
-   *	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-   *  'A', 'b', 'c', 'd', 'E', 'F', 'H', 'L', 'P',
-   *  '.', '-', '_', ' '
-   * @param segmentNumber The number of the desired segment
-   * @param digit the position of the character on the segment (0..7)
-   * @param value the character to be displayed.
-   * @param dp dp if true sets the decimal point
-   */
-  void setChar(unsigned int segmentNumber, unsigned int digit, char value,
-               boolean dp);
-
-  /**
-   * @brief refreshes all segments by first resetting them and then updating
-   * them.
-   *
-   */
-  void refreshSegments();
-
-  /**
-   * @brief refreshes a given segment by first resetting it and then updating
-   * it.
-   *
-   * @param segmentNumber the segment that will be resetted
-   */
-  void refreshSegment(unsigned int segmentNumber);
-
-  /**
-   * @brief update all segments by displaying the internally stored state of the
-   * segments.
-   *
-   */
-  void updateSegments();
-
-  /**
-   * @brief update a given segment by displaying the internally stored state of
-   * the segment.
-   *
-   * @param segmentNumber the segment that will be updated
-   */
-  void updateSegment(unsigned int segmentNumber);
-
-  /**
-   * @brief moves the data left by one
-   *
-   * @param shiftedInColumn The column that will be shifted to the right
-   * (default 0x00)
-   * @param row_num The row that will be shifted to the right
-   * @warning ONLY moves one row
-   * @return byte The column that gets shifted out on the left
-   */
-  byte moveRowLeft(byte shiftedInColumn = 0x00, unsigned int row_num = 0);
-
-  /**
-   * @brief moves the data left by one
-   *
-   * @param shiftedInColumn The column that will be shifted to the left
-   * (default 0x00)
-   * @param row_num The row that will be shifted to the left
-   * @warning ONLY moves one row
-   * @return byte The column that gets shifted out on the right
-   */
-  byte moveRowRight(byte shiftedInColumn = 0x00, unsigned int row_num = 0);
-
-  /**
-   * @brief moves the data left by one
-   *
-   * @param shiftedInColumn The column that will be shifted to the right
-   * (default 0x00)
-   * @warning ONLY moves row 0, this function exists for backwards compatibility
-   * @return byte The column that gets shifted out on the left
-   */
-  byte moveLeft(byte shiftedInColumn = 0x00);
-
-  /**
-   * @brief moves the data left by one
-   *
-   * @param shiftedInColumn The column that will be shifted to the left
-   * (default 0x00)
-   * @warning ONLY moves row 0, this function exists for backwards compatibility
-   * @return byte The column that gets shifted out on the right
-   */
-  byte moveRight(byte shiftedInColumn = 0x00);
-
-  /**
-   * @brief moves all rows to the left.
-   * The passed Arrays need to have the same length as the number of rows, or be a nullptr.
-   * If shiftedInColumn is a nullptr, 0x00 will be used for all rows.
-   * 
-   * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
-   * @param shiftedOutColumn This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
-   */
-  void moveLeft(byte* shiftedInColumn, byte** shiftedOutColumn);
-
-  /**
-   * @brief moves all rows to the right.
-   * The passed Arrays need to have the same length as the number of rows, or be a nullptr.
-   * If shiftedInColumn is a nullptr, 0x00 will be used for all rows.
-   * 
-   * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
-   * @param shiftedOutColumn This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
-   */
-  void moveRight(byte* shiftedInColumn, byte** shiftedOutColumn);
-
-  /**
-   * @brief This function changes to bitorder of a byte (useful to mirror
-   * "images" you want to display)
-   *
-   * @param input The byte that should be reversed
-   * @return byte The reversed byte
-   */
-  byte reverse(byte input);
-
-  /**
-   * @brief moves the data up by one
-   *
-   * @param shiftedInRow The row that will be shifted in on the bottom (default
-   * 0x00)
-   * @param shiftedOutRow The address of the row that will be shifted out on the
-   * bottom
-   */
-  void moveUp(byte *shiftedInRow, byte **shiftedOutRow);
-
-  /**
-   * @brief moves the data down by one
-   *
-   * @param shiftedInRow The row that will be shifted in on the top (default
-   * 0x00)
-   * @param shiftedOutRow The address of the row that will be shifted out on the
-   * bottom
-   */
-  void moveDown(byte *shiftedInRow, byte **shiftedOutRow);
-
-  /**
-   * @brief moves the data up by oneand 0x00 will be shifted in
-   *
-   * @param shiftedOutRow The address of the row that will be shifted out on the
-   * bottom
-   */
-  void moveUp(byte **shiftedOutRow);
-
-  /**
-   * @brief moves the data down by one and 0x00 will be shifted in
-   *
-   * @param shiftedOutRow The address of the row that will be shifted out on the
-   * bottom
-   */
-  void moveDown(byte **shiftedOutRow);
-
-  /**
-   * @brief moves the data up by one and 0x00 will be shifted in
-   *
-   */
-  void moveUp();
-
-  /**
-   * @brief moves the data down by one and 0x00 will be shifted in
-   *
-   * @return ByteRow The row the will be shifted out on the bottom
-   */
-  void moveDown();
-
-  /**
-   * @brief Turns an array of rows into an array of columns
-   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
-   * @param rowArray the array of rows of which you want the columns
-   * @param columnArray The address where the result will be stored
-   */
-  void makeColumns(ByteBlock rowArray, ByteBlock *columnArray);
-
-  /**
-   * @brief Reverse an array of 8 bytes (mirror it)
-   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
-   * @param input The array that should be mirrored
-   * @param reversedInput The address where the result will be stored
-   */
-  void reverse(ByteBlock input, ByteBlock *reversedInput);
-
-  /**
-   * @brief rotate an byte[8] array by 180 degrees
-   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
-   * @param input the array that will be rotated
-   * @param rotatedInput The address where the result will be stored
-   */
-  void rotate180(ByteBlock input, ByteBlock *rotatedInput);
-
-
-  /**
-   * @brief Turns an ByteBlock of rows into an ByteBlock of columns
-   * 
-   * @param rowArray the ByteBlock of rows of which you want the columns of
-   * @return ByteBlock The Columns of the given ByteBlock
-   */
-  ByteBlock makeColumns(ByteBlock rowArray);
-
-  /**
-   * @brief Reverse an ByteBlock of 8 bytes (mirror it)
-   * 
-   * @param input The ByteBlock that should be mirrored
-   * @return ByteBlock The reversed ByteBlock
-   */
-  ByteBlock reverse(ByteBlock input);
-
-  /**
-   * @brief rotate an ByteBlock by 180 degrees
-   * 
-   * @param input the ByteBlock that will be rotated
-   * @return ByteBlock The rotated ByteBlock
-   */
-  ByteBlock rotate180(ByteBlock input);
-
-  /**
-   * @brief Get the Config of the Led Controller
-   *
-   * @return controlller_configuration the configuration
-   */
-  controller_configuration getConfig();
+#include "LedController_template.hpp"
+
+// the opcodes for the MAX7221 and MAX7219
+#define OP_NOOP 0
+#define OP_DIGIT0 1
+#define OP_DIGIT1 2
+#define OP_DIGIT2 3
+#define OP_DIGIT3 4
+#define OP_DIGIT4 5
+#define OP_DIGIT5 6
+#define OP_DIGIT6 7
+#define OP_DIGIT7 8
+#define OP_DECODEMODE 9
+#define OP_INTENSITY 10
+#define OP_SCANLIMIT 11
+#define OP_SHUTDOWN 12
+#define OP_DISPLAYTEST 15
+
+template <size_t columns, size_t rows>
+LedController<columns,rows>::~LedController() {
+  initilized = false;
+  delete[] LedStates;
+  delete[] spidata;
+  delete[] emptyRow;
+}
+
+template <size_t columns, size_t rows>
+LedController<columns,rows>::LedController(){};
+
+template <size_t columns, size_t rows>
+LedController<columns,rows>::LedController(unsigned int csPin, unsigned int numSegments) {
+  init(csPin, numSegments);
 };
+
+template <size_t columns, size_t rows>
+LedController<columns,rows>::LedController(unsigned int dataPin, unsigned int clkPin,
+                             unsigned int csPin, unsigned int numSegments,
+                             bool useHardwareSpiParam) {
+  init(dataPin, clkPin, csPin, numSegments, useHardwareSpiParam);
+}
+
+template <size_t columns, size_t rows>
+LedController<columns,rows>::LedController(const controller_configuration<columns,rows> &config) {
+  init(config);
+};
+
+template <size_t columns, size_t rows>
+LedController<columns,rows>::LedController(const LedController &other) {
+  if (!other.initilized) {
+    return;
+  }
+
+  init(other.conf);
+
+  for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
+    for (unsigned int j = 0; i < 8; i++) {
+      LedStates[i][j] = other.LedStates[i][j];
+    }
+  }
+
+  for (unsigned int i = 0; i < conf.SegmentCount() * 2; i++) {
+    spidata[i] = other.spidata[i];
+  }
+
+  refreshSegments();
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::init(unsigned int csPin, unsigned int numSegments) {
+  controller_configuration<columns,rows> config;
+
+  config.SPI_CS = csPin;
+  config.useHardwareSpi = true;
+
+  return init(config);
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::init(unsigned int dataPin, unsigned int clkPin,
+                         unsigned int csPin, unsigned int numSegments,
+                         bool useHardwareSpiParam) {
+  if (initilized) {
+    return;
+  }
+
+  controller_configuration<columns,rows> config;
+
+  config.SPI_MOSI = dataPin;
+  config.SPI_CLK = clkPin;
+  config.SPI_CS = csPin;
+  config.useHardwareSpi = useHardwareSpiParam;
+
+  init(config);
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::init(const controller_configuration<columns,rows> &configuration) {
+  if (initilized) {
+    return;
+  }
+
+  if (!configuration.isValid()) {
+    return;
+  }
+  conf = configuration;
+
+  initConf();
+  initSPI();
+
+  initilized = true;
+  refreshSegments();
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::initConf(){
+  if (conf.useHardwareSpi) {
+    conf.SPI_CLK = SCK;
+    conf.SPI_MOSI = MOSI;
+  }
+
+  resetBuffers();
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::initSPI(){
+  pinMode(conf.SPI_MOSI, OUTPUT);
+  pinMode(conf.SPI_CLK, OUTPUT);
+ 
+  if(conf.row_SPI_CS != nullptr){
+      for(unsigned int i = 0; i < rows;i++){
+          pinMode(conf.row_SPI_CS[i],OUTPUT);
+          digitalWrite(conf.row_SPI_CS[i],LOW);
+      }
+  }
+
+  if (conf.useHardwareSpi) {
+    SPI.setBitOrder(MSBFIRST);
+    SPI.setDataMode(SPI_MODE0);
+    SPI.begin();
+  }
+
+  if(conf.row_SPI_CS != nullptr){
+      for(unsigned int i = 0; i < rows;i++){
+          digitalWrite(conf.row_SPI_CS[i],HIGH);
+      }
+  }
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::resetBuffers(){
+  LedStates = new ByteBlock[conf.SegmentCount()];
+  spidata = new byte[conf.SegmentCount() * 2];
+  emptyRow = new byte[conf.SegmentCount()];
+
+  for (unsigned int i = 0; i < conf.SegmentCount() * 2; i++) {
+    spidata[i] = 0x00;
+  }
+
+  for (unsigned int j = 0; j < conf.SegmentCount(); j++) {
+    for (unsigned int i = 0; i < 8; i++) {
+      LedStates[j][i] = 0x00;
+    }
+  }
+
+  for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
+    emptyRow[i] = 0x00;
+  }
+}
+
+template <size_t columns, size_t rows>
+bool LedController<columns,rows>::isInitilized() { return initilized; }
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::resetMatrix() {
+  if (!initilized) {
+    return;
+  }
+
+  activateAllSegments();
+  setIntensity(1);
+  clearMatrix();
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::clearMatrix() {
+  if (!initilized) {
+    return;
+  }
+
+  for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
+    clearSegment(i); // Clear Segments
+  }
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::setIntensity(unsigned int newIntesityLevel) {
+  if (newIntesityLevel > 15 || !initilized) {
+    return;
+  }
+
+  // std::lock_guard<std::mutex> lock(mut_IntensityLevel);
+  conf.IntensityLevel = newIntesityLevel;
+
+  for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
+    setIntensity(i, conf.IntensityLevel);
+  }
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::setIntensity(unsigned int segmentNumber,
+                                 unsigned int newIntesityLevel) {
+  if (newIntesityLevel > 15 || !initilized ||
+      segmentNumber >= conf.SegmentCount()) {
+    return;
+  }
+
+  spiTransfer(segmentNumber, OP_INTENSITY, newIntesityLevel);
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::displayOnSegment(unsigned int segmentindex,
+                                     ByteBlock data) {
+  if (!initilized || segmentindex >= conf.SegmentCount()) {
+    return;
+  }
+
+  for (int i = 0; i < 8; i++) {
+    setRow(segmentindex, i, data[i]);
+  }
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::displayOnSegment(unsigned int column, unsigned int row_num, ByteBlock data){
+  displayOnSegment(conf.getSegmentNumber(column,row_num),data);
+}
+
+// to be remvoed for version 2.2.0
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::getSegmentData(unsigned int column, unsigned int row_num, ByteBlock* resultLocation){
+  getSegmentData(conf.getSegmentNumber(column,row_num),resultLocation);
+}
+// to be removed for version 2.2.0
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::getSegmentData(unsigned int segmentindex,
+                                   ByteBlock *resultLocation) {
+  if (!initilized || segmentindex >= conf.SegmentCount() ||
+      resultLocation == nullptr) {
+    return;
+  }
+
+  for (unsigned int i = 0; i < 8; i++) {
+    (*resultLocation)[i] = LedStates[segmentindex][i];
+  }
+}
+
+template <size_t columns, size_t rows>
+ByteBlock LedController<columns,rows>::getSegmentData(unsigned int segmentindex){
+  if (!initilized || segmentindex >= conf.SegmentCount()){return ByteBlock();};
+  return LedStates[segmentindex];
+}
+
+template <size_t columns, size_t rows>
+ByteBlock LedController<columns,rows>::getSegmentData(unsigned int column, unsigned int row_num){
+  return getSegmentData(conf.getSegmentNumber(column,row_num));
+}
+
+template <size_t columns, size_t rows>
+unsigned int LedController<columns,rows>::getSegmentCount() {
+  if (!initilized) {
+    return 0;
+  }
+
+  return conf.SegmentCount();
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::shutdownSegment(unsigned int segmentNumber) {
+  if (!initilized || segmentNumber >= conf.SegmentCount()) {
+    return;
+  }
+
+  spiTransfer(segmentNumber, OP_SHUTDOWN, 0);
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::activateSegment(unsigned int segmentNumber) {
+  if (!initilized || segmentNumber >= conf.SegmentCount()) {
+    return;
+  }
+
+  spiTransfer(segmentNumber, OP_SHUTDOWN, 1);
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::shutdownAllSegments() {
+  if (!initilized) {
+    return;
+  }
+
+  for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
+    shutdownSegment(i);
+  }
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::activateAllSegments() {
+  if (!initilized) {
+    return;
+  }
+
+  for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
+    activateSegment(i);
+  }
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::spiTransfer(unsigned int segment, byte opcode, byte data) {
+  if (!initilized || segment >= conf.SegmentCount()) {
+    return;
+  }
+
+  // Create an array with the data to shift out
+  unsigned int offset = segment * 2;
+  unsigned int maxbytes = conf.SegmentCount() * 2;
+
+  for (unsigned int i = 0; i < maxbytes; i++) {
+    spidata[i] = 0x00;
+  }
+
+  // put our device data into the array
+  spidata[offset + 1] = opcode;
+  spidata[offset] = data;
+
+  // enable the line
+  auto row = conf.getRow(segment);
+  
+  digitalWrite(conf.row_SPI_CS[row], LOW);
+
+  //init the spi transfer if hardware should be used
+  if (conf.useHardwareSpi) {
+    SPI.beginTransaction(SPISettings(conf.spiTransferSpeed, MSBFIRST, SPI_MODE0));
+  }
+
+  // Now shift out the data
+  for (int i = maxbytes; i > 0; i--) {
+    if (conf.useHardwareSpi) {
+      SPI.transfer(spidata[i - 1]);
+    } else {
+      shiftOut(conf.SPI_MOSI, conf.SPI_CLK, MSBFIRST, spidata[i - 1]);
+    }
+  }
+
+  //end the spi transfer if hardware should be used
+  if (conf.useHardwareSpi) {
+    SPI.endTransaction();
+  }
+
+  // latch the data onto the display
+  digitalWrite(conf.row_SPI_CS[row], HIGH);
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::setScanLimit(unsigned int segmentNumber,
+                                 unsigned int limit) {
+  if (!initilized || segmentNumber >= conf.SegmentCount()) {
+    return;
+  };
+  if (limit < 8) {
+    spiTransfer(segmentNumber, OP_SCANLIMIT, limit);
+  };
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::clearSegment(unsigned int segmentNumber) {
+  if (!initilized || segmentNumber >= conf.SegmentCount()) {
+    return;
+  }
+
+  for (int i = 0; i < 8; i++) {
+    LedStates[segmentNumber][i] = 0x00;
+    spiTransfer(segmentNumber, i + 1, LedStates[segmentNumber][i]);
+  }
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::setRow(unsigned int segmentNumber, unsigned int row,
+                           byte value) {
+  if (!initilized || segmentNumber >= conf.SegmentCount() || row > 7 ||
+      (conf.onlySendOnChange && LedStates[segmentNumber][row] == value)) {
+    return;
+  }
+
+  LedStates[segmentNumber][row] = value;
+  spiTransfer(segmentNumber, row + 1, LedStates[segmentNumber][row]);
+}
+
+template <size_t columns, size_t rows>
+byte LedController<columns,rows>::getRow(unsigned int segmentNumber, unsigned int row) {
+  if (!initilized || segmentNumber >= conf.SegmentCount() || row > 7) {
+    return 0x00;
+  }
+
+  return LedStates[segmentNumber][row];
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::setLed(unsigned int segmentNumber, unsigned int row,
+                           unsigned int column, boolean state) {
+  if (!initilized || row > 7 || column > 7 ||
+      segmentNumber >= conf.SegmentCount()) {
+    return;
+  };
+
+  byte val = B10000000 >> column;
+
+  if (state)
+    LedStates[segmentNumber][row] = LedStates[segmentNumber][row] | val;
+  else {
+    val = ~val;
+    LedStates[segmentNumber][row] = LedStates[segmentNumber][row] & val;
+  }
+  spiTransfer(segmentNumber, row + 1, LedStates[segmentNumber][row]);
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::setColumn(unsigned int segmentNumber, unsigned int col,
+                              byte value) {
+  if (!initilized || segmentNumber >= conf.SegmentCount() || col > 7) {
+    return;
+  };
+
+  byte val;
+
+  for (int row = 0; row < 8; row++) {
+    // val = value & (0x01 << row);
+    val = value >> (7 - row);
+    val = val & 0x01;
+    setLed(segmentNumber, row, col, val);
+  }
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::setDigit(unsigned int segmentNumber, unsigned int digit,
+                             byte value, boolean dp) {
+  if (!initilized || segmentNumber >= conf.SegmentCount() || digit > 7 ||
+      value > 15) {
+    return;
+  };
+
+  byte v = pgm_read_byte_near(charTable + value);
+  if (dp) {
+    v |= B10000000;
+  };
+  LedStates[segmentNumber][digit] = v;
+  spiTransfer(segmentNumber, digit + 1, v);
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::setChar(unsigned int segmentNumber, unsigned int digit,
+                            char value, boolean dp) {
+  if (!initilized || segmentNumber >= conf.SegmentCount() || digit > 7) {
+    return;
+  };
+
+  byte index = (byte)value;
+  if (index > 127) {
+    // no defined beyond index 127, so we use the space char
+    index = 32;
+  }
+
+  byte v = pgm_read_byte_near(charTable + index);
+  if (dp) {
+    v |= B10000000;
+  };
+
+  LedStates[segmentNumber][digit] = v;
+  spiTransfer(segmentNumber, digit + 1, v);
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::refreshSegments() {
+  if (!initilized) {
+    return;
+  }
+
+  for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
+    refreshSegment(i);
+  }
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::refreshSegment(unsigned int segmentNumber) {
+  if (!initilized) {
+    return;
+  }
+
+  spiTransfer(segmentNumber, OP_DISPLAYTEST, 0);
+  // scanlimit is set to max on startup
+  setScanLimit(segmentNumber, 7);
+  // decode is done in source
+  spiTransfer(segmentNumber, OP_DECODEMODE, 0);
+  clearSegment(segmentNumber);
+  // we go into shutdown-mode on startup
+  activateSegment(segmentNumber);
+
+  setIntensity(segmentNumber, this->conf.IntensityLevel);
+
+  updateSegment(segmentNumber);
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::updateSegments() {
+  if (!initilized) {
+    return;
+  }
+
+  for (unsigned int seg = 0; seg < conf.SegmentCount(); seg++) {
+    updateSegment(seg);
+  }
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::updateSegment(unsigned int segmentNumber) {
+  if (!initilized) {
+    return;
+  }
+
+  for (unsigned int row = 0; row < 8; row++) {
+    spiTransfer(segmentNumber, row + 1, LedStates[segmentNumber][row]);
+  }
+}
+
+template <size_t columns, size_t rows>
+byte LedController<columns,rows>::moveRowRight(byte shiftedInColumn, unsigned int row_num) {
+  if (!initilized || row_num >= rows) {
+    return 0x00;
+  }
+
+  byte returnValue = 0x00;
+
+  for (unsigned int i = 0; i < 8; i++) {
+    if (LedStates[conf.getSegmentNumber(conf.getRowLen()-1,row_num)][i] & 0x80) {
+      returnValue |= 0x80 >> i;
+    };
+  }
+
+  for (int col = conf.getRowLen(); col >= 0; col--) {
+    auto seg = conf.getSegmentNumber(col,row_num);
+    auto seg1 = conf.getSegmentNumber(col-1,row_num);
+    for (int row = 0; row < 8; row++) {
+      LedStates[seg][row] = LedStates[seg][row] << 1;
+
+      if (seg != 0 && LedStates[seg1][row] & 0x80) {
+        LedStates[seg][row]++;
+      };
+    }
+  }
+
+  setColumn(conf.getSegmentNumber(0,row_num), 7, shiftedInColumn);
+
+  updateSegments();
+
+  return returnValue;
+}
+
+template <size_t columns, size_t rows>
+byte LedController<columns,rows>::moveRowLeft(byte shiftedInColumn, unsigned int row_num) {
+  if (!initilized || row_num >= rows) {
+    return 0x00;
+  }
+
+  byte returnValue = 0x00;
+
+  for (unsigned int i = 0; i < 8; i++) {
+    if (LedStates[conf.getSegmentNumber(0,row_num)][i] & 0x01) {
+      returnValue |= 0x80 >> i;
+    };
+  }
+
+  for (unsigned int col = 0; col < conf.getRowLen(); col++){
+    auto seg = conf.getSegmentNumber(col,row_num);
+    auto seg1 = conf.getSegmentNumber(col+1,row_num);
+    for (unsigned int row = 0; row < 8; row++) {
+      LedStates[seg][row] = LedStates[seg][row] >> 1;
+
+      if (seg != conf.SegmentCount() - 1 && LedStates[seg1][row] & 0x01) {
+        LedStates[seg][row] |= 0x80;
+      };
+    }
+  }
+
+  setColumn(conf.getSegmentNumber(conf.getRowLen()-1,row_num), 0, shiftedInColumn);
+
+  updateSegments();
+
+  return returnValue;
+}
+
+template <size_t columns, size_t rows>
+byte LedController<columns,rows>::moveLeft(byte shiftedInColumn){
+  return moveRowLeft(shiftedInColumn,0);
+}
+
+template <size_t columns, size_t rows>
+byte LedController<columns,rows>::moveRight(byte shiftedInColumn){
+  return moveRowRight(shiftedInColumn,0);
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::moveLeft(byte* shiftedInColumn, byte** shiftedOutColumn){
+  if(!initilized){
+    return;
+  }
+
+  for(unsigned int i = 0; i < rows; i++){
+    byte inVal = 0x00;
+    if(shiftedInColumn != nullptr && shiftedInColumn[i] != 0){inVal = shiftedInColumn[i];};
+    if(shiftedOutColumn == nullptr){
+      moveRowLeft(inVal,i);
+    }else{
+      (*shiftedOutColumn)[i] = moveRowLeft(inVal,i);
+    }
+  }
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::moveRight(byte* shiftedInColumn, byte** shiftedOutColumn){
+  if(!initilized){
+    return;
+  }
+
+  for(unsigned int i = 0; i < rows; i++){
+    byte inVal = 0x00;
+    if(shiftedInColumn != nullptr && shiftedInColumn[i] != 0){inVal = shiftedInColumn[i];};
+    if(shiftedOutColumn == nullptr){
+      moveRowRight(inVal,i);
+    }else{
+      (*shiftedOutColumn)[i] = moveRowRight(inVal,i);
+    }
+  }
+}
+
+template <size_t columns, size_t rows>
+byte LedController<columns,rows>::reverse(byte var) {
+  byte ret = 0x00;
+  for (unsigned int i = 0; i < 8; i++) {
+    if (var & (0x01U << i)) {
+      ret |= 0x80U >> i;
+    }
+  }
+  return ret;
+}
+// The plain C array functions
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::createEmptyRow(byte **row) {
+  if (!initilized || row == nullptr || *row == nullptr) {
+    return;
+  };
+
+  for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
+    (*row)[i] = 0x00;
+  }
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::moveDown(byte *shiftedInRow, byte **shiftedOutRow) {
+  if (!initilized) {
+    return;
+  }
+
+  createEmptyRow(shiftedOutRow);
+  if (shiftedOutRow != nullptr && *shiftedOutRow != nullptr) {
+    for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
+      (*shiftedOutRow)[i] = LedStates[i][0];
+    }
+  }
+
+  for (unsigned int i = 0; i < 7; i++) {
+    for (unsigned int seg = 0; seg < conf.SegmentCount(); seg++) {
+      LedStates[seg][i] = LedStates[seg][i + 1];
+    }
+  }
+
+  for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
+    LedStates[i][7] = shiftedInRow[i];
+  }
+
+  updateSegments();
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::moveUp(byte *shiftedInRow, byte **shiftedOutRow) {
+  if (!initilized) {
+    return;
+  }
+
+  createEmptyRow(shiftedOutRow);
+  if (shiftedOutRow != nullptr && *shiftedOutRow != nullptr) {
+    for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
+      (*shiftedOutRow)[i] = LedStates[i][7];
+    }
+  }
+
+  for (unsigned int i = 7; i > 0; i--) {
+    for (unsigned int seg = 0; seg < conf.SegmentCount(); seg++) {
+      LedStates[seg][i] = LedStates[seg][i - 1];
+    }
+  }
+
+  for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
+    LedStates[i][0] = shiftedInRow[i];
+  }
+
+  updateSegments();
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::moveUp(byte **shiftedOutRow) {
+  if (!initilized) {
+    return;
+  }
+
+  byte *inVal = new byte[conf.SegmentCount()];
+  createEmptyRow(&inVal);
+  moveUp(inVal, shiftedOutRow);
+  delete[] inVal;
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::moveDown(byte **shiftedOutRow) {
+  if (!initilized) {
+    return;
+  }
+
+  byte *inVal = new byte[conf.SegmentCount()];
+  createEmptyRow(&inVal);
+  moveDown(inVal, shiftedOutRow);
+  delete[] inVal;
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::moveDown() {
+  if (!initilized) {
+    return;
+  }
+
+  byte *inVal = new byte[conf.SegmentCount()];
+  createEmptyRow(&inVal);
+  moveDown(inVal, nullptr);
+  delete[] inVal;
+}
+
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::moveUp() {
+  if (!initilized) {
+    return;
+  }
+
+  byte *inVal = new byte[conf.SegmentCount()];
+  createEmptyRow(&inVal);
+  moveUp(inVal, nullptr);
+  delete[] inVal;
+}
+
+// to be removed for version 2.2.0
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::makeColumns(ByteBlock rowArray, ByteBlock *columnArray) {
+  if (!initilized || columnArray == nullptr) {
+    return;
+  };
+
+  for (unsigned int i = 0; i < 8; i++) {
+    (*columnArray)[i] = 0x00;
+    for (unsigned int j = 0; j < 8; j++) {
+      (*columnArray)[i] |= (0x01 & (rowArray[j] >> (7 - i))) << (7 - j);
+    }
+  }
+}
+
+// to be removed for version 2.2.0
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::reverse(ByteBlock input, ByteBlock *reversedInput) {
+  if (reversedInput == nullptr) {
+    return;
+  }
+
+  for (unsigned int i = 0; i < 8; i++) {
+    (*reversedInput)[i] = reverse(input[i]);
+  }
+}
+
+// to be removed for version 2.2.0
+template <size_t columns, size_t rows>
+void LedController<columns,rows>::rotate180(ByteBlock input, ByteBlock *rotatedInput) {
+  if (rotatedInput == nullptr) {
+    return;
+  }
+
+  for (unsigned int i = 0; i < 8; i++) {
+    (*rotatedInput)[7 - i] = reverse(input[i]);
+  }
+}
+
+template <size_t columns, size_t rows>
+ByteBlock LedController<columns,rows>::makeColumns(ByteBlock rowArray) {
+  auto columnArray = ByteBlock();
+
+  for (unsigned int i = 0; i < 8; i++) {
+    columnArray[i] = 0x00;
+    for (unsigned int j = 0; j < 8; j++) {
+      columnArray[i] |= (0x01 & (rowArray[j] >> (7 - i))) << (7 - j);
+    }
+  }
+
+  return columnArray;
+}
+
+template <size_t columns, size_t rows>
+ByteBlock LedController<columns,rows>::reverse(ByteBlock input) {
+  auto reversedInput = ByteBlock();
+
+  for (unsigned int i = 0; i < 8; i++) {
+    reversedInput[i] = reverse(input[i]);
+  }
+
+  return reversedInput;
+}
+
+template <size_t columns, size_t rows>
+ByteBlock LedController<columns,rows>::rotate180(ByteBlock input) {
+  auto rotatedInput = ByteBlock();
+
+  for (unsigned int i = 0; i < 8; i++) {
+    rotatedInput[7 - i] = reverse(input[i]);
+  }
+
+  return rotatedInput;
+}
+
+template <size_t columns, size_t rows>
+controller_configuration<columns,rows> LedController<columns,rows>::getConfig() { return conf; }

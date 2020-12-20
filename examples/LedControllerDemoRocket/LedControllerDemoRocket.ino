@@ -8,7 +8,7 @@
 
 #define delayTime 200 // Delay between Frames
 
-LedController lc = LedController();  
+LedController<Segments,1> lc = LedController<Segments,1>();  
 
 ByteBlock rocket= {
   B00000000,

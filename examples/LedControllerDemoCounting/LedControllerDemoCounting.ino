@@ -6,7 +6,7 @@
 
 #define delayTime 200 // Delay between Frames
 
-LedController lc; 
+LedController<Segments,1> lc; 
 
 ByteBlock digits[10] = {
   {
@@ -131,7 +131,7 @@ void switchLED(){
 
 void setup(){
 
-  lc = LedController(CS,Segments);// Pins: CS, # of Display connected
+  lc = LedController<Segments,1>(CS,Segments);// Pins: CS, # of Display connected
 
   pinMode(13, OUTPUT);
     

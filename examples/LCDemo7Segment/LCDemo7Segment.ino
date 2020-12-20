@@ -9,14 +9,14 @@
  pin 10 is connected to LOAD 
  We have only a single MAX72XX.
  */
-LedController lc;
+LedController<1,1> lc;
 
 /* we always wait a bit between updates of the display */
 unsigned long delaytime=250;
 
 void setup() {
 
-  lc=LedController(12,11,10,1);
+  lc=LedController<1,1>(12,11,10,1);
 
   /*
    The MAX72XX is in power-saving mode on startup,
