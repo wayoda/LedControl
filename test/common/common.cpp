@@ -1,14 +1,11 @@
 #include "common.hpp"
 
-controller_configuration& get_conf(){
-    static controller_configuration conf;
+controller_configuration<4,1>& get_conf(){
+    static controller_configuration<4,1> conf;
     if(!conf.isValid()){
-        conf.SegmentCount = 4;
         conf.SPI_CS = 16;
         conf.SPI_CLK = 15;
         conf.SPI_MOSI = 14;
-        conf.row_SPI_CS = nullptr;
-        conf.rows = 1;
         conf.useHardwareSpi = false;
         conf.isValid();
     }
@@ -16,12 +13,10 @@ controller_configuration& get_conf(){
     return conf;
 }
 
-controller_configuration& get_conf_SPI(){
-    static controller_configuration conf;
+controller_configuration<4,1>& get_conf_SPI(){
+    static controller_configuration<4,1> conf;
     if(!conf.isValid()){
-        conf.SegmentCount = 4;
         conf.SPI_CS = 16;
-        conf.rows = 1;
         conf.useHardwareSpi = true;
         conf.isValid();
     }
@@ -29,15 +24,12 @@ controller_configuration& get_conf_SPI(){
 }
 
 
-controller_configuration& get_multi_conf(){
-    static controller_configuration conf;
+controller_configuration<4,4>& get_multi_conf(){
+    static controller_configuration<4,4> conf;
     if(!conf.isValid()){
-        conf.SegmentCount = 16;
         conf.SPI_CLK = 15;
-        conf.SPI_MOSI = 14;
-        conf.row_SPI_CS = new unsigned int[4];        
+        conf.SPI_MOSI = 14;      
         conf.SPI_CS = 13;
-        conf.rows = 4;
         conf.useHardwareSpi = false;
         conf.isValid();
     }
@@ -45,16 +37,18 @@ controller_configuration& get_multi_conf(){
     return conf;
 }
 
-controller_configuration& get_multi_conf_SPI(){
-    static controller_configuration conf;
+controller_configuration<4,4>& get_multi_conf_SPI(){
+    static controller_configuration<4,4> conf;
     if(!conf.isValid()){
-        conf.SegmentCount = 16;
-        conf.row_SPI_CS = new unsigned int[4];
         conf.SPI_CS = 13;
-        conf.rows = 4;
         conf.useHardwareSpi = true;
         conf.isValid();
     }
     
     return conf;
+}
+
+byte* in_array(){
+    static byte in_array[4] = {B00000001,B00001000,B00100000,B10000000};
+    return in_array;
 }

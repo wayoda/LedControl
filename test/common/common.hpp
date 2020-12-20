@@ -13,7 +13,9 @@
     #define CATCH_FAKEIT catch(const FakeitException& e){std::cout << e.what() << std::endl; const char* msg = e.what().c_str(); TEST_FAIL_MESSAGE(msg);}
 #endif
 
-controller_configuration& get_conf();
-controller_configuration& get_conf_SPI();
-controller_configuration& get_multi_conf();
-controller_configuration& get_multi_conf_SPI();
+controller_configuration<4,1>& get_conf();
+controller_configuration<4,1>& get_conf_SPI();
+controller_configuration<4,4>& get_multi_conf();
+controller_configuration<4,4>& get_multi_conf_SPI();
+
+byte* in_array();
