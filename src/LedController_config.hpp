@@ -138,7 +138,7 @@ public:
    */
   unsigned int getColumn(unsigned int segmentNumber) const{
     unsigned int col = 0;
-    if (segmentNumber != 0 && columns != 0){
+    if (rows != 0 && columns != 0){
       col = segmentNumber % columns;
     }
 

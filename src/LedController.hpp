@@ -1,5 +1,6 @@
 #pragma once
 #include "LedController_template.hpp"
+#include "LedController_movement.hpp"
 
 // the opcodes for the MAX7221 and MAX7219
 #define OP_NOOP 0
@@ -55,8 +56,10 @@ LedController<columns,rows>::LedController(const LedController &other) {
     }
   }
 
-  for (unsigned int i = 0; i < conf.SegmentCount() * 2; i++) {
-    spidata[i] = other.spidata[i];
+  for (unsigned int j = 0; j < rows;j++){
+    for (unsigned int i = 0; i < columns*2; i++) {
+      spidata[j][i] = other.spidata[j][i];
+    }
   }
 
   refreshSegments();
@@ -149,8 +152,10 @@ void LedController<columns,rows>::initSPI(){
 
 template <size_t columns, size_t rows>
 void LedController<columns,rows>::resetBuffers(){
-  for (unsigned int i = 0; i < conf.SegmentCount() * 2; i++) {
-    spidata[i] = 0x00;
+  for (unsigned int j = 0; j < rows;j++){
+    for (unsigned int i = 0; i < columns*2; i++) {
+      spidata[j][i] = 0;
+    }
   }
 
   for (unsigned int j = 0; j < conf.SegmentCount(); j++) {
@@ -313,43 +318,48 @@ void LedController<columns,rows>::spiTransfer(unsigned int segment, byte opcode,
   }
 
   // Create an array with the data to shift out
-  unsigned int offset = segment * 2;
+  unsigned int offset = conf.getColumn(segment) * 2;
+  unsigned int row = conf.getRow(segment);
   unsigned int maxbytes = conf.SegmentCount() * 2;
 
-  for (unsigned int i = 0; i < maxbytes; i++) {
-    spidata[i] = 0x00;
-  }
-
-  // put our device data into the array
-  spidata[offset + 1] = opcode;
-  spidata[offset] = data;
-
-  // enable the line
-  auto row = conf.getRow(segment);
-  
-  digitalWrite(conf.row_SPI_CS[row], LOW);
-
-  //init the spi transfer if hardware should be used
-  if (conf.useHardwareSpi) {
-    SPI.beginTransaction(SPISettings(conf.spiTransferSpeed, MSBFIRST, SPI_MODE0));
-  }
-
-  // Now shift out the data
-  for (int i = maxbytes; i > 0; i--) {
-    if (conf.useHardwareSpi) {
-      SPI.transfer(spidata[i - 1]);
-    } else {
-      shiftOut(conf.SPI_MOSI, conf.SPI_CLK, MSBFIRST, spidata[i - 1]);
+  for (unsigned int j = 0; j < rows;j++){
+    for (unsigned int i = 0; i < columns*2; i++) {
+      spidata[j][i] = 0x00;
     }
   }
 
-  //end the spi transfer if hardware should be used
-  if (conf.useHardwareSpi) {
-    SPI.endTransaction();
-  }
+  // put our device data into the array
+  spidata[row][offset + 1] = opcode;
+  spidata[row][offset] = data;
+  
+  for(int r = 0; r < rows ;r++){
 
-  // latch the data onto the display
-  digitalWrite(conf.row_SPI_CS[row], HIGH);
+    //enable the line
+    auto cs = conf.virtual_multi_row ? conf.SPI_CS : conf.row_SPI_CS[r];
+    digitalWrite(cs, LOW);
+
+    //init the spi transfer if hardware should be used
+    if (conf.useHardwareSpi) {
+      SPI.beginTransaction(SPISettings(conf.spiTransferSpeed, MSBFIRST, SPI_MODE0));
+    }
+
+    // Now shift out the data
+    for (int i = maxbytes; i > 0; i--) {
+      if (conf.useHardwareSpi) {
+        SPI.transfer(spidata[r][i - 1]);
+      } else {
+        shiftOut(conf.SPI_MOSI, conf.SPI_CLK, MSBFIRST, spidata[r][i - 1]);
+      }
+    }
+
+    //end the spi transfer if hardware should be used
+    if (conf.useHardwareSpi) {
+      SPI.endTransaction();
+    }
+
+    // latch the data onto the display
+    digitalWrite(cs, HIGH);
+  }
 }
 
 template <size_t columns, size_t rows>
@@ -427,8 +437,9 @@ void LedController<columns,rows>::setColumn(unsigned int segmentNumber, unsigned
   for (int row = 0; row < 8; row++) {
     // val = value & (0x01 << row);
     val = value >> (7 - row);
-    val = val & 0x01;
-    setLed(segmentNumber, row, col, val);
+    val &= 0x01;
+    val |= LedStates[segmentNumber][row];
+    setRow(segmentNumber, row, val);
   }
 }
 
@@ -524,116 +535,6 @@ void LedController<columns,rows>::updateSegment(unsigned int segmentNumber) {
 }
 
 template <size_t columns, size_t rows>
-byte LedController<columns,rows>::moveRowRight(byte shiftedInColumn, unsigned int row_num) {
-  if (!initilized || row_num >= rows) {
-    return 0x00;
-  }
-
-  byte returnValue = 0x00;
-
-  for (unsigned int i = 0; i < 8; i++) {
-    if (LedStates[conf.getSegmentNumber(conf.getRowLen()-1,row_num)][i] & 0x80) {
-      returnValue |= 0x80 >> i;
-    };
-  }
-
-  for (int col = conf.getRowLen(); col >= 0; col--) {
-    auto seg = conf.getSegmentNumber(col,row_num);
-    auto seg1 = conf.getSegmentNumber(col-1,row_num);
-    for (int row = 0; row < 8; row++) {
-      LedStates[seg][row] = LedStates[seg][row] << 1;
-
-      if (seg != 0 && LedStates[seg1][row] & 0x80) {
-        LedStates[seg][row]++;
-      };
-    }
-  }
-
-  setColumn(conf.getSegmentNumber(0,row_num), 7, shiftedInColumn);
-
-  updateSegments();
-
-  return returnValue;
-}
-
-template <size_t columns, size_t rows>
-byte LedController<columns,rows>::moveRowLeft(byte shiftedInColumn, unsigned int row_num) {
-  if (!initilized || row_num >= rows) {
-    return 0x00;
-  }
-
-  byte returnValue = 0x00;
-
-  for (unsigned int i = 0; i < 8; i++) {
-    if (LedStates[conf.getSegmentNumber(0,row_num)][i] & 0x01) {
-      returnValue |= 0x80 >> i;
-    };
-  }
-
-  for (unsigned int col = 0; col < conf.getRowLen(); col++){
-    auto seg = conf.getSegmentNumber(col,row_num);
-    auto seg1 = conf.getSegmentNumber(col+1,row_num);
-    for (unsigned int row = 0; row < 8; row++) {
-      LedStates[seg][row] = LedStates[seg][row] >> 1;
-
-      if (seg != conf.SegmentCount() - 1 && LedStates[seg1][row] & 0x01) {
-        LedStates[seg][row] |= 0x80;
-      };
-    }
-  }
-
-  setColumn(conf.getSegmentNumber(conf.getRowLen()-1,row_num), 0, shiftedInColumn);
-
-  updateSegments();
-
-  return returnValue;
-}
-
-template <size_t columns, size_t rows>
-byte LedController<columns,rows>::moveLeft(byte shiftedInColumn){
-  return moveRowLeft(shiftedInColumn,0);
-}
-
-template <size_t columns, size_t rows>
-byte LedController<columns,rows>::moveRight(byte shiftedInColumn){
-  return moveRowRight(shiftedInColumn,0);
-}
-
-template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveLeft(byte* shiftedInColumn, byte** shiftedOutColumn){
-  if(!initilized){
-    return;
-  }
-
-  for(unsigned int i = 0; i < rows; i++){
-    byte inVal = 0x00;
-    if(shiftedInColumn != nullptr && shiftedInColumn[i] != 0){inVal = shiftedInColumn[i];};
-    if(shiftedOutColumn == nullptr){
-      moveRowLeft(inVal,i);
-    }else{
-      (*shiftedOutColumn)[i] = moveRowLeft(inVal,i);
-    }
-  }
-}
-
-template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveRight(byte* shiftedInColumn, byte** shiftedOutColumn){
-  if(!initilized){
-    return;
-  }
-
-  for(unsigned int i = 0; i < rows; i++){
-    byte inVal = 0x00;
-    if(shiftedInColumn != nullptr && shiftedInColumn[i] != 0){inVal = shiftedInColumn[i];};
-    if(shiftedOutColumn == nullptr){
-      moveRowRight(inVal,i);
-    }else{
-      (*shiftedOutColumn)[i] = moveRowRight(inVal,i);
-    }
-  }
-}
-
-template <size_t columns, size_t rows>
 byte LedController<columns,rows>::reverse(byte var) {
   byte ret = 0x00;
   for (unsigned int i = 0; i < 8; i++) {
@@ -681,102 +582,7 @@ ByteBlock LedController<columns,rows>::rotate180(ByteBlock input) {
 }
 
 template <size_t columns, size_t rows>
-controller_configuration<columns,rows> LedController<columns,rows>::getConfig() { return conf; }
-
-// The plain C array functions
-template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveDown(byte *shiftedInRow, byte **shiftedOutRow) {
-  if (!initilized) {
-    return;
-  }
-
-  if (shiftedOutRow != nullptr && *shiftedOutRow != nullptr) {
-    for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
-      (*shiftedOutRow)[i] = LedStates[i][0];
-    }
-  }
-
-  for (unsigned int i = 0; i < 7; i++) {
-    for (unsigned int seg = 0; seg < conf.SegmentCount(); seg++) {
-      LedStates[seg][i] = LedStates[seg][i + 1];
-    }
-  }
-
-  for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
-    LedStates[i][7] = shiftedInRow[i];
-  }
-
-  updateSegments();
-}
-
-template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveUp(byte *shiftedInRow, byte **shiftedOutRow) {
-  if (!initilized) {
-    return;
-  }
-
-  if (shiftedOutRow != nullptr && *shiftedOutRow != nullptr) {
-    for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
-      (*shiftedOutRow)[i] = LedStates[i][7];
-    }
-  }
-
-  for (unsigned int i = 7; i > 0; i--) {
-    for (unsigned int seg = 0; seg < conf.SegmentCount(); seg++) {
-      LedStates[seg][i] = LedStates[seg][i - 1];
-    }
-  }
-
-  for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
-    LedStates[i][0] = shiftedInRow[i];
-  }
-
-  updateSegments();
-}
-
-template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveUp(byte **shiftedOutRow) {
-  if (!initilized) {
-    return;
-  }
-
-  byte *inVal = new byte[conf.SegmentCount()];
-  moveUp(inVal, shiftedOutRow);
-  delete[] inVal;
-}
-
-template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveDown(byte **shiftedOutRow) {
-  if (!initilized) {
-    return;
-  }
-
-  byte *inVal = new byte[conf.SegmentCount()];
-  moveDown(inVal, shiftedOutRow);
-  delete[] inVal;
-}
-
-template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveDown() {
-  if (!initilized) {
-    return;
-  }
-
-  byte *inVal = new byte[conf.SegmentCount()];
-  moveDown(inVal, nullptr);
-  delete[] inVal;
-}
-
-template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveUp() {
-  if (!initilized) {
-    return;
-  }
-
-  byte *inVal = new byte[conf.SegmentCount()];
-  moveUp(inVal, nullptr);
-  delete[] inVal;
-}
+const controller_configuration<columns,rows>& LedController<columns,rows>::getConfig() { return conf; }
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
@@ -816,5 +622,3 @@ void LedController<columns,rows>::rotate180(ByteBlock input, ByteBlock *rotatedI
     (*rotatedInput)[7 - i] = reverse(input[i]);
   }
 }
-
-

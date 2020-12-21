@@ -75,7 +75,7 @@ protected:
   void spiTransfer(unsigned int segment, byte opcode, byte data);
 
   /// The array for shifting the data to the devices
-  byte spidata[rows*columns * 2];
+  byte spidata[rows][columns * 2];
 
   /**
    * @brief Set the brightness of the segment.
@@ -410,9 +410,20 @@ public:
   /**
    * @brief moves the data down by one and 0x00 will be shifted in
    *
-   * @return ByteRow The row the will be shifted out on the bottom
    */
   void moveDown();
+
+  /**
+   * @brief moves the data left by one and 0x00 will be shifted in
+   *
+   */
+  void moveLeft();
+
+  /**
+   * @brief moves the data right by one and 0x00 will be shifted in
+   *
+   */
+  void moveRight();
 
   /**
    * @brief moves the data left by one
@@ -435,6 +446,24 @@ public:
    * @return byte The column that gets shifted out on the right
    */
   byte moveRowRight(byte shiftedInColumn = 0x00, unsigned int row_num = 0);
+
+  /**
+   * @brief moves the data of a column up by one
+   * 
+   * @param shiftedInRow the date the will be shifted in on the bottom
+   * @param col_num the index of the column that will be moved
+   * @return byte the row that will be shifted out
+   */
+  byte moveColumnUp(byte shiftedInRow = 0x00, unsigned int col_num = 0);
+
+  /**
+   * @brief moves the data of a column down by one
+   * 
+   * @param shiftedInRow the date the will be shifted in on the top
+   * @param col_num the index of the column that will be moved
+   * @return byte the row that will be shifted out
+   */
+  byte moveColumnDown(byte shiftedInRow = 0x00, unsigned int col_num = 0);
 
   /**
    * @brief Turns an ByteBlock of rows into an ByteBlock of columns
@@ -465,7 +494,7 @@ public:
    *
    * @return controlller_configuration the configuration
    */
-  controller_configuration<columns,rows> getConfig();
+  const controller_configuration<columns,rows>& getConfig();
 
   //The following methods are deprecated and will be removed in the future
   //They only exist to help the transition to a new version
@@ -474,23 +503,60 @@ public:
 
   /**
    * @brief moves the data left by one
-   * @deprecated to be reomoved in version 2.1.0
+   * @deprecated to be reomoved in version 2.1.0, moveRowLeft should be used
    * @param shiftedInColumn The column that will be shifted to the right
    * (default 0x00)
    * @warning ONLY moves row 0, this function exists for backwards compatibility
    * @return byte The column that gets shifted out on the left
    */
-  byte moveLeft(byte shiftedInColumn = 0x00);
+  byte moveLeft(byte shiftedInColumn);
 
   /**
    * @brief moves the data left by one
-   * @deprecated to be reomoved in version 2.1.0
+   * @deprecated to be reomoved in version 2.1.0, moveRowRight should be used
    * @param shiftedInColumn The column that will be shifted to the left
    * (default 0x00)
    * @warning ONLY moves row 0, this function exists for backwards compatibility
    * @return byte The column that gets shifted out on the right
    */
-  byte moveRight(byte shiftedInColumn = 0x00);
+  byte moveRight(byte shiftedInColumn);
+
+  /**
+   * @brief moves all rows to the left.
+   * The passed Arrays need to have the same length as the number of rows, or be a nullptr.
+   * If shiftedInColumn is a nullptr, 0x00 will be used for all rows.
+   * 
+   * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
+   * @return ByteRow<rows> This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
+   */
+  ByteRow<rows> moveLeft(const ByteRow<rows>& shiftedInColumn);
+
+  /**
+   * @brief moves all rows to the right.
+   * The passed Arrays need to have the same length as the number of rows, or be a nullptr.
+   * If shiftedInColumn is a nullptr, 0x00 will be used for all rows.
+   * 
+   * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
+   * @return ByteRow<rows> This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
+   */
+  ByteRow<rows> moveRight(const ByteRow<rows>& shiftedInColumn);
+
+  /**
+   * @brief moves all columns up.
+   * 
+   * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
+   * @return ByteRow<columns> This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
+   */
+  ByteRow<columns> moveUp(const ByteRow<columns>& shiftedInColumn);
+
+  /**
+   * @brief moves all columns down.
+   * 
+   * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
+   * @return ByteRow<columns> This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
+   */
+  ByteRow<columns> moveDown(const ByteRow<columns>& shiftedInColumn);
+
 
   ///@todo remove following functions in version 2.2.0
 
@@ -544,7 +610,7 @@ public:
    * @param shiftedOutRow The address of the row that will be shifted out on the
    * bottom
    */
-  void moveUp(byte *shiftedInRow, byte **shiftedOutRow);
+  void moveUp(const ByteRow<columns>& shiftedInRow, ByteRow<columns>* shiftedOutRow);
 
   /**
    * @brief moves the data down by one
@@ -554,7 +620,7 @@ public:
    * @param shiftedOutRow The address of the row that will be shifted out on the
    * bottom
    */
-  void moveDown(byte *shiftedInRow, byte **shiftedOutRow);
+  void moveDown(const ByteRow<columns>& shiftedInRow, ByteRow<columns>* shiftedOutRow);
 
   /**
    * @brief moves the data up by oneand 0x00 will be shifted in
@@ -562,7 +628,7 @@ public:
    * @param shiftedOutRow The address of the row that will be shifted out on the
    * bottom
    */
-  void moveUp(byte **shiftedOutRow);
+  void moveUp(ByteRow<columns>* shiftedOutRow);
 
   /**
    * @brief moves the data down by one and 0x00 will be shifted in
@@ -570,8 +636,8 @@ public:
    * @param shiftedOutRow The address of the row that will be shifted out on the
    * bottom
    */
-  void moveDown(byte **shiftedOutRow);
-  
+  void moveDown(ByteRow<columns>* shiftedOutRow);
+
   /**
    * @brief moves all rows to the left.
    * The passed Arrays need to have the same length as the number of rows, or be a nullptr.
@@ -580,7 +646,7 @@ public:
    * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
    * @param shiftedOutColumn This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
    */
-  void moveLeft(byte* shiftedInColumn, byte** shiftedOutColumn);
+  void moveLeft(const ByteRow<rows>& shiftedInColumn, ByteRow<rows>* shiftedOutColumn);
 
   /**
    * @brief moves all rows to the right.
@@ -590,5 +656,5 @@ public:
    * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
    * @param shiftedOutColumn This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
    */
-  void moveRight(byte* shiftedInColumn, byte** shiftedOutColumn);
+  void moveRight(const ByteRow<rows>& shiftedInColumn, ByteRow<rows>* shiftedOutColumn);
 };

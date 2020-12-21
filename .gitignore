@@ -4,3 +4,4 @@ doxywarn.txt
 
 logs
 .pio
+src/*.ino
