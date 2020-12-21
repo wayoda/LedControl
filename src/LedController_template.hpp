@@ -92,19 +92,6 @@ protected:
   bool initilized = false;
 
   /**
-   * @brief contains a row full of 0x00
-   *
-   */
-  byte emptyRow[columns];
-
-  /**
-   * @brief this copies an empty row into row
-   *
-   * @param row the pointer to the byte array that should be used
-   */
-  void createEmptyRow(byte **row);
-
-  /**
    * @brief initilize the internal buffers of the Controller.
    * 
    */
@@ -234,23 +221,6 @@ public:
    * displayed on that segment
    */
   void displayOnSegment(unsigned int column, unsigned int row_num, ByteBlock data);
-
-  /**
-   * @brief Get the Segment Data of a specific Segment
-   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
-   * @param column the column where the wanted segment is
-   * @param row_num the row where the wanted segment is
-   * @param resultLocation the location where the data should be stored
-   */
-  void getSegmentData(unsigned int column, unsigned int row_num, ByteBlock* resultLocation);
-
-  /**
-   * @brief Get the Segment Data of a specific Segment
-   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
-   * @param segmentindex the index of whose data you want to have
-   * @param resultLocation the location where the data should be stored
-   */
-  void getSegmentData(unsigned int segmentindex, ByteBlock *resultLocation);
 
   /**
    * @brief Get the Segment Data of a specific Segment
@@ -423,6 +393,28 @@ public:
   void updateSegment(unsigned int segmentNumber);
 
   /**
+   * @brief This function changes to bitorder of a byte (useful to mirror
+   * "images" you want to display)
+   *
+   * @param input The byte that should be reversed
+   * @return byte The reversed byte
+   */
+  byte reverse(byte input);
+
+  /**
+   * @brief moves the data up by one and 0x00 will be shifted in
+   *
+   */
+  void moveUp();
+
+  /**
+   * @brief moves the data down by one and 0x00 will be shifted in
+   *
+   * @return ByteRow The row the will be shifted out on the bottom
+   */
+  void moveDown();
+
+  /**
    * @brief moves the data left by one
    *
    * @param shiftedInColumn The column that will be shifted to the right
@@ -443,129 +435,6 @@ public:
    * @return byte The column that gets shifted out on the right
    */
   byte moveRowRight(byte shiftedInColumn = 0x00, unsigned int row_num = 0);
-
-  /**
-   * @brief moves the data left by one
-   *
-   * @param shiftedInColumn The column that will be shifted to the right
-   * (default 0x00)
-   * @warning ONLY moves row 0, this function exists for backwards compatibility
-   * @return byte The column that gets shifted out on the left
-   */
-  byte moveLeft(byte shiftedInColumn = 0x00);
-
-  /**
-   * @brief moves the data left by one
-   *
-   * @param shiftedInColumn The column that will be shifted to the left
-   * (default 0x00)
-   * @warning ONLY moves row 0, this function exists for backwards compatibility
-   * @return byte The column that gets shifted out on the right
-   */
-  byte moveRight(byte shiftedInColumn = 0x00);
-
-  /**
-   * @brief moves all rows to the left.
-   * The passed Arrays need to have the same length as the number of rows, or be a nullptr.
-   * If shiftedInColumn is a nullptr, 0x00 will be used for all rows.
-   * 
-   * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
-   * @param shiftedOutColumn This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
-   */
-  void moveLeft(byte* shiftedInColumn, byte** shiftedOutColumn);
-
-  /**
-   * @brief moves all rows to the right.
-   * The passed Arrays need to have the same length as the number of rows, or be a nullptr.
-   * If shiftedInColumn is a nullptr, 0x00 will be used for all rows.
-   * 
-   * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
-   * @param shiftedOutColumn This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
-   */
-  void moveRight(byte* shiftedInColumn, byte** shiftedOutColumn);
-
-  /**
-   * @brief This function changes to bitorder of a byte (useful to mirror
-   * "images" you want to display)
-   *
-   * @param input The byte that should be reversed
-   * @return byte The reversed byte
-   */
-  byte reverse(byte input);
-
-  /**
-   * @brief moves the data up by one
-   *
-   * @param shiftedInRow The row that will be shifted in on the bottom (default
-   * 0x00)
-   * @param shiftedOutRow The address of the row that will be shifted out on the
-   * bottom
-   */
-  void moveUp(byte *shiftedInRow, byte **shiftedOutRow);
-
-  /**
-   * @brief moves the data down by one
-   *
-   * @param shiftedInRow The row that will be shifted in on the top (default
-   * 0x00)
-   * @param shiftedOutRow The address of the row that will be shifted out on the
-   * bottom
-   */
-  void moveDown(byte *shiftedInRow, byte **shiftedOutRow);
-
-  /**
-   * @brief moves the data up by oneand 0x00 will be shifted in
-   *
-   * @param shiftedOutRow The address of the row that will be shifted out on the
-   * bottom
-   */
-  void moveUp(byte **shiftedOutRow);
-
-  /**
-   * @brief moves the data down by one and 0x00 will be shifted in
-   *
-   * @param shiftedOutRow The address of the row that will be shifted out on the
-   * bottom
-   */
-  void moveDown(byte **shiftedOutRow);
-
-  /**
-   * @brief moves the data up by one and 0x00 will be shifted in
-   *
-   */
-  void moveUp();
-
-  /**
-   * @brief moves the data down by one and 0x00 will be shifted in
-   *
-   * @return ByteRow The row the will be shifted out on the bottom
-   */
-  void moveDown();
-
-  /**
-   * @brief Turns an array of rows into an array of columns
-   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
-   * @param rowArray the array of rows of which you want the columns
-   * @param columnArray The address where the result will be stored
-   */
-  void makeColumns(ByteBlock rowArray, ByteBlock *columnArray);
-
-  /**
-   * @brief Reverse an array of 8 bytes (mirror it)
-   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
-   * @param input The array that should be mirrored
-   * @param reversedInput The address where the result will be stored
-   */
-  void reverse(ByteBlock input, ByteBlock *reversedInput);
-
-  /**
-   * @brief rotate an byte[8] array by 180 degrees
-   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
-   * @param input the array that will be rotated
-   * @param rotatedInput The address where the result will be stored
-   */
-  void rotate180(ByteBlock input, ByteBlock *rotatedInput);
-
 
   /**
    * @brief Turns an ByteBlock of rows into an ByteBlock of columns
@@ -597,4 +466,129 @@ public:
    * @return controlller_configuration the configuration
    */
   controller_configuration<columns,rows> getConfig();
+
+  //The following methods are deprecated and will be removed in the future
+  //They only exist to help the transition to a new version
+
+  ///@todo remove following functions in version 2.1.0
+
+  /**
+   * @brief moves the data left by one
+   * @deprecated to be reomoved in version 2.1.0
+   * @param shiftedInColumn The column that will be shifted to the right
+   * (default 0x00)
+   * @warning ONLY moves row 0, this function exists for backwards compatibility
+   * @return byte The column that gets shifted out on the left
+   */
+  byte moveLeft(byte shiftedInColumn = 0x00);
+
+  /**
+   * @brief moves the data left by one
+   * @deprecated to be reomoved in version 2.1.0
+   * @param shiftedInColumn The column that will be shifted to the left
+   * (default 0x00)
+   * @warning ONLY moves row 0, this function exists for backwards compatibility
+   * @return byte The column that gets shifted out on the right
+   */
+  byte moveRight(byte shiftedInColumn = 0x00);
+
+  ///@todo remove following functions in version 2.2.0
+
+  /**
+   * @brief Get the Segment Data of a specific Segment
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+   * @param column the column where the wanted segment is
+   * @param row_num the row where the wanted segment is
+   * @param resultLocation the location where the data should be stored
+   */
+  void getSegmentData(unsigned int column, unsigned int row_num, ByteBlock* resultLocation);
+
+  /**
+   * @brief Get the Segment Data of a specific Segment
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+   * @param segmentindex the index of whose data you want to have
+   * @param resultLocation the location where the data should be stored
+   */
+  void getSegmentData(unsigned int segmentindex, ByteBlock *resultLocation);
+
+  /**
+   * @brief Turns an array of rows into an array of columns
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+   * @param rowArray the array of rows of which you want the columns
+   * @param columnArray The address where the result will be stored
+   */
+  void makeColumns(ByteBlock rowArray, ByteBlock *columnArray);
+
+  /**
+   * @brief Reverse an array of 8 bytes (mirror it)
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+   * @param input The array that should be mirrored
+   * @param reversedInput The address where the result will be stored
+   */
+  void reverse(ByteBlock input, ByteBlock *reversedInput);
+
+  /**
+   * @brief rotate an byte[8] array by 180 degrees
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+   * @param input the array that will be rotated
+   * @param rotatedInput The address where the result will be stored
+   */
+  void rotate180(ByteBlock input, ByteBlock *rotatedInput);
+
+  //no alternative yet
+  /**
+   * @brief moves the data up by one
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+   * @param shiftedInRow The row that will be shifted in on the bottom (default
+   * 0x00)
+   * @param shiftedOutRow The address of the row that will be shifted out on the
+   * bottom
+   */
+  void moveUp(byte *shiftedInRow, byte **shiftedOutRow);
+
+  /**
+   * @brief moves the data down by one
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+   * @param shiftedInRow The row that will be shifted in on the top (default
+   * 0x00)
+   * @param shiftedOutRow The address of the row that will be shifted out on the
+   * bottom
+   */
+  void moveDown(byte *shiftedInRow, byte **shiftedOutRow);
+
+  /**
+   * @brief moves the data up by oneand 0x00 will be shifted in
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+   * @param shiftedOutRow The address of the row that will be shifted out on the
+   * bottom
+   */
+  void moveUp(byte **shiftedOutRow);
+
+  /**
+   * @brief moves the data down by one and 0x00 will be shifted in
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+   * @param shiftedOutRow The address of the row that will be shifted out on the
+   * bottom
+   */
+  void moveDown(byte **shiftedOutRow);
+  
+  /**
+   * @brief moves all rows to the left.
+   * The passed Arrays need to have the same length as the number of rows, or be a nullptr.
+   * If shiftedInColumn is a nullptr, 0x00 will be used for all rows.
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+   * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
+   * @param shiftedOutColumn This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
+   */
+  void moveLeft(byte* shiftedInColumn, byte** shiftedOutColumn);
+
+  /**
+   * @brief moves all rows to the right.
+   * The passed Arrays need to have the same length as the number of rows, or be a nullptr.
+   * If shiftedInColumn is a nullptr, 0x00 will be used for all rows.
+   * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+   * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
+   * @param shiftedOutColumn This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
+   */
+  void moveRight(byte* shiftedInColumn, byte** shiftedOutColumn);
 };

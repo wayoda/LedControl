@@ -158,10 +158,6 @@ void LedController<columns,rows>::resetBuffers(){
       LedStates[j][i] = 0x00;
     }
   }
-
-  for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
-    emptyRow[i] = 0x00;
-  }
 }
 
 template <size_t columns, size_t rows>
@@ -647,26 +643,53 @@ byte LedController<columns,rows>::reverse(byte var) {
   }
   return ret;
 }
-// The plain C array functions
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::createEmptyRow(byte **row) {
-  if (!initilized || row == nullptr || *row == nullptr) {
-    return;
-  };
+ByteBlock LedController<columns,rows>::makeColumns(ByteBlock rowArray) {
+  auto columnArray = ByteBlock();
 
-  for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
-    (*row)[i] = 0x00;
+  for (unsigned int i = 0; i < 8; i++) {
+    columnArray[i] = 0x00;
+    for (unsigned int j = 0; j < 8; j++) {
+      columnArray[i] |= (0x01 & (rowArray[j] >> (7 - i))) << (7 - j);
+    }
   }
+
+  return columnArray;
 }
 
+template <size_t columns, size_t rows>
+ByteBlock LedController<columns,rows>::reverse(ByteBlock input) {
+  auto reversedInput = ByteBlock();
+
+  for (unsigned int i = 0; i < 8; i++) {
+    reversedInput[i] = reverse(input[i]);
+  }
+
+  return reversedInput;
+}
+
+template <size_t columns, size_t rows>
+ByteBlock LedController<columns,rows>::rotate180(ByteBlock input) {
+  auto rotatedInput = ByteBlock();
+
+  for (unsigned int i = 0; i < 8; i++) {
+    rotatedInput[7 - i] = reverse(input[i]);
+  }
+
+  return rotatedInput;
+}
+
+template <size_t columns, size_t rows>
+controller_configuration<columns,rows> LedController<columns,rows>::getConfig() { return conf; }
+
+// The plain C array functions
 template <size_t columns, size_t rows>
 void LedController<columns,rows>::moveDown(byte *shiftedInRow, byte **shiftedOutRow) {
   if (!initilized) {
     return;
   }
 
-  createEmptyRow(shiftedOutRow);
   if (shiftedOutRow != nullptr && *shiftedOutRow != nullptr) {
     for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
       (*shiftedOutRow)[i] = LedStates[i][0];
@@ -692,7 +715,6 @@ void LedController<columns,rows>::moveUp(byte *shiftedInRow, byte **shiftedOutRo
     return;
   }
 
-  createEmptyRow(shiftedOutRow);
   if (shiftedOutRow != nullptr && *shiftedOutRow != nullptr) {
     for (unsigned int i = 0; i < conf.SegmentCount(); i++) {
       (*shiftedOutRow)[i] = LedStates[i][7];
@@ -719,7 +741,6 @@ void LedController<columns,rows>::moveUp(byte **shiftedOutRow) {
   }
 
   byte *inVal = new byte[conf.SegmentCount()];
-  createEmptyRow(&inVal);
   moveUp(inVal, shiftedOutRow);
   delete[] inVal;
 }
@@ -731,7 +752,6 @@ void LedController<columns,rows>::moveDown(byte **shiftedOutRow) {
   }
 
   byte *inVal = new byte[conf.SegmentCount()];
-  createEmptyRow(&inVal);
   moveDown(inVal, shiftedOutRow);
   delete[] inVal;
 }
@@ -743,7 +763,6 @@ void LedController<columns,rows>::moveDown() {
   }
 
   byte *inVal = new byte[conf.SegmentCount()];
-  createEmptyRow(&inVal);
   moveDown(inVal, nullptr);
   delete[] inVal;
 }
@@ -755,7 +774,6 @@ void LedController<columns,rows>::moveUp() {
   }
 
   byte *inVal = new byte[conf.SegmentCount()];
-  createEmptyRow(&inVal);
   moveUp(inVal, nullptr);
   delete[] inVal;
 }
@@ -799,41 +817,4 @@ void LedController<columns,rows>::rotate180(ByteBlock input, ByteBlock *rotatedI
   }
 }
 
-template <size_t columns, size_t rows>
-ByteBlock LedController<columns,rows>::makeColumns(ByteBlock rowArray) {
-  auto columnArray = ByteBlock();
 
-  for (unsigned int i = 0; i < 8; i++) {
-    columnArray[i] = 0x00;
-    for (unsigned int j = 0; j < 8; j++) {
-      columnArray[i] |= (0x01 & (rowArray[j] >> (7 - i))) << (7 - j);
-    }
-  }
-
-  return columnArray;
-}
-
-template <size_t columns, size_t rows>
-ByteBlock LedController<columns,rows>::reverse(ByteBlock input) {
-  auto reversedInput = ByteBlock();
-
-  for (unsigned int i = 0; i < 8; i++) {
-    reversedInput[i] = reverse(input[i]);
-  }
-
-  return reversedInput;
-}
-
-template <size_t columns, size_t rows>
-ByteBlock LedController<columns,rows>::rotate180(ByteBlock input) {
-  auto rotatedInput = ByteBlock();
-
-  for (unsigned int i = 0; i < 8; i++) {
-    rotatedInput[7 - i] = reverse(input[i]);
-  }
-
-  return rotatedInput;
-}
-
-template <size_t columns, size_t rows>
-controller_configuration<columns,rows> LedController<columns,rows>::getConfig() { return conf; }
