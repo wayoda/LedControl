@@ -27,21 +27,26 @@ class ByteRow{
         };
         ~ByteRow(){};
 
-        byte& operator[] (uint8_t index){
+        byte& operator[] (uint64_t index){
             index %= SIZE;
             return _data[index];
         }
 
-        const byte& operator[] (uint8_t index) const{
+        const byte& operator[] (uint64_t index) const{
             index %= SIZE;
             return _data[index];
         }
 
         ByteRow& operator= (byte newdata[SIZE]){
-            for(uint8_t i = 0;i < SIZE;i++){
+            for(uint64_t i = 0;i < SIZE;i++){
                 _data[i] = newdata[i];
             }
             return *this;
+        }
+
+        byte at(uint64_t index) const{
+            index %= SIZE;
+            return _data[index];
         }
 
 };

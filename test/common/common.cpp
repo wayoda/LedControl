@@ -47,8 +47,3 @@ controller_configuration<4,4>& get_multi_conf_SPI(){
     
     return conf;
 }
-
-byte* in_array(){
-    static byte in_array[4] = {B00000001,B00001000,B00100000,B10000000};
-    return in_array;
-}

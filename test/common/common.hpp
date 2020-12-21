@@ -18,4 +18,11 @@ controller_configuration<4,1>& get_conf_SPI();
 controller_configuration<4,4>& get_multi_conf();
 controller_configuration<4,4>& get_multi_conf_SPI();
 
-byte* in_array();
+template<size_t columns>
+ByteRow<columns> in_array(){
+    ByteRow<columns> in_array = ByteRow<columns>();
+    for(unsigned int i = 0;i<columns;i++){
+        in_array[i]=static_cast<byte>(i);
+    }
+    return in_array;
+}

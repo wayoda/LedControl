@@ -131,6 +131,21 @@ public:
   }
 
   /**
+   * @brief This function returns the column a given segment is in.
+   * 
+   * @param segmentNumber The index of the segment which you want the column of.
+   * @return unsigned int The row the given segment is in.
+   */
+  unsigned int getColumn(unsigned int segmentNumber) const{
+    unsigned int col = 0;
+    if (segmentNumber != 0 && columns != 0){
+      col = segmentNumber % columns;
+    }
+
+    return col;
+  }
+
+  /**
    * @brief Get the length each row has.
    * 
    * @return unsigned int the length of each row
@@ -140,6 +155,8 @@ public:
   }
 
   unsigned int getSegmentNumber(unsigned int column, unsigned int row){
+    row %= rows;
+    column %= columns;
     return row * columns + column;
   }
 

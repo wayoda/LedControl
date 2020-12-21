@@ -21,9 +21,14 @@ void test_left_right(controller_configuration<columns,rows>& conf){
     try{
         LedController<columns,rows> control = LedController<columns,rows>(conf);
 
-        auto in = B00000101;
-        control.moveLeft(in);
-        TEST_ASSERT_EQUAL(in, control.moveRight(0));
+        auto in = in_array<rows>();
+        auto out = ByteRow<rows>();
+
+        control.moveLeft(in,nullptr);
+        control.moveRight(in,&out);
+        for(unsigned int i = 0; i < rows;i++){
+            TEST_ASSERT_EQUAL(in[i],out[i]);
+        }
     }
     CATCH_STD
     #ifndef ARDUINO
@@ -36,9 +41,14 @@ void test_right_left(controller_configuration<columns,rows>& conf){
     try{
         LedController<columns,rows> control = LedController<columns,rows>(conf);
 
-        auto in = B00000101;
-        control.moveRight(in);
-        TEST_ASSERT_EQUAL(in, control.moveLeft(0));
+        auto in = in_array<rows>();
+        auto out = ByteRow<rows>();
+
+        control.moveRight(in,nullptr);
+        control.moveLeft(in,&out);
+        for(unsigned int i = 0; i < rows;i++){
+            TEST_ASSERT_EQUAL(in[i],out[i]);
+        }
     }
     CATCH_STD
     #ifndef ARDUINO
@@ -50,14 +60,17 @@ template <size_t columns, size_t rows>
 void test_up_down(controller_configuration<columns,rows>& conf){
     try{
         LedController<columns,rows> control = LedController<columns,rows>(conf);
+        
+        ByteRow<columns> in = in_array<columns>();
+        ByteRow<columns> out = ByteRow<columns>();
 
-        control.moveUp(in_array(),nullptr);
-        byte* out = new byte[4];
-        control.moveDown(in_array(),&out);
-        for(unsigned int i = 0; i < 4;i++){
-            TEST_ASSERT_EQUAL(in_array()[i],out[i]);
+        control.moveUp(in,nullptr);
+        control.moveDown(in,&out);
+
+        for(unsigned int i = 0; i < columns;i++){
+            TEST_ASSERT_EQUAL(in[i],out[i]);
         }
-        delete out;
+        
     }
     CATCH_STD
     #ifndef ARDUINO
@@ -70,13 +83,16 @@ void test_down_up(controller_configuration<columns,rows>& conf){
     try{
         LedController<columns,rows> control = LedController<columns,rows>(conf);
 
-        control.moveDown(in_array(),nullptr);
-        byte* out = new byte[4];
-        control.moveUp(in_array(),&out);
-        for(unsigned int i = 0; i < 4;i++){
-            TEST_ASSERT_EQUAL(in_array()[i],out[i]);
+        ByteRow<columns> in = in_array<columns>();
+        ByteRow<columns> out = ByteRow<columns>();
+
+        control.moveDown(in,nullptr);
+        control.moveUp(in,&out);
+
+        for(unsigned int i = 0; i < columns;i++){
+            TEST_ASSERT_EQUAL(in[i],out[i]);
         }
-        delete out;
+        
     }
     CATCH_STD
     #ifndef ARDUINO

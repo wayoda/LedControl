@@ -4,13 +4,12 @@ static void test_left_right_multi(controller_configuration<4,4>& conf){
     try{
         LedController<4,4> control = LedController<4,4>(conf);
 
-        control.moveLeft(in_array(),nullptr);
-        byte* out = new byte[4];
-        control.moveRight(in_array(),&out);
+        control.moveLeft(in_array<4>(),nullptr);
+        ByteRow<4> out = ByteRow<4>();
+        control.moveRight(in_array<4>(),&out);
         for(unsigned int i = 0; i < 4;i++){
-            TEST_ASSERT_EQUAL(in_array()[i],out[i]);
+            TEST_ASSERT_EQUAL(in_array<4>()[i],out[i]);
         }
-        delete out;
     }
     CATCH_STD
     #ifndef ARDUINO
@@ -22,13 +21,12 @@ static void test_right_left_multi(controller_configuration<4,4>& conf){
     try{
         LedController<4,4> control = LedController<4,4>(conf);
 
-        control.moveRight(in_array(),nullptr);
-        byte* out = new byte[4];
-        control.moveLeft(in_array(),&out);
+        control.moveRight(in_array<4>(),nullptr);
+        ByteRow<4> out = ByteRow<4>();
+        control.moveLeft(in_array<4>(),&out);
         for(unsigned int i = 0; i < 4;i++){
-            TEST_ASSERT_EQUAL(in_array()[i],out[i]);
+            TEST_ASSERT_EQUAL(in_array<4>()[i],out[i]);
         }
-        delete out;
     }
     CATCH_STD
     #ifndef ARDUINO

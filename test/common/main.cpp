@@ -8,7 +8,7 @@ void process(){
     RUN_TEST(reverse_Block);
 
     run_move_tests();
-    run_move_multi_tests();
+    //run_move_multi_tests();
     UNITY_END();
 }
 
