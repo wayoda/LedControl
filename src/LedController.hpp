@@ -20,9 +20,6 @@
 template <size_t columns, size_t rows>
 LedController<columns,rows>::~LedController() {
   initilized = false;
-  delete[] LedStates;
-  delete[] spidata;
-  delete[] emptyRow;
 }
 
 template <size_t columns, size_t rows>
@@ -125,11 +122,14 @@ void LedController<columns,rows>::initSPI(){
   pinMode(conf.SPI_MOSI, OUTPUT);
   pinMode(conf.SPI_CLK, OUTPUT);
  
-  if(conf.row_SPI_CS != nullptr){
-      for(unsigned int i = 0; i < rows;i++){
-          pinMode(conf.row_SPI_CS[i],OUTPUT);
-          digitalWrite(conf.row_SPI_CS[i],LOW);
-      }
+  if(conf.virtual_multi_row){
+    pinMode(conf.SPI_CS,OUTPUT);
+    digitalWrite(conf.SPI_CS,LOW);
+  }else{
+    for(unsigned int i = 0; i < rows;i++){
+      pinMode(conf.row_SPI_CS[i],OUTPUT);
+      digitalWrite(conf.row_SPI_CS[i],LOW);
+    }
   }
 
   if (conf.useHardwareSpi) {
@@ -138,19 +138,17 @@ void LedController<columns,rows>::initSPI(){
     SPI.begin();
   }
 
-  if(conf.row_SPI_CS != nullptr){
-      for(unsigned int i = 0; i < rows;i++){
-          digitalWrite(conf.row_SPI_CS[i],HIGH);
-      }
+  if(conf.virtual_multi_row){
+    digitalWrite(conf.SPI_CS,HIGH);
+  }else{
+    for(unsigned int i = 0; i < rows;i++){
+      digitalWrite(conf.row_SPI_CS[i],HIGH);
+    }
   }
 }
 
 template <size_t columns, size_t rows>
 void LedController<columns,rows>::resetBuffers(){
-  LedStates = new ByteBlock[conf.SegmentCount()];
-  spidata = new byte[conf.SegmentCount() * 2];
-  emptyRow = new byte[conf.SegmentCount()];
-
   for (unsigned int i = 0; i < conf.SegmentCount() * 2; i++) {
     spidata[i] = 0x00;
   }

@@ -92,6 +92,11 @@ public:
    */
   bool virtual_multi_row = true;
 
+  /**
+   * @brief returns the total number of segments (rows*columns)
+   * 
+   * @return unsigned int the number of segments
+   */
   unsigned int SegmentCount(){
     return rows*columns;
   }
@@ -190,19 +195,8 @@ public:
     }
 
     if (conf.virtual_multi_row){
-      auto cs = conf.SPI_CS;
-      if (cs == 0){
-        cs = conf.row_SPI_CS[0];
-      }
-      if (cs == 0){
+      if (conf.SPI_CS == 0){
         PRINTLN_IF(conf.debug_output, "No valid cs pin for a virtual multi row.");
-        return false;
-      }
-      for(unsigned int i = 0;i < rows;i++){
-        if(conf.row_SPI_CS[i] != cs && conf.row_SPI_CS[i]!=0){
-          PRINTLN_IF(conf.debug_output, "Invalid row_SPI_CS setting found!\nThey should equal SPI_CS or 0 for virtual multi row.");
-        }
-        
       }
     }else{
       for(unsigned int i = 0; i < rows;i++){

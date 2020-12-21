@@ -57,7 +57,7 @@ template <size_t columns, size_t rows>
 class LedController {
 protected:
   /// The state of all the Leds
-  ByteBlock *LedStates = nullptr;
+  ByteBlock LedStates[columns*rows];
 
   /**
    * @brief The configuration of the LedController
@@ -75,7 +75,7 @@ protected:
   void spiTransfer(unsigned int segment, byte opcode, byte data);
 
   /// The array for shifting the data to the devices
-  byte *spidata = nullptr;
+  byte spidata[rows*columns * 2];
 
   /**
    * @brief Set the brightness of the segment.
@@ -95,7 +95,7 @@ protected:
    * @brief contains a row full of 0x00
    *
    */
-  byte *emptyRow = nullptr;
+  byte emptyRow[columns];
 
   /**
    * @brief this copies an empty row into row

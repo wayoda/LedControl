@@ -32,6 +32,11 @@ class ByteRow{
             return _data[index];
         }
 
+        const byte& operator[] (uint8_t index) const{
+            index %= SIZE;
+            return _data[index];
+        }
+
         ByteRow& operator= (byte newdata[SIZE]){
             for(uint8_t i = 0;i < SIZE;i++){
                 _data[i] = newdata[i];
