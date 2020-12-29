@@ -8,6 +8,10 @@ then
     then
         BUILDMODE="fast"
     fi
+    if [ $1 == '--test-only' ]
+    then
+        BUILDMODE="test-only"
+    fi
 fi
 
 if [ $BUILDMODE == "fast" ]
@@ -21,15 +25,18 @@ else
     examples=("LedControllerDemoRocket" "LedControllerDemoCounting" "LedControllerDemoHwSPI" "LCDemo7Segment")
 fi
 
-for i in "${examples[@]}"
-do
-	PLATFORMIO_CI_SRC="examples/$i/$i.ino" python3 -m platformio ci --lib="." ${boards} --keep-build-dir
-    if [ $? -eq 1 ]
-    then
-        echo "error while building $i"
-        exit 1
-    fi
-done
+if [ $BUILDMODE != "test-only" ]
+then
+    for i in "${examples[@]}"
+    do
+        PLATFORMIO_CI_SRC="examples/$i/$i.ino" python3 -m platformio ci --lib="." ${boards} --keep-build-dir
+        if [ $? -eq 1 ]
+        then
+            echo "error while building $i"
+            exit 1
+        fi
+    done
+fi
 
 echo "running the native unit tests"
 python3 -m platformio test -e native

@@ -438,6 +438,7 @@ void LedController<columns,rows>::setColumn(unsigned int segmentNumber, unsigned
     // val = value & (0x01 << row);
     val = value >> (7 - row);
     val &= 0x01;
+    val <<= col;
     val |= LedStates[segmentNumber][row];
     setRow(segmentNumber, row, val);
   }
