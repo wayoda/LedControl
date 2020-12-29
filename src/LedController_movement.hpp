@@ -26,19 +26,19 @@ byte LedController<columns,rows>::moveRowRight(byte shiftedInColumn, unsigned in
     };
   }
 
-  for(unsigned int i = 0; i < 8;i++){
-    for (int col = columns-1; col >= 0; col--) {
-      auto seg = conf.getSegmentNumber(col,row_num);
-      auto seg1 = conf.getSegmentNumber(col-1,row_num);
+  for (int col = columns-1; col >= 0; col--) {
+    auto seg = conf.getSegmentNumber(col,row_num);
+    auto seg1 = conf.getSegmentNumber(col-1,row_num);
 
+    for(unsigned int i = 0; i < 8;i++){
       LedStates[seg][i] = LedStates[seg][i] << 1;
-      if (col != 0 && LedStates[seg1][i] & 0x80) {
+      if (seg != conf.getSegmentNumber(0,row_num) && LedStates[seg1][i] & 0x80) {
         LedStates[seg][i] |= 0x01;
       };
     }
   }
 
-  setColumn(conf.getSegmentNumber(0,row_num), 0, shiftedInColumn);
+  setColumn(conf.getSegmentNumber(conf.getSegmentNumber(0,row_num),row_num), 0, shiftedInColumn);
 
   updateSegments();
 
@@ -59,13 +59,13 @@ byte LedController<columns,rows>::moveRowLeft(byte shiftedInColumn, unsigned int
     };
   }
 
-  for(unsigned int i = 0; i < 8;i++){
-    for (unsigned int col = 0; col < columns; col++) {
-      auto seg = conf.getSegmentNumber(col,row_num);
-      auto seg1 = conf.getSegmentNumber(col+1,row_num);
-
+  
+  for (unsigned int col = 0; col < columns; col++) {
+    auto seg = conf.getSegmentNumber(col,row_num);
+    auto seg1 = conf.getSegmentNumber(col+1,row_num);
+    for(unsigned int i = 0; i < 8;i++){
       LedStates[seg][i] = LedStates[seg][i] >> 1;
-      if (seg != columns-1 && LedStates[seg1][i] & 0x01) {
+      if (seg != conf.getSegmentNumber(columns-1,row_num) && LedStates[seg1][i] & 0x01) {
         LedStates[seg][i] |= 0x80;
       };
     }
