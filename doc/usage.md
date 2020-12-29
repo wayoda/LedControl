@@ -42,4 +42,3 @@ If it returns true, you can continue wit hthe next step, if not try setting debu
 
 Now that you have a valid configuration, you can pass it to the constructor of a new LedController object.
 You can use the setRow and setSegment to send data to the LedMatrix.
-
