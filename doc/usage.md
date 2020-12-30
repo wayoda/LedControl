@@ -27,18 +27,45 @@ SS hat to be connected to CS and each Slave has its own SS pin(which can be any 
 To get started you need to first create a new controller_configuration object.
 This is used to configure the setup of the LedController which can get complex.
 controller_configuration has no constructor and is more like an struct with methods than it is a 'real' class.
+Because it is a template you need to know the dimension of your Matrix which causes the type to be `controller_configuration<sements_x,segments_y>`.
+To see how you can use more than one row with the LedController go [here](dc/dc4/md_doc_multi_row.html).
+The rest of the example will use `controller_configuration<4,1>` like in the [rocket example](db/d6d/_led_controller_demo_rocket_8ino-example.html).
 
-First things first, if you want to use Hardware Spi set useHardwareSpi to true, otherwise set it to false.
+If you want to use Hardware Spi set useHardwareSpi to true, otherwise set it to false.
 If you use hardware SPI you only need to specify the CS pin, if not you also need to CLK and MOSI pins.
 Just assign the wanted values to SPI_CS, SPI_CLK and SPI_MOSI.
 
-Next you need to specify the total number of segments you have.
-Just assign the total number of segments to SegmentCount.
-To keep it simple all segments are connected in series, so there is only one row.
-To see how you can use more than one row with the LedController go [here](dc/dc4/md_doc_multi_row.html).
-
 Now you can check if the configuration is Valid by calling the isValid() method.
-If it returns true, you can continue wit hthe next step, if not try setting debug_output and figure out what went wrong.
+If it returns true, you can continue with the next step, if not try setting debug_output and figure out what went wrong.
 
-Now that you have a valid configuration, you can pass it to the constructor of a new LedController object.
+Now that you have a valid configuration, you can pass it to the init function of a LedController object.
 You can use the setRow and setSegment to send data to the LedMatrix.
+
+setRow sets a specific Row of a given segment to a given byte.
+It needs the segment index which can be calculated from the segment coordinates by calling `lc.getConfig().getSegmentNumber(x,y)`.
+
+setSegment sets a whole segment but the segment can be specified through coordinates or the index.
+
+```c++
+
+#include "LedController.hpp"
+auto lc = LedController<4,1>();
+
+void setup(){
+    auto conf = controller_configuration<4,1>();
+    conf.useHardwareSpi = true;
+    conf.SPI_CS = 25;
+
+    lc.init(conf);
+
+    lc.setRow(lc.getConfig().getSegmentNumber(0,1),2,0xAA);
+    lc.setSegment(lc.getConfig().getSegmentNumber(1,1),{0x00,0x01,0x03,0x07,0x0F,0x1F,0x3F,0x7F});
+    lc.setSegment(2,1,{0x7F,0x3F,0x1F,0x0F,0x07,0x03,0x01,0x00});
+
+}
+
+void loop(){
+    
+}
+
+```

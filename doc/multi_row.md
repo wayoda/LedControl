@@ -1,6 +1,6 @@
 # Controlling multiple rows
 
-**For more details about the LedController and its functions click [here](d9/def/class_led_controller.html) or the [examples](https://github.com/noah1510/LedController/tree/master/examples).**
+**For more details about the LedController and its functions click [here](d9/def/class_led_controller.html) or the [examples](examples.html).**
 
 **!This feature is still work in progress and not tested well, please proceed with caution!**
 

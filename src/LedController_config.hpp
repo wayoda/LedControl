@@ -154,7 +154,7 @@ public:
     return columns;
   }
 
-  unsigned int getSegmentNumber(unsigned int column, unsigned int row){
+  unsigned int getSegmentNumber(unsigned int column, unsigned int row) const{
     row %= rows;
     column %= columns;
     return row * columns + column;
