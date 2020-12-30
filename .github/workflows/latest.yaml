@@ -42,6 +42,11 @@ jobs:
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoRocket/LedControllerDemoRocket.ino"
           python3 -m platformio ci --lib="." ${boards} --keep-build-dir
 
+      - name: build and test Demo Rocket Multi Row
+        run: |
+          export PLATFORMIO_CI_SRC="examples/LedControllerDemoRocketMulti/LedControllerDemoRocketMulti.ino"
+          python3 -m platformio ci --lib="." ${boards} --keep-build-dir
+
       - name: build and test Demo Counting
         run: |
           export PLATFORMIO_CI_SRC="examples/LedControllerDemoCounting/LedControllerDemoCounting.ino"

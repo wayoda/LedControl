@@ -211,11 +211,7 @@ public:
       return false;
     }
 
-    if (conf.virtual_multi_row){
-      if (conf.SPI_CS == 0){
-        PRINTLN_IF(conf.debug_output, "No valid cs pin for a virtual multi row.");
-      }
-    }else{
+    if (!conf.virtual_multi_row && conf.SPI_CS == 0){
       for(unsigned int i = 0; i < rows;i++){
         if(conf.row_SPI_CS[i] == 0){
           PRINTLN_IF(conf.debug_output, "Invalid value in row_SPI_CS found. 0 is not allowed.");

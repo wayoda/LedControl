@@ -22,7 +22,7 @@ then
 else
     echo "doing the full test with 5 boards and 4 examles"
     boards="-b esp32dev -b d1_mini -b uno -b ATmega1280 -b leonardo"
-    examples=("LedControllerDemoRocket" "LedControllerDemoCounting" "LedControllerDemoHwSPI" "LCDemo7Segment")
+    examples=("LedControllerDemoRocket" "LedControllerDemoRocketMulti" "LedControllerDemoCounting" "LedControllerDemoHwSPI" "LCDemo7Segment")
 fi
 
 if [ $BUILDMODE != "test-only" ]
