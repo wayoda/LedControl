@@ -1,3 +1,14 @@
+/**
+ * @file LedControllerDemoHwSPI.ino
+ * @author Noa Sakurajin (noasakurajin@web.de)
+ * @brief LedControllerDemoRocket.ino with hardware spi
+ * @version 0.1
+ * @date 2020-12-30
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
 #include "LedController.hpp"
 
 #define CS 15

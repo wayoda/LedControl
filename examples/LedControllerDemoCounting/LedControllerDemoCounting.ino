@@ -1,5 +1,17 @@
+/**
+ * @file LedControllerDemoCounting.ino
+ * @author Noa Sakurajin (noasakurajin@web.de)
+ * @brief counting up on an led matrix
+ * @version 0.1
+ * @date 2020-12-30
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
 #include "LedController.hpp"
 
+//the pin where the chip select is connected to
 #define CS 15
 
 #define Segments 4
@@ -8,6 +20,7 @@
 
 LedController<Segments,1> lc; 
 
+//these are just some digits to display numbers on the matrix
 ByteBlock digits[10] = {
   {
     B00000000,
@@ -102,8 +115,9 @@ ByteBlock digits[10] = {
   }
 };
 
+//this function sets the matrix to a given number
 void setLEDs (unsigned int number) {
-
+  //the loop is used to split the given number and set the right digit on the matix
   unsigned int places[4];
 
   for(unsigned int i = 0;i < 4;i++){
@@ -118,7 +132,7 @@ void setLEDs (unsigned int number) {
 
 }
 
-//sets all rows on all displays to 0
+//this function switches a led to have a 
 void switchLED(){
   static bool LEDON = false;
   if(LEDON){
@@ -131,20 +145,26 @@ void switchLED(){
 
 void setup(){
 
-  lc = LedController<Segments,1>(CS);// Pins: CS, # of Display connected
+  //create a ledcontroller with a hardware spi and one row
+  lc = LedController<Segments,1>(CS);
 
+  //enable the led
   pinMode(13, OUTPUT);
     
+  //rotate all digits by 180 degress to display them correctly
+  //you could leave this but then the orientation would be wrong
   for(unsigned int i = 0; i < 10; i++){
-    lc.rotate180(digits[i],&digits[i]);
+    digits[i] = lc.rotate180(digits[i]);
   }
   
 }
 
 void loop(){
 
+  //clear the matrix just to be sure there is nothing on it
   lc.clearMatrix();
   
+  //count up and display the number
   for (unsigned int i = 0; i<10000; i++) {
     delay(500);
     switchLED();

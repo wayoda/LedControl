@@ -1,3 +1,14 @@
+/**
+ * @file LedControllerDemoRocketMulti.ino
+ * @author Noa Sakurajin (noasakurajin@web.de)
+ * @brief An exaple for using multiple rows
+ * @version 0.1
+ * @date 2020-12-30
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
 #include "LedController.hpp"
 
 //spi pins if you do not wat to use hardwware spi
@@ -70,8 +81,8 @@ void setup(){
   //initilizing the LedController with the configuration which we just set
   lc.init(conf);
 
-  //the rocket needs to be rotated by 180 degree for the correct orientation on the Matrix.
-  //this is because of the way the data is structured and the way we defined the array (you can leave this line but it would look weird)
+  //make a array of columns out of the rocket
+  //this is needed to shift it in correctly (you can leave this line if you want to)
   rocketColumns = lc.makeColumns(rocket);
 
   //enables the builtin Led to have a kind of clock

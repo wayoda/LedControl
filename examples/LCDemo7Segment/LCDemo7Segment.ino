@@ -1,3 +1,14 @@
+/**
+ * @file LCDemo7Segment.ino
+ * @author Noa Sakurajin (noasakurajin@web.de)
+ * @brief using the ledcontroller with 7-segment displays
+ * @version 0.1
+ * @date 2020-12-30
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
 //We always have to include the library
 #include "LedController.hpp"
 

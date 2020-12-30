@@ -1,3 +1,14 @@
+/**
+ * @file LedControllerDemoRocket.ino
+ * @author Noa Sakurajin (noasakurajin@web.de)
+ * @brief Using the the LedController to move a rocket
+ * @version 0.1
+ * @date 2020-12-30
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
 #include "LedController.hpp"
 
 #define DIN 27
@@ -36,10 +47,14 @@ void switchLED(){
 
 void setup(){
 
-  lc.init(DIN,CLK,CS); // Pins: DIN,CLK,CS, # of Display connected
+  //create a simple controller without hardware spi.
+  lc.init(DIN,CLK,CS); 
 
-  lc.makeColumns(rocket, &rocketColumns);
+  //make a array of columns out of the rocket
+  //this is needed to shift it in correctly (you can leave this line if you want to)
+  rocketColumns = lc.makeColumns(rocket);
  
+  //enable the LED to have a clock
   pinMode(13, OUTPUT);
     
 }

@@ -658,3 +658,28 @@ public:
    */
   void moveRight(const ByteRow<rows>& shiftedInColumn, ByteRow<rows>* shiftedOutColumn);
 };
+
+/**
+ * @example LedControllerDemoRocketMulti.ino
+ * An example on how to use the ledcontroller with multiple rows
+ */
+
+/**
+ * @example LedControllerDemoRocket.ino
+ * An example on how to use the ledcontroller to move a rocket across a led matrix
+ */
+
+/**
+ * @example LedControllerDemoHwSPI.ino
+ * This is simply LedControllerDemoRocket.ino just with hardware spi.
+ */
+
+/**
+ * @example LedControllerDemoCounting.ino
+ * An example on how to use the ledcontroller to create a counter.
+ */
+
+/**
+ * @example LCDemo7Segment.ino
+ * An example on how to use the ledcontroller with 7-Segment displays.
+ */
