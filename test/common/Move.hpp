@@ -14,6 +14,7 @@ template <size_t columns, size_t rows>
 void test_down_up(controller_configuration<columns,rows>& conf);
 
 void run_move_tests();
+void run_move_multi_tests();
 
 //function definitions
 template <size_t columns, size_t rows>
