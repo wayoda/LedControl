@@ -3,7 +3,8 @@ name: "tagged-release"
 on:
   push:
     tags:
-      - "v*"
+      - 'v*'
+      - '!*-rc*'
 
 jobs:
   doxygen:
@@ -24,8 +25,6 @@ jobs:
   tagged-release:
     name: "Tagged Release"
     runs-on: "ubuntu-20.04"
-    env:
-      boards: "-b esp32dev -b d1_mini -b uno -b ATmega1280 -b leonardo"
     steps:
       - uses: actions/checkout@v1
       - name: install platform io
@@ -35,33 +34,8 @@ jobs:
           pip3 install -U platformio
           python3 -m platformio update
 
-      - name: build and test Demo Rocket
-        run: |
-          export PLATFORMIO_CI_SRC="examples/LedControllerDemoRocket/LedControllerDemoRocket.ino"
-          python3 -m platformio ci --lib="." ${boards} --keep-build-dir
-
-      - name: build and test Demo Rocket Multi Row
-        run: |
-          export PLATFORMIO_CI_SRC="examples/LedControllerDemoRocketMulti/LedControllerDemoRocketMulti.ino"
-          python3 -m platformio ci --lib="." ${boards} --keep-build-dir
-
-      - name: build and test Demo Counting
-        run: |
-          export PLATFORMIO_CI_SRC="examples/LedControllerDemoCounting/LedControllerDemoCounting.ino"
-          python3 -m platformio ci --lib="." ${boards} --keep-build-dir
-
-      - name: build and test Demo HwSPI
-        run: |
-          export PLATFORMIO_CI_SRC="examples/LedControllerDemoHwSPI/LedControllerDemoHwSPI.ino"
-          python3 -m platformio ci --lib="." ${boards} --keep-build-dir
-
-      - name: build and test 7-Segment Display
-        run: |
-          export PLATFORMIO_CI_SRC="examples/LCDemo7Segment/LCDemo7Segment.ino"
-          python3 -m platformio ci --lib="." ${boards} --keep-build-dir
-          
-      - name: run tests
-        run: python3 -m platformio test -e native
+      - name: building examples and running the unit tests
+        run: bash ./.scripts/ci_local.sh
         
       - name: Check code meets quality standards
         id: code-inspector

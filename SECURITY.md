@@ -11,6 +11,7 @@ Please consider updating, 1.5 is backwards compatible with older version.
 
 | Version | Supported          |
 | ------- | ------------------ |
+| 2.0.x   | :white_check_mark: |
 | 1.7.x   | :white_check_mark: |
 | 1.6.x   | :white_check_mark: |
 | 1.5.x   | :white_check_mark: |

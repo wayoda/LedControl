@@ -21,7 +21,7 @@ then
     examples=("LedControllerDemoRocket" "LedControllerDemoHwSPI")
 else
     echo "doing the full test with 5 boards and 4 examles"
-    boards="-b esp32dev -b d1_mini -b uno -b ATmega1280 -b leonardo"
+    boards="-b esp32dev -b d1_mini -b uno -b ATmega1280 -b leonardo -b due -b teensy41 -b bluefruitmicro"
     examples=("LedControllerDemoRocket" "LedControllerDemoRocketMulti" "LedControllerDemoCounting" "LedControllerDemoHwSPI" "LCDemo7Segment")
 fi
 

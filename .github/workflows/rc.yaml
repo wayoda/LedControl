@@ -1,15 +1,13 @@
-name: "pre-release"
+name: "tagged-release"
 
 on:
   push:
-    branches:
-      - 'master'
-      - 'main'
+    tags:
+      - '*-rc*'
 
 jobs:
   doxygen:
     runs-on: ubuntu-20.04
-    if: "contains(github.event.head_commit.message, '--build-docs')"
     steps:
     - uses: actions/checkout@v1
     - name: install dependencies
@@ -23,9 +21,8 @@ jobs:
         BRANCH: gh-pages
         FOLDER: doc/html
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  pre-release:
-    name: "Pre Release latest"
+  tagged-release:
+    name: "Release candidate"
     runs-on: "ubuntu-20.04"
     steps:
       - uses: actions/checkout@v1
@@ -35,13 +32,10 @@ jobs:
           pip3 install -U wheel
           pip3 install -U platformio
           python3 -m platformio update
-          
+
       - name: building examples and running the unit tests
         run: bash ./.scripts/ci_local.sh
         
-      - name: pack repo
-        run: |
-          zip -r latest.zip src License README.md library.properties keywords.txt .vscode examples
       - name: Check code meets quality standards
         id: code-inspector
         uses: codeinspectorio/github-action@master
@@ -56,22 +50,17 @@ jobs:
           max_long_functions_rate: '0.01'
           project_name: 'LedController'
           max_timeout_sec: '600'
+
+      - name: pack repo
+        run: |
+          zip -r release.zip License README.md library.properties keywords.txt .vscode examples
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
           prerelease: true
-          title: "Development Build"
           files: |
             License
-            latest.zip
-            
-      - name: Discord Commits
-        uses: Sniddl/discord-commits@v1.2
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: "Successful commit to **{{ github.context.payload.repository.owner.name }}/{{ github.context.payload.repository.name}}**.\nDiff: {{ github.context.payload.compare }}"
-          embed: '{ "title": "{{ commit.title }}", "description": "{{ commit.description }}", "url": "{{ commit.url }}", "author": { "name": "{{ commit.author.name }} ({{ commit.author.username }})", "icon_url": "https://avatars.io/gravatar/{{ commit.author.email }}"} }'
+            release.zip
             
       - uses: actions/upload-artifact@v1
         if: failure()
