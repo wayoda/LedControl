@@ -18,8 +18,10 @@
 
 /**
  * \~english
-   * @brief This class is ued to handle the configuration of the LedController
+ * @brief This class is used to handle the configuration of the LedController
  *
+ * \~german
+ * @brief Diese Klasse wird zur Konfiguration des LedController verwendet.
  */
 template <size_t columns, size_t rows>
 class controller_configuration {
@@ -27,9 +29,12 @@ public:
 
   /**
    * \~english
-   * @brief The pin for the data transfer (MOSI on board and DIN on Matrix)
-   * @warning if this is 0 and useHardwareSpi is false the initilization will
-   * fail
+   * @brief The pin for the data transfer signal (MOSI on board and DIN on Matrix).
+   * @warning if this is 0 and useHardwareSpi is false the initilization will fail
+   * 
+   * \~german
+   * @brief Der pin für das data transfer Signal (MOSI am Board und DIN an der Matrix).
+   * @warning Wenn das 0 ist und useHardwareSpi false ist, ist die Konfiguration ungültig.
    */
   unsigned int SPI_MOSI = 0;
 
@@ -37,41 +42,57 @@ public:
    * \~english
    * @brief The pin for the chip select signal (CS).
    * @warning this has to be set if it is 0 the initlization will fail.
+   * 
+   * \~german
+   * @brief Der pin für das chip select Signal (CS).
+   * @warning Wenn das 0 ist und useHardwareSpi false ist, ist die Konfiguration ungültig.
    */
   unsigned int SPI_CS = 0;
 
   /**
    * \~english
-   * @brief The pin for the clock signal (CLK)
-   * @warning if this is 0 and useHardwareSpi is false the initilization will
-   * fail
+   * @brief The pin for the clock signal (CLK).
+   * @warning if this is 0 and useHardwareSpi is false the initilization will fail
+   * 
+   * \~german
+   * @brief Der pin für das clock Signal (CLK).
+   * @warning Wenn das 0 ist und useHardwareSpi false ist, ist die Konfiguration ungültig.
    */
   unsigned int SPI_CLK = 0;
 
   /**
    * \~english
-   * @brief true if you want to use hardware SPI (view
-   * https://www.arduino.cc/en/Reference/SPI for pin config). While this is a
+   * @brief true if you want to use hardware SPI (view https://www.arduino.cc/en/Reference/SPI for pin config). While this is a
    * lot faster you cannot use every pin for the MOSI and CLK signal. SPI_MOSI
    * and SPI_CLK will be set automatically if this is true.
+   * 
+   * \~german
+   * @brief true falls hardware SPI genutzt werden soll (schaue https://www.arduino.cc/en/Reference/SPI für die Pin Konfiguration). 
+   * Diese Einstellung ist zwar sehr viel schneller, dafür kann nicht jeder PIN für MOSI und CLK verwendet werden.
+   * SPI_MOSI und SPI_CLK werden automatisch gesetzt wenn diese Variable true ist
    */
   bool useHardwareSpi = false;
 
   /**
    * \~english
    * @brief The current brightness level of the leds.
-   * @warning The value needs to be between 0 and 15 (inclusive bounds).
+   * @note The value needs to be between 0 and 15 (inclusive bounds).
+   * 
+   * \~german
+   * @brief Die aktuelle Helligkeit der LEDs.
+   * @note Der Wert muss zwischen 0 und 15 sein (inklusive Grenzen).
    */
   unsigned int IntensityLevel = 1;
 
   /**
    * \~english
-   * @brief This Arrays specifies which Pin to use for each row if nullptr
-   * SPI_CS will be used.
-   * @note If this array is not a nullptr it is assumed it is the same length as
-   * the number of rows.
-   * @warning Currently not in use, will be used in v2.0.0
+   * @brief This Arrays specifies which Pin to use for each row.  @ref multi_row.md
+   * @warning Each index should have a unique number or you will encounter strange behaviour.
    *
+   * 
+   * \~german
+   * @brief Dieses Array bestimmt welcher CS Pin für welche Reihe verwendet wird. @ref multi_row.md
+   * @warning Jeder Eintrag sollte eine einzigartige Nummer haben, wenn nicht kann es zu Problemen führen.
    */
   unsigned int row_SPI_CS[rows];
 
@@ -79,20 +100,28 @@ public:
    * \~english
    * @brief Only send data if something changed if true.
    * If this is true, new data will only be sent if the data given differes from the data internally stored.
+   * 
+   * \~german
+   * @brief Nur Daten übertragen wenn sich etwas geändert hat.
+   * Wenn dies auf true gesetzt ist, werden Daten nur übertragen, wenn diese von den gespeicherten abweichen.
    */
   bool onlySendOnChange = true;
 
   /**
    * \~english
-   * @brief The speed which with the hardware spi should transfer the data to the matrix
+   * @brief The speed which with the hardware spi should transfer the data to the matrix.
    * 
+   * \~german
+   * @brief Die Geschwindigkeit mit der hardware SPI die Daten übertragen soll.
    */
   uint64_t spiTransferSpeed = 8000000;
 
   /**
    * \~english
-   * @brief if this is set to true, output will be printed.
+   * @brief if this is set to true, debug output will be printed.
    * 
+   * \~german
+   * @brief Wenn das true ist, werden debug informationen ausgegeben.
    */
   bool debug_output = false;
 
@@ -100,6 +129,10 @@ public:
    * \~english
    * @brief set to false if each of your rows has a dedicated CS pin.
    * By default this is true and it is assumed that all Segments are connected in series.
+   * 
+   * \~german
+   * @brief Setze das auf false wenn jede Zeile einen eigenen CS Pin besitzt.
+   * Standardmäßig ist es auf true gesetzt und es wird davon ausgegangen, dass alle Segemnte in Reihe geschaltet sind.
    */
   bool virtual_multi_row = true;
 
@@ -108,6 +141,11 @@ public:
    * @brief returns the total number of segments (rows*columns)
    * 
    * @return unsigned int the number of segments
+   * 
+   * \~german
+   * @brief Gibt die Anzahl der Segmente zurück (Zeilen*Spalten).
+   * 
+   * @return unsigned int Die Anzahl der Segmente.
    */
   unsigned int SegmentCount(){
     return rows*columns;
@@ -119,6 +157,13 @@ public:
    * 
    * @return true the configuration is valid
    * @return false the configuration is not valid
+   * 
+   * 
+   * \~german
+   * @brief Prüft ob diese Konfiguration gültig ist.
+   * 
+   * @return true Die Konfiguration ist gültig.
+   * @return false Die Konfiguration ist ungültig.
    */
   bool isValid() const{
     return isValidConfig(*this);
@@ -130,6 +175,12 @@ public:
    * 
    * @param segmentNumber The index of the segment which you want the row of.
    * @return unsigned int The row the given segment is in.
+   * 
+   * \~german
+   * @brief Diese Funktion berechnet die Zeile aus der Segmentnummer.
+   * 
+   * @param segmentNumber Die Segmentnummer des gesuchten Segments.
+   * @return unsigned int Die Zeile in der das Segment ist.
    */
   unsigned int getRow(unsigned int segmentNumber) const{
     unsigned int row = 0;
@@ -149,7 +200,13 @@ public:
    * @brief This function returns the column a given segment is in.
    * 
    * @param segmentNumber The index of the segment which you want the column of.
-   * @return unsigned int The row the given segment is in.
+   * @return unsigned int The column the given segment is in.
+   * 
+   * \~german
+   * @brief Diese Funktion berechnet die Spalte aus der Segmentnummer.
+   * 
+   * @param segmentNumber Die Segmentnummer des gesuchten Segments.
+   * @return unsigned int Die Spalte in der das Segment ist.
    */
   unsigned int getColumn(unsigned int segmentNumber) const{
     unsigned int col = 0;
@@ -165,11 +222,31 @@ public:
    * @brief Get the length each row has.
    * 
    * @return unsigned int the length of each row
+   * 
+   * \~german
+   * @brief Gibt die Länge einer Zeile zurück.
+   * 
+   * @return unsigned int Die Länge einer Zeile
    */
   unsigned int getRowLen() const{
     return columns;
   }
 
+  /**
+   * \~english
+   * @brief Calculate the segment Number/index from its coordinates.
+   * 
+   * @param column The column the segment is in
+   * @param row The row the segment is in
+   * @return unsigned int the segment number of that segment
+   * 
+   * \~german
+   * @brief Berechne die Segmentnummer/-index aus den Coordinaten.
+   * 
+   * @param column Die Spalte in der das Segment ist
+   * @param row Die Zeile in der das Segment ist
+   * @return unsigned int Die Segmentnummer des segments
+   */
   unsigned int getSegmentNumber(unsigned int column, unsigned int row) const{
     row %= rows;
     column %= columns;
@@ -181,6 +258,11 @@ public:
    * @brief This function returns a copy of this configuration
    * 
    * @return controller_configuration a copy of the configuration
+   * 
+   * \~german
+   * @brief Diese Funktion gibt eine Kopie dieser Konfiguration zurück.
+   * 
+   * @return controller_configuration Eine Kopie der Konfiguration
    */
   controller_configuration<columns,rows> copy() const{
     controller_configuration<columns,rows> conf;
@@ -203,6 +285,13 @@ public:
    * @param conf the configuration that should be checked
    * @return true the configuration is valid
    * @return false the configuration is not valid 
+   * 
+   * \~german
+   * @brief Prüfe ob die gegebene Konfiguration gültig ist.
+   * 
+   * @param conf Die Konfiguration die geprüft werden soll.
+   * @return true Die Konfiguration ist gültig.
+   * @return false Die Konfiguration ist ungültig. 
    */
   static bool isValidConfig(const controller_configuration<columns,rows> &conf) {
     //check if the dimenstions are valid
