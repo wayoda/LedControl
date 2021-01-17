@@ -19,9 +19,15 @@
 /**
  * \~english
  * @brief This class is used to handle the configuration of the LedController
+ * 
+ * @tparam columns The number of columns this configuration has.
+ * @tparam rows The number of rows this configuration has.
  *
  * \~german
  * @brief Diese Klasse wird zur Konfiguration des LedController verwendet.
+ * 
+ * @tparam columns Die Anzahl der Spalten, die diese Konfiguration hat.
+ * @tparam rows Die Anzahl der Zeilen, die diese Konfiguration hat.
  */
 template <size_t columns, size_t rows>
 class controller_configuration {

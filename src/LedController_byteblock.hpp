@@ -12,9 +12,36 @@
 
 #include "LedController_byterow.hpp"
 
+/**
+ * @brief A block of bytes used to represent all of the data in a Segment.
+ * It is simply a ByteRow with size 8 but useful regardless.
+ * 
+ */
 class ByteBlock : public ByteRow<8>{
 public:
-    ByteBlock(byte newdata[8]):ByteRow<8>(newdata){}
+
+    /**
+     * \~english
+     * @brief Construct a new Byte Block object from an array.
+     * 
+     * @param newdata The array which should be used to initilize the row.
+     * 
+     * \~german
+     * @brief Konstruiere ein neues Object aus einem Array.
+     * 
+     * @param newdata Das Array, das zum initialisieren verwendet werden soll.
+     */
+    ByteBlock(byte newdata[8]):ByteRow<8>(newdata){};
+
+    /**
+     * \~english
+     * @brief Construct a new Byte Block object from a list of values.
+     * This way {0,0,0,0,0,0,0,0} can be used as copy-assignement.
+     * 
+     * \~german
+     * @brief Erstelle ein neues Objekt aus einer Liste von Werten.
+     * So kann {0,0,0,0,0,0,0,0} als Kopierzuweisung verwendet werden.
+     */
     ByteBlock(byte n0,byte n1,byte n2,byte n3,byte n4,byte n5,byte n6,byte n7):ByteBlock(){
         _data[0] = n0;
         _data[1] = n1;
@@ -25,5 +52,13 @@ public:
         _data[6] = n6;
         _data[7] = n7;
     };
+
+    /**
+     * \~english
+     * @brief Construct a new Byte Block object with 0s.
+     * 
+     * \~german
+     * @brief Konstruiere ein neuess Objekt mit 0en.
+     */
     ByteBlock():ByteRow<8>(){};
 };
