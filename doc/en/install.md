@@ -1,6 +1,6 @@
 # Installation instructions
 
-If you want to see how to use the library look [here](dc/dc4/md_doc_usage.html)
+If you want to see how to use the library look [here](usage.md)
 
 ## Arduino Ide
 
@@ -16,6 +16,7 @@ The library is in the Arduino library manager.
 
 The [library](https://platformio.org/lib/show/7144/LedController) is also available for the [platform.io](https://platformio.org/platformio) library manager.
 **Since they get their information from the Arduino Library Manager and the git repository, their version might not be up to date.**
+**In addition to that, they do not provide release candidates.**
 
 ### CLI
 

@@ -44,7 +44,7 @@
 #include <LedController_config.hpp>
 
 /**
- * 
+ * \~
  * @todo make it threading safe
  * 
  * \~english

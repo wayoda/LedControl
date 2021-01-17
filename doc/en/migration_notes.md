@@ -5,8 +5,8 @@ This pages contains some basic information on the transition from one release to
 ## 1.x.y to 2.0.z
 
 No matter which version you come from there are a lot of changes for version 2.0.x.
-Please read the full guide [here](d2/d7f/md_doc_1_8x_8y_to_2_80_8z.html) to learn what changes are necessary to get your code working with release 2.0.x.
-Spoiler: no matter how you have written your code it needs changes since the LedCOntroller is now a template.
+Please read the full guide [here](1.x.y_to_2.0.z.md) to learn what changes are necessary to get your code working with release 2.0.x.
+Spoiler: no matter how you have written your code it needs changes since the LedController is now a template.
 
 ### Migration from 1.6.x to 1.7.x
 

@@ -1,6 +1,6 @@
 # How to use this library
 
-**For more details about the LedController and its functions click [here](d9/def/class_led_controller.html) or the [examples](https://github.com/noah1510/LedController/tree/master/examples).**
+**Check the LedController for more infomation about its functions or look for the [Examples](examples.html).**
 
 This page shows you the basic usage of the LedController and what you can do with it.
 
@@ -28,8 +28,8 @@ To get started you need to first create a new controller_configuration object.
 This is used to configure the setup of the LedController which can get complex.
 controller_configuration has no constructor and is more like an struct with methods than it is a 'real' class.
 Because it is a template you need to know the dimension of your Matrix which causes the type to be `controller_configuration<sements_x,segments_y>`.
-To see how you can use more than one row with the LedController go [here](dc/dc4/md_doc_multi_row.html).
-The rest of the example will use `controller_configuration<4,1>` like in the [rocket example](db/d6d/_led_controller_demo_rocket_8ino-example.html).
+To see how you can use more than one row with the LedController go [here](multi_row.md).
+The rest of the example will use `controller_configuration<4,1>` like in the [rocket example](@ref LedControllerDemoRocket.ino).
 
 If you want to use Hardware Spi set useHardwareSpi to true, otherwise set it to false.
 If you use hardware SPI you only need to specify the CS pin, if not you also need to CLK and MOSI pins.
@@ -48,7 +48,7 @@ setSegment sets a whole segment but the segment can be specified through coordin
 
 The following snippet is (probably working) sample code that initilizes a LedController using Hardware spi and sets some segments using setRow and setSegment.
 
-```c++
+```cpp
 
 #include "LedController.hpp"
 auto lc = LedController<4,1>();
@@ -74,4 +74,4 @@ void loop(){
 
 ## What is next?
 
-Now that you know how to use the LedController you can check the more advanced features like [using multiple rows](d7/d20/md_doc_multi_row.html) or [moving the displayed data](d6/d14/md_doc_movement.html).
+Now that you know how to use the LedController you can check the more advanced features like [using multiple rows](multi_row.md) or [moving the displayed data](movement.md).

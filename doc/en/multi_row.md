@@ -1,6 +1,6 @@
 # Controlling multiple rows
 
-**For more details about the LedController and its functions click [here](d9/def/class_led_controller.html) or the [examples](examples.html).**
+**Check the LedController for more infomation about its functions or look for the [Examples](examples.html).**
 
 As of version 2.0.0 the LedController supports controlling multiple rows from one LedController object.
 This introduction explains everything you need to know to use multiple rows.

@@ -1,9 +1,9 @@
-# LedController  {#mainpage}
+# LedController Library {#mainpage}
 
 LedController is an [Arduino](http://arduino.cc) library for MAX7219 and MAX7221 Led display drivers.
 The code should work with most boards and architectures but I only test it for the ESP32 Dev Module.
 Feel free to create an issue if something is missing or not working correctly.
-Version 2.0.0 should have increased compatibility since the library is now header only.
+Version 2.0.0 should have increased compatibility since the library is now header only and uses templates.
 The only reason why some boards are not compatible is because they do now provide the necessary dependencies or are not compatible with the Arduino framework.
 
 The CI automatically tests the following boards(PlatformIO boards names):
@@ -28,11 +28,14 @@ All help regarding compatibility with more boards is welcome.
 
 The following links lead to their respective documentation:
 
-* [LedController class](d9/def/class_led_controller.html)
-* [Installation](d6/da3/md_doc_install.html)
-* [Usage introduction](dc/dc4/md_doc_usage.html)
-* [Migration information](da/dc8/md_doc_migration_notes.html)
+* [LedController class](@ref LedController)
+* [LedController configuration class](@ref controller_configuration)
+* [Installation](install.md)
+* [Usage introduction](usage.md)
+* [Migration information](migration_notes.md)
 * [Example code](examples.html)
+
+If you have questions check the [dicussions](https://github.com/noah1510/LedController/discussions) or open a new one.
 
 ## Hardware SPI Pin Assignments
 
