@@ -1,10 +1,12 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
 {
     "configurations": [
         {
-            "name": "!!! WARNING !!! AUTO-GENERATED FILE, PLEASE DO NOT MODIFY IT AND USE https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags"
-        },
-        {
-            "name": "Linux",
+            "name": "PlatformIO",
             "includePath": [
                 "/home/noa/Arduino/libraries/LedController/include",
                 "/home/noa/Arduino/libraries/LedController/src",
@@ -207,7 +209,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=50003",
+                "PLATFORMIO=50004",
                 "ARDUINO_ESP32_DEV",
                 "ESP32",
                 "ESP_PLATFORM",
@@ -220,7 +222,6 @@
                 "ARDUINO_BOARD=\"Espressif ESP32 Dev Module\"",
                 ""
             ],
-            "intelliSenseMode": "gcc-x64",
             "cStandard": "c99",
             "cppStandard": "c++11",
             "compilerPath": "/home/noa/.platformio/packages/toolchain-xtensa32/bin/xtensa-esp32-elf-gcc",

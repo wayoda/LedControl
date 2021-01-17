@@ -46,6 +46,8 @@ It needs the segment index which can be calculated from the segment coordinates 
 
 setSegment sets a whole segment but the segment can be specified through coordinates or the index.
 
+The following snippet is (probably working) sample code that initilizes a LedController using Hardware spi and sets some segments using setRow and setSegment.
+
 ```c++
 
 #include "LedController.hpp"
@@ -65,7 +67,11 @@ void setup(){
 }
 
 void loop(){
-    
+
 }
 
 ```
+
+## What is next?
+
+Now that you know how to use the LedController you can check the more advanced features like [using multiple rows](d7/d20/md_doc_multi_row.html) or [moving the displayed data](d6/d14/md_doc_movement.html).

@@ -41,7 +41,7 @@ jobs:
         
       - name: pack repo
         run: |
-          zip -r latest.zip src License README.md library.properties keywords.txt .vscode examples
+          zip -r latest.zip src License README.md library.properties keywords.txt .vscode examples src
       - name: Check code meets quality standards
         id: code-inspector
         uses: codeinspectorio/github-action@master

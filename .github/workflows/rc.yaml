@@ -1,9 +1,9 @@
-name: "tagged-release"
+name: "release-candidate"
 
 on:
   push:
     tags:
-      - '*-rc*'
+      - 'v*-rc*'
 
 jobs:
   doxygen:
@@ -53,7 +53,7 @@ jobs:
 
       - name: pack repo
         run: |
-          zip -r release.zip License README.md library.properties keywords.txt .vscode examples
+          zip -r release.zip License README.md library.properties keywords.txt .vscode examples src
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"

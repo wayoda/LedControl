@@ -17,7 +17,8 @@
 #define PRINTLN_IF(condition,x) if(condition){PRINTLN(x);}
 
 /**
- * @brief This class is ued to handle the configuration of the LedController
+ * \~english
+   * @brief This class is ued to handle the configuration of the LedController
  *
  */
 template <size_t columns, size_t rows>
@@ -25,6 +26,7 @@ class controller_configuration {
 public:
 
   /**
+   * \~english
    * @brief The pin for the data transfer (MOSI on board and DIN on Matrix)
    * @warning if this is 0 and useHardwareSpi is false the initilization will
    * fail
@@ -32,12 +34,14 @@ public:
   unsigned int SPI_MOSI = 0;
 
   /**
+   * \~english
    * @brief The pin for the chip select signal (CS).
    * @warning this has to be set if it is 0 the initlization will fail.
    */
   unsigned int SPI_CS = 0;
 
   /**
+   * \~english
    * @brief The pin for the clock signal (CLK)
    * @warning if this is 0 and useHardwareSpi is false the initilization will
    * fail
@@ -45,6 +49,7 @@ public:
   unsigned int SPI_CLK = 0;
 
   /**
+   * \~english
    * @brief true if you want to use hardware SPI (view
    * https://www.arduino.cc/en/Reference/SPI for pin config). While this is a
    * lot faster you cannot use every pin for the MOSI and CLK signal. SPI_MOSI
@@ -53,12 +58,14 @@ public:
   bool useHardwareSpi = false;
 
   /**
+   * \~english
    * @brief The current brightness level of the leds.
    * @warning The value needs to be between 0 and 15 (inclusive bounds).
    */
   unsigned int IntensityLevel = 1;
 
   /**
+   * \~english
    * @brief This Arrays specifies which Pin to use for each row if nullptr
    * SPI_CS will be used.
    * @note If this array is not a nullptr it is assumed it is the same length as
@@ -69,30 +76,35 @@ public:
   unsigned int row_SPI_CS[rows];
 
   /**
+   * \~english
    * @brief Only send data if something changed if true.
    * If this is true, new data will only be sent if the data given differes from the data internally stored.
    */
   bool onlySendOnChange = true;
 
   /**
+   * \~english
    * @brief The speed which with the hardware spi should transfer the data to the matrix
    * 
    */
   uint64_t spiTransferSpeed = 8000000;
 
   /**
+   * \~english
    * @brief if this is set to true, output will be printed.
    * 
    */
   bool debug_output = false;
 
   /**
+   * \~english
    * @brief set to false if each of your rows has a dedicated CS pin.
    * By default this is true and it is assumed that all Segments are connected in series.
    */
   bool virtual_multi_row = true;
 
   /**
+   * \~english
    * @brief returns the total number of segments (rows*columns)
    * 
    * @return unsigned int the number of segments
@@ -102,6 +114,7 @@ public:
   }
 
   /**
+   * \~english
    * @brief check of this configuration is valid
    * 
    * @return true the configuration is valid
@@ -112,6 +125,7 @@ public:
   }
 
   /**
+   * \~english
    * @brief This function returns the row a given segment is in.
    * 
    * @param segmentNumber The index of the segment which you want the row of.
@@ -131,6 +145,7 @@ public:
   }
 
   /**
+   * \~english
    * @brief This function returns the column a given segment is in.
    * 
    * @param segmentNumber The index of the segment which you want the column of.
@@ -146,6 +161,7 @@ public:
   }
 
   /**
+   * \~english
    * @brief Get the length each row has.
    * 
    * @return unsigned int the length of each row
@@ -161,6 +177,7 @@ public:
   }
 
   /**
+   * \~english
    * @brief This function returns a copy of this configuration
    * 
    * @return controller_configuration a copy of the configuration
@@ -180,6 +197,7 @@ public:
   }
 
   /**
+   * \~english
    * @brief check if a given configuragtion is valid
    * 
    * @param conf the configuration that should be checked
