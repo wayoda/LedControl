@@ -13,9 +13,13 @@
 #include "LedController_byterow.hpp"
 
 /**
+ * \~english
  * @brief A block of bytes used to represent all of the data in a Segment.
  * It is simply a ByteRow with size 8 but useful regardless.
  * 
+ * \~german
+ * @brief Ein Block an bytes, der alle Daten in einem Segment darstellt.
+ * Es ist einfach eine ByteRow mit Länge 8, trotzdem nützlich.
  */
 class ByteBlock : public ByteRow<8>{
 public:

@@ -17,7 +17,7 @@
  * @tparam SIZE The length of the row.
  * 
  * \~german
- * @brief Diese Klasses wird genutzt, um eine Reihe aus bytes mit bekannter Länge zu handhaben.
+ * @brief Diese Klasse wird genutzt, um eine Reihe aus bytes mit bekannter Länge zu handhaben.
  * 
  * @tparam SIZE Die Länge der Reihe.
  */

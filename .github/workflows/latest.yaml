@@ -15,7 +15,7 @@ jobs:
     - name: install dependencies
       run: sudo apt install doxygen graphviz
     - name: generate docs
-      run: doxygen
+      run: bash .scripts/doxygen_multilang.sh
     - name: Deploy
       uses: s0/git-publish-subdir-action@master
       env:
