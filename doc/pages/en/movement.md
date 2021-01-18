@@ -13,8 +13,29 @@ You should not use those and start migrating to the new functions.
 There are 4 directions you can move the data in: up, down, left and right.
 You can either move all rows/columns or a single row/column.
 
-The LedController.moveLeft and LedController.moveRight functions moves all rows left/right by one pixel.
+## Moving a single Row/Column
+
+LedController.moveRowLeft & LedController.moveRowRight
+LedController.moveColumnDown & LedController.moveColumnUp
+
+## Moving all Rows/Columns
+
+The LedController.moveLeft and LedController.moveRight functions moves all columns left/right by one pixel.
 If nothing is given 0 will be shifted in.
 If you want to shift some data in you have to pass the parameter `const ByteRow<rows>& shiftedInColumn`.
 It is an ByteRow with the length of your number of rows.
 In other words if you have 1 row the type is `ByteRow<1>` or `byte[1]` and if you have 2 rows it is `ByteRow<2>` or `byte[2]` and so on.
+Index 0 of the row corresponds to columns 0 of the Matrix, in other words the bottom segment is first.
+The function will retun a ByteRow with the same length as the input.
+The returned ByteRow is the Column that was shifted out as because of the movement.
+
+The LedController.moveUp and LedController.moveDown functions moves all rows up/down by one pixel.
+If nothing is given 0 will be shifted in.
+If you want to shift some data in you have to pass the parameter `const ByteRow<columns>& shiftedInColumn`.
+It is an ByteRow with the length of your number of columns.
+In other words if you have 1 column the type is `ByteRow<1>` or `byte[1]` and if you have 2 column it is `ByteRow<2>` or `byte[2]` and so on.
+Index 0 of the row corresponds to row 0 of the Matrix, in other words the left segment is first.
+The function will retun a ByteRow with the same length as the input.
+The returned ByteRow is the Row that was shifted out as because of the movement.
+
+Check [LedControllerDemoRocketMulti.ino](@ref LedControllerDemoRocketMulti.ino) to see how this can be implemented.

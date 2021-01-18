@@ -20,8 +20,10 @@ Whatever questions or suggestions you have, please provide detailed information 
 
 If you have a feature request or find issues, feel free to open an issue on github.
 
-For questions that are not bugs or feature requests please start a new [discussion
-](https://github.com/noah1510/LedController/discussions).
+For questions that are not bugs or feature requests please start a new [discussion](https://github.com/noah1510/LedController/discussions).
+
+Also help with more translations is welcome.
+At the moment the documentation is in German and English.
 
 ## Supported boards
 
@@ -56,7 +58,8 @@ For information on what needs to be done to transition from one version to anoth
 
 ## Documentation
 
-Documentation for the library is on the [Github Project Pages](http://noah1510.github.io/LedController/)
+Documentation for the library is on the [Github Project Pages](http://noah1510.github.io/LedController/index.html).
+It is available in [German](http://noah1510.github.io/LedController/german/index.html) and [English](http://noah1510.github.io/LedController/english/index.html).
 
 ## Download
 
