@@ -15,8 +15,15 @@ You can either move all rows/columns or a single row/column.
 
 ## Moving a single Row/Column
 
-LedController.moveRowLeft & LedController.moveRowRight
-LedController.moveColumnDown & LedController.moveColumnUp
+LedController.moveRowLeft and LedController.moveRowRight move a single Row left/right.
+The required Argument is the number of the row that should be shifted and the byte that should be shifted in.
+It returns the byte that was shifted out.
+The bytes that are shifted in and out have the LSB (least significant bit) on the bottom.
+
+LedController.moveColumnDown and LedController.moveColumnUp move a single Column up/down.
+The required Argument is the number of the column that should be shifted and the byte that should be shifted in.
+It returns the byte that was shifted out.
+The bytes that are shifted in and out have the LSB (least significant bit) on the right.
 
 ## Moving all Rows/Columns
 
