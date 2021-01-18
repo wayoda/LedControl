@@ -35,7 +35,7 @@ The following links lead to their respective documentation:
 - [LedController configuration class](@ref controller_configuration)
 - [Installation](install.md)
 - [Usage introduction](usage.md)
-- [Migration information](migration_notes.md)
+- [Migration information](@ref migration_notes)
 - [Example code](examples.html)
 
 If you have questions check the [dicussions](https://github.com/noah1510/LedController/discussions) or open a new one.
@@ -88,7 +88,7 @@ Die folgenden Liks führen zur entsprechenden Dokumentation:
 - [LedController configuration Klasse](@ref controller_configuration)
 - [Installation](install.md)
 - [Nutzungseinführung](usage.md)
-- [Migrationsinformationen](migration_notes.md)
+- [Migrationsinformationen](@ref migration_notes)
 - [Beispielcode](examples.html)
 
 Bei Fragen schaut in die [dicussions](https://github.com/noah1510/LedController/discussions) oder öffnet eine neue (ausschließlisch auf englisch).
