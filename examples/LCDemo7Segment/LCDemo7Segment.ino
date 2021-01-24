@@ -13,11 +13,17 @@
 #include "LedController.hpp"
 
 /*
+ You might need to change the following 3 Variables depending on your board.
+ pin 15 is connected to the DataIn 
+ pin 14 is connected to the CLK
+ pin 13 is connected to LOAD/ChipSelect
+*/
+#define DIN 15
+#define CS 13
+#define CLK 14
+
+/*
  Now we need a LedControl to work with.
- ***** These pin numbers will probably not work with your hardware *****
- pin 12 is connected to the DataIn 
- pin 11 is connected to the CLK 
- pin 10 is connected to LOAD 
  We have only a single MAX72XX.
  */
 LedController<1,1> lc;
@@ -27,7 +33,7 @@ unsigned long delaytime=250;
 
 void setup() {
 
-  lc=LedController<1,1>(12,11,10);
+  lc=LedController<1,1>(CS,CLK,DIN);
 
   /*
    The MAX72XX is in power-saving mode on startup,
