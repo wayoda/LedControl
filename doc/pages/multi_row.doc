@@ -51,7 +51,7 @@ Look at the [controller_configuration page](controller_configuration.md) for det
 
 \subsection display_multi_data Displaying data on segments
 
-Now you can display data just as in [usage information](usage.md) using `setSegment` with the coordinates of the segment.
+Now you can display data just as in [usage information](@ref usage) using `setSegment` with the coordinates of the segment.
 `getConfig().getSegmentNumber` can be used to calculate the segment index which is required by the `setRow` and `setColumn` function to set a single row or column.
 
 
@@ -112,7 +112,7 @@ Schau die [controller_configuration Seite](controller_configuration.md) für die
 
 \subsection display_multi_data Daten auf den Segmenten anzeigen
 
-Nun können Daten wie in [usage information](usage.md) beschreiben mit `setSegment` mit den Koordinaten des Segments angezeigt werden.
+Nun können Daten wie in [usage information](@ref usage) beschreiben mit `setSegment` mit den Koordinaten des Segments angezeigt werden.
 `getConfig().getSegmentNumber` kann verwendet werden um die Segmentnummer zu bestimmen, welche mitunter für LedController.setRow und LedController.setColumn benötigt wird.
 
 */

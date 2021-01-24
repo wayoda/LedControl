@@ -3,7 +3,7 @@
 \~english
 \page install Installation instructions
 
-If you want to see how to use the library look [here](usage.md)
+If you want to see how to use the library look [here](@ref usage)
 
 \section arduino_install Arduino Ide
 
@@ -39,7 +39,7 @@ Either open a command line and use the CLI instructions or do the following step
 \~german
 \page install Installationsanweisungen
 
-Falls du wissen möchstest, wie man die Bibliothek verwendet klicke [hier](usage.md).
+Falls du wissen möchstest, wie man die Bibliothek verwendet klicke [hier](@ref usage).
 
 \section arduino_install Arduino Ide
 

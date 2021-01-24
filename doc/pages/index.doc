@@ -34,7 +34,7 @@ The following links lead to their respective documentation:
 - [LedController class](@ref LedController)
 - [LedController configuration class](@ref controller_configuration)
 - [Installation](@ref install)
-- [Usage introduction](usage.md)
+- [Usage introduction](@ref usage)
 - [Migration information](@ref migration_notes)
 - [Example code](examples.html)
 
@@ -87,7 +87,7 @@ Die folgenden Liks führen zur entsprechenden Dokumentation:
 - [LedController Klasse](@ref LedController)
 - [LedController configuration Klasse](@ref controller_configuration)
 - [Installation](@ref install)
-- [Nutzungseinführung](usage.md)
+- [Nutzungseinführung](@ref usage)
 - [Migrationsinformationen](@ref migration_notes)
 - [Beispielcode](examples.html)
 
