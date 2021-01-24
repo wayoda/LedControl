@@ -28,7 +28,7 @@ To get started you need to first create a new controller_configuration object.
 This is used to configure the setup of the LedController which can get complex.
 controller_configuration has no constructor and is more like an struct with methods than it is a 'real' class.
 Because it is a template you need to know the dimension of your Matrix which causes the type to be `controller_configuration<sements_x,segments_y>`.
-To see how you can use more than one row with the LedController go [here](multi_row.md).
+To see how you can use more than one row with the LedController go [here](@ref multi_row).
 The rest of the example will use `controller_configuration<4,1>` like in the [rocket example](@ref LedControllerDemoRocket.ino).
 
 If you want to use Hardware Spi set useHardwareSpi to true, otherwise set it to false.
@@ -74,4 +74,4 @@ void loop(){
 
 ## What is next?
 
-Now that you know how to use the LedController you can check the more advanced features like [using multiple rows](multi_row.md) or [moving the displayed data](movement.md).
+Now that you know how to use the LedController you can check the more advanced features like [using multiple rows](@ref multi_row) or [moving the displayed data](movement.md).

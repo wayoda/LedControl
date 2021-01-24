@@ -1102,25 +1102,50 @@ public:
 
 /**
  * @example LedControllerDemoRocketMulti.ino
+ * 
+ * \~english
  * An example on how to use the LedController with multiple rows
+ * 
+ * \~german
+ * Ein Beispiel wie man den LedController mit mehreren Reihen nutzen kann
  */
 
 /**
  * @example LedControllerDemoRocket.ino
+ * 
+ * \~english
  * An example on how to use the LedController to move a rocket across a led matrix
+ * 
+ * \~german
+ * Ein Beispiel wie man den LedController nutzen kann um einen Rakete über die Led Matrix zu bewegen.
  */
 
 /**
  * @example LedControllerDemoHwSPI.ino
+ * 
+ * \~english
  * This is simply @ref LedControllerDemoRocket.ino just with hardware spi.
+ * 
+ * \~german
+ * Dies ist einfach @ref LedControllerDemoRocket.ino nur mit hardware spi.
  */
 
 /**
  * @example LedControllerDemoCounting.ino
+ * 
+ * \~english
  * An example on how to use the LedController to create a counter.
+ * 
+ * \~german
+ * Ein Beispiel wie man den LedController nutzen kann um einen Zähler zu erstellen.
  */
 
 /**
  * @example LCDemo7Segment.ino
+ * 
+ * \~english
  * An example on how to use the LedController with 7-Segment displays.
+ * 
+ * \~english
+ * Ein Beispiel wie man den LedController nutzen kann um 7-Segment Anzeigen zu steuern.
  */

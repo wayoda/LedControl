@@ -4,7 +4,7 @@
 
 This pages describes how to move the displayed data around and what you need to know when using the functions.
 As of version 2.0.0 the movement functions are aware of the number of rows and columns and use return types with the correct size.
-To see details on how to use multiple rows check [this](d7/d20/md_doc_multi_row.html) page.
+To see details on how to use multiple rows check [this](@ref multi_row) page.
 
 All versions since 1.5.0 support some form of data movement but this page will focus on how the movement functions work as of version 2.0.0.
 The functions marked as deprecated will not be explained and only exist for better compatibility.
