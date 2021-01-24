@@ -29,7 +29,7 @@ if [ $BUILDMODE != "test-only" ]
 then
     for i in "${examples[@]}"
     do
-        PLATFORMIO_CI_SRC="examples/$i/$i.ino" python3 -m platformio ci --lib="." ${boards} --keep-build-dir
+        PLATFORMIO_CI_SRC="examples/english/$i/$i.ino" python3 -m platformio ci --lib="." ${boards} --keep-build-dir
         if [ $? -eq 1 ]
         then
             echo "error while building $i"
