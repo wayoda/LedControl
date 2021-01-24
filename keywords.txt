@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map For LedControl
+# Syntax Coloring Map For LedController
 #######################################
 
 #######################################
@@ -7,6 +7,9 @@
 #######################################
 
 LedController	KEYWORD1
+controller_configuration	KEYWORD1
+ByteRow	KEYWORD1
+ByteBlock	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -42,5 +45,3 @@ setIntensity 	KEYWORD2
 #######################################
 # Constants (LITERAL1)
 #######################################
-
-MAX_SEGMENTS LITERAL1
