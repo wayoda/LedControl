@@ -74,4 +74,4 @@ void loop(){
 
 ## What is next?
 
-Now that you know how to use the LedController you can check the more advanced features like [using multiple rows](@ref multi_row) or [moving the displayed data](movement.md).
+Now that you know how to use the LedController you can check the more advanced features like [using multiple rows](@ref multi_row) or [moving the displayed data](@ref movement).
