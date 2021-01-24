@@ -7,6 +7,7 @@ OUTPUT_LANGUAGES=("english" "german")
 OLD_LANGAUGE="English"
 OUTPUT_LANGUAGE_STRING="OUTPUT_LANGUAGE        = "
 HTML_DIR="HTML_OUTPUT            = html"
+EXAMPLE_DIR="EXAMPLE_PATH           = examples"
 
 #the base folder for the doxygen output
 DOXYGEN_BASE="doc"
@@ -20,6 +21,7 @@ do
     #replace the language and add specific subfolder
     sed -i "s/$OUTPUT_LANGUAGE_STRING$OLD_LANGAUGE/$OUTPUT_LANGUAGE_STRING$lang/g" Doxyfile.$lang
     sed -i "s/$HTML_DIR/$HTML_DIR\/$lang/g" Doxyfile.$lang
+    sed -i "s/$EXAMPLE_DIR/$EXAMPLE_DIR\/$lang/g" Doxyfile.$lang
 
     #check if replacement worked as intended
     grep OUTPUT_LANGUAGE Doxyfile.$lang
