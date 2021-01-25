@@ -118,16 +118,16 @@ ByteBlock digits[10] = {
 //this function sets the matrix to a given number
 void setLEDs (unsigned int number) {
   //the loop is used to split the given number and set the right digit on the matix
-  unsigned int places[4];
+  unsigned int places[Segments];
 
-  for(unsigned int i = 0;i < 4;i++){
+  for(unsigned int i = 0;i < Segments;i++){
     unsigned int divisor = 1;
     for(unsigned int j=0;j < i;j++){
       divisor *= 10;
     }
 
-    places[3-i] = number/divisor % 10;
-    lc.displayOnSegment(3-i,digits[places[3-i]]);
+    places[Segments-1-i] = number/divisor % 10;
+    lc.displayOnSegment(Segments-1-i,digits[places[Segments-1-i]]);
   }
 
 }

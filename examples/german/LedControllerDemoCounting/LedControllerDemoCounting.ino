@@ -9,18 +9,22 @@
  * 
  */
 
+//Wie immer muss zuerst die Library verwendet werden
 #include "LedController.hpp"
 
-//the pin where the chip select is connected to
+//Der Pin an den das Chip Select signal der Matrix angeschlossen ist
 #define CS 15
 
+//Die Anzahl der Segmente in der einen Reihe
 #define Segments 4
 
-#define delayTime 200 // Delay between Frames
+//Die Zeitverzögerung bis eins weiter gezählt wird
+#define delayTime 200
 
+//Das ist die Variable in der das verwendete Objekt gespeichert wird.
 LedController<Segments,1> lc; 
 
-//these are just some digits to display numbers on the matrix
+//Dieses Array definiert nur wie die Ziffern aussehen.
 ByteBlock digits[10] = {
   {
     B00000000,
@@ -115,24 +119,24 @@ ByteBlock digits[10] = {
   }
 };
 
-//this function sets the matrix to a given number
+//Diese Funktion zeigt einene gegebene Nummer auf der Matrix an
 void setLEDs (unsigned int number) {
-  //the loop is used to split the given number and set the right digit on the matix
-  unsigned int places[4];
+  //Die Schleife zerlegt die Nummer in die einzalnen Ziffern
+  unsigned int places[Segments];
 
-  for(unsigned int i = 0;i < 4;i++){
+  for(unsigned int i = 0;i < Segments;i++){
     unsigned int divisor = 1;
     for(unsigned int j=0;j < i;j++){
       divisor *= 10;
     }
 
-    places[3-i] = number/divisor % 10;
-    lc.displayOnSegment(3-i,digits[places[3-i]]);
+    places[Segments-1-i] = number/divisor % 10;
+    lc.displayOnSegment(Segments-1-i,digits[places[Segments-1-i]]);
   }
 
 }
 
-//this function switches a led to have a 
+//Diese Funktion lässt die interne LED blinken
 void switchLED(){
   static bool LEDON = false;
   if(LEDON){
@@ -145,14 +149,14 @@ void switchLED(){
 
 void setup(){
 
-  //create a ledcontroller with a hardware spi and one row
+  //Hier wird ein LedController mit Hardware SPI erstelle und lc zugewiesen
   lc = LedController<Segments,1>(CS);
 
-  //enable the led
+  //Der Pin für die interne LED wird auf output gesetzt
   pinMode(13, OUTPUT);
-    
-  //rotate all digits by 180 degress to display them correctly
-  //you could leave this but then the orientation would be wrong
+  
+  //alle Ziffern müssen um 180 Grad gedreht werden, um sie richtig anzuzeigen.
+  //man kann das weglassen, aber dann sine die Ziffern falsch
   for(unsigned int i = 0; i < 10; i++){
     digits[i] = lc.rotate180(digits[i]);
   }
@@ -161,10 +165,10 @@ void setup(){
 
 void loop(){
 
-  //clear the matrix just to be sure there is nothing on it
+  //erst wird die Matrix geleert
   lc.clearMatrix();
   
-  //count up and display the number
+  //In dieser Schleife wird einfach gezählt und jeweils die nummer angezeigt
   for (unsigned int i = 0; i<10000; i++) {
     delay(500);
     switchLED();
