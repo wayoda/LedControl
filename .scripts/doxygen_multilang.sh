@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#get the number of cores to limit the parallel builds
+MAX_CORES="$(nproc)"
+
 #the languages the output should generate
 OUTPUT_LANGUAGES=("english" "german")
 
@@ -13,8 +16,9 @@ EXAMPLE_DIR="EXAMPLE_PATH           = examples"
 DOXYGEN_BASE="doc"
 ROOT_INDEX_LOCATION=".scripts"
 
-for lang in "${OUTPUT_LANGUAGES[@]}"
-do
+build_lang(){
+    local lang=$1
+
     #create lang specific doxygen file
     cp Doxyfile Doxyfile.$lang
 
@@ -33,7 +37,19 @@ do
 
     #remove lang specific doxygen file
     rm Doxyfile.$lang
+
+}
+
+#build as much language in parallel as possible
+for lang in "${OUTPUT_LANGUAGES[@]}"
+do
+    #this limits the amount of parallel builds
+    ((i=i%MAX_CORES)); ((i++==0)) && wait
+
+    #this calls a new subroutine for that language in the array
+    build_lang $lang &
 done
+wait
 
 #create new root index file
 rm $DOXYGEN_BASE/html/index.html

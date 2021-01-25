@@ -49,7 +49,7 @@ void LedController<columns,rows>::spiTransfer(unsigned int segment, byte opcode,
   spidata[row][offset + 1] = opcode;
   spidata[row][offset] = data;
   
-  for(int r = 0; r < rows ;r++){
+  for(unsigned int r = 0; r < rows ;r++){
 
     //enable the line
     auto cs = (conf.virtual_multi_row && conf.SPI_CS != 0) ? conf.SPI_CS : conf.row_SPI_CS[r];
