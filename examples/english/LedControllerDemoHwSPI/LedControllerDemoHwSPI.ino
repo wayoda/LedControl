@@ -9,12 +9,13 @@
  * 
  */
 
+//Since this is just LedControllerDemoRocket.ino with hardware SPI, view its site for more details.
 #include "LedController.hpp"
 
 #define CS 15
 #define Segments 4
 
-#define delayTime 200 // Delay between Frames
+#define delayTime 200
 
 LedController<Segments,1> lc = LedController<Segments,1>();  
 
@@ -31,7 +32,6 @@ ByteBlock rocket= {
 
 ByteBlock rocketColumns;
 
-//sets all rows on all displays to 0
 void switchLED(){
   static bool LEDON = false;
   if(LEDON){
@@ -43,7 +43,8 @@ void switchLED(){
 }
 
 void setup(){
-  lc.init(CS);// Pins: CS, # of Display connected
+  //Only the following line is different from the example without hardware SPI since in this case only one Pin needs to be specified
+  lc.init(CS);
 
   lc.makeColumns(rocket, &rocketColumns);
 

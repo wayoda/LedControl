@@ -9,12 +9,13 @@
  * 
  */
 
+//Da dieses Beispiel einfach LedControllerDemoRocket.ino mit hardware SPI ist, schau auf dessen Seite für Details.
 #include "LedController.hpp"
 
 #define CS 15
 #define Segments 4
 
-#define delayTime 200 // Delay between Frames
+#define delayTime 200
 
 LedController<Segments,1> lc = LedController<Segments,1>();  
 
@@ -31,7 +32,6 @@ ByteBlock rocket= {
 
 ByteBlock rocketColumns;
 
-//sets all rows on all displays to 0
 void switchLED(){
   static bool LEDON = false;
   if(LEDON){
@@ -43,7 +43,8 @@ void switchLED(){
 }
 
 void setup(){
-  lc.init(CS);// Pins: CS, # of Display connected
+  //Nur die folgende Zeile unterscheidet sich von dem Beispiel ohne Hardware SPI, da hier nur ein Pin angegeben werden muss.
+  lc.init(CS);
 
   lc.makeColumns(rocket, &rocketColumns);
 
@@ -57,14 +58,14 @@ void loop(){
   
     lc.clearMatrix();
     
-    //Let the rocket fly in
+    //ladd die Rakete reinfliegen
     for(int i = 0;i < 8*(Segments+1);i++){
       delay(delayTime);
 
-      //blink led for each iteration
+      //led blinken lassen
       switchLED();
 
-      //if rocket not fully inside let it fly in and shift it
+      //falls die Rakete nicht ganz drin ist, wird sie reingeschoben
       if(i < 8){
         lc.moveRight(rocketColumns[i]);   
       }else{
@@ -96,10 +97,10 @@ void loop(){
     for(int i = 0;i < 8*(Segments+1);i++){
       delay(delayTime);
 
-      //blink led for each iteration
+      //led blinken lassen
       switchLED();
 
-      //if rocket not fully inside let it fly in and shift it
+      //falls die Rakete nicht ganz drin ist, wird sie reingeschoben
       if(i < 8){
         lc.moveLeft(rocketColumns[i]);   
       }else{
