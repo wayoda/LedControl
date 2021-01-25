@@ -729,9 +729,9 @@ public:
    * \~german
    * @brief schiebt die Daten einer Spalte eins nach oben.
    *
-   * @param shiftedInColumn Die Daten, die unten reingeschoben werden
+   * @param shiftedInRow Die Daten, die unten reingeschoben werden
    * (default 0x00)
-   * @param row_num Die Spalte, die geschoben werden soll
+   * @param col_num Die Spalte, die geschoben werden soll
    * @warning Nur EINE SPALTE wird verschoben
    * @return byte Die Daten, die oben rausgeschoben werden.
    */
@@ -748,9 +748,9 @@ public:
    * \~german
    * @brief schiebt die Daten einer Spalte eins nach unten.
    *
-   * @param shiftedInColumn Die Daten, die oben reingeschoben werden
+   * @param shiftedInRow Die Daten, die oben reingeschoben werden
    * (default 0x00)
-   * @param row_num Die Spalte, die geschoben werden soll
+   * @param col_num Die Spalte, die geschoben werden soll
    * @warning Nur EINE SPALTE wird verschoben
    * @return byte Die Daten, die unten rausgeschoben werden.
    */

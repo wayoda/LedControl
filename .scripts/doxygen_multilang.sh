@@ -22,6 +22,7 @@ do
     sed -i "s/$OUTPUT_LANGUAGE_STRING$OLD_LANGAUGE/$OUTPUT_LANGUAGE_STRING$lang/g" Doxyfile.$lang
     sed -i "s/$HTML_DIR/$HTML_DIR\/$lang/g" Doxyfile.$lang
     sed -i "s/$EXAMPLE_DIR/$EXAMPLE_DIR\/$lang/g" Doxyfile.$lang
+    sed -i "s/doxywarn.txt/doxywarn.$lang.txt/g" Doxyfile.$lang
 
     #check if replacement worked as intended
     grep OUTPUT_LANGUAGE Doxyfile.$lang

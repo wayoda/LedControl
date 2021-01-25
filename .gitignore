@@ -1,6 +1,6 @@
 doc/html
 doc/man
-doxywarn.txt
+doxywarn*.txt
 
 logs
 .pio

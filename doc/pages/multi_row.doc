@@ -8,7 +8,7 @@
 As of version 2.0.0 the LedController supports controlling multiple rows from one LedController object.
 This introduction explains everything you need to know to use multiple rows.
 
-\subsection multi_data_structure Data structure
+\section multi_data_structure Data structure
 
 First look at the image below.
 It explains the data structure of the segments.
@@ -22,7 +22,7 @@ These dimensions can be an arbitary size as long as you have enough memory (you 
 
 The example [LedControllerDemoRocketMulti](@ref LedControllerDemoRocketMulti.ino) will be used to demonstrate each of the parts that need to be done.
 
-\subsection valid_multi_conf Creating a valid controller_configuration
+\section valid_multi_conf Creating a valid controller_configuration
 
 If you have a different Chip Select pin for each row, you need to create a custom controller_configuration with the same dimensions as your controller.
 By default it is assumed that all of the segments are connected in series in the order of their indexes.
@@ -49,7 +49,7 @@ As long as those conditions are satisfied, the values of row_SPI_CS will be igno
 
 Look at the [controller_configuration page](controller_configuration.md) for details on how to use all of the other fields.
 
-\subsection display_multi_data Displaying data on segments
+\section display_multi_data Displaying data on segments
 
 Now you can display data just as in [usage information](@ref usage) using `setSegment` with the coordinates of the segment.
 `getConfig().getSegmentNumber` can be used to calculate the segment index which is required by the `setRow` and `setColumn` function to set a single row or column.
@@ -63,7 +63,7 @@ Now you can display data just as in [usage information](@ref usage) using `setSe
 Seit Vesion 2.0.0 kann mit einem LedController Objekt mehr als eine Zeile gesteuert werden.
 Diese Einführung erklärt alles was man wissen muss um mehrere Zeilen verwenden zu können
 
-\subsection multi_data_structure Datenstruktur
+\section multi_data_structure Datenstruktur
 
 Das Bild beschreibt die Datenstruktur der Segmente bei einer Matrix.
 Jedes Quadrat steht für ein Segment und in diesem Beispiel gibt es insgesamt 8 Segmente mit 4 Segmenten pro Reihe.
@@ -77,7 +77,7 @@ Die Dimensionen können beliebig groß sein, solang man genug Arbeitsspeicher un
 
 Das Beispiel [LedControllerDemoRocketMulti](@ref LedControllerDemoRocketMulti.ino) wird genutzt um zu zeigen wie man mehrere Zeilen nutzt.
 
-\subsection valid_multi_conf Erstellen einer gültigen controller_configuration
+\section valid_multi_conf Erstellen einer gültigen controller_configuration
 
 Falls man verschiedene CS pins für die einzelnen Zeilen verwenden möchte, dann muss man eine eigene controller_configuration erstellen, welche die selben Dimensionen hat wie der LedController.
 Standardmäßig wird angenommen, dass alle Segment in Reihe der Indexe angeschlossen sind.
@@ -110,7 +110,7 @@ Solange diese beiden Bedingungen erfüllt sind wird der Wert von row_SPI_CS igno
 
 Schau die [controller_configuration Seite](controller_configuration.md) für die Details über die anderen Felder an.
 
-\subsection display_multi_data Daten auf den Segmenten anzeigen
+\section display_multi_data Daten auf den Segmenten anzeigen
 
 Nun können Daten wie in [usage information](@ref usage) beschreiben mit `setSegment` mit den Koordinaten des Segments angezeigt werden.
 `getConfig().getSegmentNumber` kann verwendet werden um die Segmentnummer zu bestimmen, welche mitunter für LedController.setRow und LedController.setColumn benötigt wird.

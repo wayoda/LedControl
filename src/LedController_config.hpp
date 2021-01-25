@@ -92,12 +92,12 @@ public:
 
   /**
    * \~english
-   * @brief This Arrays specifies which Pin to use for each row.  @ref multi_row.md
+   * @brief This Arrays specifies which Pin to use for each row.  @ref multi_row
    * @warning Each index should have a unique number or you will encounter strange behaviour.
    *
    * 
    * \~german
-   * @brief Dieses Array bestimmt welcher CS Pin für welche Reihe verwendet wird. @ref multi_row.md
+   * @brief Dieses Array bestimmt welcher CS Pin für welche Reihe verwendet wird. @ref multi_row
    * @warning Jeder Eintrag sollte eine einzigartige Nummer haben, wenn nicht kann es zu Problemen führen.
    */
   unsigned int row_SPI_CS[rows];

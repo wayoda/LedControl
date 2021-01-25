@@ -3,7 +3,7 @@
 \~english
 \page movement Moving the displayed data
 
-**Check the LedController for more infomation about its functions or look for the [Examples](examples.html).**
+<b>Check the LedController for more infomation about its functions or look for the [Examples](examples.html).</b>
 
 This pages describes how to move the displayed data around and what you need to know when using the functions.
 As of version 2.0.0 the movement functions are aware of the number of rows and columns and use return types with the correct size.
@@ -16,7 +16,7 @@ You should not use those and start migrating to the new functions.
 There are 4 directions you can move the data in: up, down, left and right.
 You can either move all rows/columns or a single row/column.
 
-\subsection move_single Moving a single Row/Column
+\section move_single Moving a single Row/Column
 
 LedController.moveRowLeft and LedController.moveRowRight move a single Row left/right.
 The required Argument is the number of the row that should be shifted and the byte that should be shifted in.
@@ -28,7 +28,7 @@ The required Argument is the number of the column that should be shifted and the
 It returns the byte that was shifted out.
 The bytes that are shifted in and out have the LSB (least significant bit) on the right.
 
-\subsection move_all Moving all Rows/Columns
+\section move_all Moving all Rows/Columns
 
 The LedController.moveLeft and LedController.moveRight functions moves all columns left/right by one pixel.
 If nothing is given 0 will be shifted in.
@@ -68,7 +68,7 @@ Die veralteten Funktionen haben auch keine deutsche Beschreibung, um von der Ver
 Man kann die Daten in 4 Richtungen verschieben: hoch, runter, links und rechts.
 Man kann entweder alle Zeilen/Spalten oder nur eine einzelne Zeile/Spalte auf einmal verschieben.
 
-\subsection move_single Bewegen einzelner Zeilen/Spalten
+\section move_single Bewegen einzelner Zeilen/Spalten
 
 LedController.moveRowLeft und LedController.moveRowRight bewegen eine einzelne Zeile nach links/rechts.
 Das benötigte Argument ist die Nummer, der Zeile, die bewegt werden soll und das byte welches reingeschoben werden soll.
@@ -80,7 +80,7 @@ Das benötigte Argument ist die Nummer, der Spalte, die bewegt werden soll und d
 Die Funktion gibt das byte zurück, was rausgeschoben wird.
 Die bytes die rein- und rausgeschoben werden, haben das LSB (Least Significant bit, also die letzte Stelle) rechts.
 
-\subsection move_all Bewegen aller Zeilen/Spalten
+\section move_all Bewegen aller Zeilen/Spalten
 
 LedController.moveLeft und LedController.moveRight bewegen alle Zeilen einen Pixel nach links/rechts.
 Wenn nichts übergeben wird, wird 0 reingeschoben.

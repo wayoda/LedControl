@@ -23,7 +23,7 @@ Now you can connect multiple Matricies to different CS Pins and control them all
 Another option is to connect all of the Segments in series and still have them act as if they were in different rows.
 This feature is called virtual multi row and has to be set in the controller configuration.
 For this feature to work, the length of each row has to be the same, in other words it is allowed to have two rows with two segments each but not to have one row with one segment and another with two.
-Check [this page](multi_row.md) to learn more about how to use multiple rows.
+Check [this page](@ref multi_row) to learn more about how to use multiple rows.
 
 \~german
 \page 1.x.y_to_2.0.z Migration von 1.x.y zu 2.0.z
@@ -47,6 +47,6 @@ Nun können mehrere Matrizen an verschiedene CS Pins angeschlossen werden und mi
 Alternativ können alle Segmente in Reihe angeschlossen werden, jdeoch in mehreren Reihen angeordnet werden.
 Diese Funktion nennt sich virtual multi row und kann in der controller_configuration gesetzt werden.
 Damit diese Funktion richtig funktioniert müssen alle Reiehen die gleiche Länge haben.
-Schaue auf [dieser Seite](multi_row.md) nach um zu erfahren, wie man mehrere Reihen richtig nutzt.
+Schaue auf [dieser Seite](@ref multi_row) nach um zu erfahren, wie man mehrere Reihen richtig nutzt.
 
 */

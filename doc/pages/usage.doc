@@ -7,14 +7,14 @@
 
 This page shows you the basic usage of the LedController and what you can do with it.
 
-\subsection init_lib Initilizing the Library
+\section init_lib Initilizing the Library
 
 You can initilize the library in two ways: with hardware SPI or with software SPI.
 
 1. Hardware SPI is at least 10 times faster but you can only use specific pins for some signals (look [here](index.html) for which pins).
 2. Software SPI is slower (which only mattesrs if you need really tight timings) but you can freely choose which (free) pins you want to use.
 
-\subsubsection SPI_intro Small introduction to SPI
+\subsection SPI_intro Small introduction to SPI
 
 The Serial Peripheral Interface (SPI) is a synchronous serial communication interface specification used for short-distance communication, primarily in embedded systems.
 In this case your microcontroller is the master which controls the slave (at least one 7-Segment display or led matrix).
@@ -25,7 +25,7 @@ SCLK has to be connected to CLK and MOSI to DIN.
 These signals can be shared by multiple SPI slaves even if they have nothing to do with each other.
 SS has to be connected to CS and each Slave has its own SS pin(which can be any free pin).
 
-\subsection getting_started Getting started
+\section getting_started Getting started
 
 To get started you need to first create a new controller_configuration object.
 This is used to configure the setup of the LedController which can get complex.
@@ -75,7 +75,7 @@ void loop(){
 
 \endcode
 
-\subsection what_after_intro What is next?
+\section what_after_intro What is next?
 
 Now that you know how to use the LedController you can check the more advanced features like [using multiple rows](@ref multi_row) or [moving the displayed data](@ref movement).
 
@@ -88,7 +88,7 @@ Now that you know how to use the LedController you can check the more advanced f
 
 Diese Seite zeigt die Grundlegende Nutzung des LedController und was man machen kann.
 
-\subsection init_lib Initialisieren der Bibliothek
+\section init_lib Initialisieren der Bibliothek
 
 
 1. Hardware SPI is at least 10 times faster but you can only use specific pins for some signals (look [here](index.html) for which pins).
@@ -99,7 +99,7 @@ Die Library kann auf zwei Weisen initialisiert werden: mit hardware SPI oder mit
 1. Hardware SPI ist mindestens 10 mal schneller aber es müssen bestimmte pins verwendet werden (schau [hier](index.html) für Details).
 2. Software SPI ist langsamer (was nur bei knappen Timings relevant ist) aber man kann alle freien Pins verwenden.
 
-\subsubsection SPI_intro Kleine Einführung in  SPI
+\subsection SPI_intro Kleine Einführung in  SPI
 
 Das Serial Peripheral Interface (SPI) ist eine synchrone serielle Kommunikationsschnittstelle, welche für Kommunitaktion, primär im embedded Bereich, für kurze Distanzen verwendet wird.
 In diesem Fall ist der microcontroller der Master, der die Slaves (mindestens ein 7-Segment display oder Led Matrix Segment) steuert.
@@ -110,7 +110,7 @@ SCLK muss mit CLK verbunden werden und MOSI mit DIN.
 Diese Signale können zweichen mehreren SPI slaves geteilt werden, auch wenn die Slaves nicht miteinander zu tun haben.
 SS muss mit CS verbunden werden und jeder Slave braucht einen eigenen SS pin(dies kann jeder freier pin sein).
 
-\subsection getting_started Getting started
+\section getting_started Getting started
 
 Zum Verwenden muss erst ein neues controller_configuration objekt erstellt werden.
 Dieses wird verwendet um das setup des LedController zu konfigurieren, was sehr komplex sein kann.
@@ -160,7 +160,7 @@ void loop(){
 
 \endcode
 
-\subsection what_after_intro Was jetzt?
+\section what_after_intro Was jetzt?
 
 Nun wo die Grundlagen verstanden sind kann man sich den fortgeschrittenen Themen wie dem [Verwenden mehrerer Zeilen](@ref multi_row) oder dem [Bewegen der angezeigten Daten](@ref movement) widmen.
 
