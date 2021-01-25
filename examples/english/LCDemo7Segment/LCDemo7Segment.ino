@@ -23,8 +23,8 @@
 #define CLK 14
 
 /*
- Now we need a LedControl to work with.
- We have only a single MAX72XX.
+ Now we need a LedController Variable to work with.
+ We have only a single MAX72XX so the Dimensions are 1,1.
  */
 LedController<1,1> lc;
 
@@ -33,13 +33,9 @@ unsigned long delaytime=250;
 
 void setup() {
 
+  //Here a new LedController object is created without hardware SPI.
   lc=LedController<1,1>(CS,CLK,DIN);
 
-  /*
-   The MAX72XX is in power-saving mode on startup,
-   we have to do a wakeup call
-   */
-  lc.activateAllSegments();
   /* Set the brightness to a medium values */
   lc.setIntensity(8);
   /* and clear the display */

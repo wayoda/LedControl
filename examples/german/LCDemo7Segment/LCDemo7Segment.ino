@@ -9,48 +9,39 @@
  * 
  */
 
-//We always have to include the library
+//Wie immer muss am Anfang die Bibliothek eingebunden werden.
 #include "LedController.hpp"
 
 /*
- You might need to change the following 3 Variables depending on your board.
- pin 15 is connected to the DataIn 
- pin 14 is connected to the CLK
- pin 13 is connected to LOAD/ChipSelect
+ Die folgenden 3 Variabeln müssen abhängig vom board ggf geändert werden.
+ pin 15 ist verbunden mit DataIn 
+ pin 14 ist verbunden mit CLK
+ pin 13 ist verbunden mit LOAD/ChipSelect
 */
 #define DIN 15
-#define CS 13
 #define CLK 14
+#define CS 13
 
-/*
- Now we need a LedControl to work with.
- We have only a single MAX72XX.
- */
+
+//Nun wird die Variable erstellt in der der LedController mit nur einem Segment(nur ein MAX72XX) gespeichert wird.
 LedController<1,1> lc;
 
-/* we always wait a bit between updates of the display */
+//Die verzögerung zwischen updates des Displays
 unsigned long delaytime=250;
 
 void setup() {
 
+  //Nun wird das LedController Objekt ohne Hardware SPI erstellt.
   lc=LedController<1,1>(CS,CLK,DIN);
 
-  /*
-   The MAX72XX is in power-saving mode on startup,
-   we have to do a wakeup call
-   */
-  lc.activateAllSegments();
-  /* Set the brightness to a medium values */
+  //Setzt die Helligkeit auf einen Mittleren Wert
   lc.setIntensity(8);
-  /* and clear the display */
+
+  //leere den Inhalt des Segments
   lc.clearMatrix();
 }
 
-
-/*
- This method will display the characters for the
- word "Arduino" one after the other on digit 0. 
- */
+//Diese Funktion wird das Wort Arduino an Stelle 0 buchstabiert anzeigen.
 void writeArduinoOn7Segment() {
   lc.setChar(0,0,'a',false);
   delay(delaytime);
@@ -68,13 +59,10 @@ void writeArduinoOn7Segment() {
   delay(delaytime);
   lc.clearMatrix();
   delay(delaytime);
-} 
+}
 
-/*
-  This method will scroll all the hexa-decimal
- numbers and letters on the display. You will need at least
- four 7-Segment digits. otherwise it won't really look that good.
- */
+//Diese Funktion wird alle Hexadezimalziffern entlang des Displays bewegen.
+//Es werden mindestens vier 7-Segment Elemente benötigt damit die Anzeige gut aussieht.
 void scrollDigits() {
   for(int i=0;i<13;i++) {
     lc.setDigit(0,3,i,false);

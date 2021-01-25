@@ -8,6 +8,7 @@
 This pages describes how to move the displayed data around and what you need to know when using the functions.
 As of version 2.0.0 the movement functions are aware of the number of rows and columns and use return types with the correct size.
 To see details on how to use multiple rows check [this](@ref multi_row) page.
+<b>These instructiotions only work as intended when you use an Led Matrix!</b>
 
 All versions since 1.5.0 support some form of data movement but this page will focus on how the movement functions work as of version 2.0.0.
 The functions marked as deprecated will not be explained and only exist for better compatibility.
@@ -59,6 +60,7 @@ Check [LedControllerDemoRocketMulti.ino](@ref LedControllerDemoRocketMulti.ino) 
 Diese Seite beschreibt das Bewegen der angezeigten Daten und was man für die Nutzung der Funktionen wissen muss.
 Seit Version 2.0.0 beachten die Bewegungsfunktionen die Anzahl der Zeilen und Spalten und nutzen Rückgabewerte mit der richtigen Größe.
 Für mehr Details über mehrere Zeile schaue auf [dieser Seite](@ref multi_row) nach.
+<b>Diese Anweisungen funktionieren nur richtig beim Verwenden einer Led Matrix!</b>
 
 Alle Versionen seit Version 1.5.0 unterstützen eine Form von Bewegungsfunktionen, aber diese Seite beschreibt wie diese Funktionen seit Version 2.0.0 funktionieren.
 Die als veraltet markierten Funktionen werden nicht erklärt und existieren nur, um den Umstieg auf Version 2.0.0 zu erleichtern.
