@@ -13,21 +13,25 @@
 
 //spi pins falls nicht hardware SPI verwendet werden soll
 #define DIN 27
-#define CS 16
 #define CLK 25
 
-//the number of segments per row
+//Die CS pins die für die untere/obere Zeile verwendet werden sollen
+#define CS_BOTTOM 25
+#define CS_TOP 15
+
+//Die Anzahl der Segmente pro Zeile
 #define Segments 4
 
-//the pin number of the builtin led or an external led to signal a clock.
+//Der Pin der internen LED
 #define LED 13
 
-#define delayTime 200 // Delay between Frames
+//Die verzögerung zwischen zwei Bewegungen
+#define delayTime 200 
 
-//creating an LedController which is not initilized.
+//Hier wird wieder ein uninitialisierter LedController erstellt
 auto lc = LedController<Segments,2>();
 
-//the pixelart of our beautiful rocket
+//Das Pixelart der wunderschönen Rakete
 ByteBlock rocket= {
   B00000000,
   B00001111,
@@ -39,10 +43,9 @@ ByteBlock rocket= {
   B00000000
 };
 
-//the rocket rotated by 180 degrees to display it properly.
 ByteBlock rocketColumns;
 
-//switches the state of the builtin led
+//schaltet den Zustand der internen LED um
 void switchLED(){
   static bool LEDON = false;
   if(LEDON){
@@ -55,53 +58,55 @@ void switchLED(){
 
 void setup(){
 
-  //creating the configuration of the controller
+  //Erstellen einer Konfiguration für den LedController
   controller_configuration<Segments,2> conf;
 
-  //since more than one row is used make sure to set this to 0 (should be 0 but better safe than sorry)
+  //Da mehr als eine Zeile verwendet werden soll (ohne virtual multi Row) sollte das 0 sein.
   conf.SPI_CS = 0;
 
-  //These are the chip select pins for each row.
-  //The bottom row (row 0) is connected to pin 25 and the top row (row 1) is connected to pin 15
-  conf.row_SPI_CS[0] = 25;
-  conf.row_SPI_CS[1] = 15;
+  //hier werden die Chip Select Pins der einzelnen Reihen gesetzt.
+  //Die untere Zeile (Zeile 0) ist an Pin 25 geschlossen und die obere Reihe (Reihe 1) an Pin 15
+  conf.row_SPI_CS[0] = CS_BOTTOM;
+  conf.row_SPI_CS[1] = CS_TOP;
 
-  //this enables hardware spi check what pins to use for your board
+  //Das setzt die nńutzung von harware SPI
+  //Schaue welche Pins bei deinem Board verwendet werden müssen.
   conf.useHardwareSpi = true;
 
-  //this enables debug output (nothing should be printed but it helps to fix possible problems with the config)
+  //Das schaltet die Debug Ausgabe an.
+  //Es sollte zwar nichts ausgegeben werden, kann aber trotzdem hilfreich sein.
   conf.debug_output = true;
 
-  //since we use real multi rows this is set to false (this should not matter since SPI_CS is 0 but this is the proper way)
+  //Da wir virtual_multi_row nicht verwenden sollte es auf false gesetzt werden.
+  //Es sollte zwar egal sein, da SPI_CS 0 ist aber sicher ist sicher.
   conf.virtual_multi_row = false;
 
-  //this specifies the transfer speed of the spi interface. If you want to use high values make sure your cables have a good connection
+  //Das setzt die Übertragungsgeschwindigkeit der SPI Schnittstelle.
+  //Falls hohe Werte gesetzt werden, sollte eine gute Verbingung sichergestellt werden.
   conf.spiTransferSpeed = 800000;
 
-  //initilizing the LedController with the configuration which we just set
+  //Initialisiere den LedController mit der erstellten Konfiguration.
   lc.init(conf);
 
-  //make a array of columns out of the rocket
-  //this is needed to shift it in correctly (you can leave this line if you want to)
+  //Hier wird ein Array aus Spalten der Rakete erstellt.
+  //Dies wird vewendet, um die Rakete Stück für Stück reinzuschieben
+  //Man kann auch rocketColumns = rocket schreiben, aber dann wird die Rakete um 90 Grad gedreht sein.
   rocketColumns = lc.makeColumns(rocket);
 
-  //enables the builtin Led to have a kind of clock
+  //Erlaubt das steuern der internen LED
   pinMode(LED, OUTPUT);
   
 }
 
+//Das ist mehr oder weniger identisch zu LedControllerDemoRocket.ino
 void loop(){
-  //clear the data to make sure the are not leftovers
   lc.clearMatrix();
   
-  //Let the rocket fly in
   for(int i = 0;i < 8*(Segments+1);i++){
     delay(delayTime);
 
-    //blink led for each iteration
     switchLED();
 
-    //if rocket not fully inside let it fly in and shift it
     if(i < 8){
       lc.moveRowRight(rocketColumns[i]);   
     }else{
@@ -122,10 +127,8 @@ void loop(){
   for(int i = 0;i < 8*(Segments+1);i++){
     delay(delayTime);
 
-    //blink led for each iteration
     switchLED();
 
-    //if rocket not fully inside let it fly in and shift it
     if(i < 8){
       lc.moveRowLeft(rocketColumns[i]);   
     }else{

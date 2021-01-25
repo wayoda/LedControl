@@ -13,8 +13,11 @@
 
 //spi pins if you do not wat to use hardwware spi
 #define DIN 27
-#define CS 16
 #define CLK 25
+
+//The CS pins that should be used for the bottom/top row
+#define CS_BOTTOM 25
+#define CS_TOP 15
 
 //the number of segments per row
 #define Segments 4
@@ -22,7 +25,8 @@
 //the pin number of the builtin led or an external led to signal a clock.
 #define LED 13
 
-#define delayTime 200 // Delay between Frames
+// Delay between Frames
+#define delayTime 200
 
 //creating an LedController which is not initilized.
 auto lc = LedController<Segments,2>();
@@ -39,7 +43,6 @@ ByteBlock rocket= {
   B00000000
 };
 
-//the rocket rotated by 180 degrees to display it properly.
 ByteBlock rocketColumns;
 
 //switches the state of the builtin led
@@ -58,13 +61,13 @@ void setup(){
   //creating the configuration of the controller
   controller_configuration<Segments,2> conf;
 
-  //since more than one row is used make sure to set this to 0 (should be 0 but better safe than sorry)
+  //since more than one row is used (without virtual mult row) make sure to set this to 0
   conf.SPI_CS = 0;
 
   //These are the chip select pins for each row.
   //The bottom row (row 0) is connected to pin 25 and the top row (row 1) is connected to pin 15
-  conf.row_SPI_CS[0] = 25;
-  conf.row_SPI_CS[1] = 15;
+  conf.row_SPI_CS[0] = CS_BOTTOM;
+  conf.row_SPI_CS[1] = CS_TOP;
 
   //this enables hardware spi check what pins to use for your board
   conf.useHardwareSpi = true;
@@ -90,18 +93,15 @@ void setup(){
   
 }
 
+//This is basically the same as LedControllerDemoRocket.ino
 void loop(){
-  //clear the data to make sure the are not leftovers
   lc.clearMatrix();
   
-  //Let the rocket fly in
   for(int i = 0;i < 8*(Segments+1);i++){
     delay(delayTime);
 
-    //blink led for each iteration
     switchLED();
 
-    //if rocket not fully inside let it fly in and shift it
     if(i < 8){
       lc.moveRowRight(rocketColumns[i]);   
     }else{
@@ -122,10 +122,8 @@ void loop(){
   for(int i = 0;i < 8*(Segments+1);i++){
     delay(delayTime);
 
-    //blink led for each iteration
     switchLED();
 
-    //if rocket not fully inside let it fly in and shift it
     if(i < 8){
       lc.moveRowLeft(rocketColumns[i]);   
     }else{
