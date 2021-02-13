@@ -148,4 +148,101 @@ class ByteRow{
             return *this;
         }
 
+        /**
+         * \~english
+         * @brief Overlaps two ByteRows (bitwise or).
+         * This operator can be used to display two ByteRows in one ByteRow.
+         * @param other The ByteRow that should be overlapped with this object
+         * @return ByteRow The resulting ByteRow
+         * 
+         * \~german
+         * @brief Überlappt zwei ByteRow Objeckte (bitweises oder)
+         * Dieser operator kann genutzt werden, um zwei ByteRow Objekte in einem Anzuzeigen.
+         * @param other Die ByteRows, welche mit diesem Objekt überladen werden soll
+         * @return ByteRow Die resultierende ByteRow
+         */
+        virtual ByteRow operator&(const ByteRow<SIZE>& other) const{
+            ByteRow<SIZE> block = ByteRow<SIZE>();
+            for(unsigned int i = 0; i < SIZE;i++){
+                block[i] = (this->at(i)) | (other.at(i));
+            }
+            return block;
+        }
+
+        /**
+         * \~english
+         * @brief Moves all data of the ByteRow to the left by a given distance.
+         * @note each index is handled on its own and no data is shifted across
+         * @param distance the distance the data should be moved
+         * @return ByteRow the resulting ByteRow
+         * 
+         * \~german
+         * @brief Schiebt die Daten um eine gegebene Distanz nach links.
+         * @note Jeder Wert wird einzeln geschoben und nicht alles als eine Reihe.
+         * @param distance Die Distanz die geschoben werden soll
+         * @return ByteRow Die resultierende ByteRow
+         */
+        virtual ByteRow operator<<(unsigned int distance) const{
+            ByteRow<SIZE> block = ByteRow<SIZE>();
+            for(unsigned int i = 0; i < SIZE;i++){
+                block[i] = (this->at(i))>>distance;
+            }
+            return block;
+        }
+
+        /**
+         * \~english
+         * @brief Moves all data of the ByteRow to the right by a given distance.
+         * @note each index is handled on its own and no data is shifted across
+         * @param distance the distance the data should be moved
+         * @return ByteRow the resulting ByteRow
+         * 
+         * \~german
+         * @brief Schiebt die Daten um eine gegebene Distanz nach rechts.
+         * @note Jeder Wert wird einzeln geschoben und nicht alles als eine Reihe.
+         * @param distance Die Distanz die geschoben werden soll
+         * @return ByteRow Die resultierende ByteRow
+         */
+        virtual ByteRow operator>>(unsigned int distance) const{
+            ByteRow<SIZE> block = ByteRow<SIZE>();
+            for(unsigned int i = 0; i < SIZE;i++){
+                block[i] = (this->at(i))<<distance;
+            }
+            return block;
+        }
+
+        /**
+         * \~english
+         * @brief Moves all data of the ByteRow to the down by one.
+         * @return ByteRow the resulting ByteRow
+         * 
+         * \~german
+         * @brief Schiebt die Daten um 1 Distanz nach unten.
+         * @return ByteRow Die resultierende ByteRow
+         */
+        virtual ByteRow operator--() const{
+            ByteRow<SIZE> block = ByteRow<SIZE>();
+            for(unsigned int i = 0; i < SIZE-1;i++){
+                block[i] = (this->at(i+1));
+            }
+            return block;
+        }
+
+        /**
+         * \~english
+         * @brief Moves all data of the ByteRow to the up by one.
+         * @return ByteRow the resulting ByteRow
+         * 
+         * \~german
+         * @brief Schiebt die Daten um 1 Distanz nach oben.
+         * @return ByteRow Die resultierende ByteRow
+         */
+        virtual ByteRow operator++() const{
+            ByteRow<SIZE> block = ByteRow<SIZE>();
+            for(unsigned int i = 1; i < SIZE;i++){
+                block[i] = (this->at(i-1));
+            }
+            return block;
+        }
+
 };

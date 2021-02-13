@@ -65,4 +65,19 @@ public:
      * @brief Konstruiere ein neuess Objekt mit 0en.
      */
     ByteBlock():ByteRow<8>(){};
+
+    /**
+     * \~english
+     * @brief Construct a new Byte Block object from a byteRow.
+     * @note This constructor mainly exists for automatic casting.
+     * @param data the data that should be assigned
+     * 
+     * \~german
+     * @brief Konstruiere ein neuess Objekt aus einer ByteRow.
+     * @note Dieser Konstruktor existiert hauptsächlich für Typumwandlungen.
+     * @param data Die daten, die zugewiesen werden sollen
+     */
+    ByteBlock(const ByteRow<8>& data):ByteRow<8>(data){};
+
+    
 };
