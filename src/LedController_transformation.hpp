@@ -31,11 +31,11 @@ ByteBlock LedController<columns,rows>::makeColumns(ByteBlock rowArray) {
   for (unsigned int i = 0; i < 8; i++) {
     columnArray[i] = 0x00;
     for (unsigned int j = 0; j < 8; j++) {
-      columnArray[i] |= (0x01 & (rowArray[j] >> (7 - i))) << (7 - j);
+      columnArray[i] |= (0x80 & (rowArray[j]<<i)) >> (7 - j);
     }
   }
 
-  return columnArray;
+  return rotate180(columnArray);
 }
 
 template <size_t columns, size_t rows>
