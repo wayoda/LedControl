@@ -54,79 +54,34 @@ void setup(){
     
 }
 
+//Das ist mehr oder weniger identisch zu Led-matrix-rocket.ino
 void loop(){
   
     lc.clearMatrix();
     
-    //ladd die Rakete reinfliegen
-    for(int i = 0;i < 8*(Segments+1);i++){
+    for(int dir = 0; dir < 2;dir++){
       delay(delayTime);
+      for(int i = 0;i < 8*(Segments+1);i++){
+        //einmal Bilinken für jeden Durchlauf
+        switchLED();
 
-      //led blinken lassen
-      switchLED();
-
-      //falls die Rakete nicht ganz drin ist, wird sie reingeschoben
-      if(i < 8){
-        lc.moveRight(rocketColumns[i]);   
-      }else{
-        lc.moveRight();
-
+        //rakete reinfliegen lassen falls sie nicht drin ist
+        auto in = (i<8) ? rocketColumns[i] : 0x00;
+        
+        //fall dir 0 ist nach rechsts sonst nach links
+        dir == 0 ? lc.moveRight(in) : lc.moveLeft(in);
+        
         delay(delayTime);
-        switch(i % 6){
-          case(3):
-          case(4):
-          case(5):
-            lc.moveUp();
-            break;
 
-          case(0):
-          case(1):
-          case(2):
-            lc.moveDown();
-            break;
-
-          default:
-            break;
+        //hoch- und runterbewegen
+        if(i % 6 < 3){
+          lc.moveDown();
+        }else{
+          lc.moveUp();
         }
-      }
-         
-    }
-
-    delay(delayTime);
-
-    for(int i = 0;i < 8*(Segments+1);i++){
-      delay(delayTime);
-
-      //led blinken lassen
-      switchLED();
-
-      //falls die Rakete nicht ganz drin ist, wird sie reingeschoben
-      if(i < 8){
-        lc.moveLeft(rocketColumns[i]);   
-      }else{
-        lc.moveLeft();
-
         delay(delayTime);
-        switch(i % 6){
-          case(3):
-          case(4):
-          case(5):
-            lc.moveUp();
-            break;
 
-          case(0):
-          case(1):
-          case(2):
-            lc.moveDown();
-            break;
-
-          default:
-            break;
-        }
       }
-         
     }
-
-    delay(delayTime);
 
 }

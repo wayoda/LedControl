@@ -69,82 +69,32 @@ void setup(){
 }
 
 void loop(){
-
-  lc.clearMatrix();
   
-  for(int i = 0;i < 8*(Segments+1);i++){
-    delay(delayTime);
-
-    switchLED();
-
-    //falls die Rakete nicht ganz drin ist, wird sie reingeschoben
-    if(i < 8){
-      lc.moveRight(rocketColumns[i]);   
-    }else{
-      //in jedem Schritt wird die Rakte nach rechts geschoben
-      lc.moveRight();
-
+    lc.clearMatrix();
+    
+    for(int dir = 0; dir < 2;dir++){
       delay(delayTime);
+      for(int i = 0;i < 8*(Segments+1);i++){
+        //einmal Bilinken für jeden Durchlauf
+        switchLED();
 
-      //nach oben/unten schieben bis der obere/untere Rand erriecht ist
-      switch(i % 6){
-        case(3):
-        case(4):
-        case(5):
-          lc.moveUp();
-          break;
+        //rakete reinfliegen lassen falls sie nicht drin ist
+        auto in = (i<8) ? rocketColumns[i] : 0x00;
+        
+        //fall dir 0 ist nach rechsts sonst nach links
+        dir == 0 ? lc.moveRight(in) : lc.moveLeft(in);
+        
+        delay(delayTime);
 
-        case(0):
-        case(1):
-        case(2):
+        //hoch- und runterbewegen
+        if(i % 6 < 3){
           lc.moveDown();
-          break;
+        }else{
+          lc.moveUp();
+        }
+        delay(delayTime);
 
-        default:
-          break;
       }
     }
-        
-  }
-
-  delay(delayTime);
-
-  for(int i = 0;i < 8*(Segments+1);i++){
-    delay(delayTime);
-
-    //bei jedem Schritt soll die Led blinken
-    switchLED();
-
-    //falls die Rakete nicht ganz drin ist, wird sie reingeschoben
-    if(i < 8){
-      lc.moveLeft(rocketColumns[i]);   
-    }else{
-      //in jedem Schritt wird die Rakte nach links geschoben
-      lc.moveLeft();
-
-      delay(delayTime);
-
-      //nach oben/unten schieben bis der obere/untere Rand erriecht ist
-      switch(i % 6){
-        case(3):
-        case(4):
-        case(5):
-          lc.moveUp();
-          break;
-
-        case(0):
-        case(1):
-        case(2):
-          lc.moveDown();
-          break;
-
-        default:
-          break;
-      }
-    }
-        
-  }
-
-  delay(delayTime);
 
 }
