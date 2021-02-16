@@ -1134,10 +1134,30 @@ public:
  * @example Led-matrix-counting.ino
  * 
  * \~english
- * An example on how to use the LedController to create a counter.
+ * An example on how to use the LedController to create a counter usind a Led Matrix.
  * 
  * \~german
- * Ein Beispiel wie man den LedController nutzen kann um einen Zähler zu erstellen.
+ * Ein Beispiel wie man den LedController nutzen kann um einen Zähler mit einer Led Matrix zu erstellen.
+ */
+
+/**
+ * @example Led-matrix-message.ino
+ * 
+ * \~english
+ * An example on how to use the LedController to display a message.
+ * 
+ * \~german
+ * Ein Beispiel wie man den LedController nutzen kann um eine Nachricht auszugeben.
+ */
+
+/**
+ * @example 7-Segment-counting.ino
+ * 
+ * \~english
+ * An example on how to use the LedController to create a counter using 7-Segment displays.
+ * 
+ * \~german
+ * Ein Beispiel wie man den LedController nutzen kann um einen Zähler mit 7-Segment Anzeigen zu erstellen.
  */
 
 /**

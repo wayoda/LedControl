@@ -98,7 +98,7 @@ void setup(){
   
 }
 
-//Das ist mehr oder weniger identisch zu LedControllerDemoRocket.ino
+//Das ist mehr oder weniger identisch zu Led-matrix-rocket.ino
 void loop(){
   lc.clearMatrix();
   

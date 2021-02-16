@@ -49,7 +49,7 @@ Index 0 of the row corresponds to row 0 of the Matrix, in other words the left s
 The function will retun a ByteRow with the same length as the input.
 The returned ByteRow is the Row that was shifted out as because of the movement.
 
-Check [LedControllerDemoRocketMulti.ino](@ref LedControllerDemoRocketMulti.ino) to see how this can be implemented.
+Check [Led-matrix-rocket-multi.ino](@ref Led-matrix-rocket-multi.ino) to see how this can be implemented.
 
 
 \~german
@@ -102,6 +102,6 @@ Index 0 der ByteRow entspricht der Zeile 0 der Matrix , in anderen Worten das Se
 Die Funktion gibt eine ByteRow mit der gleichen Länge wie die Eingabe zurück.
 Der Rückgabewert entspricht der Rausgeschobenen Zeile.
 
-Schaue [LedControllerDemoRocketMulti.ino](@ref LedControllerDemoRocketMulti.ino) an um zu sehen wie dies implementiert werden kann.
+Schaue [Led-matrix-rocket-multi.ino](@ref Led-matrix-rocket-multi.ino) an um zu sehen wie dies implementiert werden kann.
 
 */

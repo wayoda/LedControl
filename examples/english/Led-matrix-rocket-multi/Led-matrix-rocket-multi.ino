@@ -93,7 +93,7 @@ void setup(){
   
 }
 
-//This is basically the same as LedControllerDemoRocket.ino
+//This is basically the same as Led-matrix-rocket.ino
 void loop(){
   lc.clearMatrix();
   

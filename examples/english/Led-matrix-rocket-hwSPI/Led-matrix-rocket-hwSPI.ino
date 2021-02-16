@@ -1,7 +1,7 @@
 /**
  * @file Led-matrix-rocket-hwSPI.ino
  * @author Noa Sakurajin (noasakurajin@web.de)
- * @brief LedControllerDemoRocket.ino with hardware spi
+ * @brief Led-matrix-rocket.ino with hardware spi
  * @version 0.1
  * @date 2020-12-30
  * 
@@ -9,7 +9,7 @@
  * 
  */
 
-//Since this is just LedControllerDemoRocket.ino with hardware SPI, view its site for more details.
+//Since this is just Led-matrix-rocket.ino with hardware SPI, view its site for more details.
 #include "LedController.hpp"
 
 #define CS 15

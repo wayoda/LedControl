@@ -20,7 +20,7 @@ When you create a new LedController object it is required to specifiy the dimens
 For this example the type of the LedController would be `LedController<4,2>` because there are 4 columns and 2 rows.
 These dimensions can be an arbitary size as long as you have enough memory (you will notice if you don't have enough).
 
-The example [LedControllerDemoRocketMulti](@ref LedControllerDemoRocketMulti.ino) will be used to demonstrate each of the parts that need to be done.
+The example [LedControllerDemoRocketMulti](@ref Led-matrix-rocket-multi.ino) will be used to demonstrate each of the parts that need to be done.
 
 \section valid_multi_conf Creating a valid controller_configuration
 
@@ -75,7 +75,7 @@ Wenn ein neues LedController objekt erstellt wird, müssen die Dimensionen der m
 In diesem Beispiel wäre der Datentyp des LedController `LedController<4,2>`, da es 4 Splaten und 2 Zeilen hat.
 Die Dimensionen können beliebig groß sein, solang man genug Arbeitsspeicher und Hardware besitzt.
 
-Das Beispiel [LedControllerDemoRocketMulti](@ref LedControllerDemoRocketMulti.ino) wird genutzt um zu zeigen wie man mehrere Zeilen nutzt.
+Das Beispiel [LedControllerDemoRocketMulti](@ref Led-matrix-rocket-multi.ino) wird genutzt um zu zeigen wie man mehrere Zeilen nutzt.
 
 \section valid_multi_conf Erstellen einer gültigen controller_configuration
 

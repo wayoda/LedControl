@@ -32,7 +32,7 @@ This is used to configure the setup of the LedController which can get complex.
 controller_configuration has no constructor and is more like an struct with methods than it is a 'real' class.
 Because it is a template you need to know the dimension of your Matrix which causes the type to be `controller_configuration<sements_x,segments_y>`.
 To see how you can use more than one row with the LedController go [here](@ref multi_row).
-The rest of the example will use `controller_configuration<4,1>` like in the [rocket example](@ref LedControllerDemoRocket.ino).
+The rest of the example will use `controller_configuration<4,1>` like in the [rocket example](@ref Led-matrix-rocket.ino).
 
 If you want to use Hardware Spi set useHardwareSpi to true, otherwise set it to false.
 If you use hardware SPI you only need to specify the CS pin, if not you also need to CLK and MOSI pins.
@@ -118,7 +118,7 @@ controller_configuration hat keinen Konstruktor und ist dadurch mehr wie ein str
 Weil alle Klassen der Bibliothek ein template sind müssen die Dimensionen der Matrix angegeben werden.
 Dadurch wird der Datentyp der controller_configuration `controller_configuration<Segmente_x,Segmente_y>`.
 Um zu sehen wie man mehrere Zeilen mit einem LedController steuern kann schau [diese](@ref multi_row) Seite an. 
-Der Rest der Seite wird `controller_configuration<4,1>` verwenden wie im [Beispiel Rakete](@ref LedControllerDemoRocket.ino).
+Der Rest der Seite wird `controller_configuration<4,1>` verwenden wie im [Beispiel Rakete](@ref Led-matrix-rocket.ino).
 
 Wenn Hardware SPI verwendet werden soll muss useHardwareSpi auf true gesetzt werden, ansonsten auf false.
 Falls hardware SPI verwendet wird dann muss nur der CS pin angegeben werden, ansonsten wird noch der CLK und MOSI pin benötigt.
