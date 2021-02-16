@@ -1,5 +1,5 @@
 /**
- * @file LedControllerDemoCounting.ino
+ * @file Led-matrix-counting.ino
  * @author Noa Sakurajin (noasakurajin@web.de)
  * @brief counting up on an led matrix
  * @version 0.1

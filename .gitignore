@@ -2,6 +2,7 @@ doc/html
 doc/man
 doxywarn*.txt
 
+.vscode
 logs
 .pio
 src/*.ino

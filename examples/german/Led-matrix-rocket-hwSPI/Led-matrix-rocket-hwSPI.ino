@@ -1,5 +1,5 @@
 /**
- * @file LedControllerDemoHwSPI.ino
+ * @file Led-matrix-rocket-hwSPI.ino
  * @author Noa Sakurajin (noasakurajin@web.de)
  * @brief LedControllerDemoRocket.ino with hardware spi
  * @version 0.1
@@ -9,7 +9,7 @@
  * 
  */
 
-//Since this is just LedControllerDemoRocket.ino with hardware SPI, view its site for more details.
+//Da dieses Beispiel einfach LedControllerDemoRocket.ino mit hardware SPI ist, schau auf dessen Seite für Details.
 #include "LedController.hpp"
 
 #define CS 15
@@ -43,7 +43,7 @@ void switchLED(){
 }
 
 void setup(){
-  //Only the following line is different from the example without hardware SPI since in this case only one Pin needs to be specified
+  //Nur die folgende Zeile unterscheidet sich von dem Beispiel ohne Hardware SPI, da hier nur ein Pin angegeben werden muss.
   lc.init(CS);
 
   lc.makeColumns(rocket, &rocketColumns);
@@ -58,14 +58,14 @@ void loop(){
   
     lc.clearMatrix();
     
-    //Let the rocket fly in
+    //ladd die Rakete reinfliegen
     for(int i = 0;i < 8*(Segments+1);i++){
       delay(delayTime);
 
-      //blink led for each iteration
+      //led blinken lassen
       switchLED();
 
-      //if rocket not fully inside let it fly in and shift it
+      //falls die Rakete nicht ganz drin ist, wird sie reingeschoben
       if(i < 8){
         lc.moveRight(rocketColumns[i]);   
       }else{
@@ -97,10 +97,10 @@ void loop(){
     for(int i = 0;i < 8*(Segments+1);i++){
       delay(delayTime);
 
-      //blink led for each iteration
+      //led blinken lassen
       switchLED();
 
-      //if rocket not fully inside let it fly in and shift it
+      //falls die Rakete nicht ganz drin ist, wird sie reingeschoben
       if(i < 8){
         lc.moveLeft(rocketColumns[i]);   
       }else{

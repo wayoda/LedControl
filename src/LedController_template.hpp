@@ -1101,7 +1101,7 @@ public:
 };
 
 /**
- * @example LedControllerDemoRocketMulti.ino
+ * @example Led-matrix-rocket-multi.ino
  * 
  * \~english
  * An example on how to use the LedController with multiple rows
@@ -1111,7 +1111,7 @@ public:
  */
 
 /**
- * @example LedControllerDemoRocket.ino
+ * @example Led-matrix-rocket.ino
  * 
  * \~english
  * An example on how to use the LedController to move a rocket across a led matrix
@@ -1121,17 +1121,17 @@ public:
  */
 
 /**
- * @example LedControllerDemoHwSPI.ino
+ * @example Led-matrix-rocket-hwSPI.ino
  * 
  * \~english
- * This is simply @ref LedControllerDemoRocket.ino just with hardware spi.
+ * This is simply @ref Led-matrix-rocket.ino just with hardware spi.
  * 
  * \~german
- * Dies ist einfach @ref LedControllerDemoRocket.ino nur mit hardware spi.
+ * Dies ist einfach @ref Led-matrix-rocket.ino nur mit hardware spi.
  */
 
 /**
- * @example LedControllerDemoCounting.ino
+ * @example Led-matrix-counting.ino
  * 
  * \~english
  * An example on how to use the LedController to create a counter.

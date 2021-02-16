@@ -1,5 +1,5 @@
 /**
- * @file LedControllerDemoRocketMulti.ino
+ * @file Led-matrix-rocket-multi.ino
  * @author Noa Sakurajin (noasakurajin@web.de)
  * @brief An exaple for using multiple rows
  * @version 0.1
@@ -11,27 +11,27 @@
 
 #include "LedController.hpp"
 
-//spi pins if you do not wat to use hardwware spi
+//spi pins falls nicht hardware SPI verwendet werden soll
 #define DIN 27
 #define CLK 25
 
-//The CS pins that should be used for the bottom/top row
+//Die CS pins die für die untere/obere Zeile verwendet werden sollen
 #define CS_BOTTOM 25
 #define CS_TOP 15
 
-//the number of segments per row
+//Die Anzahl der Segmente pro Zeile
 #define Segments 4
 
-//the pin number of the builtin led or an external led to signal a clock.
+//Der Pin der internen LED
 #define LED 13
 
-// Delay between Frames
-#define delayTime 200
+//Die verzögerung zwischen zwei Bewegungen
+#define delayTime 200 
 
-//creating an LedController which is not initilized.
+//Hier wird wieder ein uninitialisierter LedController erstellt
 auto lc = LedController<Segments,2>();
 
-//the pixelart of our beautiful rocket
+//Das Pixelart der wunderschönen Rakete
 ByteBlock rocket= {
   B00000000,
   B00001111,
@@ -45,7 +45,7 @@ ByteBlock rocket= {
 
 ByteBlock rocketColumns;
 
-//switches the state of the builtin led
+//schaltet den Zustand der internen LED um
 void switchLED(){
   static bool LEDON = false;
   if(LEDON){
@@ -58,42 +58,47 @@ void switchLED(){
 
 void setup(){
 
-  //creating the configuration of the controller
+  //Erstellen einer Konfiguration für den LedController
   controller_configuration<Segments,2> conf;
 
-  //since more than one row is used (without virtual mult row) make sure to set this to 0
+  //Da mehr als eine Zeile verwendet werden soll (ohne virtual multi Row) sollte das 0 sein.
   conf.SPI_CS = 0;
 
-  //These are the chip select pins for each row.
-  //The bottom row (row 0) is connected to pin 25 and the top row (row 1) is connected to pin 15
+  //hier werden die Chip Select Pins der einzelnen Reihen gesetzt.
+  //Die untere Zeile (Zeile 0) ist an Pin 25 geschlossen und die obere Reihe (Reihe 1) an Pin 15
   conf.row_SPI_CS[0] = CS_BOTTOM;
   conf.row_SPI_CS[1] = CS_TOP;
 
-  //this enables hardware spi check what pins to use for your board
+  //Das setzt die nńutzung von harware SPI
+  //Schaue welche Pins bei deinem Board verwendet werden müssen.
   conf.useHardwareSpi = true;
 
-  //this enables debug output (nothing should be printed but it helps to fix possible problems with the config)
+  //Das schaltet die Debug Ausgabe an.
+  //Es sollte zwar nichts ausgegeben werden, kann aber trotzdem hilfreich sein.
   conf.debug_output = true;
 
-  //since we use real multi rows this is set to false (this should not matter since SPI_CS is 0 but this is the proper way)
+  //Da wir virtual_multi_row nicht verwenden sollte es auf false gesetzt werden.
+  //Es sollte zwar egal sein, da SPI_CS 0 ist aber sicher ist sicher.
   conf.virtual_multi_row = false;
 
-  //this specifies the transfer speed of the spi interface. If you want to use high values make sure your cables have a good connection
+  //Das setzt die Übertragungsgeschwindigkeit der SPI Schnittstelle.
+  //Falls hohe Werte gesetzt werden, sollte eine gute Verbingung sichergestellt werden.
   conf.spiTransferSpeed = 800000;
 
-  //initilizing the LedController with the configuration which we just set
+  //Initialisiere den LedController mit der erstellten Konfiguration.
   lc.init(conf);
 
-  //make a array of columns out of the rocket
-  //this is needed to shift it in correctly (you can leave this line if you want to)
+  //Hier wird ein Array aus Spalten der Rakete erstellt.
+  //Dies wird vewendet, um die Rakete Stück für Stück reinzuschieben
+  //Man kann auch rocketColumns = rocket schreiben, aber dann wird die Rakete um 90 Grad gedreht sein.
   rocketColumns = lc.makeColumns(rocket);
 
-  //enables the builtin Led to have a kind of clock
+  //Erlaubt das steuern der internen LED
   pinMode(LED, OUTPUT);
   
 }
 
-//This is basically the same as LedControllerDemoRocket.ino
+//Das ist mehr oder weniger identisch zu LedControllerDemoRocket.ino
 void loop(){
   lc.clearMatrix();
   

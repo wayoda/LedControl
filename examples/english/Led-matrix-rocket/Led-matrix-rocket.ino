@@ -1,5 +1,5 @@
 /**
- * @file LedControllerDemoRocket.ino
+ * @file Led-matrix-rocket.ino
  * @author Noa Sakurajin (noasakurajin@web.de)
  * @brief Using the the LedController to move a rocket
  * @version 0.1
@@ -9,26 +9,26 @@
  * 
  */
 
-//wie immer muss zuerst die Bibliothek eingebunden werden
+//as always include the LedController header on the top
 #include "LedController.hpp"
 
-//Diese Pins werden für die SPI übertragung verwendet
-//Schau in die Nutzungsanweisung für eine Beschreibung
+//These are the Pins used for the SPI transfer
+//See the usage instructions for their meaning
 #define DIN 27
 #define CS 26
 #define CLK 25
 
-//Dies Gesamtzahl der Segmente
+//The total numer of Segments
 #define Segments 4
 
-//Die verzögerung zwischen Bewegungen
+//The delay between movements
 #define delayTime 200
 
-//Diese Zeile erstellt ein unitialisierten LedController.
-//Dieser wird dann in der setup Funktion initialisiert.
+//This creates an uninitilized LedController object.
+//It will be initilized in the setup function.
 LedController<Segments,1> lc = LedController<Segments,1>();  
 
-//Das ist mein Pixelart und ist die Raktete die angezeigt wird.
+//This is my pixelart of a rocket which will be used in this example
 ByteBlock rocket= {
   B00000000,
   B00001111,
@@ -42,7 +42,7 @@ ByteBlock rocket= {
 
 ByteBlock rocketColumns;
 
-//die LED wechselt den Zustand der internen LED
+//switches the state of the internal LED
 void switchLED(){
   static bool LEDON = false;
   if(LEDON){
@@ -55,15 +55,14 @@ void switchLED(){
 
 void setup(){
 
-  //hier wird der LedController ohne Hardware SPI initialisiert.
-  lc.init(DIN,CLK,CS);
+  //initilizes the LedController without hardware spi.
+  lc.init(DIN,CLK,CS); 
 
-  //Hier wird ein Array aus Spalten der Rakete erstellt.
-  //Dies wird vewendet, um die Rakete Stück für Stück reinzuschieben
-  //Man kann auch rocketColumns = rocket schreiben, aber dann wird die Rakete um 90 Grad gedreht sein.
+  //make a array of columns out of the rocket
+  //this is needed to shift it in correctly (you can leave this line if you want to)
   rocketColumns = lc.makeColumns(rocket);
  
-  //Erlaubt das Schalten der internen LED
+  //enable the LED to have a clock
   pinMode(13, OUTPUT);
     
 }
@@ -75,18 +74,19 @@ void loop(){
   for(int i = 0;i < 8*(Segments+1);i++){
     delay(delayTime);
 
+    //blink led for each iteration
     switchLED();
 
-    //falls die Rakete nicht ganz drin ist, wird sie reingeschoben
+    //if rocket not fully inside let it fly in and shift it
     if(i < 8){
       lc.moveRight(rocketColumns[i]);   
     }else{
-      //in jedem Schritt wird die Rakte nach rechts geschoben
+      //always move the rocket right
       lc.moveRight();
 
       delay(delayTime);
 
-      //nach oben/unten schieben bis der obere/untere Rand erriecht ist
+      //move up/down until the top/bottom is reached
       switch(i % 6){
         case(3):
         case(4):
@@ -112,19 +112,19 @@ void loop(){
   for(int i = 0;i < 8*(Segments+1);i++){
     delay(delayTime);
 
-    //bei jedem Schritt soll die Led blinken
+    //blink led for each iteration
     switchLED();
 
-    //falls die Rakete nicht ganz drin ist, wird sie reingeschoben
+    //if rocket not fully inside let it fly in and shift it
     if(i < 8){
       lc.moveLeft(rocketColumns[i]);   
     }else{
-      //in jedem Schritt wird die Rakte nach links geschoben
+      //always move rocket left
       lc.moveLeft();
 
       delay(delayTime);
 
-      //nach oben/unten schieben bis der obere/untere Rand erriecht ist
+      //move up/down until the top/bottom is reached
       switch(i % 6){
         case(3):
         case(4):

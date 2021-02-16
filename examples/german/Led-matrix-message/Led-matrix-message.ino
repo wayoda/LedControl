@@ -1,5 +1,5 @@
 /**
- * @file LedControllerDemoMessage.ino
+ * @file Led-matrix-message.ino
  * @author Noa Sakurajin (noasakurajin@web.de)
  * @brief This demo shows how a message can be displayed on an LedMatrix.
  * This demo is based on https://www.meine-schaltung.de/schaltung/soft/anzeige/vierfach_matrix_mit_arduino/ and modified for the latest LedController.
@@ -10,23 +10,23 @@
  * 
  */
 
-//As always include the library
+//Wie immer die Bibliothek einbinden
 #include "LedController.hpp"
 
-//The pin connected to the CS pin of the Matrix
+//Der Pin, der mit CS der Matrix verbunden ist.
 #define CS 22
 
-//the total number of segments.
-//In this example they are in one row and you can freely change this number.
+//Die Gesamtzahl der Segments
+//Alle sind in einer Reihe und der Wert kann frei geändert werden.
 #define Segments 4
 
-//The delay time until the contents move left by one.
+//Die Verzögerung bis der Inhalt wieder um eins bewegt wird.
 #define delayTime 200
 
-//The ledController object, at the moment it is uninitilized
+//Das uninitialisierte LedController Objekt
 LedController<Segments,1> lc = LedController<Segments,1>();  
 
-// Symbols and Letters ---------------------------------------------------------------------------------
+// Zeichen und Buchstaben ---------------------------------------------------------------------------------
 ByteBlock A =  lc.rotate180({ B00000000, B00011000, B00100100, B00100100, B00111100, B00100100, B00100100, B00000000 });
 ByteBlock a =  lc.rotate180({ B00000000, B00000000, B00111000, B01001000, B01001000, B01001000, B00111000, B00000000 });
 ByteBlock b =  lc.rotate180(lc.reverse({ B00000000, B00001000, B00111000, B01001000, B01001000, B01001000, B00111000, B00000000 }))<<2;
@@ -66,55 +66,55 @@ ByteBlock Heart = lc.rotate180({
   B00011000,
 });
 
-//The number of ByteBlocks the message consists of.
+//Die Anzahl der ByteBlocks aus der die Nachricht besteht.
 const unsigned int message_length = 6;
 
-//This array defines the message that will be displayed on the matrix.
-//By default it says 'Jahallo!! :heart:' and can be modified however needed.
+//Dieses Array definiert die Nachricht, welche auf der Matrix angezeigt wird.
+//Standardmäßig wird 'Jahallo!! :heart:' ausgegeben, kann aber frei geändert werden.
 ByteBlock message[message_length] = {
-  J&(a>>5), //'J' and first half of 'a'
-  (a<<3)&(h>>2), // second half of 'a' and 'h'
-  (a<<1)&(l>>5), // 'a' and 'l'
-  l&(o>>3), // 'l' and 'o'
-  (AZ<<1)&(AZ>>1)&((++Heart)>>5), // ! and ! and first half of ':heart:'
-  (++Heart)<<4 // second half of ':heart:' (change the 4 to a 3 if you want to see the complete heart)
+  J&(a>>5), //'J' und erste Hälfte von 'a'
+  (a<<3)&(h>>2), // zweite Hälfte von 'a' und 'h'
+  (a<<1)&(l>>5), // 'a' und 'l'
+  l&(o>>3), // 'l' und 'o'
+  (AZ<<1)&(AZ>>1)&((++Heart)>>5), // ! und ! und erste Hälfte von ':heart:'
+  (++Heart)<<4 // zweite Hälfte von ':heart:' (ändere die 4 zu einer 3 um das ganze Herz anzuzeigen)
 };
 
 
 void setup(){
-  //setup the config with the same size as the controller
+  //erstelle eine Konfiguration mit der gleichen Größe wie der Controller
   controller_configuration<Segments,1> conf;
-  //use the specified CS pin
+  //Nutze den CS pin
   conf.SPI_CS = CS;
-  //set the transfer speed to the highest stable value
+  //Setzt die Übertragungsgeschwindigkeit auf den höchsten stabilen Wert
   conf.spiTransferSpeed = 10000000;
-  //enable hardware spi
+  //schaltet Hardware SPI an
   conf.useHardwareSpi = true;
 
-  //init the controller from the configuration
+  //initialisiere den Controller mit der Konfiguratin
   lc.init(conf);
 
-  //set the brightness as low as possible
+  //setzte die Helligkeit auf das niedrigste
   lc.setIntensity(0);
 }
 
 void loop(){
-    //clear just to be safe
+    //sicherheitshalber Matrix leeren
     lc.clearMatrix();
 
-    //shift data in
-    //each segment of the message will be shifted in one by one
+    //Daten reinschieben
+    //Jedes Segment der Nachricht wird einzeln reingeschoben
     for(unsigned int i = 0;i < message_length;i++){
-      //since each segment has a width of 8 pixels there is another loop
+      //Da jedes Segment eine Breite von 8 pixeln hat noch eine Schleife
       for(unsigned int j = 0;j < 8;j++){
-        //move the columns in one by one and wait a bit
+        //Schiebt alles nach links und fügt rechts eine Spalte der Nachricht rein
         lc.moveLeft(lc.makeColumns(message[i])[j]);
         delay(delayTime);
       }
     }
 
-    //shift the contents out
-    //since the sice is 8*segments simply shift left that many times
+    //schiebt die daten raus
+    //Da die größe der Matrix 8*Segments ist muss einfach so oft geschoben werden.
     for(unsigned int i = 0; i < 8*Segments;i++){
       lc.moveLeft();
       delay(delayTime);

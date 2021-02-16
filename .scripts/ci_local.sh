@@ -25,11 +25,11 @@ if [ $BUILDMODE == "fast" ]
 then
     echo "doing the fast test with 2 boards and 2 examples"
     boards=("esp32dev" "ATmega1280")
-    examples=("LedControllerDemoRocket" "LedControllerDemoHwSPI")
+    examples=("Led-matrix-rocket" "Led-matrix-rocket-hwSPI")
 else
     echo "doing the full test with 5 boards and 4 examles"
     boards=("esp32dev" "d1_mini" "uno" "ATmega1280" "leonardo" "due" "teensy41" "bluefruitmicro")
-    examples=("LedControllerDemoRocket" "LedControllerDemoRocketMulti" "LedControllerDemoCounting" "LedControllerDemoHwSPI" "LCDemo7Segment")
+    examples=("Led-matrix-rocket" "Led-matrix-rocket-multi" "Led-Matrix-counting" "Led-matrix-rocket-hwSPI" "Led-matrix-message")
 fi
 
 build (){
