@@ -74,7 +74,7 @@ void LedController<columns,rows>::shutdownSegment(unsigned int segmentNumber) {
     return;
   }
 
-  spiTransfer(segmentNumber, OP_SHUTDOWN, 0);
+  spiTransfer(segmentNumber, MAX72XX::OP_SHUTDOWN, 0);
 }
 
 template <size_t columns, size_t rows>
@@ -83,7 +83,7 @@ void LedController<columns,rows>::activateSegment(unsigned int segmentNumber) {
     return;
   }
 
-  spiTransfer(segmentNumber, OP_SHUTDOWN, 1);
+  spiTransfer(segmentNumber, MAX72XX::OP_SHUTDOWN, 1);
 }
 
 template <size_t columns, size_t rows>
@@ -187,7 +187,7 @@ void LedController<columns,rows>::setDigit(unsigned int segmentNumber, unsigned 
     return;
   };
 
-  byte v = pgm_read_byte_near(charTable + value);
+  byte v = pgm_read_byte_near(MAX72XX::charTable + value);
   if (dp) {
     v |= B10000000;
   };
@@ -208,7 +208,7 @@ void LedController<columns,rows>::setChar(unsigned int segmentNumber, unsigned i
     index = 32;
   }
 
-  byte v = pgm_read_byte_near(charTable + index);
+  byte v = pgm_read_byte_near(MAX72XX::charTable + index);
   if (dp) {
     v |= B10000000;
   };

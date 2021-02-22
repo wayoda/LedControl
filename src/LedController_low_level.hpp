@@ -12,22 +12,6 @@
 
 #include "LedController_template.hpp"
 
-// the opcodes for the MAX7221 and MAX7219
-#define OP_NOOP 0
-#define OP_DIGIT0 1
-#define OP_DIGIT1 2
-#define OP_DIGIT2 3
-#define OP_DIGIT3 4
-#define OP_DIGIT4 5
-#define OP_DIGIT5 6
-#define OP_DIGIT6 7
-#define OP_DIGIT7 8
-#define OP_DECODEMODE 9
-#define OP_INTENSITY 10
-#define OP_SCANLIMIT 11
-#define OP_SHUTDOWN 12
-#define OP_DISPLAYTEST 15
-
 template <size_t columns, size_t rows>
 void LedController<columns,rows>::spiTransfer(unsigned int segment, byte opcode, byte data) {
   if (!initilized || segment >= conf.SegmentCount()) {
@@ -86,7 +70,7 @@ void LedController<columns,rows>::setScanLimit(unsigned int segmentNumber,
     return;
   };
   if (limit < 8) {
-    spiTransfer(segmentNumber, OP_SCANLIMIT, limit);
+    spiTransfer(segmentNumber, MAX72XX::OP_SCANLIMIT, limit);
   };
 }
 
@@ -112,7 +96,7 @@ void LedController<columns,rows>::setIntensity(unsigned int segmentNumber,
     return;
   }
 
-  spiTransfer(segmentNumber, OP_INTENSITY, newIntesityLevel);
+  spiTransfer(segmentNumber, MAX72XX::OP_INTENSITY, newIntesityLevel);
 }
 
 template <size_t columns, size_t rows>
@@ -121,11 +105,11 @@ void LedController<columns,rows>::refreshSegment(unsigned int segmentNumber) {
     return;
   }
 
-  spiTransfer(segmentNumber, OP_DISPLAYTEST, 0);
+  spiTransfer(segmentNumber, MAX72XX::OP_DISPLAYTEST, 0);
   // scanlimit is set to max on startup
   setScanLimit(segmentNumber, 7);
   // decode is done in source
-  spiTransfer(segmentNumber, OP_DECODEMODE, 0);
+  spiTransfer(segmentNumber, MAX72XX::OP_DECODEMODE, 0);
   clearSegment(segmentNumber);
   // we go into shutdown-mode on startup
   activateSegment(segmentNumber);
