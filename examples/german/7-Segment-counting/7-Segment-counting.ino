@@ -56,7 +56,7 @@ void setLEDs (unsigned long long number) {
 
 void setup(){
   //Sicherstellen, dass die Konfiguration gültig ist
-  static_assert(positionOffset+digitsPerSegment<9);
+  static_assert(positionOffset+digitsPerSegment<9,"invalid configuration");
 
   //initialisieren des LedController Objektes mit hardware SPI und einer Reihe
   lc.init(CS);

@@ -245,4 +245,47 @@ class ByteRow{
             return block;
         }
 
+        /**
+         * \~english
+         * @brief checks if two byteRows have identical data
+         * 
+         * @param other the other byteRow
+         * @return true the data is equal
+         * @return false the data is not equal
+         * 
+         * \~german
+         * @brief prüft ob zwei ByteRow objekte identische Daten haben
+         * 
+         * @param other das andere byteRow Objekt
+         * @return true die Daten sind identisch
+         * @return false die Daten sind nicht identisch
+         */
+        virtual bool operator==(const ByteRow<SIZE>& other) const{
+            for (size_t i = 0; i < SIZE;i++){
+                if(this->at(i) != other.at(i)){return false;};
+            }
+            return true;
+        }
+
+/**
+         * @brief checks if two byteRows do not have identical data
+         * 
+         * @param other the other byteRow
+         * @return true the data is not equal
+         * @return false the data is equal
+         * 
+         * \~german
+         * @brief prüft ob zwei ByteRow objekte nicht identische Daten haben
+         * 
+         * @param other das andere byteRow Objekt
+         * @return true die Daten sind nicht identisch
+         * @return false die Daten sind identisch
+         */
+        virtual bool operator!=(const ByteRow<SIZE>& other) const{
+            for (size_t i = 0; i < SIZE;i++){
+                if(this->at(i) == other.at(i)){return false;};
+            }
+            return true;
+        }
+
 };

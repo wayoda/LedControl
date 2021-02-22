@@ -3,6 +3,7 @@ doc/man
 doxywarn*.txt
 
 .vscode
+.idea
 logs
 .pio
 src/*.ino
