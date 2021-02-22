@@ -1,17 +1,13 @@
 #pragma once
 
-#if (ARDUINO >= 100)
-#include <Arduino.h>
-#define PRINTLN(x) Serial.println(x)
-#else
-#if __has_include("ArduinoFake.h")
-#include "ArduinoFake.h"
-#include <iostream>
-#define PRINTLN(x) std::cout << x << std::endl
-#else
-#include <WProgram.h>
-#define PRINTLN(x) Serial.println(x)
-#endif
+///This check allows the user to define their own PRINTLN method.
+///By doing that more boards and platforms can be supported even
+///if they are not supported by the Arduino IDE.
+#ifndef PRINTLN
+  #if (ARDUINO >= 100)
+    #include <Arduino.h>
+    #define PRINTLN(x) Serial.println(x)
+  #endif
 #endif
 
 #define PRINTLN_IF(condition,x) if(condition){PRINTLN(x);}

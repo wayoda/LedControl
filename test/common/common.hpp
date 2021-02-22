@@ -1,6 +1,13 @@
 #pragma once
 
-#define SPI_OUTPUT
+#ifndef ARDUINO
+    #if __has_include("ArduinoFake.h")
+        #include "ArduinoFake.h"
+        #include <iostream>
+        #define PRINTLN(x) std::cout << x << std::endl
+    #endif
+#endif
+
 #include "LedController.hpp"
 #include <unity.h>
 
