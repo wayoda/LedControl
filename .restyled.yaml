@@ -1,0 +1,13 @@
+restylers:
+  - name:  astyle
+    enabled: true
+    arguments: ["--style=google","--indent-namespaces", "--indent-col1-comments"]
+    include:
+      - "**/*.hpp"
+      - "**/*.cpp"
+  - name:  astyle
+    enabled: true
+    arguments: ["--style=attach","--indent=spaces=2", "--indent-col1-comments"]
+    include:
+      - "**/*.ino"
+    

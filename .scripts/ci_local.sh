@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BUILDMODE="full"
-MAX_CORES="$(nproc)"
+MAX_CORES="4"
 
 if [ $1 ]
 then
@@ -29,7 +29,7 @@ then
 else
     echo "doing the full test with 5 boards and 4 examles"
     boards=("esp32dev" "d1_mini" "uno" "ATmega1280" "leonardo" "due" "teensy41" "bluefruitmicro")
-    examples=("Led-matrix-rocket" "Led-matrix-rocket-multi" "Led-Matrix-counting" "Led-matrix-rocket-hwSPI" "Led-matrix-message" "7-Segment-counting")
+    examples=("Led-matrix-rocket" "Led-matrix-rocket-multi" "Led-matrix-counting" "Led-matrix-rocket-hwSPI" "Led-matrix-message" "7-Segment-counting")
 fi
 
 build (){
@@ -44,6 +44,8 @@ build (){
 }
 
 if [ $BUILDMODE != "test-only" ] && [ $BUILDMODE != "scan-only" ]
+rm -rf logs
+mkdir logs
 then
     for ex in "${examples[@]}"; do 
         for board in "${boards[@]}"; do 

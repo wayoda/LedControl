@@ -1,8 +1,13 @@
 #include "common.hpp"
 
-controller_configuration<4,1>& get_conf(){
+const ByteBlock& testBlock() {
+    static auto dat = ByteBlock({0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80});
+    return dat;
+}
+
+controller_configuration<4,1>& get_conf() {
     static controller_configuration<4,1> conf;
-    if(!conf.isValid()){
+    if(!conf.isValid()) {
         conf.SPI_CS = 16;
         conf.SPI_CLK = 15;
         conf.SPI_MOSI = 14;
@@ -13,9 +18,9 @@ controller_configuration<4,1>& get_conf(){
     return conf;
 }
 
-controller_configuration<4,1>& get_conf_SPI(){
+controller_configuration<4,1>& get_conf_SPI() {
     static controller_configuration<4,1> conf;
-    if(!conf.isValid()){
+    if(!conf.isValid()) {
         conf.SPI_CS = 16;
         conf.useHardwareSpi = true;
         conf.isValid();
@@ -24,11 +29,11 @@ controller_configuration<4,1>& get_conf_SPI(){
 }
 
 
-controller_configuration<4,4>& get_multi_conf(){
+controller_configuration<4,4>& get_multi_conf() {
     static controller_configuration<4,4> conf;
-    if(!conf.isValid()){
+    if(!conf.isValid()) {
         conf.SPI_CLK = 15;
-        conf.SPI_MOSI = 14;      
+        conf.SPI_MOSI = 14;
         conf.SPI_CS = 13;
         conf.useHardwareSpi = false;
         conf.isValid();
@@ -37,13 +42,13 @@ controller_configuration<4,4>& get_multi_conf(){
     return conf;
 }
 
-controller_configuration<4,4>& get_multi_conf_SPI(){
+controller_configuration<4,4>& get_multi_conf_SPI() {
     static controller_configuration<4,4> conf;
-    if(!conf.isValid()){
+    if(!conf.isValid()) {
         conf.SPI_CS = 13;
         conf.useHardwareSpi = true;
         conf.isValid();
     }
-    
+
     return conf;
 }
