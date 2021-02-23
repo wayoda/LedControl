@@ -29,7 +29,7 @@
 LedController<Segments,1> lc = LedController<Segments,1>();  
 
 //Das ist mein Pixelart und ist die Raktete die angezeigt wird.
-ByteBlock rocket= {
+sakurajin::ByteBlock rocket= {
   B00000000,
   B00001111,
   B00111110,
@@ -40,7 +40,7 @@ ByteBlock rocket= {
   B00000000
 };
 
-ByteBlock rocketColumns;
+sakurajin::ByteBlock rocketColumns;
 
 //die LED wechselt den Zustand der internen LED
 void switchLED(){
@@ -61,7 +61,7 @@ void setup(){
   //Hier wird ein Array aus Spalten der Rakete erstellt.
   //Dies wird vewendet, um die Rakete Stück für Stück reinzuschieben
   //Man kann auch rocketColumns = rocket schreiben, aber dann wird die Rakete um 90 Grad gedreht sein.
-  rocketColumns = ByteBlock::makeColumns(rocket);
+  rocketColumns = sakurajin::ByteBlock::makeColumns(rocket);
  
   //Erlaubt das Schalten der internen LED
   pinMode(13, OUTPUT);

@@ -53,8 +53,15 @@ then
             build "$ex" "$board" &
         done
     done
+
+    wait
+    
+    if [ $? -eq 1 ]
+    then
+        echo "error while building"
+        exit 1
+    fi
 fi
-wait
 
 if [ $BUILDMODE != "scan-only" ]
 then

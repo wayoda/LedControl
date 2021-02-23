@@ -19,7 +19,7 @@
 
 LedController<Segments,1> lc = LedController<Segments,1>();  
 
-ByteBlock rocket= {
+sakurajin::ByteBlock rocket= {
   B00000000,
   B00001111,
   B00111110,
@@ -30,7 +30,7 @@ ByteBlock rocket= {
   B00000000
 };
 
-ByteBlock rocketColumns;
+sakurajin::ByteBlock rocketColumns;
 
 void switchLED(){
   static bool LEDON = false;
@@ -46,7 +46,7 @@ void setup(){
   //Only the following line is different from the example without hardware SPI since in this case only one Pin needs to be specified
   lc.init(CS);
 
-  rocketColumns = ByteBlock::makeColumns(rocket);
+  rocketColumns = sakurajin::ByteBlock::makeColumns(rocket,&rocket);
 
   pinMode(13, OUTPUT);
 

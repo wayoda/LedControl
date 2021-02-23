@@ -75,7 +75,7 @@ class LedController {
      * @brief Dieses Array beinhaltet den Status von allen LEDs.
      *
      */
-    ByteBlock LedStates[columns*rows];
+    sakurajin::ByteBlock LedStates[columns*rows];
 
     /**
      * \~english
@@ -85,7 +85,7 @@ class LedController {
      * @brief Die Konfiguration des LedController
      *
      */
-    controller_configuration<columns,rows> conf;
+    sakurajin::controller_configuration<columns,rows> conf;
 
     /**
      * \~english
@@ -231,7 +231,7 @@ class LedController {
      *
      * @param configuration die Konfiguration die zum erstellen verwendet werden soll.
      */
-    LedController(const controller_configuration<columns,rows> &configuration);
+    LedController(const sakurajin::controller_configuration<columns,rows> &configuration);
 
     /**
      * \~english
@@ -309,7 +309,7 @@ class LedController {
      *
      * @param configuration Die Konfiguration, die verwendet werden soll.
      */
-    void init(const controller_configuration<columns,rows> &configuration);
+    void init(const sakurajin::controller_configuration<columns,rows> &configuration);
 
     /**
      * \~english
@@ -350,12 +350,12 @@ class LedController {
      * displayed on that segment
      *
      * \~german
-     * @brief Zeige einen gegebenen ByteBlock auf einem Segemnt an (setzte alle 8 Zeilen).
+     * @brief Zeige einen gegebenen sakurajin::ByteBlock auf einem Segemnt an (setzte alle 8 Zeilen).
      *
      * @param segmentindex Die Nummer des gewünschten Segments
      * @param data Die Daten, die angezeigt werden sollen.
      */
-    void displayOnSegment(unsigned int segmentindex, ByteBlock data);
+    void displayOnSegment(unsigned int segmentindex, sakurajin::ByteBlock data);
 
     /**
      * \~english
@@ -367,13 +367,13 @@ class LedController {
      * displayed on that segment
      *
      * \~german
-     * @brief Zeige einen gegebenen ByteBlock auf einem Segemnt an (setzte alle 8 Zeilen).
+     * @brief Zeige einen gegebenen sakurajin::ByteBlock auf einem Segemnt an (setzte alle 8 Zeilen).
      *
      * @param column Die Spalte in der das Segment ist.
      * @param row_num Die Zeile in der das Segment ist.
      * @param data Die Daten, die angezeigt werden sollen.
      */
-    void displayOnSegment(unsigned int column, unsigned int row_num, ByteBlock data);
+    void displayOnSegment(unsigned int column, unsigned int row_num, sakurajin::ByteBlock data);
 
     /**
      * \~english
@@ -381,31 +381,31 @@ class LedController {
      *
      * @param column the column where the wanted segment is
      * @param row_num the row where the wanted segment is
-     * @return ByteBlock the requested segment
+     * @return sakurajin::ByteBlock the requested segment
      *
      * \~german
      * @brief Hole den Zustand eines Segments.
      *
      * @param column Die Spalte in der das Segment ist.
      * @param row_num Die Zeile in der das Segment ist.
-     * @return ByteBlock Die Daten, die in dem Segment angezeigt werden.
+     * @return sakurajin::ByteBlock Die Daten, die in dem Segment angezeigt werden.
      */
-    ByteBlock getSegmentData(unsigned int column, unsigned int row_num);
+    sakurajin::ByteBlock getSegmentData(unsigned int column, unsigned int row_num);
 
     /**
      * \~english
      * @brief Get the Segment Data of a specific Segment
      *
      * @param segmentindex the index of whose data you want to have
-     * @return ByteBlock the requested segment
+     * @return sakurajin::ByteBlock the requested segment
      *
      * \~german
      * @brief Hole den Zustand eines Segments.
      *
      * @param segmentindex Die Nummer des gewünschten Segments
-     * @return ByteBlock Die Daten, die in dem Segment angezeigt werden.
+     * @return sakurajin::ByteBlock Die Daten, die in dem Segment angezeigt werden.
      */
-    ByteBlock getSegmentData(unsigned int segmentindex);
+    sakurajin::ByteBlock getSegmentData(unsigned int segmentindex);
 
     /**
      * \~english
@@ -759,106 +759,106 @@ class LedController {
     /**
      * \~english
      * @brief moves the data up by one and 0x00 will be shifted in
-     * @return ByteRow<columns> This Array contains the bytes that will be shifted out on each Row.
+     * @return sakurajin::ByteRow<columns> This Array contains the bytes that will be shifted out on each Row.
      *
      * \~german
      * @brief Schibet die Daten eins nach oben und 0x00 wird unten reingeschoben.
-     * @return ByteRow<rows> Die Reihen die rausgeschoben werden.
+     * @return sakurajin::ByteRow<rows> Die Reihen die rausgeschoben werden.
      */
-    ByteRow<columns> moveUp();
+    sakurajin::ByteRow<columns> moveUp();
 
     /**
      * \~english
      * @brief moves the data down by one and 0x00 will be shifted in
-     * @return ByteRow<columns> This Array contains the bytes that will be shifted out on each Row.
+     * @return sakurajin::ByteRow<columns> This Array contains the bytes that will be shifted out on each Row.
      *
      * \~german
      * @brief Schibet die Daten eins nach unten und 0x00 wird oben reingeschoben.
-     * @return ByteRow<rows> Die Reihen die rausgeschoben werden.
+     * @return sakurajin::ByteRow<rows> Die Reihen die rausgeschoben werden.
      */
-    ByteRow<columns> moveDown();
+    sakurajin::ByteRow<columns> moveDown();
 
     /**
      * \~english
      * @brief moves the data left by one and 0x00 will be shifted in
-     * @return ByteRow<rows> This Array contains the bytes that will be shifted out on each Row.
+     * @return sakurajin::ByteRow<rows> This Array contains the bytes that will be shifted out on each Row.
      *
      * \~german
      * @brief Schibet die Daten eins nach links und 0x00 wird recht reingeschoben.
-     * @return ByteRow<rows> Die Splaten die rausgeschoben werden.
+     * @return sakurajin::ByteRow<rows> Die Splaten die rausgeschoben werden.
      */
-    ByteRow<rows> moveLeft();
+    sakurajin::ByteRow<rows> moveLeft();
 
     /**
      * \~english
      * @brief moves the data right by one and 0x00 will be shifted in
-     * @return ByteRow<rows> This Array contains the bytes that will be shifted out on each Row.
+     * @return sakurajin::ByteRow<rows> This Array contains the bytes that will be shifted out on each Row.
      *
      * \~german
      * @brief Schibet die Daten eins nach rechts und 0x00 wird links reingeschoben.
-     * @return ByteRow<rows> Die Splaten die rausgeschoben werden.
+     * @return sakurajin::ByteRow<rows> Die Splaten die rausgeschoben werden.
      */
-    ByteRow<rows> moveRight();
+    sakurajin::ByteRow<rows> moveRight();
 
     /**
      * \~english
      * @brief moves all rows to the left.
      *
      * @param shiftedInColumn This Array contains what will be shifted in on each Row.
-     * @return ByteRow<rows> This Array contains the bytes that will be shifted out on each Row.
+     * @return sakurajin::ByteRow<rows> This Array contains the bytes that will be shifted out on each Row.
      *
      * \~german
      * @brief Schiebt alle Reihen eins nach links
      *
      * @param shiftedInColumn Die Splaten die reingeschoben werden.
-     * @return ByteRow<rows> Die Splaten die rausgeschoben werden.
+     * @return sakurajin::ByteRow<rows> Die Splaten die rausgeschoben werden.
      */
-    ByteRow<rows> moveLeft(const ByteRow<rows>& shiftedInColumn);
+    sakurajin::ByteRow<rows> moveLeft(const sakurajin::ByteRow<rows>& shiftedInColumn);
 
     /**
      * \~english
      * @brief moves all rows to the right.
      *
      * @param shiftedInColumn This Array contains what will be shifted in on each Row.
-     * @return ByteRow<rows> This Array contains the bytes that will be shifted out on each Row.
+     * @return sakurajin::ByteRow<rows> This Array contains the bytes that will be shifted out on each Row.
      *
      * \~german
      * @brief Schiebt alle Reihen eins nach rechts
      *
      * @param shiftedInColumn Die Splaten die reingeschoben werden.
-     * @return ByteRow<rows> Die Splaten die rausgeschoben werden.
+     * @return sakurajin::ByteRow<rows> Die Splaten die rausgeschoben werden.
      */
-    ByteRow<rows> moveRight(const ByteRow<rows>& shiftedInColumn);
+    sakurajin::ByteRow<rows> moveRight(const sakurajin::ByteRow<rows>& shiftedInColumn);
 
     /**
      * \~english
      * @brief moves all columns up.
      *
      * @param shiftedInColumn This Array contains what will be shifted in on each Row
-     * @return ByteRow<columns> This Array contains the bytes that will be shifted out on each Row.
+     * @return sakurajin::ByteRow<columns> This Array contains the bytes that will be shifted out on each Row.
      *
      * \~german
      * @brief Schiebt alle Splaten eins nach oben
      *
      * @param shiftedInColumn Die Reihen die reingeschoben werden.
-     * @return ByteRow<rows> Die Reihen die rausgeschoben werden.
+     * @return sakurajin::ByteRow<rows> Die Reihen die rausgeschoben werden.
      */
-    ByteRow<columns> moveUp(const ByteRow<columns>& shiftedInColumn);
+    sakurajin::ByteRow<columns> moveUp(const sakurajin::ByteRow<columns>& shiftedInColumn);
 
     /**
      * \~english
      * @brief moves all columns down.
      *
      * @param shiftedInColumn This Array contains what will be shifted in on each Row.
-     * @return ByteRow<columns> This Array contains the bytes that will be shifted out on each Row.
+     * @return sakurajin::ByteRow<columns> This Array contains the bytes that will be shifted out on each Row.
      *
      * \~german
      * @brief Schiebt alle Splaten eins nach unten
      *
      * @param shiftedInColumn Die Reihen die reingeschoben werden.
-     * @return ByteRow<rows> Die Reihen die rausgeschoben werden.
+     * @return sakurajin::ByteRow<rows> Die Reihen die rausgeschoben werden.
      */
-    ByteRow<columns> moveDown(const ByteRow<columns>& shiftedInColumn);
+    sakurajin::ByteRow<columns> moveDown(const sakurajin::ByteRow<columns>& shiftedInColumn);
 
     /**
      * \~english
@@ -878,48 +878,48 @@ class LedController {
 
     /**
      * \~english
-     * @brief Reverse an ByteBlock of 8 bytes (mirror it)
+     * @brief Reverse an sakurajin::ByteBlock of 8 bytes (mirror it)
      *
-     * @param input The ByteBlock that should be mirrored
-     * @return ByteBlock The reversed ByteBlock
+     * @param input The sakurajin::ByteBlock that should be mirrored
+     * @return sakurajin::ByteBlock The reversed sakurajin::ByteBlock
      *
      * \~german
      * @brief Diese Funktion kehrt die Reihnfolge der einzelnen Zeilen um (spiegeln in x-Richtung).
      *
-     * @param input Der ByteBlock der umgekehrt werden soll.
-     * @return ByteBlock Der umgekehrte ByteBlock.
+     * @param input Der sakurajin::ByteBlock der umgekehrt werden soll.
+     * @return sakurajin::ByteBlock Der umgekehrte sakurajin::ByteBlock.
      */
-    ByteBlock reverse(ByteBlock input);
+    sakurajin::ByteBlock reverse(sakurajin::ByteBlock input);
 
     /**
      * \~english
-     * @brief Turns an ByteBlock of rows into an ByteBlock of columns
+     * @brief Turns an sakurajin::ByteBlock of rows into an sakurajin::ByteBlock of columns
      *
-     * @param rowArray the ByteBlock of rows of which you want the columns of
-     * @return ByteBlock The Columns of the given ByteBlock
+     * @param rowArray the sakurajin::ByteBlock of rows of which you want the columns of
+     * @return sakurajin::ByteBlock The Columns of the given sakurajin::ByteBlock
      *
      * \~german
      * @brief Wandelt einen Block aus Zeilen in einen Block aus Spalten.
      *
      * @param rowArray Der Block aus Zeilen
-     * @return ByteBlock Die Splaten des gegebenen Blocks
+     * @return sakurajin::ByteBlock Die Splaten des gegebenen Blocks
      */
-    ByteBlock makeColumns(ByteBlock rowArray);
+    sakurajin::ByteBlock makeColumns(sakurajin::ByteBlock rowArray);
 
     /**
      * \~english
-     * @brief rotate an ByteBlock by 180 degrees
+     * @brief rotate an sakurajin::ByteBlock by 180 degrees
      *
-     * @param input the ByteBlock that will be rotated
-     * @return ByteBlock The rotated ByteBlock
+     * @param input the sakurajin::ByteBlock that will be rotated
+     * @return sakurajin::ByteBlock The rotated sakurajin::ByteBlock
      *
      * \~german
-     * @brief rotiert einen ByteBlock um 180 Grad
+     * @brief rotiert einen sakurajin::ByteBlock um 180 Grad
      *
-     * @param input Der zu rotierende ByteBlock.
-     * @return ByteBlock Der rotierte byteBlock.
+     * @param input Der zu rotierende sakurajin::ByteBlock.
+     * @return sakurajin::ByteBlock Der rotierte byteBlock.
      */
-    ByteBlock rotate180(ByteBlock input);
+    sakurajin::ByteBlock rotate180(sakurajin::ByteBlock input);
 
     /**
      * \~english
@@ -932,7 +932,7 @@ class LedController {
      *
      * @return controlller_configuration Die aktuelle Konfiguration
      */
-    const controller_configuration<columns,rows>& getConfig();
+    const sakurajin::controller_configuration<columns,rows>& getConfig();
 
     //The following methods are deprecated and will be removed in the future
     //They only exist to help the transition to a new version
@@ -968,7 +968,7 @@ class LedController {
 
     /**
      * \~
-     * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+     * @deprecated the function with sakurajin::ByteBlock as return type should be used. Will be removed in version 2.2.0
      * @todo remove function in version 2.2.0
      *
      * \~english
@@ -977,11 +977,11 @@ class LedController {
      * @param row_num the row where the wanted segment is
      * @param resultLocation the location where the data should be stored
      */
-    void getSegmentData(unsigned int column, unsigned int row_num, ByteBlock* resultLocation);
+    void getSegmentData(unsigned int column, unsigned int row_num, sakurajin::ByteBlock* resultLocation);
 
     /**
      * \~
-     * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+     * @deprecated the function with sakurajin::ByteBlock as return type should be used. Will be removed in version 2.2.0
      * @todo remove function in version 2.2.0
      *
      * \~english
@@ -989,11 +989,11 @@ class LedController {
      * @param segmentindex the index of whose data you want to have
      * @param resultLocation the location where the data should be stored
      */
-    void getSegmentData(unsigned int segmentindex, ByteBlock *resultLocation);
+    void getSegmentData(unsigned int segmentindex, sakurajin::ByteBlock *resultLocation);
 
     /**
      * \~
-     * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+     * @deprecated the function with sakurajin::ByteBlock as return type should be used. Will be removed in version 2.2.0
      * @todo remove function in version 2.2.0
      *
      * \~english
@@ -1001,11 +1001,11 @@ class LedController {
      * @param rowArray the array of rows of which you want the columns
      * @param columnArray The address where the result will be stored
      */
-    void makeColumns(ByteBlock rowArray, ByteBlock *columnArray);
+    void makeColumns(sakurajin::ByteBlock rowArray, sakurajin::ByteBlock *columnArray);
 
     /**
      * \~
-     * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+     * @deprecated the function with sakurajin::ByteBlock as return type should be used. Will be removed in version 2.2.0
      * @todo remove function in version 2.2.0
      *
      * \~english
@@ -1013,11 +1013,11 @@ class LedController {
      * @param input The array that should be mirrored
      * @param reversedInput The address where the result will be stored
      */
-    void reverse(ByteBlock input, ByteBlock *reversedInput);
+    void reverse(sakurajin::ByteBlock input, sakurajin::ByteBlock *reversedInput);
 
     /**
      * \~
-     * @deprecated the function with ByteBlock as return type should be used. Will be removed in version 2.2.0
+     * @deprecated the function with sakurajin::ByteBlock as return type should be used. Will be removed in version 2.2.0
      * @todo remove function in version 2.2.0
      *
      * \~english
@@ -1025,11 +1025,11 @@ class LedController {
      * @param input the array that will be rotated
      * @param rotatedInput The address where the result will be stored
      */
-    void rotate180(ByteBlock input, ByteBlock *rotatedInput);
+    void rotate180(sakurajin::ByteBlock input, sakurajin::ByteBlock *rotatedInput);
 
     /**
      * \~
-     * @deprecated the function with ByteRow as return type should be used. Will be removed in version 2.2.0
+     * @deprecated the function with sakurajin::ByteRow as return type should be used. Will be removed in version 2.2.0
      * @todo remove function in version 2.2.0
      *
      * \~english
@@ -1039,11 +1039,11 @@ class LedController {
      * @param shiftedOutRow The address of the row that will be shifted out on the
      * bottom
      */
-    void moveUp(const ByteRow<columns>& shiftedInRow, ByteRow<columns>* shiftedOutRow);
+    void moveUp(const sakurajin::ByteRow<columns>& shiftedInRow, sakurajin::ByteRow<columns>* shiftedOutRow);
 
     /**
      * \~
-     * @deprecated the function with ByteRow as return type should be used. Will be removed in version 2.2.0
+     * @deprecated the function with sakurajin::ByteRow as return type should be used. Will be removed in version 2.2.0
      * @todo remove function in version 2.2.0
      *
      * \~english
@@ -1053,11 +1053,11 @@ class LedController {
      * @param shiftedOutRow The address of the row that will be shifted out on the
      * bottom
      */
-    void moveDown(const ByteRow<columns>& shiftedInRow, ByteRow<columns>* shiftedOutRow);
+    void moveDown(const sakurajin::ByteRow<columns>& shiftedInRow, sakurajin::ByteRow<columns>* shiftedOutRow);
 
     /**
      * \~
-     * @deprecated the function with ByteRow as return type should be used. Will be removed in version 2.2.0
+     * @deprecated the function with sakurajin::ByteRow as return type should be used. Will be removed in version 2.2.0
      * @todo remove function in version 2.2.0
      *
      * \~english
@@ -1065,11 +1065,11 @@ class LedController {
      * @param shiftedOutRow The address of the row that will be shifted out on the
      * bottom
      */
-    void moveUp(ByteRow<columns>* shiftedOutRow);
+    void moveUp(sakurajin::ByteRow<columns>* shiftedOutRow);
 
     /**
      * \~
-     * @deprecated the function with ByteRow as return type should be used. Will be removed in version 2.2.0
+     * @deprecated the function with sakurajin::ByteRow as return type should be used. Will be removed in version 2.2.0
      * @todo remove function in version 2.2.0
      *
      * \~english
@@ -1077,11 +1077,11 @@ class LedController {
      * @param shiftedOutRow The address of the row that will be shifted out on the
      * bottom
      */
-    void moveDown(ByteRow<columns>* shiftedOutRow);
+    void moveDown(sakurajin::ByteRow<columns>* shiftedOutRow);
 
     /**
      * \~
-     * @deprecated the function with ByteRow as return type should be used. Will be removed in version 2.2.0
+     * @deprecated the function with sakurajin::ByteRow as return type should be used. Will be removed in version 2.2.0
      * @todo remove function in version 2.2.0
      *
      * \~english
@@ -1091,11 +1091,11 @@ class LedController {
      * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
      * @param shiftedOutColumn This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
      */
-    void moveLeft(const ByteRow<rows>& shiftedInColumn, ByteRow<rows>* shiftedOutColumn);
+    void moveLeft(const sakurajin::ByteRow<rows>& shiftedInColumn, sakurajin::ByteRow<rows>* shiftedOutColumn);
 
     /**
      * \~
-     * @deprecated the function with ByteRow as return type should be used. Will be removed in version 2.2.0
+     * @deprecated the function with sakurajin::ByteRow as return type should be used. Will be removed in version 2.2.0
      * @todo remove function in version 2.2.0
      *
      * \~english
@@ -1105,7 +1105,7 @@ class LedController {
      * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
      * @param shiftedOutColumn This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
      */
-    void moveRight(const ByteRow<rows>& shiftedInColumn, ByteRow<rows>* shiftedOutColumn);
+    void moveRight(const sakurajin::ByteRow<rows>& shiftedInColumn, sakurajin::ByteRow<rows>* shiftedOutColumn);
 };
 
 /**

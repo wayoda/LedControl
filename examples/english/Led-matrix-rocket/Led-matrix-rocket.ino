@@ -29,7 +29,7 @@
 LedController<Segments,1> lc = LedController<Segments,1>();  
 
 //This is my pixelart of a rocket which will be used in this example
-ByteBlock rocket= {
+sakurajin::ByteBlock rocket= {
   B00000000,
   B00001111,
   B00111110,
@@ -40,7 +40,7 @@ ByteBlock rocket= {
   B00000000
 };
 
-ByteBlock rocketColumns;
+sakurajin::ByteBlock rocketColumns;
 
 //switches the state of the internal LED
 void switchLED(){
@@ -60,7 +60,7 @@ void setup(){
 
   //make a array of columns out of the rocket
   //this is needed to shift it in correctly (you can leave this line if you want to)
-  rocketColumns = ByteBlock::makeColumns(rocket);
+  rocketColumns = sakurajin::ByteBlock::makeColumns(rocket);
  
   //enable the LED to have a clock
   pinMode(13, OUTPUT);

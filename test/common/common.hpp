@@ -17,18 +17,18 @@ using namespace fakeit;
 
 #define TEST_ASSERT_EQAUL_BYTE_BLOCKS(a,b) for(unsigned int i = 0;i < 8;i++){TEST_ASSERT_EQUAL(a[i],b[i]);};
 
-controller_configuration<4,1>& get_conf();
-controller_configuration<4,1>& get_conf_SPI();
-controller_configuration<4,4>& get_multi_conf();
-controller_configuration<4,4>& get_multi_conf_SPI();
+sakurajin::controller_configuration<4,1>& get_conf();
+sakurajin::controller_configuration<4,1>& get_conf_SPI();
+sakurajin::controller_configuration<4,4>& get_multi_conf();
+sakurajin::controller_configuration<4,4>& get_multi_conf_SPI();
 
 template<size_t columns>
-const ByteRow<columns>& in_array() {
-    static ByteRow<columns> in_array = ByteRow<columns>();
+const sakurajin::ByteRow<columns>& in_array() {
+    static sakurajin::ByteRow<columns> in_array = sakurajin::ByteRow<columns>();
     for(unsigned int i = 0; i<columns; i++) {
         in_array[i]=static_cast<byte>(i);
     }
     return in_array;
 }
 
-const ByteBlock& testBlock();
+const sakurajin::ByteBlock& testBlock();

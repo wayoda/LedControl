@@ -24,7 +24,7 @@ void LedController<columns,rows>::spiTransfer(unsigned int segment, byte opcode,
     unsigned int maxbytes = conf.SegmentCount() * 2;
 
     for(unsigned int i = 0; i < maxbytes;i++){
-        spidata[i] = i%2 == 0 ? 0x00 : MAX72XX::OP_NOOP;
+        spidata[i] = i%2 == 0 ? 0x00 : sakurajin::MAX72XX::OP_NOOP;
     }
 
     // put our device data into the array
@@ -94,7 +94,7 @@ void LedController<columns,rows>::setScanLimit(unsigned int segmentNumber,
         return;
     };
     if (limit < 8) {
-        spiTransfer(segmentNumber, MAX72XX::OP_SCANLIMIT, limit);
+        spiTransfer(segmentNumber, sakurajin::MAX72XX::OP_SCANLIMIT, limit);
     };
 }
 
@@ -120,7 +120,7 @@ void LedController<columns,rows>::setIntensity(unsigned int segmentNumber,
         return;
     }
 
-    spiTransfer(segmentNumber, MAX72XX::OP_INTENSITY, newIntesityLevel);
+    spiTransfer(segmentNumber, sakurajin::MAX72XX::OP_INTENSITY, newIntesityLevel);
 }
 
 template <size_t columns, size_t rows>
@@ -129,11 +129,11 @@ void LedController<columns,rows>::refreshSegment(unsigned int segmentNumber) {
         return;
     }
 
-    spiTransfer(segmentNumber, MAX72XX::OP_DISPLAYTEST, 0);
+    spiTransfer(segmentNumber, sakurajin::MAX72XX::OP_DISPLAYTEST, 0);
     // scanlimit is set to max on startup
     setScanLimit(segmentNumber, 7);
     // decode is done in source
-    spiTransfer(segmentNumber, MAX72XX::OP_DECODEMODE, 0);
+    spiTransfer(segmentNumber, sakurajin::MAX72XX::OP_DECODEMODE, 0);
     clearSegment(segmentNumber);
     // we go into shutdown-mode on startup
     activateSegment(segmentNumber);

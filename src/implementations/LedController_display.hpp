@@ -16,7 +16,7 @@
 template <size_t columns, size_t rows>
 void LedController<columns,rows>::resetBuffers() {
     for (unsigned int j = 0; j < rows*columns*2; j++) {
-        spidata[j] = i%2 == 0 ? 0x00 : MAX72XX::OP_NOOP;  
+        spidata[j] = j%2 == 0 ? 0x00 : sakurajin::MAX72XX::OP_NOOP;  
     }
 
     for (unsigned int j = 0; j < conf.SegmentCount(); j++) {
@@ -50,7 +50,7 @@ void LedController<columns,rows>::clearMatrix() {
 
 template <size_t columns, size_t rows>
 void LedController<columns,rows>::displayOnSegment(unsigned int segmentindex,
-        ByteBlock data) {
+        sakurajin::ByteBlock data) {
     if (!initilized || segmentindex >= conf.SegmentCount()) {
         return;
     }
@@ -61,7 +61,7 @@ void LedController<columns,rows>::displayOnSegment(unsigned int segmentindex,
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::displayOnSegment(unsigned int column, unsigned int row_num, ByteBlock data) {
+void LedController<columns,rows>::displayOnSegment(unsigned int column, unsigned int row_num, sakurajin::ByteBlock data) {
     displayOnSegment(conf.getSegmentNumber(column,row_num),data);
 }
 
@@ -72,7 +72,7 @@ void LedController<columns,rows>::shutdownSegment(unsigned int segmentNumber) {
         return;
     }
 
-    spiTransfer(segmentNumber, MAX72XX::OP_SHUTDOWN, 0);
+    spiTransfer(segmentNumber, sakurajin::MAX72XX::OP_SHUTDOWN, 0);
 }
 
 template <size_t columns, size_t rows>
@@ -81,7 +81,7 @@ void LedController<columns,rows>::activateSegment(unsigned int segmentNumber) {
         return;
     }
 
-    spiTransfer(segmentNumber, MAX72XX::OP_SHUTDOWN, 1);
+    spiTransfer(segmentNumber, sakurajin::MAX72XX::OP_SHUTDOWN, 1);
 }
 
 template <size_t columns, size_t rows>
@@ -185,7 +185,7 @@ void LedController<columns,rows>::setDigit(unsigned int segmentNumber, unsigned 
         return;
     };
 
-    byte v = pgm_read_byte_near(MAX72XX::charTable + value);
+    byte v = pgm_read_byte_near(sakurajin::MAX72XX::charTable + value);
     if (dp) {
         v |= B10000000;
     };
@@ -206,7 +206,7 @@ void LedController<columns,rows>::setChar(unsigned int segmentNumber, unsigned i
         index = 32;
     }
 
-    byte v = pgm_read_byte_near(MAX72XX::charTable + index);
+    byte v = pgm_read_byte_near(sakurajin::MAX72XX::charTable + index);
     if (dp) {
         v |= B10000000;
     };

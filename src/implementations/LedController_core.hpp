@@ -20,7 +20,7 @@ LedController<columns,rows>::LedController(unsigned int dataPin, unsigned int cl
 }
 
 template <size_t columns, size_t rows>
-LedController<columns,rows>::LedController(const controller_configuration<columns,rows> &config) {
+LedController<columns,rows>::LedController(const sakurajin::controller_configuration<columns,rows> &config) {
     init(config);
 };
 
@@ -47,7 +47,7 @@ LedController<columns,rows>::LedController(const LedController &other) {
 
 template <size_t columns, size_t rows>
 void LedController<columns,rows>::init(unsigned int csPin) {
-    controller_configuration<columns,rows> config;
+    sakurajin::controller_configuration<columns,rows> config;
 
     config.SPI_CS = csPin;
     config.useHardwareSpi = true;
@@ -62,7 +62,7 @@ void LedController<columns,rows>::init(unsigned int dataPin, unsigned int clkPin
         return;
     }
 
-    controller_configuration<columns,rows> config;
+    sakurajin::controller_configuration<columns,rows> config;
 
     config.SPI_MOSI = dataPin;
     config.SPI_CLK = clkPin;
@@ -73,7 +73,7 @@ void LedController<columns,rows>::init(unsigned int dataPin, unsigned int clkPin
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::init(const controller_configuration<columns,rows> &configuration) {
+void LedController<columns,rows>::init(const sakurajin::controller_configuration<columns,rows> &configuration) {
     if (initilized) {
         return;
     }
@@ -137,14 +137,14 @@ bool LedController<columns,rows>::isInitilized() {
 
 // to be remvoed for version 2.2.0
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::getSegmentData(unsigned int column, unsigned int row_num, ByteBlock* resultLocation) {
+void LedController<columns,rows>::getSegmentData(unsigned int column, unsigned int row_num, sakurajin::ByteBlock* resultLocation) {
     getSegmentData(conf.getSegmentNumber(column,row_num),resultLocation);
 }
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
 void LedController<columns,rows>::getSegmentData(unsigned int segmentindex,
-        ByteBlock *resultLocation) {
+        sakurajin::ByteBlock *resultLocation) {
     if (!initilized || segmentindex >= conf.SegmentCount() ||
             resultLocation == nullptr) {
         return;
@@ -156,15 +156,15 @@ void LedController<columns,rows>::getSegmentData(unsigned int segmentindex,
 }
 
 template <size_t columns, size_t rows>
-ByteBlock LedController<columns,rows>::getSegmentData(unsigned int segmentindex) {
+sakurajin::ByteBlock LedController<columns,rows>::getSegmentData(unsigned int segmentindex) {
     if (!initilized || segmentindex >= conf.SegmentCount()) {
-        return ByteBlock();
+        return sakurajin::ByteBlock();
     };
     return LedStates[segmentindex];
 }
 
 template <size_t columns, size_t rows>
-ByteBlock LedController<columns,rows>::getSegmentData(unsigned int column, unsigned int row_num) {
+sakurajin::ByteBlock LedController<columns,rows>::getSegmentData(unsigned int column, unsigned int row_num) {
     return getSegmentData(conf.getSegmentNumber(column,row_num));
 }
 
@@ -174,6 +174,6 @@ unsigned int LedController<columns,rows>::getSegmentCount() {
 }
 
 template <size_t columns, size_t rows>
-const controller_configuration<columns,rows>& LedController<columns,rows>::getConfig() {
+const sakurajin::controller_configuration<columns,rows>& LedController<columns,rows>::getConfig() {
     return conf;
 }

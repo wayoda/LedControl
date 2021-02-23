@@ -25,7 +25,7 @@
 LedController<Segments,1> lc; 
 
 //Dieses Array definiert nur wie die Ziffern aussehen.
-ByteBlock digits[10] = {
+sakurajin::ByteBlock digits[10] = {
   {
     B00000000,
     B00011000,
@@ -158,7 +158,7 @@ void setup(){
   //alle Ziffern müssen um 180 Grad gedreht werden, um sie richtig anzuzeigen.
   //man kann das weglassen, aber dann sine die Ziffern falsch
   for(unsigned int i = 0; i < 10; i++){
-    digits[i] = ByteBlock::rotate180(digits[i]);
+    digits[i] = sakurajin::ByteBlock::rotate180(digits[i]);
   }
   
 }

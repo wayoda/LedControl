@@ -21,7 +21,7 @@
 LedController<Segments,1> lc; 
 
 //these are just some digits to display numbers on the matrix
-ByteBlock digits[10] = {
+sakurajin::ByteBlock digits[10] = {
   {
     B00000000,
     B00011000,
