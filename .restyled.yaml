@@ -2,9 +2,9 @@ enabled: true
 restylers:
   - name:  astyle
     arguments: ["--style=google","--indent-namespaces", "--indent-col1-comments"]
-    include: ["src/*","test/*"]
+    include: ["src/**","test/**"]
 
   - name:  astyle
     arguments: ["--style=attach","--indent=spaces=2", "--indent-col1-comments"]
-    include: ["examples/*.ino"]
+    include: ["examples/**/*.ino"]
     
