@@ -1,13 +1,13 @@
 #pragma once
 
 #ifndef ARDUINO
-    #if __has_include("ArduinoFake.h")
-        #include "ArduinoFake.h"
-        #include <iostream>
-        #define PRINTLN(x) std::cout << x << std::endl
-        using namespace fakeit;
-        #define CATCH_FAKEIT catch(const FakeitException& e){std::cout << e.what() << std::endl; const char* msg = e.what().c_str(); TEST_FAIL_MESSAGE(msg);}
-    #endif
+#if __has_include("ArduinoFake.h")
+#include "ArduinoFake.h"
+#include <iostream>
+#define PRINTLN(x) std::cout << x << std::endl
+using namespace fakeit;
+#define CATCH_FAKEIT catch(const FakeitException& e){std::cout << e.what() << std::endl; const char* msg = e.what().c_str(); TEST_FAIL_MESSAGE(msg);}
+#endif
 #endif
 
 #include "LedController.hpp"
@@ -23,9 +23,9 @@ controller_configuration<4,4>& get_multi_conf();
 controller_configuration<4,4>& get_multi_conf_SPI();
 
 template<size_t columns>
-const ByteRow<columns>& in_array(){
+const ByteRow<columns>& in_array() {
     static ByteRow<columns> in_array = ByteRow<columns>();
-    for(unsigned int i = 0;i<columns;i++){
+    for(unsigned int i = 0; i<columns; i++) {
         in_array[i]=static_cast<byte>(i);
     }
     return in_array;

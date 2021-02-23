@@ -1,7 +1,7 @@
 #include "Move.hpp"
 #include "transformation.hpp"
 
-void process(){
+void process() {
     UNITY_BEGIN();
     run_transformation_tests();
     run_move_tests();
