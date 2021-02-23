@@ -6,5 +6,5 @@ restylers:
 
   - name:  astyle
     arguments: ["--style=attach","--indent=spaces=2", "--indent-col1-comments"]
-    include: ["examples/*"]
+    include: ["examples/*.ino"]
     
