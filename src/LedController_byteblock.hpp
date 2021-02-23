@@ -79,32 +79,103 @@ public:
      */
     ByteBlock(const ByteRow<8>& data):ByteRow<8>(data){};
 
+    /**
+     * \~english
+     * @brief Turns an ByteBlock of rows into an ByteBlock of columns
+     *
+     * @return ByteBlock The Columns of the given ByteBlock
+     *
+     * \~german
+     * @brief Wandelt einen Block aus Zeilen in einen Block aus Spalten.
+     *
+     * @return ByteBlock Die Splaten des gegebenen Blocks
+     */
     ByteBlock transpose() const{
         return ByteBlock::makeColumns(*this);
     }
 
+    /**
+     * \~english
+     * @brief Turns an ByteBlock of rows into an ByteBlock of columns
+     *
+     * @return ByteBlock The Columns of the given ByteBlock
+     *
+     * \~german
+     * @brief Wandelt einen Block aus Zeilen in einen Block aus Spalten.
+     *
+     * @return ByteBlock Die Splaten des gegebenen Blocks
+     */
     ByteBlock makeColumns() const{
         return this->transpose();
     }
 
+    /**
+     * \~english
+     * @brief Reverse an ByteBlock of 8 bytes (mirror it)
+     *
+     * @return ByteBlock The reversed ByteBlock
+     *
+     * \~german
+     * @brief Diese Funktion kehrt die Reihnfolge der einzelnen Zeilen um (spiegeln in x-Richtung).
+     *
+     * @return ByteBlock Der umgekehrte ByteBlock.
+     */
     ByteBlock reverse() const{
         return ByteBlock::reverse(*this);
     }
 
+    /**
+     * \~english
+     * @brief rotate an ByteBlock by 180 degrees
+     *
+     * @return ByteBlock The rotated ByteBlock
+     *
+     * \~german
+     * @brief rotiert einen ByteBlock um 180 Grad
+     *
+     * @return ByteBlock Der rotierte byteBlock.
+     */
     ByteBlock rotate180() const{
         return ByteBlock::rotate180(*this);
     }
 
-    static byte reverse(byte var) {
+    /**
+     * \~english
+     * @brief This function changes to bitorder of a byte (useful to mirror
+     * "images" you want to display)
+     *
+     * @param input The byte that should be reversed
+     * @return byte The reversed byte
+     *
+     * \~german
+     * @brief Diese Funktion ändert die Bitreihnfolge eines Bytes bzw. kehrt ein Bit um.
+     *
+     * @param input Das byte, das umgekehrt werden soll.
+     * @return byte Das umgekehrte Byte
+     */
+    static byte reverse(byte input) {
         byte ret = 0x00;
         for (unsigned int i = 0; i < 8; i++) {
-            if (var & (0x01U << i)) {
+            if (input & (0x01U << i)) {
                 ret |= 0x80U >> i;
             }
         }
         return ret;
     }
 
+    /**
+     * \~english
+     * @brief Reverse an ByteBlock of 8 bytes (mirror it)
+     *
+     * @param input The ByteBlock that should be mirrored
+     * @return ByteBlock The reversed ByteBlock
+     *
+     * \~german
+     * @brief Diese Funktion kehrt die Reihnfolge der einzelnen Zeilen um (spiegeln in x-Richtung).
+     *
+     * @param input Der ByteBlock der umgekehrt werden soll.
+     * @return ByteBlock Der umgekehrte ByteBlock.
+     */
     static ByteBlock reverse(ByteBlock input) {
         auto reversedInput = ByteBlock();
 
@@ -115,6 +186,19 @@ public:
         return reversedInput;
     }
 
+    /**
+     * \~english
+     * @brief rotate an ByteBlock by 180 degrees
+     *
+     * @param input the ByteBlock that will be rotated
+     * @return ByteBlock The rotated ByteBlock
+     *
+     * \~german
+     * @brief rotiert einen ByteBlock um 180 Grad
+     *
+     * @param input Der zu rotierende ByteBlock.
+     * @return ByteBlock Der rotierte byteBlock.
+     */
     static ByteBlock rotate180(ByteBlock input) {
         auto rotatedInput = ByteBlock();
 
@@ -125,6 +209,19 @@ public:
         return rotatedInput;
     }
 
+    /**
+     * \~english
+     * @brief Turns an ByteBlock of rows into an ByteBlock of columns
+     *
+     * @param rowArray the ByteBlock of rows of which you want the columns of
+     * @return ByteBlock The Columns of the given ByteBlock
+     *
+     * \~german
+     * @brief Wandelt einen Block aus Zeilen in einen Block aus Spalten.
+     *
+     * @param rowArray Der Block aus Zeilen
+     * @return ByteBlock Die Splaten des gegebenen Blocks
+     */
     static ByteBlock makeColumns(ByteBlock rowArray) {
         auto columnArray = ByteBlock();
 
@@ -135,6 +232,23 @@ public:
         }
 
         return rotate180(columnArray);
+    }
+
+    /**
+     * \~english
+     * @brief Turns an ByteBlock of rows into an ByteBlock of columns
+     *
+     * @param rowArray the ByteBlock of rows of which you want the columns of
+     * @return ByteBlock The Columns of the given ByteBlock
+     *
+     * \~german
+     * @brief Wandelt einen Block aus Zeilen in einen Block aus Spalten.
+     *
+     * @param rowArray Der Block aus Zeilen
+     * @return ByteBlock Die Splaten des gegebenen Blocks
+     */
+    static ByteBlock transpose(ByteBlock rowArray) {
+        return ByteBlock::makeColumns(rowArray);
     }
      
 };
