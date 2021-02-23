@@ -87,11 +87,14 @@ void loop(){
         delay(delayTime);
 
         //hoch- und runterbewegen
-        if(i % 6 < 3){
-          lc.moveDown();
-        }else{
-          lc.moveUp();
+        if(i > 7){
+          if(i % 6 < 3){
+            lc.moveDown();
+          }else{
+            lc.moveUp();
+          }
         }
+        
         delay(delayTime);
 
       }

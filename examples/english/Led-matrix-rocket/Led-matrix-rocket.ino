@@ -86,10 +86,12 @@ void loop(){
         delay(delayTime);
 
         //decide whether to move up or down
-        if(i % 6 < 3){
-          lc.moveDown();
-        }else{
-          lc.moveUp();
+        if(i > 7){
+          if(i % 6 < 3){
+            lc.moveDown();
+          }else{
+            lc.moveUp();
+          }
         }
 
         delay(delayTime);

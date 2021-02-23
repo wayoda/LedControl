@@ -46,7 +46,7 @@ void setup(){
   //Nur die folgende Zeile unterscheidet sich von dem Beispiel ohne Hardware SPI, da hier nur ein Pin angegeben werden muss.
   lc.init(CS);
 
-  ByteBlock::makeColumns(rocket, &rocketColumns);
+  rocketColumns = ByteBlock::makeColumns(rocket);
 
   pinMode(13, OUTPUT);
 
@@ -74,11 +74,14 @@ void loop(){
         delay(delayTime);
 
         //hoch- und runterbewegen
-        if(i % 6 < 3){
-          lc.moveDown();
-        }else{
-          lc.moveUp();
+        if(i > 7){
+          if(i % 6 < 3){
+            lc.moveDown();
+          }else{
+            lc.moveUp();
+          }
         }
+        
         delay(delayTime);
 
       }
