@@ -46,7 +46,7 @@ void setup(){
   //Nur die folgende Zeile unterscheidet sich von dem Beispiel ohne Hardware SPI, da hier nur ein Pin angegeben werden muss.
   lc.init(CS);
 
-  lc.makeColumns(rocket, &rocketColumns);
+  ByteBlock::makeColumns(rocket, &rocketColumns);
 
   pinMode(13, OUTPUT);
 

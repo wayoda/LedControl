@@ -154,7 +154,7 @@ void setup(){
   //rotate all digits by 180 degress to display them correctly
   //you could leave this but then the orientation would be wrong
   for(unsigned int i = 0; i < 10; i++){
-    digits[i] = lc.rotate180(digits[i]);
+    digits[i] = digits[i].rotate180();
   }
   
 }

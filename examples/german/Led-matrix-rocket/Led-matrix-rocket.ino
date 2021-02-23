@@ -61,7 +61,7 @@ void setup(){
   //Hier wird ein Array aus Spalten der Rakete erstellt.
   //Dies wird vewendet, um die Rakete Stück für Stück reinzuschieben
   //Man kann auch rocketColumns = rocket schreiben, aber dann wird die Rakete um 90 Grad gedreht sein.
-  rocketColumns = lc.makeColumns(rocket);
+  rocketColumns = ByteBlock::makeColumns(rocket);
  
   //Erlaubt das Schalten der internen LED
   pinMode(13, OUTPUT);

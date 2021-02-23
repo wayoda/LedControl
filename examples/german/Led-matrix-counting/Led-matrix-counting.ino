@@ -158,7 +158,7 @@ void setup(){
   //alle Ziffern müssen um 180 Grad gedreht werden, um sie richtig anzuzeigen.
   //man kann das weglassen, aber dann sine die Ziffern falsch
   for(unsigned int i = 0; i < 10; i++){
-    digits[i] = lc.rotate180(digits[i]);
+    digits[i] = ByteBlock::rotate180(digits[i]);
   }
   
 }

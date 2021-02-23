@@ -86,7 +86,7 @@ void setup(){
 
   //make a array of columns out of the rocket
   //this is needed to shift it in correctly (you can leave this line if you want to)
-  rocketColumns = lc.makeColumns(rocket);
+  rocketColumns = ByteBlock::makeColumns(rocket);
 
   //enables the builtin Led to have a kind of clock
   pinMode(LED, OUTPUT);
