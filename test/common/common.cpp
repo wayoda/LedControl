@@ -1,5 +1,10 @@
 #include "common.hpp"
 
+const ByteBlock& testBlock(){
+    static auto dat = ByteBlock({0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80});
+    return dat;
+}
+
 controller_configuration<4,1>& get_conf(){
     static controller_configuration<4,1> conf;
     if(!conf.isValid()){

@@ -30,3 +30,5 @@ const ByteRow<columns>& in_array(){
     }
     return in_array;
 }
+
+const ByteBlock& testBlock();
