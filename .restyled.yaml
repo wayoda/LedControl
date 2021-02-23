@@ -1,8 +1,13 @@
 restylers:
   - name:  astyle
     enabled: true
-    arguments: ["--style=google","--indent-namespaces", "--indent-col1-comments", "--recursive","*.hpp,*.cpp"]
+    arguments: ["--style=google","--indent-namespaces", "--indent-col1-comments", "--recursive"]
+    include:
+      - "**/*.hpp"
+      - "**/*.cpp"
   - name:  astyle
     enabled: true
-    arguments: ["--style=attach","--indent=spaces=2", "--indent-col1-comments", "--recursive",examples/*.ino]
+    arguments: ["--style=attach","--indent=spaces=2", "--indent-col1-comments", "--recursive"]
+    include:
+      - "**/*.ino"
     
