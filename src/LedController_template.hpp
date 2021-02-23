@@ -759,38 +759,46 @@ public:
   /**
    * \~english
    * @brief moves the data up by one and 0x00 will be shifted in
+   * @return ByteRow<columns> This Array contains the bytes that will be shifted out on each Row.
    *
    * \~german
    * @brief Schibet die Daten eins nach oben und 0x00 wird unten reingeschoben.
+   * @return ByteRow<rows> Die Reihen die rausgeschoben werden.
    */
-  void moveUp();
+  ByteRow<columns> moveUp();
 
   /**
    * \~english
    * @brief moves the data down by one and 0x00 will be shifted in
+   * @return ByteRow<columns> This Array contains the bytes that will be shifted out on each Row.
    *
    * \~german
    * @brief Schibet die Daten eins nach unten und 0x00 wird oben reingeschoben.
+   * @return ByteRow<rows> Die Reihen die rausgeschoben werden.
    */
-  void moveDown();
+  ByteRow<columns> moveDown();
 
   /**
    * \~english
    * @brief moves the data left by one and 0x00 will be shifted in
+   * @return ByteRow<rows> This Array contains the bytes that will be shifted out on each Row.
    *
    * \~german
    * @brief Schibet die Daten eins nach links und 0x00 wird recht reingeschoben.
+   * @return ByteRow<rows> Die Splaten die rausgeschoben werden.
    */
-  void moveLeft();
+  ByteRow<rows> moveLeft();
 
   /**
    * \~english
    * @brief moves the data right by one and 0x00 will be shifted in
+   * @return ByteRow<rows> This Array contains the bytes that will be shifted out on each Row.
    *
    * \~german
    * @brief Schibet die Daten eins nach rechts und 0x00 wird links reingeschoben.
+   * @return ByteRow<rows> Die Splaten die rausgeschoben werden.
    */
-  void moveRight();
+  ByteRow<rows> moveRight();
 
   /**
    * \~english

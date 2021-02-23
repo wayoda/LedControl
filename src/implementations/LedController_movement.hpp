@@ -140,23 +140,23 @@ byte LedController<columns,rows>::moveColumnDown(byte shiftedInRow, unsigned int
 
 //functions that abstract the basic functions above
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveDown() {
-  moveDown(ByteRow<columns>(), nullptr);
+ByteRow<columns> LedController<columns,rows>::moveDown() {
+  return moveDown(ByteRow<columns>());
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveUp() {
-  moveUp(ByteRow<columns>(), nullptr);
+ByteRow<columns> LedController<columns,rows>::moveUp() {
+  return moveUp(ByteRow<columns>());
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveLeft() {
-  moveLeft(ByteRow<rows>(), nullptr);
+ByteRow<rows> LedController<columns,rows>::moveLeft() {
+  return moveLeft(ByteRow<rows>());
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveRight() {
-  moveRight(ByteRow<rows>(), nullptr);
+ByteRow<rows> LedController<columns,rows>::moveRight() {
+  return moveRight(ByteRow<rows>());
 }
 
 template <size_t columns, size_t rows>
