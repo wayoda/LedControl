@@ -1,16 +1,16 @@
 #include "transformation.hpp"
 
-void run_transformation_tests(){
+void run_transformation_tests() {
     RUN_TEST(test_reverse_simple);
     RUN_TEST(reverse_Block);
 }
 
-void test_reverse_simple(){
+void test_reverse_simple() {
     LedController<1,1> control = LedController<1,1>();
     TEST_ASSERT_EQUAL(0x01, control.reverse(0x80));
 }
 
-void reverse_Block(){
+void reverse_Block() {
     LedController<1,1> control = LedController<1,1>();
 
     ByteBlock b = {0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80};
