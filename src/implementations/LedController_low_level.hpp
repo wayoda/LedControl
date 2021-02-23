@@ -1,8 +1,8 @@
 #pragma once
 /**
- * @file LedController_low_level.hpp
+ * @file sakurajin::LedController_low_level.hpp
  * @author Noa Sakurajin (noasakurajin@web.de)
- * @brief This file contains the low level functions of the LedController which are needed to implement most external functions.
+ * @brief This file contains the low level functions of the sakurajin::LedController which are needed to implement most external functions.
  * @version 0.1
  * @date 2020-12-30
  *
@@ -13,7 +13,7 @@
 #include "LedController_template.hpp"
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::spiTransfer(unsigned int segment, byte opcode, byte data) {
+void sakurajin::LedController<columns,rows>::spiTransfer(unsigned int segment, byte opcode, byte data) {
     if (!initilized || segment >= conf.SegmentCount()) {
         return;
     }
@@ -88,7 +88,7 @@ void LedController<columns,rows>::spiTransfer(unsigned int segment, byte opcode,
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::setScanLimit(unsigned int segmentNumber,
+void sakurajin::LedController<columns,rows>::setScanLimit(unsigned int segmentNumber,
         unsigned int limit) {
     if (!initilized || segmentNumber >= conf.SegmentCount()) {
         return;
@@ -99,7 +99,7 @@ void LedController<columns,rows>::setScanLimit(unsigned int segmentNumber,
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::setIntensity(unsigned int newIntesityLevel) {
+void sakurajin::LedController<columns,rows>::setIntensity(unsigned int newIntesityLevel) {
     if (newIntesityLevel > 15 || !initilized) {
         return;
     }
@@ -113,7 +113,7 @@ void LedController<columns,rows>::setIntensity(unsigned int newIntesityLevel) {
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::setIntensity(unsigned int segmentNumber,
+void sakurajin::LedController<columns,rows>::setIntensity(unsigned int segmentNumber,
         unsigned int newIntesityLevel) {
     if (newIntesityLevel > 15 || !initilized ||
             segmentNumber >= conf.SegmentCount()) {
@@ -124,7 +124,7 @@ void LedController<columns,rows>::setIntensity(unsigned int segmentNumber,
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::refreshSegment(unsigned int segmentNumber) {
+void sakurajin::LedController<columns,rows>::refreshSegment(unsigned int segmentNumber) {
     if (!initilized) {
         return;
     }

@@ -17,7 +17,7 @@
 
 #define delayTime 200
 
-LedController<Segments,1> lc = LedController<Segments,1>();  
+sakurajin::LedController<Segments,1> lc = sakurajin::LedController<Segments,1>();  
 
 sakurajin::ByteBlock rocket= {
   B00000000,

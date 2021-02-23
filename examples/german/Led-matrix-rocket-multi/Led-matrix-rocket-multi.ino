@@ -28,8 +28,8 @@
 //Die verzögerung zwischen zwei Bewegungen
 #define delayTime 200 
 
-//Hier wird wieder ein uninitialisierter LedController erstellt
-auto lc = LedController<Segments,2>();
+//Hier wird wieder ein uninitialisierter sakurajin::LedController erstellt
+auto lc = sakurajin::LedController<Segments,2>();
 
 //Das Pixelart der wunderschönen Rakete
 sakurajin::ByteBlock rocket= {
@@ -58,7 +58,7 @@ void switchLED(){
 
 void setup(){
 
-  //Erstellen einer Konfiguration für den LedController
+  //Erstellen einer Konfiguration für den sakurajin::LedController
   controller_configuration<Segments,2> conf;
 
   //Da mehr als eine Zeile verwendet werden soll (ohne virtual multi Row) sollte das 0 sein.
@@ -85,7 +85,7 @@ void setup(){
   //Falls hohe Werte gesetzt werden, sollte eine gute Verbingung sichergestellt werden.
   conf.spiTransferSpeed = 800000;
 
-  //Initialisiere den LedController mit der erstellten Konfiguration.
+  //Initialisiere den sakurajin::LedController mit der erstellten Konfiguration.
   lc.init(conf);
 
   //Hier wird ein Array aus Spalten der Rakete erstellt.

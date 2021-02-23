@@ -1,8 +1,8 @@
 #pragma once
 /**
- * @file LedController_movement.hpp
+ * @file sakurajin::LedController_movement.hpp
  * @author Noa Sakurajin (noasakurajin@web.de)
- * @brief This file contains the functions to move data on the LedController
+ * @brief This file contains the functions to move data on the sakurajin::LedController
  * @version 0.1
  * @date 2020-12-21
  *
@@ -13,7 +13,7 @@
 #include "LedController_template.hpp"
 
 template <size_t columns, size_t rows>
-byte LedController<columns,rows>::moveRowRight(byte shiftedInColumn, unsigned int row_num) {
+byte sakurajin::LedController<columns,rows>::moveRowRight(byte shiftedInColumn, unsigned int row_num) {
     if (!initilized || row_num >= rows) {
         return 0x00;
     }
@@ -46,7 +46,7 @@ byte LedController<columns,rows>::moveRowRight(byte shiftedInColumn, unsigned in
 }
 
 template <size_t columns, size_t rows>
-byte LedController<columns,rows>::moveRowLeft(byte shiftedInColumn, unsigned int row_num) {
+byte sakurajin::LedController<columns,rows>::moveRowLeft(byte shiftedInColumn, unsigned int row_num) {
     if (!initilized || row_num >= rows) {
         return 0x00;
     }
@@ -79,7 +79,7 @@ byte LedController<columns,rows>::moveRowLeft(byte shiftedInColumn, unsigned int
 }
 
 template <size_t columns, size_t rows>
-byte LedController<columns,rows>::moveColumnUp(byte shiftedInRow, unsigned int col_num) {
+byte sakurajin::LedController<columns,rows>::moveColumnUp(byte shiftedInRow, unsigned int col_num) {
     if (!initilized) {
         return 0x00;
     }
@@ -114,7 +114,7 @@ byte LedController<columns,rows>::moveColumnUp(byte shiftedInRow, unsigned int c
 }
 
 template <size_t columns, size_t rows>
-byte LedController<columns,rows>::moveColumnDown(byte shiftedInRow, unsigned int col_num) {
+byte sakurajin::LedController<columns,rows>::moveColumnDown(byte shiftedInRow, unsigned int col_num) {
     if (!initilized) {
         return 0x00;
     }
@@ -144,27 +144,27 @@ byte LedController<columns,rows>::moveColumnDown(byte shiftedInRow, unsigned int
 
 //functions that abstract the basic functions above
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<columns> LedController<columns,rows>::moveDown() {
+sakurajin::ByteRow<columns> sakurajin::LedController<columns,rows>::moveDown() {
     return moveDown(sakurajin::ByteRow<columns>());
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<columns> LedController<columns,rows>::moveUp() {
+sakurajin::ByteRow<columns> sakurajin::LedController<columns,rows>::moveUp() {
     return moveUp(sakurajin::ByteRow<columns>());
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<rows> LedController<columns,rows>::moveLeft() {
+sakurajin::ByteRow<rows> sakurajin::LedController<columns,rows>::moveLeft() {
     return moveLeft(sakurajin::ByteRow<rows>());
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<rows> LedController<columns,rows>::moveRight() {
+sakurajin::ByteRow<rows> sakurajin::LedController<columns,rows>::moveRight() {
     return moveRight(sakurajin::ByteRow<rows>());
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<rows> LedController<columns,rows>::moveLeft(const sakurajin::ByteRow<rows>& shiftedInColumn) {
+sakurajin::ByteRow<rows> sakurajin::LedController<columns,rows>::moveLeft(const sakurajin::ByteRow<rows>& shiftedInColumn) {
     sakurajin::ByteRow<rows> ret = sakurajin::ByteRow<rows>();
     for(unsigned int i = 0; i < rows; i++) {
         ret[i] = moveRowLeft(shiftedInColumn[i],i);
@@ -173,7 +173,7 @@ sakurajin::ByteRow<rows> LedController<columns,rows>::moveLeft(const sakurajin::
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<rows> LedController<columns,rows>::moveRight(const sakurajin::ByteRow<rows>& shiftedInColumn) {
+sakurajin::ByteRow<rows> sakurajin::LedController<columns,rows>::moveRight(const sakurajin::ByteRow<rows>& shiftedInColumn) {
     sakurajin::ByteRow<rows> ret = sakurajin::ByteRow<rows>();
     for(unsigned int i = 0; i < rows; i++) {
         ret[i] = moveRowRight(shiftedInColumn[i],i);
@@ -182,7 +182,7 @@ sakurajin::ByteRow<rows> LedController<columns,rows>::moveRight(const sakurajin:
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<columns> LedController<columns,rows>::moveUp(const sakurajin::ByteRow<columns>& shiftedInRow) {
+sakurajin::ByteRow<columns> sakurajin::LedController<columns,rows>::moveUp(const sakurajin::ByteRow<columns>& shiftedInRow) {
     sakurajin::ByteRow<columns> ret = sakurajin::ByteRow<columns>();
     for(unsigned int i = 0; i < columns; i++) {
         ret[i] = moveColumnUp(shiftedInRow[i],i);
@@ -191,7 +191,7 @@ sakurajin::ByteRow<columns> LedController<columns,rows>::moveUp(const sakurajin:
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<columns> LedController<columns,rows>::moveDown(const sakurajin::ByteRow<columns>& shiftedInRow) {
+sakurajin::ByteRow<columns> sakurajin::LedController<columns,rows>::moveDown(const sakurajin::ByteRow<columns>& shiftedInRow) {
     sakurajin::ByteRow<columns> ret = sakurajin::ByteRow<columns>();
     for(unsigned int i = 0; i < columns; i++) {
         ret[i] = moveColumnDown(shiftedInRow[i],i);
@@ -203,31 +203,31 @@ sakurajin::ByteRow<columns> LedController<columns,rows>::moveDown(const sakuraji
 
 //removed in version 2.1.0
 template <size_t columns, size_t rows>
-byte LedController<columns,rows>::moveLeft(byte shiftedInColumn) {
+byte sakurajin::LedController<columns,rows>::moveLeft(byte shiftedInColumn) {
     return moveRowLeft(shiftedInColumn,0);
 }
 
 //removed in version 2.1.0
 template <size_t columns, size_t rows>
-byte LedController<columns,rows>::moveRight(byte shiftedInColumn) {
+byte sakurajin::LedController<columns,rows>::moveRight(byte shiftedInColumn) {
     return moveRowRight(shiftedInColumn,0);
 }
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveUp(sakurajin::ByteRow<columns>* shiftedOutRow) {
+void sakurajin::LedController<columns,rows>::moveUp(sakurajin::ByteRow<columns>* shiftedOutRow) {
     moveUp(sakurajin::ByteRow<columns>(), shiftedOutRow);
 };
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveDown(sakurajin::ByteRow<columns>* shiftedOutRow) {
+void sakurajin::LedController<columns,rows>::moveDown(sakurajin::ByteRow<columns>* shiftedOutRow) {
     moveDown(sakurajin::ByteRow<columns>(), shiftedOutRow);
 }
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveDown(const sakurajin::ByteRow<columns>& shiftedInRow, sakurajin::ByteRow<columns>* shiftedOutRow) {
+void sakurajin::LedController<columns,rows>::moveDown(const sakurajin::ByteRow<columns>& shiftedInRow, sakurajin::ByteRow<columns>* shiftedOutRow) {
     if(shiftedOutRow == nullptr) {
         moveDown(shiftedInRow);
     } else {
@@ -237,7 +237,7 @@ void LedController<columns,rows>::moveDown(const sakurajin::ByteRow<columns>& sh
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveUp(const sakurajin::ByteRow<columns>& shiftedInRow, sakurajin::ByteRow<columns>* shiftedOutRow) {
+void sakurajin::LedController<columns,rows>::moveUp(const sakurajin::ByteRow<columns>& shiftedInRow, sakurajin::ByteRow<columns>* shiftedOutRow) {
     if(shiftedOutRow == nullptr) {
         moveUp(shiftedInRow);
     } else {
@@ -247,7 +247,7 @@ void LedController<columns,rows>::moveUp(const sakurajin::ByteRow<columns>& shif
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveLeft(const sakurajin::ByteRow<rows>& shiftedInColumn, sakurajin::ByteRow<rows>* shiftedOutColumn) {
+void sakurajin::LedController<columns,rows>::moveLeft(const sakurajin::ByteRow<rows>& shiftedInColumn, sakurajin::ByteRow<rows>* shiftedOutColumn) {
     if(shiftedOutColumn == nullptr) {
         moveLeft(shiftedInColumn);
     } else {
@@ -257,7 +257,7 @@ void LedController<columns,rows>::moveLeft(const sakurajin::ByteRow<rows>& shift
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::moveRight(const sakurajin::ByteRow<rows>& shiftedInColumn, sakurajin::ByteRow<rows>* shiftedOutColumn) {
+void sakurajin::LedController<columns,rows>::moveRight(const sakurajin::ByteRow<rows>& shiftedInColumn, sakurajin::ByteRow<rows>* shiftedOutColumn) {
     if(shiftedOutColumn == nullptr) {
         moveRight(shiftedInColumn);
     } else {

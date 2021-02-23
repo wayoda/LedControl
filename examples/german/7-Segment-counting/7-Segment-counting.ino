@@ -32,7 +32,7 @@
 #define delayTime 500
 
 //Das uninitialisierte controller Objekt
-LedController<Segments,1> lc = LedController<Segments,1>();
+sakurajin::LedController<Segments,1> lc = sakurajin::LedController<Segments,1>();
 
 //Diese Funktion berechnet die größte Zahl, die angezeigt werden kann
 unsigned long long getLargestNumber() {
@@ -58,7 +58,7 @@ void setup() {
   //Sicherstellen, dass die Konfiguration gültig ist
   static_assert(positionOffset+digitsPerSegment<9,"invalid configuration");
 
-  //initialisieren des LedController Objektes mit hardware SPI und einer Reihe
+  //initialisieren des sakurajin::LedController Objektes mit hardware SPI und einer Reihe
   lc.init(CS);
 
   //alle Segmente sind standardmäßig ausgeschaltet

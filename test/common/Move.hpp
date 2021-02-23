@@ -20,7 +20,7 @@ void run_move_multi_tests();
 template <size_t columns, size_t rows>
 void test_left_right(sakurajin::controller_configuration<columns,rows>& conf) {
     try {
-        LedController<columns,rows> control = LedController<columns,rows>(conf);
+        sakurajin::LedController<columns,rows> control = sakurajin::LedController<columns,rows>(conf);
 
         auto in = in_array<rows>();
         control.moveLeft(in);
@@ -37,7 +37,7 @@ void test_left_right(sakurajin::controller_configuration<columns,rows>& conf) {
 template <size_t columns, size_t rows>
 void test_right_left(sakurajin::controller_configuration<columns,rows>& conf) {
     try {
-        LedController<columns,rows> control = LedController<columns,rows>(conf);
+        sakurajin::LedController<columns,rows> control = sakurajin::LedController<columns,rows>(conf);
 
         auto in = in_array<rows>();
         control.moveRight(in);
@@ -54,7 +54,7 @@ void test_right_left(sakurajin::controller_configuration<columns,rows>& conf) {
 template <size_t columns, size_t rows>
 void test_up_down(sakurajin::controller_configuration<columns,rows>& conf) {
     try {
-        LedController<columns,rows> control = LedController<columns,rows>(conf);
+        sakurajin::LedController<columns,rows> control = sakurajin::LedController<columns,rows>(conf);
 
         auto in = in_array<columns>();
         control.moveUp(in);
@@ -71,7 +71,7 @@ void test_up_down(sakurajin::controller_configuration<columns,rows>& conf) {
 template <size_t columns, size_t rows>
 void test_down_up(sakurajin::controller_configuration<columns,rows>& conf) {
     try {
-        LedController<columns,rows> control = LedController<columns,rows>(conf);
+        sakurajin::LedController<columns,rows> control = sakurajin::LedController<columns,rows>(conf);
 
         auto in = in_array<columns>();
         control.moveDown(in);

@@ -1,9 +1,9 @@
 #pragma once
 
 /**
- * @file LedController_display.hpp
+ * @file sakurajin::LedController_display.hpp
  * @author Noa Sakurajin (noasakurajin@web.de)
- * @brief This file contains the functions to display data on an LedController
+ * @brief This file contains the functions to display data on an sakurajin::LedController
  * @version 0.1
  * @date 2020-12-30
  *
@@ -14,7 +14,7 @@
 #include "LedController_template.hpp"
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::resetBuffers() {
+void sakurajin::LedController<columns,rows>::resetBuffers() {
     for (unsigned int j = 0; j < rows*columns*2; j++) {
         spidata[j] = j%2 == 0 ? 0x00 : sakurajin::MAX72XX::OP_NOOP;  
     }
@@ -27,7 +27,7 @@ void LedController<columns,rows>::resetBuffers() {
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::resetMatrix() {
+void sakurajin::LedController<columns,rows>::resetMatrix() {
     if (!initilized) {
         return;
     }
@@ -38,7 +38,7 @@ void LedController<columns,rows>::resetMatrix() {
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::clearMatrix() {
+void sakurajin::LedController<columns,rows>::clearMatrix() {
     if (!initilized) {
         return;
     }
@@ -49,7 +49,7 @@ void LedController<columns,rows>::clearMatrix() {
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::displayOnSegment(unsigned int segmentindex,
+void sakurajin::LedController<columns,rows>::displayOnSegment(unsigned int segmentindex,
         sakurajin::ByteBlock data) {
     if (!initilized || segmentindex >= conf.SegmentCount()) {
         return;
@@ -61,13 +61,13 @@ void LedController<columns,rows>::displayOnSegment(unsigned int segmentindex,
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::displayOnSegment(unsigned int column, unsigned int row_num, sakurajin::ByteBlock data) {
+void sakurajin::LedController<columns,rows>::displayOnSegment(unsigned int column, unsigned int row_num, sakurajin::ByteBlock data) {
     displayOnSegment(conf.getSegmentNumber(column,row_num),data);
 }
 
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::shutdownSegment(unsigned int segmentNumber) {
+void sakurajin::LedController<columns,rows>::shutdownSegment(unsigned int segmentNumber) {
     if (!initilized || segmentNumber >= conf.SegmentCount()) {
         return;
     }
@@ -76,7 +76,7 @@ void LedController<columns,rows>::shutdownSegment(unsigned int segmentNumber) {
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::activateSegment(unsigned int segmentNumber) {
+void sakurajin::LedController<columns,rows>::activateSegment(unsigned int segmentNumber) {
     if (!initilized || segmentNumber >= conf.SegmentCount()) {
         return;
     }
@@ -85,7 +85,7 @@ void LedController<columns,rows>::activateSegment(unsigned int segmentNumber) {
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::shutdownAllSegments() {
+void sakurajin::LedController<columns,rows>::shutdownAllSegments() {
     if (!initilized) {
         return;
     }
@@ -96,7 +96,7 @@ void LedController<columns,rows>::shutdownAllSegments() {
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::activateAllSegments() {
+void sakurajin::LedController<columns,rows>::activateAllSegments() {
     if (!initilized) {
         return;
     }
@@ -107,7 +107,7 @@ void LedController<columns,rows>::activateAllSegments() {
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::clearSegment(unsigned int segmentNumber) {
+void sakurajin::LedController<columns,rows>::clearSegment(unsigned int segmentNumber) {
     if (!initilized || segmentNumber >= conf.SegmentCount()) {
         return;
     }
@@ -119,7 +119,7 @@ void LedController<columns,rows>::clearSegment(unsigned int segmentNumber) {
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::setRow(unsigned int segmentNumber, unsigned int row,
+void sakurajin::LedController<columns,rows>::setRow(unsigned int segmentNumber, unsigned int row,
         byte value) {
     if (!initilized || segmentNumber >= conf.SegmentCount() || row > 7 ||
             (conf.onlySendOnChange && LedStates[segmentNumber][row] == value)) {
@@ -131,7 +131,7 @@ void LedController<columns,rows>::setRow(unsigned int segmentNumber, unsigned in
 }
 
 template <size_t columns, size_t rows>
-byte LedController<columns,rows>::getRow(unsigned int segmentNumber, unsigned int row) {
+byte sakurajin::LedController<columns,rows>::getRow(unsigned int segmentNumber, unsigned int row) {
     if (!initilized || segmentNumber >= conf.SegmentCount() || row > 7) {
         return 0x00;
     }
@@ -140,7 +140,7 @@ byte LedController<columns,rows>::getRow(unsigned int segmentNumber, unsigned in
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::setLed(unsigned int segmentNumber, unsigned int row,
+void sakurajin::LedController<columns,rows>::setLed(unsigned int segmentNumber, unsigned int row,
         unsigned int column, boolean state) {
     if (!initilized || row > 7 || column > 7 ||
             segmentNumber >= conf.SegmentCount()) {
@@ -160,7 +160,7 @@ void LedController<columns,rows>::setLed(unsigned int segmentNumber, unsigned in
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::setColumn(unsigned int segmentNumber, unsigned int col,
+void sakurajin::LedController<columns,rows>::setColumn(unsigned int segmentNumber, unsigned int col,
         byte value) {
     if (!initilized || segmentNumber >= conf.SegmentCount() || col > 7) {
         return;
@@ -178,7 +178,7 @@ void LedController<columns,rows>::setColumn(unsigned int segmentNumber, unsigned
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::setDigit(unsigned int segmentNumber, unsigned int digit,
+void sakurajin::LedController<columns,rows>::setDigit(unsigned int segmentNumber, unsigned int digit,
         byte value, boolean dp) {
     if (!initilized || segmentNumber >= conf.SegmentCount() || digit > 7 ||
             value > 15) {
@@ -194,7 +194,7 @@ void LedController<columns,rows>::setDigit(unsigned int segmentNumber, unsigned 
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::setChar(unsigned int segmentNumber, unsigned int digit,
+void sakurajin::LedController<columns,rows>::setChar(unsigned int segmentNumber, unsigned int digit,
         char value, boolean dp) {
     if (!initilized || segmentNumber >= conf.SegmentCount() || digit > 7) {
         return;
@@ -216,7 +216,7 @@ void LedController<columns,rows>::setChar(unsigned int segmentNumber, unsigned i
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::refreshSegments() {
+void sakurajin::LedController<columns,rows>::refreshSegments() {
     if (!initilized) {
         return;
     }
@@ -227,7 +227,7 @@ void LedController<columns,rows>::refreshSegments() {
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::updateSegments() {
+void sakurajin::LedController<columns,rows>::updateSegments() {
     if (!initilized) {
         return;
     }
@@ -238,7 +238,7 @@ void LedController<columns,rows>::updateSegments() {
 }
 
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::updateSegment(unsigned int segmentNumber) {
+void sakurajin::LedController<columns,rows>::updateSegment(unsigned int segmentNumber) {
     if (!initilized) {
         return;
     }

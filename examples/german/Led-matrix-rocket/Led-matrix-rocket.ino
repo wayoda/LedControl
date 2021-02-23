@@ -1,7 +1,7 @@
 /**
  * @file Led-matrix-rocket.ino
  * @author Noa Sakurajin (noasakurajin@web.de)
- * @brief Using the the LedController to move a rocket
+ * @brief Using the the sakurajin::LedController to move a rocket
  * @version 0.1
  * @date 2020-12-30
  * 
@@ -24,9 +24,9 @@
 //Die verzögerung zwischen Bewegungen
 #define delayTime 200
 
-//Diese Zeile erstellt ein unitialisierten LedController.
+//Diese Zeile erstellt ein unitialisierten sakurajin::LedController.
 //Dieser wird dann in der setup Funktion initialisiert.
-LedController<Segments,1> lc = LedController<Segments,1>();  
+sakurajin::LedController<Segments,1> lc = sakurajin::LedController<Segments,1>();  
 
 //Das ist mein Pixelart und ist die Raktete die angezeigt wird.
 sakurajin::ByteBlock rocket= {
@@ -55,7 +55,7 @@ void switchLED(){
 
 void setup(){
 
-  //hier wird der LedController ohne Hardware SPI initialisiert.
+  //hier wird der sakurajin::LedController ohne Hardware SPI initialisiert.
   lc.init(DIN,CLK,CS);
 
   //Hier wird ein Array aus Spalten der Rakete erstellt.

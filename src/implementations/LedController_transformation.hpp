@@ -1,7 +1,7 @@
 #pragma once
 
 /**
- * @file LedController_transformation.hpp
+ * @file sakurajin::LedController_transformation.hpp
  * @author Noa Sakurajin (noasakurajin@web.de)
  * @brief This file contains the functions that transform given data (eg. rotation,reverse,...)
  * @version 0.1
@@ -14,28 +14,28 @@
 #include "LedController_template.hpp"
 
 template <size_t columns, size_t rows>
-byte LedController<columns,rows>::reverse(byte var) {
+byte sakurajin::LedController<columns,rows>::reverse(byte var) {
     return sakurajin::ByteBlock::reverse(var);
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteBlock LedController<columns,rows>::makeColumns(sakurajin::ByteBlock rowArray) {
+sakurajin::ByteBlock sakurajin::LedController<columns,rows>::makeColumns(sakurajin::ByteBlock rowArray) {
     return rowArray.makeColumns();
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteBlock LedController<columns,rows>::reverse(sakurajin::ByteBlock input) {
+sakurajin::ByteBlock sakurajin::LedController<columns,rows>::reverse(sakurajin::ByteBlock input) {
     return input.reverse();
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteBlock LedController<columns,rows>::rotate180(sakurajin::ByteBlock input) {
+sakurajin::ByteBlock sakurajin::LedController<columns,rows>::rotate180(sakurajin::ByteBlock input) {
     return input.rotate180();
 }
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::makeColumns(sakurajin::ByteBlock rowArray, sakurajin::ByteBlock *columnArray) {
+void sakurajin::LedController<columns,rows>::makeColumns(sakurajin::ByteBlock rowArray, sakurajin::ByteBlock *columnArray) {
     if (columnArray == nullptr) {
         return;
     };
@@ -45,7 +45,7 @@ void LedController<columns,rows>::makeColumns(sakurajin::ByteBlock rowArray, sak
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::reverse(sakurajin::ByteBlock input, sakurajin::ByteBlock *reversedInput) {
+void sakurajin::LedController<columns,rows>::reverse(sakurajin::ByteBlock input, sakurajin::ByteBlock *reversedInput) {
     if (reversedInput == nullptr) {
         return;
     }
@@ -55,7 +55,7 @@ void LedController<columns,rows>::reverse(sakurajin::ByteBlock input, sakurajin:
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void LedController<columns,rows>::rotate180(sakurajin::ByteBlock input, sakurajin::ByteBlock *rotatedInput) {
+void sakurajin::LedController<columns,rows>::rotate180(sakurajin::ByteBlock input, sakurajin::ByteBlock *rotatedInput) {
     if (rotatedInput == nullptr) {
         return;
     }

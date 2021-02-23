@@ -26,7 +26,7 @@
  Now we need a LedController Variable to work with.
  We have only a single MAX72XX so the Dimensions are 1,1.
  */
-LedController<1,1> lc;
+sakurajin::LedController<1,1> lc;
 
 /* we always wait a bit between updates of the display */
 unsigned long delaytime=250;
@@ -34,7 +34,7 @@ unsigned long delaytime=250;
 void setup() {
 
   //Here a new LedController object is created without hardware SPI.
-  lc=LedController<1,1>(CS,CLK,DIN);
+  lc=sakurajin::LedController<1,1>(CS,CLK,DIN);
 
   /* Set the brightness to a medium values */
   lc.setIntensity(8);

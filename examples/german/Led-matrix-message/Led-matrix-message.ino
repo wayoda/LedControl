@@ -2,7 +2,7 @@
  * @file Led-matrix-message.ino
  * @author Noa Sakurajin (noasakurajin@web.de)
  * @brief This demo shows how a message can be displayed on an LedMatrix.
- * This demo is based on https://www.meine-schaltung.de/schaltung/soft/anzeige/vierfach_matrix_mit_arduino/ and modified for the latest LedController.
+ * This demo is based on https://www.meine-schaltung.de/schaltung/soft/anzeige/vierfach_matrix_mit_arduino/ and modified for the latest sakurajin::LedController.
  * @version 0.1
  * @date 2021-02-16
  * 
@@ -23,8 +23,8 @@
 //Die Verzögerung bis der Inhalt wieder um eins bewegt wird.
 #define delayTime 200
 
-//Das uninitialisierte LedController Objekt
-LedController<Segments,1> lc = LedController<Segments,1>();  
+//Das uninitialisierte sakurajin::LedController Objekt
+sakurajin::LedController<Segments,1> lc = sakurajin::LedController<Segments,1>();  
 
 // Zeichen und Buchstaben ---------------------------------------------------------------------------------
 sakurajin::ByteBlock A =  sakurajin::ByteBlock::rotate180({ B00000000, B00011000, B00100100, B00100100, B00111100, B00100100, B00100100, B00000000 });

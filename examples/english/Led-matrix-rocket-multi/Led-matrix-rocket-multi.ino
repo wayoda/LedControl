@@ -28,8 +28,8 @@
 // Delay between Frames
 #define delayTime 200
 
-//creating an LedController which is not initilized.
-auto lc = LedController<Segments,2>();
+//creating an sakurajin::LedController which is not initilized.
+auto lc = sakurajin::LedController<Segments,2>();
 
 //the pixelart of our beautiful rocket
 sakurajin::ByteBlock rocket= {
@@ -81,7 +81,7 @@ void setup(){
   //this specifies the transfer speed of the spi interface. If you want to use high values make sure your cables have a good connection
   conf.spiTransferSpeed = 800000;
 
-  //initilizing the LedController with the configuration which we just set
+  //initilizing the sakurajin::LedController with the configuration which we just set
   lc.init(conf);
 
   //make a array of columns out of the rocket

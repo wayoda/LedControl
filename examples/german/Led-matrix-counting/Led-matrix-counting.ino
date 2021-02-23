@@ -22,7 +22,7 @@
 #define delayTime 200
 
 //Das ist die Variable in der das verwendete Objekt gespeichert wird.
-LedController<Segments,1> lc; 
+sakurajin::LedController<Segments,1> lc; 
 
 //Dieses Array definiert nur wie die Ziffern aussehen.
 sakurajin::ByteBlock digits[10] = {
@@ -149,8 +149,8 @@ void switchLED(){
 
 void setup(){
 
-  //Hier wird ein LedController mit Hardware SPI erstelle und lc zugewiesen
-  lc = LedController<Segments,1>(CS);
+  //Hier wird ein sakurajin::LedController mit Hardware SPI erstelle und lc zugewiesen
+  lc = sakurajin::LedController<Segments,1>(CS);
 
   //Der Pin für die interne LED wird auf output gesetzt
   pinMode(13, OUTPUT);
