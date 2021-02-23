@@ -4,9 +4,9 @@
  * @brief counting up on 7-Segment displays
  * @version 0.1
  * @date 2020-12-30
- * 
+ *
  * @copyright Copyright (c) 2020
- * 
+ *
  */
 
 //Wie immer die Bibliothek einbinden
@@ -32,19 +32,19 @@
 #define delayTime 500
 
 //Das uninitialisierte controller Objekt
-LedController<Segments,1> lc = LedController<Segments,1>(); 
+LedController<Segments,1> lc = LedController<Segments,1>();
 
 //Diese Funktion berechnet die größte Zahl, die angezeigt werden kann
-unsigned long long getLargestNumber(){
+unsigned long long getLargestNumber() {
   return (unsigned long long) pow(10,Segments*digitsPerSegment);
 }
 
 //Diese Funktion setzt die Anzeige auf eine gegebene Zahl
 void setLEDs (unsigned long long number) {
   //Diese Schleife zerlegt die Zahl und setzt die einzelnen Ziffern
-  for(unsigned int i = 0;i < Segments*digitsPerSegment;i++){
+  for(unsigned int i = 0; i < Segments*digitsPerSegment; i++) {
     unsigned long long divisor = 1;
-    for(unsigned int j=0;j < i;j++){
+    for(unsigned int j=0; j < i; j++) {
       divisor *= 10;
     }
 
@@ -54,7 +54,7 @@ void setLEDs (unsigned long long number) {
 
 }
 
-void setup(){
+void setup() {
   //Sicherstellen, dass die Konfiguration gültig ist
   static_assert(positionOffset+digitsPerSegment<9,"invalid configuration");
 
@@ -62,8 +62,8 @@ void setup(){
   lc.init(CS);
 
   //alle Segmente sind standardmäßig ausgeschaltet
-  for(unsigned int i = 0; i < Segments;i++){
-    for(unsigned int j = 0; j < 8;j++){
+  for(unsigned int i = 0; i < Segments; i++) {
+    for(unsigned int j = 0; j < 8; j++) {
       lc.setRow(i,j,0x00);
     }
   }
@@ -72,7 +72,7 @@ void setup(){
   lc.setIntensity(0);
 }
 
-void loop(){
+void loop() {
 
   //Sicherheitshalber die Ausgabe zurücksetzten
   lc.clearMatrix();
