@@ -15,64 +15,32 @@
 
 template <size_t columns, size_t rows>
 byte LedController<columns,rows>::reverse(byte var) {
-    byte ret = 0x00;
-    for (unsigned int i = 0; i < 8; i++) {
-        if (var & (0x01U << i)) {
-            ret |= 0x80U >> i;
-        }
-    }
-    return ret;
+    return ByteBlock::reverse(var);
 }
 
 template <size_t columns, size_t rows>
 ByteBlock LedController<columns,rows>::makeColumns(ByteBlock rowArray) {
-    auto columnArray = ByteBlock();
-
-    for (unsigned int i = 0; i < 8; i++) {
-        columnArray[i] = 0x00;
-        for (unsigned int j = 0; j < 8; j++) {
-            columnArray[i] |= (0x80 & (rowArray[j]<<i)) >> (7 - j);
-        }
-    }
-
-    return rotate180(columnArray);
+    return rowArray.makeColumns();
 }
 
 template <size_t columns, size_t rows>
 ByteBlock LedController<columns,rows>::reverse(ByteBlock input) {
-    auto reversedInput = ByteBlock();
-
-    for (unsigned int i = 0; i < 8; i++) {
-        reversedInput[i] = reverse(input[i]);
-    }
-
-    return reversedInput;
+    return input.reverse();
 }
 
 template <size_t columns, size_t rows>
 ByteBlock LedController<columns,rows>::rotate180(ByteBlock input) {
-    auto rotatedInput = ByteBlock();
-
-    for (unsigned int i = 0; i < 8; i++) {
-        rotatedInput[7 - i] = reverse(input[i]);
-    }
-
-    return rotatedInput;
+    return input.rotate180();
 }
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
 void LedController<columns,rows>::makeColumns(ByteBlock rowArray, ByteBlock *columnArray) {
-    if (!initilized || columnArray == nullptr) {
+    if (columnArray == nullptr) {
         return;
     };
 
-    for (unsigned int i = 0; i < 8; i++) {
-        (*columnArray)[i] = 0x00;
-        for (unsigned int j = 0; j < 8; j++) {
-            (*columnArray)[i] |= (0x01 & (rowArray[j] >> (7 - i))) << (7 - j);
-        }
-    }
+    *columnArray = rowArray.makeColumns();
 }
 
 // to be removed for version 2.2.0
@@ -82,9 +50,7 @@ void LedController<columns,rows>::reverse(ByteBlock input, ByteBlock *reversedIn
         return;
     }
 
-    for (unsigned int i = 0; i < 8; i++) {
-        (*reversedInput)[i] = reverse(input[i]);
-    }
+    *reversedInput = input.reverse();
 }
 
 // to be removed for version 2.2.0
@@ -94,7 +60,5 @@ void LedController<columns,rows>::rotate180(ByteBlock input, ByteBlock *rotatedI
         return;
     }
 
-    for (unsigned int i = 0; i < 8; i++) {
-        (*rotatedInput)[7 - i] = reverse(input[i]);
-    }
+    *rotatedInput = input.rotate180();
 }

@@ -79,5 +79,62 @@ public:
      */
     ByteBlock(const ByteRow<8>& data):ByteRow<8>(data){};
 
-    
+    ByteBlock transpose() const{
+        return ByteBlock::makeColumns(*this);
+    }
+
+    ByteBlock makeColumns() const{
+        return this->transpose();
+    }
+
+    ByteBlock reverse() const{
+        return ByteBlock::reverse(*this);
+    }
+
+    ByteBlock rotate180() const{
+        return ByteBlock::rotate180(*this);
+    }
+
+    static byte reverse(byte var) {
+        byte ret = 0x00;
+        for (unsigned int i = 0; i < 8; i++) {
+            if (var & (0x01U << i)) {
+                ret |= 0x80U >> i;
+            }
+        }
+        return ret;
+    }
+
+    static ByteBlock reverse(ByteBlock input) {
+        auto reversedInput = ByteBlock();
+
+        for (unsigned int i = 0; i < 8; i++) {
+            reversedInput[i] = reverse(input[i]);
+        }
+
+        return reversedInput;
+    }
+
+    static ByteBlock rotate180(ByteBlock input) {
+        auto rotatedInput = ByteBlock();
+
+        for (unsigned int i = 0; i < 8; i++) {
+            rotatedInput[7 - i] = reverse(input[i]);
+        }
+
+        return rotatedInput;
+    }
+
+    static ByteBlock makeColumns(ByteBlock rowArray) {
+        auto columnArray = ByteBlock();
+
+        for (unsigned int i = 0; i < 8; i++) {
+            for (unsigned int j = 0; j < 8; j++) {
+                columnArray[i] |= (B10000000 & (rowArray[j]<<i)) >> (j);
+            }
+        }
+
+        return rotate180(columnArray);
+    }
+     
 };
