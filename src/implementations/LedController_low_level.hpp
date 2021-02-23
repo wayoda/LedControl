@@ -23,33 +23,27 @@ void LedController<columns,rows>::spiTransfer(unsigned int segment, byte opcode,
     unsigned int row = conf.getRow(segment);
     unsigned int maxbytes = conf.SegmentCount() * 2;
 
-    for (unsigned int j = 0; j < rows; j++) {
-        for (unsigned int i = 0; i < columns*2; i++) {
-            spidata[j][i] = 0x00;
-        }
+    for(unsigned int i = 0; i < maxbytes;i++){
+        spidata[i] = i%2 == 0 ? 0x00 : MAX72XX::OP_NOOP;
     }
 
     // put our device data into the array
-    spidata[row][offset + 1] = opcode;
-    spidata[row][offset] = data;
+    spidata[row*columns*2+offset+1] = opcode;
+    spidata[row*columns*2+offset] = data;
 
-    for(unsigned int r = 0; r < rows ; r++) {
-
-        //enable the line
-        auto cs = (conf.virtual_multi_row && conf.SPI_CS != 0) ? conf.SPI_CS : conf.row_SPI_CS[r];
+    if(conf.virtual_multi_row && conf.SPI_CS != 0){
+        auto cs = conf.SPI_CS;
         digitalWrite(cs, LOW);
 
-        //init the spi transfer if hardware should be used
         if (conf.useHardwareSpi) {
             SPI.beginTransaction(SPISettings(conf.spiTransferSpeed, MSBFIRST, SPI_MODE0));
         }
 
-        // Now shift out the data
         for (int i = maxbytes; i > 0; i--) {
             if (conf.useHardwareSpi) {
-                SPI.transfer(spidata[r][i - 1]);
+                SPI.transfer(spidata[i-1]);
             } else {
-                shiftOut(conf.SPI_MOSI, conf.SPI_CLK, MSBFIRST, spidata[r][i - 1]);
+                shiftOut(conf.SPI_MOSI, conf.SPI_CLK, MSBFIRST, spidata[i-1]);
             }
         }
 
@@ -60,6 +54,36 @@ void LedController<columns,rows>::spiTransfer(unsigned int segment, byte opcode,
 
         // latch the data onto the display
         digitalWrite(cs, HIGH);
+
+    }else{
+        for(unsigned int r = 0; r < rows ; r++) {
+
+            //enable the line
+            auto cs = conf.row_SPI_CS[r];
+            digitalWrite(cs, LOW);
+
+            //init the spi transfer if hardware should be used
+            if (conf.useHardwareSpi) {
+                SPI.beginTransaction(SPISettings(conf.spiTransferSpeed, MSBFIRST, SPI_MODE0));
+            }
+
+            // Now shift out the data
+            for (int i = columns*2; i > 0; i--) {
+                if (conf.useHardwareSpi) {
+                    SPI.transfer(spidata[r*columns*2+i-1]);
+                } else {
+                    shiftOut(conf.SPI_MOSI, conf.SPI_CLK, MSBFIRST, spidata[r*columns*2+i-1]);
+                }
+            }
+
+            //end the spi transfer if hardware should be used
+            if (conf.useHardwareSpi) {
+                SPI.endTransaction();
+            }
+
+            // latch the data onto the display
+            digitalWrite(cs, HIGH);
+        }
     }
 }
 

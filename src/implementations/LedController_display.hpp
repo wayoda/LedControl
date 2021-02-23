@@ -15,10 +15,8 @@
 
 template <size_t columns, size_t rows>
 void LedController<columns,rows>::resetBuffers() {
-    for (unsigned int j = 0; j < rows; j++) {
-        for (unsigned int i = 0; i < columns*2; i++) {
-            spidata[j][i] = 0;
-        }
+    for (unsigned int j = 0; j < rows*columns*2; j++) {
+        spidata[j] = i%2 == 0 ? 0x00 : MAX72XX::OP_NOOP;  
     }
 
     for (unsigned int j = 0; j < conf.SegmentCount(); j++) {

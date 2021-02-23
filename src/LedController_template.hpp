@@ -112,7 +112,7 @@ class LedController {
      * @brief Das Array was benötigt wird, um Daten auf das Gerät zu übertragen.
      *
      */
-    byte spidata[rows][columns * 2];
+    byte spidata[rows*columns*2];
 
     /**
      * \~english

@@ -38,10 +38,8 @@ LedController<columns,rows>::LedController(const LedController &other) {
         }
     }
 
-    for (unsigned int j = 0; j < rows; j++) {
-        for (unsigned int i = 0; i < columns*2; i++) {
-            spidata[j][i] = other.spidata[j][i];
-        }
+    for (unsigned int j = 0; j < rows*columns*2; j++) {
+        spidata[j] = other.spidata[j];
     }
 
     refreshSegments();
