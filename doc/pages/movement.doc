@@ -3,7 +3,7 @@
 \~english
 \page movement Moving the displayed data
 
-<b>Check the LedController for more infomation about its functions or look for the [Examples](examples.html).</b>
+<b>Check the sakurajin::LedController for more infomation about its functions or look for the [Examples](examples.html).</b>
 
 This pages describes how to move the displayed data around and what you need to know when using the functions.
 As of version 2.0.0 the movement functions are aware of the number of rows and columns and use return types with the correct size.
@@ -19,35 +19,35 @@ You can either move all rows/columns or a single row/column.
 
 \section move_single Moving a single Row/Column
 
-LedController.moveRowLeft and LedController.moveRowRight move a single Row left/right.
+sakurajin::LedController.moveRowLeft and sakurajin::LedController.moveRowRight move a single Row left/right.
 The required Argument is the number of the row that should be shifted and the byte that should be shifted in.
 It returns the byte that was shifted out.
 The bytes that are shifted in and out have the LSB (least significant bit) on the bottom.
 
-LedController.moveColumnDown and LedController.moveColumnUp move a single Column down/up.
+sakurajin::LedController.moveColumnDown and sakurajin::LedController.moveColumnUp move a single Column down/up.
 The required Argument is the number of the column that should be shifted and the byte that should be shifted in.
 It returns the byte that was shifted out.
 The bytes that are shifted in and out have the LSB (least significant bit) on the right.
 
 \section move_all Moving all Rows/Columns
 
-The LedController.moveLeft and LedController.moveRight functions moves all columns left/right by one pixel.
+The sakurajin::LedController.moveLeft and sakurajin::LedController.moveRight functions moves all columns left/right by one pixel.
 If nothing is given 0 will be shifted in.
-If you want to shift some data in you have to pass the parameter `const ByteRow<rows>& shiftedInColumn`.
-It is an ByteRow with the length of your number of rows.
-In other words if you have 1 row the type is `ByteRow<1>` or `byte[1]` and if you have 2 rows it is `ByteRow<2>` or `byte[2]` and so on.
+If you want to shift some data in you have to pass the parameter `const sakurajin::ByteRow<rows>& shiftedInColumn`.
+It is an sakurajin::ByteRow with the length of your number of rows.
+In other words if you have 1 row the type is `sakurajin::ByteRow<1>` or `byte[1]` and if you have 2 rows it is `sakurajin::ByteRow<2>` or `byte[2]` and so on.
 Index 0 of the row corresponds to columns 0 of the Matrix, in other words the bottom segment is first.
-The function will retun a ByteRow with the same length as the input.
-The returned ByteRow is the Column that was shifted out as because of the movement.
+The function will retun a sakurajin::ByteRow with the same length as the input.
+The returned sakurajin::ByteRow is the Column that was shifted out as because of the movement.
 
-The LedController.moveUp and LedController.moveDown functions moves all rows up/down by one pixel.
+The sakurajin::LedController.moveUp and sakurajin::LedController.moveDown functions moves all rows up/down by one pixel.
 If nothing is given 0 will be shifted in.
-If you want to shift some data in you have to pass the parameter `const ByteRow<columns>& shiftedInColumn`.
-It is an ByteRow with the length of your number of columns.
-In other words if you have 1 column the type is `ByteRow<1>` or `byte[1]` and if you have 2 column it is `ByteRow<2>` or `byte[2]` and so on.
+If you want to shift some data in you have to pass the parameter `const sakurajin::ByteRow<columns>& shiftedInColumn`.
+It is an sakurajin::ByteRow with the length of your number of columns.
+In other words if you have 1 column the type is `sakurajin::ByteRow<1>` or `byte[1]` and if you have 2 column it is `sakurajin::ByteRow<2>` or `byte[2]` and so on.
 Index 0 of the row corresponds to row 0 of the Matrix, in other words the left segment is first.
-The function will retun a ByteRow with the same length as the input.
-The returned ByteRow is the Row that was shifted out as because of the movement.
+The function will retun a sakurajin::ByteRow with the same length as the input.
+The returned sakurajin::ByteRow is the Row that was shifted out as because of the movement.
 
 Check [Led-matrix-rocket-multi.ino](@ref Led-matrix-rocket-multi.ino) to see how this can be implemented.
 
@@ -55,7 +55,7 @@ Check [Led-matrix-rocket-multi.ino](@ref Led-matrix-rocket-multi.ino) to see how
 \~german
 \page movement Bewegen der angezeigten Daten
 
-<b>Schau auf die Seite des LedController für mehr Informationen über dessen Funktionen schau in die [Beispiele](examples.html).</b>
+<b>Schau auf die Seite des sakurajin::LedController für mehr Informationen über dessen Funktionen schau in die [Beispiele](examples.html).</b>
 
 Diese Seite beschreibt das Bewegen der angezeigten Daten und was man für die Nutzung der Funktionen wissen muss.
 Seit Version 2.0.0 beachten die Bewegungsfunktionen die Anzahl der Zeilen und Spalten und nutzen Rückgabewerte mit der richtigen Größe.
@@ -72,34 +72,34 @@ Man kann entweder alle Zeilen/Spalten oder nur eine einzelne Zeile/Spalte auf ei
 
 \section move_single Bewegen einzelner Zeilen/Spalten
 
-LedController.moveRowLeft und LedController.moveRowRight bewegen eine einzelne Zeile nach links/rechts.
+sakurajin::LedController.moveRowLeft und sakurajin::LedController.moveRowRight bewegen eine einzelne Zeile nach links/rechts.
 Das benötigte Argument ist die Nummer, der Zeile, die bewegt werden soll und das byte welches reingeschoben werden soll.
 Die Funktion gibt das byte zurück, was rausgeschoben wird.
 Die bytes die rein- und rausgeschoben werden, haben das LSB (Least Significant bit, also die letzte Stelle) unten.
 
-LedController.moveColumnUp und LedController.moveColumnDown bewegen eine einzelne Splate nach oben/unten.
+sakurajin::LedController.moveColumnUp und sakurajin::LedController.moveColumnDown bewegen eine einzelne Splate nach oben/unten.
 Das benötigte Argument ist die Nummer, der Spalte, die bewegt werden soll und das byte welches reingeschoben werden soll.
 Die Funktion gibt das byte zurück, was rausgeschoben wird.
 Die bytes die rein- und rausgeschoben werden, haben das LSB (Least Significant bit, also die letzte Stelle) rechts.
 
 \section move_all Bewegen aller Zeilen/Spalten
 
-LedController.moveLeft und LedController.moveRight bewegen alle Zeilen einen Pixel nach links/rechts.
+sakurajin::LedController.moveLeft und sakurajin::LedController.moveRight bewegen alle Zeilen einen Pixel nach links/rechts.
 Wenn nichts übergeben wird, wird 0 reingeschoben.
-Wenn Daten reingeschoben werden sollen muss das Parameter `const ByteRow<rows>& shiftedInColumn` übergeben werden.
-Es ist eine ByteRow mit der Anzahl der Zeilen als Länge.
-In anderen Worten, bei einer Zeile ist der Datentyp `ByteRow<1>` oder `byte[1]` und wenn man 2 Zeilen hatist er `ByteRow<2>` oder `byte[2]` und so weiter.
-Index 0 der ByteRow entspricht der Spalte 0 der Matrix , in anderen Worten das Segment unten zuerst.
-Die Funktion gibt eine ByteRow mit der gleichen Länge wie die Eingabe zurück.
+Wenn Daten reingeschoben werden sollen muss das Parameter `const sakurajin::ByteRow<rows>& shiftedInColumn` übergeben werden.
+Es ist eine sakurajin::ByteRow mit der Anzahl der Zeilen als Länge.
+In anderen Worten, bei einer Zeile ist der Datentyp `sakurajin::ByteRow<1>` oder `byte[1]` und wenn man 2 Zeilen hatist er `sakurajin::ByteRow<2>` oder `byte[2]` und so weiter.
+Index 0 der sakurajin::ByteRow entspricht der Spalte 0 der Matrix , in anderen Worten das Segment unten zuerst.
+Die Funktion gibt eine sakurajin::ByteRow mit der gleichen Länge wie die Eingabe zurück.
 Der Rückgabewert entspricht der Rausgeschobenen Splate.
 
-LedController.moveUp und LedController.moveDown bewegen alle Splaten einen Pixel nach oben/unten.
+sakurajin::LedController.moveUp und sakurajin::LedController.moveDown bewegen alle Splaten einen Pixel nach oben/unten.
 Wenn nichts übergeben wird, wird 0 reingeschoben.
-Wenn Daten reingeschoben werden sollen muss das Parameter `const ByteRow<columns>& shiftedInColumn` übergeben werden.
-Es ist eine ByteRow mit der Anzahl der Splaten als Länge.
-In anderen Worten, bei einer Splate ist der Datentyp `ByteRow<1>` oder `byte[1]` und wenn man 2 Splaten hatist er `ByteRow<2>` oder `byte[2]` und so weiter.
-Index 0 der ByteRow entspricht der Zeile 0 der Matrix , in anderen Worten das Segment links zuerst.
-Die Funktion gibt eine ByteRow mit der gleichen Länge wie die Eingabe zurück.
+Wenn Daten reingeschoben werden sollen muss das Parameter `const sakurajin::ByteRow<columns>& shiftedInColumn` übergeben werden.
+Es ist eine sakurajin::ByteRow mit der Anzahl der Splaten als Länge.
+In anderen Worten, bei einer Splate ist der Datentyp `sakurajin::ByteRow<1>` oder `byte[1]` und wenn man 2 Splaten hatist er `sakurajin::ByteRow<2>` oder `byte[2]` und so weiter.
+Index 0 der sakurajin::ByteRow entspricht der Zeile 0 der Matrix , in anderen Worten das Segment links zuerst.
+Die Funktion gibt eine sakurajin::ByteRow mit der gleichen Länge wie die Eingabe zurück.
 Der Rückgabewert entspricht der Rausgeschobenen Zeile.
 
 Schaue [Led-matrix-rocket-multi.ino](@ref Led-matrix-rocket-multi.ino) an um zu sehen wie dies implementiert werden kann.

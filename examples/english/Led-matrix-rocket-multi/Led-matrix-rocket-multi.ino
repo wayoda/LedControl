@@ -4,9 +4,9 @@
  * @brief An exaple for using multiple rows
  * @version 0.1
  * @date 2020-12-30
- * 
+ *
  * @copyright Copyright (c) 2020
- * 
+ *
  */
 
 #include "LedController.hpp"
@@ -32,7 +32,7 @@
 auto lc = LedController<Segments,2>();
 
 //the pixelart of our beautiful rocket
-ByteBlock rocket= {
+ByteBlock rocket= ByteBlock::reverse({
   B00000000,
   B00001111,
   B00111110,
@@ -41,22 +41,22 @@ ByteBlock rocket= {
   B00001111,
   B00000000,
   B00000000
-};
+});
 
 ByteBlock rocketColumns;
 
 //switches the state of the builtin led
-void switchLED(){
+void switchLED() {
   static bool LEDON = false;
-  if(LEDON){
+  if(LEDON) {
     digitalWrite(LED, LOW);
-  }else{
+  } else {
     digitalWrite(LED, HIGH);
   }
   LEDON = !LEDON;
 }
 
-void setup(){
+void setup() {
 
   //creating the configuration of the controller
   controller_configuration<Segments,2> conf;
@@ -86,57 +86,57 @@ void setup(){
 
   //make a array of columns out of the rocket
   //this is needed to shift it in correctly (you can leave this line if you want to)
-  rocketColumns = lc.makeColumns(rocket);
+  rocketColumns = ByteBlock::makeColumns(rocket);
 
   //enables the builtin Led to have a kind of clock
   pinMode(LED, OUTPUT);
-  
+
 }
 
 //This is basically the same as Led-matrix-rocket.ino
-void loop(){
+void loop() {
   lc.clearMatrix();
-  
-  for(int i = 0;i < 8*(Segments+1);i++){
+
+  for(int i = 0; i < 8*(Segments+1); i++) {
     delay(delayTime);
 
     switchLED();
 
-    if(i < 8){
-      lc.moveRowRight(rocketColumns[i]);   
-    }else{
+    if(i < 8) {
+      lc.moveRowRight(rocketColumns[i]);
+    } else {
       lc.moveRight();
 
       delay(delayTime);
-      if(i%16 < 8){      
+      if(i%16 < 8) {
         lc.moveDown();
-      }else{
+      } else {
         lc.moveUp();
       }
     }
-        
+
   }
 
   delay(delayTime);
 
-  for(int i = 0;i < 8*(Segments+1);i++){
+  for(int i = 0; i < 8*(Segments+1); i++) {
     delay(delayTime);
 
     switchLED();
 
-    if(i < 8){
-      lc.moveRowLeft(rocketColumns[i]);   
-    }else{
+    if(i < 8) {
+      lc.moveRowLeft(rocketColumns[i]);
+    } else {
       lc.moveLeft();
 
       delay(delayTime);
-      if(i%16 < 8){      
+      if(i%16 < 8) {
         lc.moveDown();
-      }else{
+      } else {
         lc.moveUp();
       }
     }
-        
+
   }
 
   delay(delayTime);

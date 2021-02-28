@@ -5,9 +5,9 @@
  * This demo is based on https://www.meine-schaltung.de/schaltung/soft/anzeige/vierfach_matrix_mit_arduino/ and modified for the latest LedController.
  * @version 0.1
  * @date 2021-02-16
- * 
+ *
  * @copyright Copyright (c) 2021
- * 
+ *
  */
 
 //Wie immer die Bibliothek einbinden
@@ -24,38 +24,38 @@
 #define delayTime 200
 
 //Das uninitialisierte LedController Objekt
-LedController<Segments,1> lc = LedController<Segments,1>();  
+LedController<Segments,1> lc = LedController<Segments,1>();
 
 // Zeichen und Buchstaben ---------------------------------------------------------------------------------
-ByteBlock A =  lc.rotate180({ B00000000, B00011000, B00100100, B00100100, B00111100, B00100100, B00100100, B00000000 });
-ByteBlock a =  lc.rotate180({ B00000000, B00000000, B00111000, B01001000, B01001000, B01001000, B00111000, B00000000 });
-ByteBlock b =  lc.rotate180(lc.reverse({ B00000000, B00001000, B00111000, B01001000, B01001000, B01001000, B00111000, B00000000 }))<<2;
-ByteBlock c =  lc.rotate180({ B00000000, B00000000, B00110000, B01000000, B01000000, B01000000, B00110000, B00000000 });
-ByteBlock d =  lc.rotate180({ B00000000, B00001000, B00111000, B01001000, B01001000, B01001000, B00111000, B00000000 });
-ByteBlock e =  lc.rotate180({ B00000000, B00000000, B00110000, B01001000, B01111000, B01000000, B00111000, B00000000 });
-ByteBlock H =  lc.rotate180({ B00000000, B10010000, B10010000, B11110000, B10010000, B10010000, B10010000, B00000000 });
-ByteBlock h =  lc.rotate180({ B00000000, B01000000, B01110000, B01001000, B01001000, B01001000, B01001000, B00000000 });
-ByteBlock I =  lc.rotate180({ B00000000, B01000000, B01000000, B01000000, B01000000, B01000000, B01000000, B00000000 });
-ByteBlock i =  lc.rotate180({ B00000000, B10000000, B00000000, B10000000, B10000000, B10000000, B10000000, B00000000 });
-ByteBlock J =  lc.rotate180({ B00000000, B00001000, B00001000, B00001000, B00001000, B01001000, B00110000, B00000000 });
-ByteBlock K =  lc.rotate180({ B00000000, B10001000, B10010000, B11100000, B10100000, B10010000, B10001000, B00000000 });
-ByteBlock k =  lc.rotate180({ B00000000, B10000000, B10010000, B10100000, B11000000, B10100000, B10010000, B00000000 });
-ByteBlock l =  lc.rotate180({ B00000000, B10000000, B10000000, B10000000, B10000000, B10000000, B01000000, B00000000 });
-ByteBlock M =  lc.rotate180({ B00000000, B01000100, B01101100, B01010100, B01000100, B01000100, B01000100, B00000000 });
-ByteBlock m =  lc.rotate180({ B00000000, B00000000, B01110110, B01001001, B01001001, B01001001, B01001001, B00000000 });
-ByteBlock n =  lc.rotate180({ B00000000, B00000000, B01110000, B01001000, B01001000, B01001000, B01001000, B00000000 });
-ByteBlock o =  lc.rotate180({ B00000000, B00000000, B01100000, B10010000, B10010000, B10010000, B01100000, B00000000 });
-ByteBlock p =  lc.rotate180({ B00000000, B00000000, B11100000, B10001000, B10001000, B10001000, B11100000, B10000000 });
-ByteBlock q =  lc.rotate180(lc.reverse({ B00000000, B00000000, B11100000, B10001000, B10001000, B10001000, B11100000, B10000000 }))<<2;
-ByteBlock r =  lc.rotate180({ B00000000, B00000000, B10100000, B11000000, B10000000, B10000000, B10000000, B00000000 });
-ByteBlock s =  lc.rotate180({ B00000000, B00000000, B01110000, B10000000, B01100000, B00010000, B11100000, B00000000 });
-ByteBlock t =  lc.rotate180({ B00000000, B10000000, B11100000, B10000000, B10000000, B10000000, B01100000, B00000000 });
-ByteBlock u =  lc.rotate180({ B00000000, B00000000, B10010000, B10010000, B10010000, B10010000, B01100000, B00000000 });
-ByteBlock w =  lc.rotate180({ B00000000, B00000000, B10001000, B10001000, B10101000, B11011000, B10001000, B00000000 });
-ByteBlock LB = lc.rotate180({ B00000000, B00000000, B00000000, B00000000, B00000000, B00000000, B00000000, B00000000 });
-ByteBlock AZ = lc.rotate180({ B01000000, B01000000, B01000000, B01000000, B01000000, B00000000, B01000000, B00000000 });
+ByteBlock A =  ByteBlock::rotate180({ B00000000, B00011000, B00100100, B00100100, B00111100, B00100100, B00100100, B00000000 });
+ByteBlock a =  ByteBlock::rotate180({ B00000000, B00000000, B00111000, B01001000, B01001000, B01001000, B00111000, B00000000 });
+ByteBlock b =  ByteBlock::rotate180(ByteBlock::reverse({ B00000000, B00001000, B00111000, B01001000, B01001000, B01001000, B00111000, B00000000 }))<<2;
+ByteBlock c =  ByteBlock::rotate180({ B00000000, B00000000, B00110000, B01000000, B01000000, B01000000, B00110000, B00000000 });
+ByteBlock d =  ByteBlock::rotate180({ B00000000, B00001000, B00111000, B01001000, B01001000, B01001000, B00111000, B00000000 });
+ByteBlock e =  ByteBlock::rotate180({ B00000000, B00000000, B00110000, B01001000, B01111000, B01000000, B00111000, B00000000 });
+ByteBlock H =  ByteBlock::rotate180({ B00000000, B10010000, B10010000, B11110000, B10010000, B10010000, B10010000, B00000000 });
+ByteBlock h =  ByteBlock::rotate180({ B00000000, B01000000, B01110000, B01001000, B01001000, B01001000, B01001000, B00000000 });
+ByteBlock I =  ByteBlock::rotate180({ B00000000, B01000000, B01000000, B01000000, B01000000, B01000000, B01000000, B00000000 });
+ByteBlock i =  ByteBlock::rotate180({ B00000000, B10000000, B00000000, B10000000, B10000000, B10000000, B10000000, B00000000 });
+ByteBlock J =  ByteBlock::rotate180({ B00000000, B00001000, B00001000, B00001000, B00001000, B01001000, B00110000, B00000000 });
+ByteBlock K =  ByteBlock::rotate180({ B00000000, B10001000, B10010000, B11100000, B10100000, B10010000, B10001000, B00000000 });
+ByteBlock k =  ByteBlock::rotate180({ B00000000, B10000000, B10010000, B10100000, B11000000, B10100000, B10010000, B00000000 });
+ByteBlock l =  ByteBlock::rotate180({ B00000000, B10000000, B10000000, B10000000, B10000000, B10000000, B01000000, B00000000 });
+ByteBlock M =  ByteBlock::rotate180({ B00000000, B01000100, B01101100, B01010100, B01000100, B01000100, B01000100, B00000000 });
+ByteBlock m =  ByteBlock::rotate180({ B00000000, B00000000, B01110110, B01001001, B01001001, B01001001, B01001001, B00000000 });
+ByteBlock n =  ByteBlock::rotate180({ B00000000, B00000000, B01110000, B01001000, B01001000, B01001000, B01001000, B00000000 });
+ByteBlock o =  ByteBlock::rotate180({ B00000000, B00000000, B01100000, B10010000, B10010000, B10010000, B01100000, B00000000 });
+ByteBlock p =  ByteBlock::rotate180({ B00000000, B00000000, B11100000, B10001000, B10001000, B10001000, B11100000, B10000000 });
+ByteBlock q =  ByteBlock::rotate180(ByteBlock::reverse({ B00000000, B00000000, B11100000, B10001000, B10001000, B10001000, B11100000, B10000000 }))<<2;
+ByteBlock r =  ByteBlock::rotate180({ B00000000, B00000000, B10100000, B11000000, B10000000, B10000000, B10000000, B00000000 });
+ByteBlock s =  ByteBlock::rotate180({ B00000000, B00000000, B01110000, B10000000, B01100000, B00010000, B11100000, B00000000 });
+ByteBlock t =  ByteBlock::rotate180({ B00000000, B10000000, B11100000, B10000000, B10000000, B10000000, B01100000, B00000000 });
+ByteBlock u =  ByteBlock::rotate180({ B00000000, B00000000, B10010000, B10010000, B10010000, B10010000, B01100000, B00000000 });
+ByteBlock w =  ByteBlock::rotate180({ B00000000, B00000000, B10001000, B10001000, B10101000, B11011000, B10001000, B00000000 });
+ByteBlock LB = ByteBlock::rotate180({ B00000000, B00000000, B00000000, B00000000, B00000000, B00000000, B00000000, B00000000 });
+ByteBlock AZ = ByteBlock::rotate180({ B01000000, B01000000, B01000000, B01000000, B01000000, B00000000, B01000000, B00000000 });
 
-ByteBlock Heart = lc.rotate180({
+ByteBlock Heart = ByteBlock::rotate180({
   B00000000,
   B01000010,
   B10100101,
@@ -81,7 +81,7 @@ ByteBlock message[message_length] = {
 };
 
 
-void setup(){
+void setup() {
   //erstelle eine Konfiguration mit der gleichen Größe wie der Controller
   controller_configuration<Segments,1> conf;
   //Nutze den CS pin
@@ -98,25 +98,25 @@ void setup(){
   lc.setIntensity(0);
 }
 
-void loop(){
-    //sicherheitshalber Matrix leeren
-    lc.clearMatrix();
+void loop() {
+  //sicherheitshalber Matrix leeren
+  lc.clearMatrix();
 
-    //Daten reinschieben
-    //Jedes Segment der Nachricht wird einzeln reingeschoben
-    for(unsigned int i = 0;i < message_length;i++){
-      //Da jedes Segment eine Breite von 8 pixeln hat noch eine Schleife
-      for(unsigned int j = 0;j < 8;j++){
-        //Schiebt alles nach links und fügt rechts eine Spalte der Nachricht rein
-        lc.moveLeft(lc.makeColumns(message[i])[j]);
-        delay(delayTime);
-      }
-    }
-
-    //schiebt die daten raus
-    //Da die größe der Matrix 8*Segments ist muss einfach so oft geschoben werden.
-    for(unsigned int i = 0; i < 8*Segments;i++){
-      lc.moveLeft();
+  //Daten reinschieben
+  //Jedes Segment der Nachricht wird einzeln reingeschoben
+  for(unsigned int i = 0; i < message_length; i++) {
+    //Da jedes Segment eine Breite von 8 pixeln hat noch eine Schleife
+    for(unsigned int j = 0; j < 8; j++) {
+      //Schiebt alles nach links und fügt rechts eine Spalte der Nachricht rein
+      lc.moveLeft(ByteBlock::makeColumns(message[i])[j]);
       delay(delayTime);
     }
+  }
+
+  //schiebt die daten raus
+  //Da die größe der Matrix 8*Segments ist muss einfach so oft geschoben werden.
+  for(unsigned int i = 0; i < 8*Segments; i++) {
+    lc.moveLeft();
+    delay(delayTime);
+  }
 }

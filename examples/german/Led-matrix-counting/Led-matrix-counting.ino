@@ -4,9 +4,9 @@
  * @brief counting up on an led matrix
  * @version 0.1
  * @date 2020-12-30
- * 
+ *
  * @copyright Copyright (c) 2020
- * 
+ *
  */
 
 //Wie immer muss zuerst die Library verwendet werden
@@ -22,7 +22,7 @@
 #define delayTime 200
 
 //Das ist die Variable in der das verwendete Objekt gespeichert wird.
-LedController<Segments,1> lc; 
+LedController<Segments,1> lc;
 
 //Dieses Array definiert nur wie die Ziffern aussehen.
 ByteBlock digits[10] = {
@@ -124,9 +124,9 @@ void setLEDs (unsigned int number) {
   //Die Schleife zerlegt die Nummer in die einzalnen Ziffern
   unsigned int places[Segments];
 
-  for(unsigned int i = 0;i < Segments;i++){
+  for(unsigned int i = 0; i < Segments; i++) {
     unsigned int divisor = 1;
-    for(unsigned int j=0;j < i;j++){
+    for(unsigned int j=0; j < i; j++) {
       divisor *= 10;
     }
 
@@ -137,37 +137,37 @@ void setLEDs (unsigned int number) {
 }
 
 //Diese Funktion lässt die interne LED blinken
-void switchLED(){
+void switchLED() {
   static bool LEDON = false;
-  if(LEDON){
+  if(LEDON) {
     digitalWrite(13, LOW);
-  }else{
+  } else {
     digitalWrite(13, HIGH);
   }
   LEDON = !LEDON;
 }
 
-void setup(){
+void setup() {
 
   //Hier wird ein LedController mit Hardware SPI erstelle und lc zugewiesen
   lc = LedController<Segments,1>(CS);
 
   //Der Pin für die interne LED wird auf output gesetzt
   pinMode(13, OUTPUT);
-  
+
   //alle Ziffern müssen um 180 Grad gedreht werden, um sie richtig anzuzeigen.
   //man kann das weglassen, aber dann sine die Ziffern falsch
-  for(unsigned int i = 0; i < 10; i++){
-    digits[i] = lc.rotate180(digits[i]);
+  for(unsigned int i = 0; i < 10; i++) {
+    digits[i] = ByteBlock::rotate180(digits[i]);
   }
-  
+
 }
 
-void loop(){
+void loop() {
 
   //erst wird die Matrix geleert
   lc.clearMatrix();
-  
+
   //In dieser Schleife wird einfach gezählt und jeweils die nummer angezeigt
   for (unsigned int i = 0; i<10000; i++) {
     delay(500);
