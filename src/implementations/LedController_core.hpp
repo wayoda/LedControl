@@ -57,7 +57,7 @@ void sakurajin::LedController<columns,rows>::init(unsigned int csPin) {
 
 template <size_t columns, size_t rows>
 void sakurajin::LedController<columns,rows>::init(unsigned int dataPin, unsigned int clkPin,
-                                       unsigned int csPin, bool useHardwareSpiParam) {
+        unsigned int csPin, bool useHardwareSpiParam) {
     if (initilized) {
         return;
     }
