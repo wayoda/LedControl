@@ -328,6 +328,12 @@ namespace sakurajin{
                         PRINTLN_IF(conf.debug_output, "Invalid value in row_SPI_CS found. 0 is not allowed.");
                         return false;
                     }
+                    for(unsigned int j = 0; j < i;j++){
+                        if(conf.row_SPI_CS[i] == conf.row_SPI_CS[j]){
+                            PRINTLN_IF(conf.debug_output, "None unique value in row_SPI_CS found! Each row needs its own pin or consider enabling virtual_multi_row.");
+                            return false;
+                        }
+                    }
                 }
             }
 
