@@ -10,7 +10,7 @@
 #endif
 #endif
 
-namespace sakurajin{
+namespace sakurajin {
 
     /**
      * \~english
@@ -25,7 +25,7 @@ namespace sakurajin{
      */
     template<size_t SIZE>
     class ByteRow {
-    protected:
+      protected:
         /**
          * \~english
          * @brief The internal array where the actual data is.
@@ -35,7 +35,7 @@ namespace sakurajin{
          */
         byte _data[SIZE];
 
-    public:
+      public:
 
         /**
          * \~english

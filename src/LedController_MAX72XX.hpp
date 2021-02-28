@@ -2,42 +2,42 @@
 
 #include "LedController_charTable.hpp"
 
-namespace sakurajin{
-// the opcodes for the MAX7221 and MAX7219
+namespace sakurajin {
+    // the opcodes for the MAX7221 and MAX7219
     class MAX72XX {
-        private:
-            charTable table;
-            
-            static const MAX72XX& getInstance(){
-                static MAX72XX instance = MAX72XX();
-                return instance;
-            }
+      private:
+        charTable table;
 
-            MAX72XX();
+        static const MAX72XX& getInstance() {
+            static MAX72XX instance = MAX72XX();
+            return instance;
+        }
 
-        public:
-            static const unsigned int OP_NOOP = 0;
-            static const unsigned int OP_DIGIT0 = 1;
-            static const unsigned int OP_DIGIT1 = 2;
-            static const unsigned int OP_DIGIT2 = 3;
-            static const unsigned int OP_DIGIT3 = 4;
-            static const unsigned int OP_DIGIT4 = 5;
-            static const unsigned int OP_DIGIT5 = 6;
-            static const unsigned int OP_DIGIT6 = 7;
-            static const unsigned int OP_DIGIT7 = 8;
-            static const unsigned int OP_DECODEMODE = 9;
-            static const unsigned int OP_INTENSITY = 10;
-            static const unsigned int OP_SCANLIMIT = 11;
-            static const unsigned int OP_SHUTDOWN = 12;
-            static const unsigned int OP_DISPLAYTEST = 15;
+        MAX72XX();
 
-            static byte getChar(char c){
-                return getInstance().table.getChar(c);
-            }
+      public:
+        static const unsigned int OP_NOOP = 0;
+        static const unsigned int OP_DIGIT0 = 1;
+        static const unsigned int OP_DIGIT1 = 2;
+        static const unsigned int OP_DIGIT2 = 3;
+        static const unsigned int OP_DIGIT3 = 4;
+        static const unsigned int OP_DIGIT4 = 5;
+        static const unsigned int OP_DIGIT5 = 6;
+        static const unsigned int OP_DIGIT6 = 7;
+        static const unsigned int OP_DIGIT7 = 8;
+        static const unsigned int OP_DECODEMODE = 9;
+        static const unsigned int OP_INTENSITY = 10;
+        static const unsigned int OP_SCANLIMIT = 11;
+        static const unsigned int OP_SHUTDOWN = 12;
+        static const unsigned int OP_DISPLAYTEST = 15;
 
-            static const charTable& getTable(){
-                return getInstance().table;
-            }
+        static byte getChar(char c) {
+            return getInstance().table.getChar(c);
+        }
+
+        static const charTable& getTable() {
+            return getInstance().table;
+        }
     };
 
 }

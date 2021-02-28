@@ -23,7 +23,7 @@ static void test_makeColumns() {
     TEST_ASSERT(d == d.makeColumns().makeColumns());
 }
 
-static void test_rotate180(){
+static void test_rotate180() {
     sakurajin::ByteBlock a = {0x80,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
     sakurajin::ByteBlock b = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01};
 

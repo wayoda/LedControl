@@ -17,7 +17,7 @@
 template <size_t columns, size_t rows>
 void sakurajin::LedController<columns,rows>::resetBuffers() {
     for (unsigned int j = 0; j < rows*columns*2; j++) {
-        spidata[j] = j%2 == 0 ? 0x00 : sakurajin::MAX72XX::OP_NOOP;  
+        spidata[j] = j%2 == 0 ? 0x00 : sakurajin::MAX72XX::OP_NOOP;
     }
 
     for (unsigned int j = 0; j < conf.SegmentCount(); j++) {

@@ -24,7 +24,7 @@ void sakurajin::LedController<columns,rows>::spiTransfer(unsigned int segment, b
     unsigned int row = conf.getRow(segment);
     unsigned int maxbytes = conf.SegmentCount() * 2;
 
-    for(unsigned int i = 0; i < maxbytes;i++){
+    for(unsigned int i = 0; i < maxbytes; i++) {
         spidata[i] = i%2 == 0 ? 0x00 : sakurajin::MAX72XX::OP_NOOP;
     }
 
@@ -32,7 +32,7 @@ void sakurajin::LedController<columns,rows>::spiTransfer(unsigned int segment, b
     spidata[row*columns*2+offset+1] = opcode;
     spidata[row*columns*2+offset] = data;
 
-    if(conf.virtual_multi_row && conf.SPI_CS != 0){
+    if(conf.virtual_multi_row && conf.SPI_CS != 0) {
         auto cs = conf.SPI_CS;
         digitalWrite(cs, LOW);
 
@@ -56,7 +56,7 @@ void sakurajin::LedController<columns,rows>::spiTransfer(unsigned int segment, b
         // latch the data onto the display
         digitalWrite(cs, HIGH);
 
-    }else{
+    } else {
         for(unsigned int r = 0; r < rows ; r++) {
 
             //enable the line
