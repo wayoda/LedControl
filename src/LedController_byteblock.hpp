@@ -229,11 +229,11 @@ namespace sakurajin{
 
             for (unsigned int i = 0; i < 8; i++) {
                 for (unsigned int j = 0; j < 8; j++) {
-                    columnArray[i] |= (B10000000 & (rowArray[j]<<i)) >> (j);
+                    columnArray[7-i] |= (B10000000 & (rowArray[j]<<i)) >> (j);
                 }
             }
 
-            return rotate180(columnArray);
+            return reverse(columnArray);
         }
 
         /**

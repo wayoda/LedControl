@@ -170,7 +170,7 @@ void sakurajin::LedController<columns,rows>::setColumn(unsigned int segmentNumbe
     byte val;
 
     for (int row = 0; row < 8; row++) {
-        val = value >> (7 - row);
+        val = value >> row;
         val &= 0x01;
         val <<= col;
         val |= LedStates[segmentNumber][row];

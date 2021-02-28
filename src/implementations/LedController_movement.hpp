@@ -22,7 +22,7 @@ byte sakurajin::LedController<columns,rows>::moveRowRight(byte shiftedInColumn, 
 
     for (unsigned int i = 0; i < 8; i++) {
         if (LedStates[conf.getSegmentNumber(columns-1,row_num)][i] & 0x80) {
-            returnValue |= 0x80 >> i;
+            returnValue |= 0x01 << i;
         };
     }
 
@@ -55,7 +55,7 @@ byte sakurajin::LedController<columns,rows>::moveRowLeft(byte shiftedInColumn, u
 
     for (unsigned int i = 0; i < 8; i++) {
         if (LedStates[conf.getSegmentNumber(0,row_num)][i] & 0x01) {
-            returnValue |= 0x80 >> i;
+            returnValue |= 0x01 << i;
         };
     }
 
