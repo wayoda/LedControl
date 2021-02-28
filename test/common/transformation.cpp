@@ -19,8 +19,8 @@ static void test_makeColumns() {
 
     TEST_ASSERT(d == c.makeColumns());
     TEST_ASSERT(c == d.makeColumns());
-    TEST_ASSERT(c == c.makeColumns().makeColumns())
-    TEST_ASSERT(d == d.makeColumns().makeColumns())
+    TEST_ASSERT(c == c.makeColumns().makeColumns());
+    TEST_ASSERT(d == d.makeColumns().makeColumns());
 }
 
 static void test_rotate180(){
