@@ -5,9 +5,9 @@
  * This demo is based on https://www.meine-schaltung.de/schaltung/soft/anzeige/vierfach_matrix_mit_arduino/ and modified for the latest LedController.
  * @version 0.1
  * @date 2021-02-16
- * 
+ *
  * @copyright Copyright (c) 2021
- * 
+ *
  */
 
 //As always include the library
@@ -24,7 +24,7 @@
 #define delayTime 200
 
 //The ledController object, at the moment it is uninitilized
-LedController<Segments,1> lc = LedController<Segments,1>();  
+LedController<Segments,1> lc = LedController<Segments,1>();
 
 // Symbols and Letters ---------------------------------------------------------------------------------
 ByteBlock A =  ByteBlock::rotate180({ B00000000, B00011000, B00100100, B00100100, B00111100, B00100100, B00100100, B00000000 });
@@ -81,7 +81,7 @@ ByteBlock message[message_length] = {
 };
 
 
-void setup(){
+void setup() {
   //setup the config with the same size as the controller
   controller_configuration<Segments,1> conf;
   //use the specified CS pin
@@ -98,25 +98,25 @@ void setup(){
   lc.setIntensity(0);
 }
 
-void loop(){
-    //clear just to be safe
-    lc.clearMatrix();
+void loop() {
+  //clear just to be safe
+  lc.clearMatrix();
 
-    //shift data in
-    //each segment of the message will be shifted in one by one
-    for(unsigned int i = 0;i < message_length;i++){
-      //since each segment has a width of 8 pixels there is another loop
-      for(unsigned int j = 0;j < 8;j++){
-        //move the columns in one by one and wait a bit
-        lc.moveLeft(ByteBlock::makeColumns(message[i])[j]);
-        delay(delayTime);
-      }
-    }
-
-    //shift the contents out
-    //since the sice is 8*segments simply shift left that many times
-    for(unsigned int i = 0; i < 8*Segments;i++){
-      lc.moveLeft();
+  //shift data in
+  //each segment of the message will be shifted in one by one
+  for(unsigned int i = 0; i < message_length; i++) {
+    //since each segment has a width of 8 pixels there is another loop
+    for(unsigned int j = 0; j < 8; j++) {
+      //move the columns in one by one and wait a bit
+      lc.moveLeft(ByteBlock::makeColumns(message[i])[j]);
       delay(delayTime);
     }
+  }
+
+  //shift the contents out
+  //since the sice is 8*segments simply shift left that many times
+  for(unsigned int i = 0; i < 8*Segments; i++) {
+    lc.moveLeft();
+    delay(delayTime);
+  }
 }

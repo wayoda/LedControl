@@ -5,9 +5,9 @@
  * This demo is based on https://www.meine-schaltung.de/schaltung/soft/anzeige/vierfach_matrix_mit_arduino/ and modified for the latest LedController.
  * @version 0.1
  * @date 2021-02-16
- * 
+ *
  * @copyright Copyright (c) 2021
- * 
+ *
  */
 
 //Wie immer die Bibliothek einbinden
@@ -24,7 +24,7 @@
 #define delayTime 200
 
 //Das uninitialisierte LedController Objekt
-LedController<Segments,1> lc = LedController<Segments,1>();  
+LedController<Segments,1> lc = LedController<Segments,1>();
 
 // Zeichen und Buchstaben ---------------------------------------------------------------------------------
 ByteBlock A =  ByteBlock::rotate180({ B00000000, B00011000, B00100100, B00100100, B00111100, B00100100, B00100100, B00000000 });
@@ -81,7 +81,7 @@ ByteBlock message[message_length] = {
 };
 
 
-void setup(){
+void setup() {
   //erstelle eine Konfiguration mit der gleichen Größe wie der Controller
   controller_configuration<Segments,1> conf;
   //Nutze den CS pin
@@ -98,25 +98,25 @@ void setup(){
   lc.setIntensity(0);
 }
 
-void loop(){
-    //sicherheitshalber Matrix leeren
-    lc.clearMatrix();
+void loop() {
+  //sicherheitshalber Matrix leeren
+  lc.clearMatrix();
 
-    //Daten reinschieben
-    //Jedes Segment der Nachricht wird einzeln reingeschoben
-    for(unsigned int i = 0;i < message_length;i++){
-      //Da jedes Segment eine Breite von 8 pixeln hat noch eine Schleife
-      for(unsigned int j = 0;j < 8;j++){
-        //Schiebt alles nach links und fügt rechts eine Spalte der Nachricht rein
-        lc.moveLeft(ByteBlock::makeColumns(message[i])[j]);
-        delay(delayTime);
-      }
-    }
-
-    //schiebt die daten raus
-    //Da die größe der Matrix 8*Segments ist muss einfach so oft geschoben werden.
-    for(unsigned int i = 0; i < 8*Segments;i++){
-      lc.moveLeft();
+  //Daten reinschieben
+  //Jedes Segment der Nachricht wird einzeln reingeschoben
+  for(unsigned int i = 0; i < message_length; i++) {
+    //Da jedes Segment eine Breite von 8 pixeln hat noch eine Schleife
+    for(unsigned int j = 0; j < 8; j++) {
+      //Schiebt alles nach links und fügt rechts eine Spalte der Nachricht rein
+      lc.moveLeft(ByteBlock::makeColumns(message[i])[j]);
       delay(delayTime);
     }
+  }
+
+  //schiebt die daten raus
+  //Da die größe der Matrix 8*Segments ist muss einfach so oft geschoben werden.
+  for(unsigned int i = 0; i < 8*Segments; i++) {
+    lc.moveLeft();
+    delay(delayTime);
+  }
 }
