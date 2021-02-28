@@ -23,16 +23,16 @@
 #define CS 13
 
 
-//Nun wird die Variable erstellt in der der sakurajin::LedController mit nur einem Segment(nur ein MAX72XX) gespeichert wird.
-sakurajin::LedController<1,1> lc;
+//Nun wird die Variable erstellt in der der LedController mit nur einem Segment(nur ein MAX72XX) gespeichert wird.
+LedController<1,1> lc;
 
 //Die verzögerung zwischen updates des Displays
 unsigned long delaytime=250;
 
 void setup() {
 
-  //Nun wird das sakurajin::LedController Objekt ohne Hardware SPI erstellt.
-  lc=sakurajin::LedController<1,1>(CS,CLK,DIN);
+  //Nun wird das LedController Objekt ohne Hardware SPI erstellt.
+  lc=LedController<1,1>(CS,CLK,DIN);
 
   //Setzt die Helligkeit auf einen Mittleren Wert
   lc.setIntensity(8);

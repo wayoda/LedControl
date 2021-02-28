@@ -1,17 +1,18 @@
 #pragma once
 
+#include <unity.h>
+
 #ifndef ARDUINO
 #if __has_include("ArduinoFake.h")
 #include "ArduinoFake.h"
 #include <iostream>
-#define PRINTLN(x) std::cout << x << std::endl
+#define PRINTLN(x) (std::cout<<x<<std::endl)
 using namespace fakeit;
 #define CATCH_FAKEIT catch(const FakeitException& e){std::cout << e.what() << std::endl; const char* msg = e.what().c_str(); TEST_FAIL_MESSAGE(msg);}
 #endif
 #endif
 
 #include "LedController.hpp"
-#include <unity.h>
 
 #define CATCH_STD catch(const std::exception& e){const char* msg = e.what(); TEST_FAIL_MESSAGE(msg); }
 

@@ -2,7 +2,7 @@
  * @file Led-matrix-message.ino
  * @author Noa Sakurajin (noasakurajin@web.de)
  * @brief This demo shows how a message can be displayed on an LedMatrix.
- * This demo is based on https://www.meine-schaltung.de/schaltung/soft/anzeige/vierfach_matrix_mit_arduino/ and modified for the latest sakurajin::LedController.
+ * This demo is based on https://www.meine-schaltung.de/schaltung/soft/anzeige/vierfach_matrix_mit_arduino/ and modified for the latest LedController.
  * @version 0.1
  * @date 2021-02-16
  * 
@@ -24,38 +24,38 @@
 #define delayTime 200
 
 //The ledController object, at the moment it is uninitilized
-sakurajin::LedController<Segments,1> lc = sakurajin::LedController<Segments,1>();  
+LedController<Segments,1> lc = LedController<Segments,1>();  
 
 // Symbols and Letters ---------------------------------------------------------------------------------
-sakurajin::ByteBlock A =  sakurajin::ByteBlock::rotate180({ B00000000, B00011000, B00100100, B00100100, B00111100, B00100100, B00100100, B00000000 });
-sakurajin::ByteBlock a =  sakurajin::ByteBlock::rotate180({ B00000000, B00000000, B00111000, B01001000, B01001000, B01001000, B00111000, B00000000 });
-sakurajin::ByteBlock b =  sakurajin::ByteBlock::rotate180(sakurajin::ByteBlock::reverse({ B00000000, B00001000, B00111000, B01001000, B01001000, B01001000, B00111000, B00000000 }))<<2;
-sakurajin::ByteBlock c =  sakurajin::ByteBlock::rotate180({ B00000000, B00000000, B00110000, B01000000, B01000000, B01000000, B00110000, B00000000 });
-sakurajin::ByteBlock d =  sakurajin::ByteBlock::rotate180({ B00000000, B00001000, B00111000, B01001000, B01001000, B01001000, B00111000, B00000000 });
-sakurajin::ByteBlock e =  sakurajin::ByteBlock::rotate180({ B00000000, B00000000, B00110000, B01001000, B01111000, B01000000, B00111000, B00000000 });
-sakurajin::ByteBlock H =  sakurajin::ByteBlock::rotate180({ B00000000, B10010000, B10010000, B11110000, B10010000, B10010000, B10010000, B00000000 });
-sakurajin::ByteBlock h =  sakurajin::ByteBlock::rotate180({ B00000000, B01000000, B01110000, B01001000, B01001000, B01001000, B01001000, B00000000 });
-sakurajin::ByteBlock I =  sakurajin::ByteBlock::rotate180({ B00000000, B01000000, B01000000, B01000000, B01000000, B01000000, B01000000, B00000000 });
-sakurajin::ByteBlock i =  sakurajin::ByteBlock::rotate180({ B00000000, B10000000, B00000000, B10000000, B10000000, B10000000, B10000000, B00000000 });
-sakurajin::ByteBlock J =  sakurajin::ByteBlock::rotate180({ B00000000, B00001000, B00001000, B00001000, B00001000, B01001000, B00110000, B00000000 });
-sakurajin::ByteBlock K =  sakurajin::ByteBlock::rotate180({ B00000000, B10001000, B10010000, B11100000, B10100000, B10010000, B10001000, B00000000 });
-sakurajin::ByteBlock k =  sakurajin::ByteBlock::rotate180({ B00000000, B10000000, B10010000, B10100000, B11000000, B10100000, B10010000, B00000000 });
-sakurajin::ByteBlock l =  sakurajin::ByteBlock::rotate180({ B00000000, B10000000, B10000000, B10000000, B10000000, B10000000, B01000000, B00000000 });
-sakurajin::ByteBlock M =  sakurajin::ByteBlock::rotate180({ B00000000, B01000100, B01101100, B01010100, B01000100, B01000100, B01000100, B00000000 });
-sakurajin::ByteBlock m =  sakurajin::ByteBlock::rotate180({ B00000000, B00000000, B01110110, B01001001, B01001001, B01001001, B01001001, B00000000 });
-sakurajin::ByteBlock n =  sakurajin::ByteBlock::rotate180({ B00000000, B00000000, B01110000, B01001000, B01001000, B01001000, B01001000, B00000000 });
-sakurajin::ByteBlock o =  sakurajin::ByteBlock::rotate180({ B00000000, B00000000, B01100000, B10010000, B10010000, B10010000, B01100000, B00000000 });
-sakurajin::ByteBlock p =  sakurajin::ByteBlock::rotate180({ B00000000, B00000000, B11100000, B10001000, B10001000, B10001000, B11100000, B10000000 });
-sakurajin::ByteBlock q =  sakurajin::ByteBlock::rotate180(sakurajin::ByteBlock::reverse({ B00000000, B00000000, B11100000, B10001000, B10001000, B10001000, B11100000, B10000000 }))<<2;
-sakurajin::ByteBlock r =  sakurajin::ByteBlock::rotate180({ B00000000, B00000000, B10100000, B11000000, B10000000, B10000000, B10000000, B00000000 });
-sakurajin::ByteBlock s =  sakurajin::ByteBlock::rotate180({ B00000000, B00000000, B01110000, B10000000, B01100000, B00010000, B11100000, B00000000 });
-sakurajin::ByteBlock t =  sakurajin::ByteBlock::rotate180({ B00000000, B10000000, B11100000, B10000000, B10000000, B10000000, B01100000, B00000000 });
-sakurajin::ByteBlock u =  sakurajin::ByteBlock::rotate180({ B00000000, B00000000, B10010000, B10010000, B10010000, B10010000, B01100000, B00000000 });
-sakurajin::ByteBlock w =  sakurajin::ByteBlock::rotate180({ B00000000, B00000000, B10001000, B10001000, B10101000, B11011000, B10001000, B00000000 });
-sakurajin::ByteBlock LB = sakurajin::ByteBlock::rotate180({ B00000000, B00000000, B00000000, B00000000, B00000000, B00000000, B00000000, B00000000 });
-sakurajin::ByteBlock AZ = sakurajin::ByteBlock::rotate180({ B01000000, B01000000, B01000000, B01000000, B01000000, B00000000, B01000000, B00000000 });
+ByteBlock A =  ByteBlock::rotate180({ B00000000, B00011000, B00100100, B00100100, B00111100, B00100100, B00100100, B00000000 });
+ByteBlock a =  ByteBlock::rotate180({ B00000000, B00000000, B00111000, B01001000, B01001000, B01001000, B00111000, B00000000 });
+ByteBlock b =  ByteBlock::rotate180(ByteBlock::reverse({ B00000000, B00001000, B00111000, B01001000, B01001000, B01001000, B00111000, B00000000 }))<<2;
+ByteBlock c =  ByteBlock::rotate180({ B00000000, B00000000, B00110000, B01000000, B01000000, B01000000, B00110000, B00000000 });
+ByteBlock d =  ByteBlock::rotate180({ B00000000, B00001000, B00111000, B01001000, B01001000, B01001000, B00111000, B00000000 });
+ByteBlock e =  ByteBlock::rotate180({ B00000000, B00000000, B00110000, B01001000, B01111000, B01000000, B00111000, B00000000 });
+ByteBlock H =  ByteBlock::rotate180({ B00000000, B10010000, B10010000, B11110000, B10010000, B10010000, B10010000, B00000000 });
+ByteBlock h =  ByteBlock::rotate180({ B00000000, B01000000, B01110000, B01001000, B01001000, B01001000, B01001000, B00000000 });
+ByteBlock I =  ByteBlock::rotate180({ B00000000, B01000000, B01000000, B01000000, B01000000, B01000000, B01000000, B00000000 });
+ByteBlock i =  ByteBlock::rotate180({ B00000000, B10000000, B00000000, B10000000, B10000000, B10000000, B10000000, B00000000 });
+ByteBlock J =  ByteBlock::rotate180({ B00000000, B00001000, B00001000, B00001000, B00001000, B01001000, B00110000, B00000000 });
+ByteBlock K =  ByteBlock::rotate180({ B00000000, B10001000, B10010000, B11100000, B10100000, B10010000, B10001000, B00000000 });
+ByteBlock k =  ByteBlock::rotate180({ B00000000, B10000000, B10010000, B10100000, B11000000, B10100000, B10010000, B00000000 });
+ByteBlock l =  ByteBlock::rotate180({ B00000000, B10000000, B10000000, B10000000, B10000000, B10000000, B01000000, B00000000 });
+ByteBlock M =  ByteBlock::rotate180({ B00000000, B01000100, B01101100, B01010100, B01000100, B01000100, B01000100, B00000000 });
+ByteBlock m =  ByteBlock::rotate180({ B00000000, B00000000, B01110110, B01001001, B01001001, B01001001, B01001001, B00000000 });
+ByteBlock n =  ByteBlock::rotate180({ B00000000, B00000000, B01110000, B01001000, B01001000, B01001000, B01001000, B00000000 });
+ByteBlock o =  ByteBlock::rotate180({ B00000000, B00000000, B01100000, B10010000, B10010000, B10010000, B01100000, B00000000 });
+ByteBlock p =  ByteBlock::rotate180({ B00000000, B00000000, B11100000, B10001000, B10001000, B10001000, B11100000, B10000000 });
+ByteBlock q =  ByteBlock::rotate180(ByteBlock::reverse({ B00000000, B00000000, B11100000, B10001000, B10001000, B10001000, B11100000, B10000000 }))<<2;
+ByteBlock r =  ByteBlock::rotate180({ B00000000, B00000000, B10100000, B11000000, B10000000, B10000000, B10000000, B00000000 });
+ByteBlock s =  ByteBlock::rotate180({ B00000000, B00000000, B01110000, B10000000, B01100000, B00010000, B11100000, B00000000 });
+ByteBlock t =  ByteBlock::rotate180({ B00000000, B10000000, B11100000, B10000000, B10000000, B10000000, B01100000, B00000000 });
+ByteBlock u =  ByteBlock::rotate180({ B00000000, B00000000, B10010000, B10010000, B10010000, B10010000, B01100000, B00000000 });
+ByteBlock w =  ByteBlock::rotate180({ B00000000, B00000000, B10001000, B10001000, B10101000, B11011000, B10001000, B00000000 });
+ByteBlock LB = ByteBlock::rotate180({ B00000000, B00000000, B00000000, B00000000, B00000000, B00000000, B00000000, B00000000 });
+ByteBlock AZ = ByteBlock::rotate180({ B01000000, B01000000, B01000000, B01000000, B01000000, B00000000, B01000000, B00000000 });
 
-sakurajin::ByteBlock Heart = sakurajin::ByteBlock::rotate180({
+ByteBlock Heart = ByteBlock::rotate180({
   B00000000,
   B01000010,
   B10100101,
@@ -66,12 +66,12 @@ sakurajin::ByteBlock Heart = sakurajin::ByteBlock::rotate180({
   B00011000,
 });
 
-//The number of sakurajin::ByteBlocks the message consists of.
+//The number of ByteBlocks the message consists of.
 const unsigned int message_length = 6;
 
 //This array defines the message that will be displayed on the matrix.
 //By default it says 'Jahallo!! :heart:' and can be modified however needed.
-sakurajin::ByteBlock message[message_length] = {
+ByteBlock message[message_length] = {
   J&(a>>5), //'J' and first half of 'a'
   (a<<3)&(h>>2), // second half of 'a' and 'h'
   (a<<1)&(l>>5), // 'a' and 'l'
@@ -108,7 +108,7 @@ void loop(){
       //since each segment has a width of 8 pixels there is another loop
       for(unsigned int j = 0;j < 8;j++){
         //move the columns in one by one and wait a bit
-        lc.moveLeft(sakurajin::ByteBlock::makeColumns(message[i])[j]);
+        lc.moveLeft(ByteBlock::makeColumns(message[i])[j]);
         delay(delayTime);
       }
     }

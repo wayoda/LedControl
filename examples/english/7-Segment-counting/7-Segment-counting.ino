@@ -33,7 +33,7 @@
 #define delayTime 500
 
 //the uninitilized controller object
-sakurajin::LedController<Segments,1> lc = sakurajin::LedController<Segments,1>();
+LedController<Segments,1> lc = LedController<Segments,1>();
 
 //This function calculates the largest number that can be displayed
 unsigned long long getLargestNumber() {

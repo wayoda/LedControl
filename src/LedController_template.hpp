@@ -11,36 +11,7 @@
 #endif
 
 #include <LedController_byteblock.hpp>
-
-#ifdef __has_include
-
-#define INCLUDED_PGMSPACE
-#if (__has_include(<avr/pgmspace.h>))
-#include <avr/pgmspace.h>
-#else
-#if (__has_include(<pgmspace.h>))
-#define INCLUDED_PGMSPACE
-#include <pgmspace.h>
-#else
-#define INCLUDED_PGMSPACE
-#ifndef pgm_read_byte
-#define pgm_read_byte(addr)   (*(const unsigned char *)(addr))
-#endif
-#ifndef pgm_read_byte_near
-#define pgm_read_byte_near(addr)  pgm_read_byte(addr)
-#endif
-#endif
-#endif
-
-#endif
-
-#ifndef INCLUDED_PGMSPACE
-#include <pgmspace.h>
-#define INCLUDED_PGMSPACE
-#endif
-
 #include <SPI.h>
-
 #include <LedController_config.hpp>
 
 namespace sakurajin{

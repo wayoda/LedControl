@@ -11,6 +11,7 @@
  */
 
 #include "LedController_template.hpp"
+#include "LedController_MAX72XX.hpp"
 
 template <size_t columns, size_t rows>
 void sakurajin::LedController<columns,rows>::spiTransfer(unsigned int segment, byte opcode, byte data) {

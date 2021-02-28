@@ -28,11 +28,11 @@
 //Die verzögerung zwischen zwei Bewegungen
 #define delayTime 200 
 
-//Hier wird wieder ein uninitialisierter sakurajin::LedController erstellt
-auto lc = sakurajin::LedController<Segments,2>();
+//Hier wird wieder ein uninitialisierter LedController erstellt
+auto lc = LedController<Segments,2>();
 
 //Das Pixelart der wunderschönen Rakete
-sakurajin::ByteBlock rocket= {
+ByteBlock rocket= {
   B00000000,
   B00001111,
   B00111110,
@@ -43,7 +43,7 @@ sakurajin::ByteBlock rocket= {
   B00000000
 };
 
-sakurajin::ByteBlock rocketColumns;
+ByteBlock rocketColumns;
 
 //schaltet den Zustand der internen LED um
 void switchLED(){
@@ -58,7 +58,7 @@ void switchLED(){
 
 void setup(){
 
-  //Erstellen einer Konfiguration für den sakurajin::LedController
+  //Erstellen einer Konfiguration für den LedController
   controller_configuration<Segments,2> conf;
 
   //Da mehr als eine Zeile verwendet werden soll (ohne virtual multi Row) sollte das 0 sein.
@@ -85,13 +85,13 @@ void setup(){
   //Falls hohe Werte gesetzt werden, sollte eine gute Verbingung sichergestellt werden.
   conf.spiTransferSpeed = 800000;
 
-  //Initialisiere den sakurajin::LedController mit der erstellten Konfiguration.
+  //Initialisiere den LedController mit der erstellten Konfiguration.
   lc.init(conf);
 
   //Hier wird ein Array aus Spalten der Rakete erstellt.
   //Dies wird vewendet, um die Rakete Stück für Stück reinzuschieben
   //Man kann auch rocketColumns = rocket schreiben, aber dann wird die Rakete um 90 Grad gedreht sein.
-  rocketColumns = sakurajin::ByteBlock::makeColumns(rocket);
+  rocketColumns = ByteBlock::makeColumns(rocket);
 
   //Erlaubt das steuern der internen LED
   pinMode(LED, OUTPUT);

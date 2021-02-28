@@ -1,7 +1,7 @@
 /**
  * @file Led-matrix-rocket.ino
  * @author Noa Sakurajin (noasakurajin@web.de)
- * @brief Using the the sakurajin::LedController to move a rocket
+ * @brief Using the the LedController to move a rocket
  * @version 0.1
  * @date 2020-12-30
  * 
@@ -24,12 +24,12 @@
 //Die verzögerung zwischen Bewegungen
 #define delayTime 200
 
-//Diese Zeile erstellt ein unitialisierten sakurajin::LedController.
+//Diese Zeile erstellt ein unitialisierten LedController.
 //Dieser wird dann in der setup Funktion initialisiert.
-sakurajin::LedController<Segments,1> lc = sakurajin::LedController<Segments,1>();  
+LedController<Segments,1> lc = LedController<Segments,1>();  
 
 //Das ist mein Pixelart und ist die Raktete die angezeigt wird.
-sakurajin::ByteBlock rocket= {
+ByteBlock rocket= {
   B00000000,
   B00001111,
   B00111110,
@@ -40,7 +40,7 @@ sakurajin::ByteBlock rocket= {
   B00000000
 };
 
-sakurajin::ByteBlock rocketColumns;
+ByteBlock rocketColumns;
 
 //die LED wechselt den Zustand der internen LED
 void switchLED(){
@@ -55,13 +55,13 @@ void switchLED(){
 
 void setup(){
 
-  //hier wird der sakurajin::LedController ohne Hardware SPI initialisiert.
+  //hier wird der LedController ohne Hardware SPI initialisiert.
   lc.init(DIN,CLK,CS);
 
   //Hier wird ein Array aus Spalten der Rakete erstellt.
   //Dies wird vewendet, um die Rakete Stück für Stück reinzuschieben
   //Man kann auch rocketColumns = rocket schreiben, aber dann wird die Rakete um 90 Grad gedreht sein.
-  rocketColumns = sakurajin::ByteBlock::makeColumns(rocket);
+  rocketColumns = ByteBlock::makeColumns(rocket);
  
   //Erlaubt das Schalten der internen LED
   pinMode(13, OUTPUT);

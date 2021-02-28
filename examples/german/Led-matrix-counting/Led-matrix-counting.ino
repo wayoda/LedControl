@@ -22,10 +22,10 @@
 #define delayTime 200
 
 //Das ist die Variable in der das verwendete Objekt gespeichert wird.
-sakurajin::LedController<Segments,1> lc; 
+LedController<Segments,1> lc; 
 
 //Dieses Array definiert nur wie die Ziffern aussehen.
-sakurajin::ByteBlock digits[10] = {
+ByteBlock digits[10] = {
   {
     B00000000,
     B00011000,
@@ -149,8 +149,8 @@ void switchLED(){
 
 void setup(){
 
-  //Hier wird ein sakurajin::LedController mit Hardware SPI erstelle und lc zugewiesen
-  lc = sakurajin::LedController<Segments,1>(CS);
+  //Hier wird ein LedController mit Hardware SPI erstelle und lc zugewiesen
+  lc = LedController<Segments,1>(CS);
 
   //Der Pin für die interne LED wird auf output gesetzt
   pinMode(13, OUTPUT);
@@ -158,7 +158,7 @@ void setup(){
   //alle Ziffern müssen um 180 Grad gedreht werden, um sie richtig anzuzeigen.
   //man kann das weglassen, aber dann sine die Ziffern falsch
   for(unsigned int i = 0; i < 10; i++){
-    digits[i] = sakurajin::ByteBlock::rotate180(digits[i]);
+    digits[i] = ByteBlock::rotate180(digits[i]);
   }
   
 }

@@ -18,10 +18,10 @@
 
 #define delayTime 200 // Delay between Frames
 
-sakurajin::LedController<Segments,1> lc; 
+LedController<Segments,1> lc; 
 
 //these are just some digits to display numbers on the matrix
-sakurajin::ByteBlock digits[10] = {
+ByteBlock digits[10] = {
   {
     B00000000,
     B00011000,
@@ -146,7 +146,7 @@ void switchLED(){
 void setup(){
 
   //create a ledcontroller with a hardware spi and one row
-  lc = sakurajin::LedController<Segments,1>(CS);
+  lc = LedController<Segments,1>(CS);
 
   //enable the led
   pinMode(13, OUTPUT);

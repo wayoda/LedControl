@@ -12,6 +12,7 @@
  */
 
 #include "LedController_template.hpp"
+#include "LedController_MAX72XX.hpp"
 
 template <size_t columns, size_t rows>
 void sakurajin::LedController<columns,rows>::resetBuffers() {
@@ -180,12 +181,11 @@ void sakurajin::LedController<columns,rows>::setColumn(unsigned int segmentNumbe
 template <size_t columns, size_t rows>
 void sakurajin::LedController<columns,rows>::setDigit(unsigned int segmentNumber, unsigned int digit,
         byte value, boolean dp) {
-    if (!initilized || segmentNumber >= conf.SegmentCount() || digit > 7 ||
-            value > 15) {
+    if (!initilized || segmentNumber >= conf.SegmentCount() || digit > 7) {
         return;
     };
 
-    byte v = pgm_read_byte_near(sakurajin::MAX72XX::charTable + value);
+    byte v = sakurajin::MAX72XX::getChar(value%16);
     if (dp) {
         v |= B10000000;
     };
@@ -200,13 +200,7 @@ void sakurajin::LedController<columns,rows>::setChar(unsigned int segmentNumber,
         return;
     };
 
-    byte index = (byte)value;
-    if (index > 127) {
-        // no defined beyond index 127, so we use the space char
-        index = 32;
-    }
-
-    byte v = pgm_read_byte_near(sakurajin::MAX72XX::charTable + index);
+    byte v = sakurajin::MAX72XX::getChar(value);
     if (dp) {
         v |= B10000000;
     };

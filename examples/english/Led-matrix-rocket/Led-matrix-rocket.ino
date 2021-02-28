@@ -1,7 +1,7 @@
 /**
  * @file Led-matrix-rocket.ino
  * @author Noa Sakurajin (noasakurajin@web.de)
- * @brief Using the the sakurajin::LedController to move a rocket
+ * @brief Using the the LedController to move a rocket
  * @version 0.1
  * @date 2020-12-30
  * 
@@ -24,12 +24,12 @@
 //The delay between movements
 #define delayTime 200
 
-//This creates an uninitilized sakurajin::LedController object.
+//This creates an uninitilized LedController object.
 //It will be initilized in the setup function.
-sakurajin::LedController<Segments,1> lc = sakurajin::LedController<Segments,1>();  
+LedController<Segments,1> lc = LedController<Segments,1>();  
 
 //This is my pixelart of a rocket which will be used in this example
-sakurajin::ByteBlock rocket= {
+ByteBlock rocket= {
   B00000000,
   B00001111,
   B00111110,
@@ -40,7 +40,7 @@ sakurajin::ByteBlock rocket= {
   B00000000
 };
 
-sakurajin::ByteBlock rocketColumns;
+ByteBlock rocketColumns;
 
 //switches the state of the internal LED
 void switchLED(){
@@ -55,12 +55,12 @@ void switchLED(){
 
 void setup(){
 
-  //initilizes the sakurajin::LedController without hardware spi.
+  //initilizes the LedController without hardware spi.
   lc.init(DIN,CLK,CS); 
 
   //make a array of columns out of the rocket
   //this is needed to shift it in correctly (you can leave this line if you want to)
-  rocketColumns = sakurajin::ByteBlock::makeColumns(rocket);
+  rocketColumns = ByteBlock::makeColumns(rocket);
  
   //enable the LED to have a clock
   pinMode(13, OUTPUT);

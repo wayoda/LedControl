@@ -17,9 +17,9 @@
 
 #define delayTime 200
 
-sakurajin::LedController<Segments,1> lc = sakurajin::LedController<Segments,1>();  
+LedController<Segments,1> lc = LedController<Segments,1>();  
 
-sakurajin::ByteBlock rocket= {
+ByteBlock rocket= {
   B00000000,
   B00001111,
   B00111110,
@@ -30,7 +30,7 @@ sakurajin::ByteBlock rocket= {
   B00000000
 };
 
-sakurajin::ByteBlock rocketColumns;
+ByteBlock rocketColumns;
 
 void switchLED(){
   static bool LEDON = false;
@@ -46,7 +46,7 @@ void setup(){
   //Only the following line is different from the example without hardware SPI since in this case only one Pin needs to be specified
   lc.init(CS);
 
-  rocketColumns = sakurajin::ByteBlock::makeColumns(rocket,&rocket);
+  rocketColumns = ByteBlock::makeColumns(rocket);
 
   pinMode(13, OUTPUT);
 
