@@ -32,7 +32,7 @@
 auto lc = LedController<Segments,2>();
 
 //the pixelart of our beautiful rocket
-ByteBlock rocket= {
+ByteBlock rocket= ByteBlock::reverse({
   B00000000,
   B00001111,
   B00111110,
@@ -41,7 +41,7 @@ ByteBlock rocket= {
   B00001111,
   B00000000,
   B00000000
-};
+});
 
 ByteBlock rocketColumns;
 
