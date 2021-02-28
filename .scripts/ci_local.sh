@@ -19,6 +19,11 @@ then
     then
         BUILDMODE="scan-only"
     fi
+
+    if [ $1 == '--all-esp32' ]
+    then
+        BUILDMODE="all-esp32"
+    fi
 fi
 
 if [ $BUILDMODE == "fast" ]
@@ -27,38 +32,44 @@ then
     boards=("esp32dev" "ATmega1280")
     examples=("7-Segment-counting" "Led-matrix-rocket-hwSPI")
 else
-    echo "doing the full test with 5 boards and 4 examles"
-    boards=("esp32dev" "d1_mini" "uno" "ATmega1280" "leonardo" "due" "teensy41" "bluefruitmicro")
+    if [ $BUILDMODE == "full" ]
+    then
+        echo "doing the full test with 5 boards and 6 examles"
+        boards=("esp32dev" "d1_mini" "uno" "ATmega1280" "leonardo" "due" "teensy41" "bluefruitmicro")
+    else
+        echo "doing the full test with 1 board and 6 examles"
+        boards=("esp32dev")
+    fi
     examples=("Led-matrix-rocket" "Led-matrix-rocket-multi" "Led-matrix-counting" "Led-matrix-rocket-hwSPI" "Led-matrix-message" "7-Segment-counting")
 fi
 
-build (){
+function build(){
     local ex=$1
     local board=$2
-    PLATFORMIO_CI_SRC="examples/english/$ex/$ex.ino" python3 -m platformio ci --lib="." -b $board --keep-build-dir > >(tee logs/$ex-$board.log) 2> >(tee  logs/$ex-$board.error.log >&2)
+    PLATFORMIO_CI_SRC="examples/english/$ex/$ex.ino" python3 -m platformio ci --lib="." -b $board > >(tee logs/$ex-$board.log) 2> >(tee  logs/$ex-$board.error.log >&2)
     if [ $? -eq 1 ]
     then
         echo "error while building $ex"
-        exit 1
+        touch error.tmp
     fi
 }
 
 if [ $BUILDMODE != "test-only" ] && [ $BUILDMODE != "scan-only" ]
-rm -rf logs
-mkdir logs
 then
+    rm -rf logs
+    mkdir logs
     for ex in "${examples[@]}"; do 
         for board in "${boards[@]}"; do 
             ((i=i%MAX_CORES)); ((i++==0)) && wait
             build "$ex" "$board" &
         done
     done
-
     wait
     
-    if [ $? -eq 1 ]
+    if [ -f "error.tmp" ]
     then
         echo "error while building"
+        rm error.tmp
         exit 1
     fi
 fi
