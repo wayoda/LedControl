@@ -3,7 +3,7 @@
 
 \~english
 
-LedController is an [Arduino](http://arduino.cc) library for MAX7219 and MAX7221 Led display drivers.
+sakurajin::LedController is an [Arduino](http://arduino.cc) library for MAX7219 and MAX7221 Led display drivers.
 The code should work with most boards and architectures but I only test it for the ESP32 Dev Module.
 Feel free to create an issue if something is missing or not working correctly.
 Version 2.0.0 should have increased compatibility since the library is now header only and uses templates.
@@ -31,8 +31,8 @@ All help regarding compatibility with more boards is welcome.
 
 The following links lead to their respective documentation:
 
-- [LedController class](@ref LedController)
-- [LedController configuration class](@ref controller_configuration)
+- [LedController class](@ref sakurajin::LedController)
+- [LedController configuration class](@ref sakurajin::controller_configuration)
 - [Installation](@ref install)
 - [Usage introduction](@ref usage)
 - [Migration information](@ref migration_notes)
@@ -56,10 +56,10 @@ Please keep in mind that the MOSI(Master out Slave in) and the SCK(Serial Clock)
 
 \~german
 
-LedController ist eine [Arduino](http://arduino.cc) Biliothek für MAX7219 und MAX7221 Led Displaytreiber.
+sakurajin::LedController ist eine [Arduino](http://arduino.cc) Biliothek für MAX7219 und MAX7221 Led Displaytreiber.
 Der Code sollte mit den meisten boards und Architekturen funktionieren, aber ich teste es allerdings nur mit ESP32 Dev Module.
 Fall etwas nicht richtig funktioniert öffne bitte ein Issue (nur englisch).
-Seid Version 2.0.0 sollte die Kompatibilität sehr viel größer sein, da LedController nun ein template ist und nur in headern geschrieben ist.
+Seid Version 2.0.0 sollte die Kompatibilität sehr viel größer sein, da sakurajin::LedController nun ein template ist und (fast) nur in headern geschrieben ist.
 Wenn ein Board nicht Kompatibiliel ist, unterstützt es nicht das Arduino Framework oder stellt keine SPI.h bereit.
 
 In der CI werden wie folgenden Boards automatisch getestet (PlatformIO boards Namen):
@@ -84,8 +84,8 @@ Alles an Hilfe mit der Kompatibilität ist willkommen.
 
 Die folgenden Liks führen zur entsprechenden Dokumentation:
 
-- [LedController Klasse](@ref LedController)
-- [LedController configuration Klasse](@ref controller_configuration)
+- [LedController Klasse](@ref sakurajin::LedController)
+- [LedController configuration Klasse](@ref sakurajin::controller_configuration)
 - [Installation](@ref install)
 - [Nutzungseinführung](@ref usage)
 - [Migrationsinformationen](@ref migration_notes)
