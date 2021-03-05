@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: install doc deps
-        run: sudo apt-get install --yes doxygen graphviz latexmk
+        run: sudo apt-get install --yes doxygen graphviz latexmk texlive-latex-extra
 
       - name: install platform io
         run: | 
