@@ -11,6 +11,7 @@ OLD_LANGAUGE="English"
 OUTPUT_LANGUAGE_STRING="OUTPUT_LANGUAGE        = "
 HTML_DIR="HTML_OUTPUT            = html"
 EXAMPLE_DIR="EXAMPLE_PATH           = examples"
+LATEX_DIR="LATEX_OUTPUT           = latex"
 
 #the base folder for the doxygen output
 DOXYGEN_BASE="doc"
@@ -25,6 +26,7 @@ build_lang(){
     #replace the language and add specific subfolder
     sed -i "s/$OUTPUT_LANGUAGE_STRING$OLD_LANGAUGE/$OUTPUT_LANGUAGE_STRING$lang/g" Doxyfile.$lang
     sed -i "s/$HTML_DIR/$HTML_DIR\/$lang/g" Doxyfile.$lang
+    sed -i "s/$LATEX_DIR/$LATEX_DIR\/$lang/g" Doxyfile.$lang
     sed -i "s/$EXAMPLE_DIR/$EXAMPLE_DIR\/$lang/g" Doxyfile.$lang
     sed -i "s/doxywarn.txt/doxywarn.$lang.txt/g" Doxyfile.$lang
 
@@ -34,6 +36,14 @@ build_lang(){
 
     #run doxygen
     doxygen Doxyfile.$lang
+
+    #build pdf file
+    cd doc/latex/$lang/
+    latexmk -f -pdf refman.tex
+    cd ../../../
+
+    #copy and rename reference manual
+    mv doc/latex/$lang/refman.pdf refman_$lang.pdf
 
     #remove lang specific doxygen file
     rm Doxyfile.$lang

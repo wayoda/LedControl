@@ -6,28 +6,15 @@ on:
       - 'v*-rc*'
 
 jobs:
-  doxygen:
-    runs-on: ubuntu-20.04
-    steps:
-    - uses: actions/checkout@v1
-    - name: install dependencies
-      run: sudo apt install doxygen graphviz
-    - name: gernearte html folder
-      run: mkdir doc/html
-    - name: generate docs
-      run: bash .scripts/doxygen_multilang.sh
-    - name: Deploy
-      uses: s0/git-publish-subdir-action@master
-      env:
-        REPO: self
-        BRANCH: gh-pages
-        FOLDER: doc/html
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  tagged-release:
+  tagged-rc-release:
     name: "Release candidate"
     runs-on: "ubuntu-20.04"
     steps:
       - uses: actions/checkout@v1
+
+      - name: install doc deps
+        run: sudo apt-get install --yes doxygen graphviz latexmk
+
       - name: install platform io
         run: | 
           pip3 install -U setuptools
@@ -37,6 +24,14 @@ jobs:
 
       - name: building examples and running the unit tests
         run: bash ./.scripts/ci_local.sh
+
+      - name: prepare for building docs
+        run: |
+          mkdir doc/html
+          mkdir doc/latex
+      
+      - name: build documentation
+        run: bash .scripts/doxygen_multilang.sh
         
       - name: Check code meets quality standards
         id: code-inspector
@@ -56,6 +51,7 @@ jobs:
       - name: pack repo
         run: |
           zip -r release.zip License README.md library.properties keywords.txt .vscode examples src
+
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -63,6 +59,16 @@ jobs:
           files: |
             License
             release.zip
+            refman_english.pdf
+            refman_german.pdf
+
+      - name: Deploy to pages
+        uses: s0/git-publish-subdir-action@master
+        env:
+          REPO: self
+          BRANCH: gh-pages
+         FOLDER: doc/html
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             
       - uses: actions/upload-artifact@v1
         if: failure()
