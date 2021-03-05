@@ -48,7 +48,7 @@ namespace sakurajin {
          *
          * @param newdata Das Array, das zum initialisieren verwendet werden soll.
          */
-        ByteRow(byte newdata[SIZE]):ByteRow() {
+        ByteRow(byte newdata[SIZE]) noexcept:ByteRow() {
             for(uint64_t i = 0; i < SIZE; i++) {
                 _data[i] = newdata[i];
             }
@@ -61,7 +61,7 @@ namespace sakurajin {
          * \~german
          * @brief Konstruiere ein neuess Objekt mit 0en.
          */
-        ByteRow() {
+        ByteRow() noexcept {
             for(uint64_t i = 0; i < SIZE; i++) {
                 _data[i] = 0;
             }
@@ -74,7 +74,7 @@ namespace sakurajin {
          * \~german
          * @brief Lösche das Objekt.
          */
-        ~ByteRow() {};
+        ~ByteRow() noexcept {};
 
         /**
          * \~english
@@ -89,7 +89,7 @@ namespace sakurajin {
          * @param index Der Angefragte Index.
          * @return byte& Die Daten am angefragtem Index.
          */
-        byte& operator[] (uint64_t index) {
+        byte& operator[] (uint64_t index) noexcept {
             index %= SIZE;
             return _data[index];
         }
@@ -107,7 +107,7 @@ namespace sakurajin {
          * @param index Der Angefragte Index.
          * @return byte& Die Daten am angefragtem Index.
          */
-        const byte& operator[] (uint64_t index) const {
+        const byte& operator[] (uint64_t index) const noexcept {
             index %= SIZE;
             return _data[index];
         }
@@ -125,7 +125,7 @@ namespace sakurajin {
          * @param index Der Angefragte Index.
          * @return byte& Die Daten am angefragtem Index.
          */
-        byte at(uint64_t index) const {
+        byte at(uint64_t index) const noexcept {
             index %= SIZE;
             return _data[index];
         }
@@ -143,7 +143,7 @@ namespace sakurajin {
          * @param newdata Die Array, das zugewiesen wird.
          * @return ByteRow& Das modifizierte Objekt.
          */
-        ByteRow& operator= (byte newdata[SIZE]) {
+        ByteRow& operator= (byte newdata[SIZE]) noexcept {
             for(uint64_t i = 0; i < SIZE; i++) {
                 _data[i] = newdata[i];
             }
@@ -163,7 +163,7 @@ namespace sakurajin {
          * @param other Die ByteRows, welche mit diesem Objekt überladen werden soll
          * @return ByteRow Die resultierende ByteRow
          */
-        virtual ByteRow operator&(const ByteRow<SIZE>& other) const {
+        virtual ByteRow operator&(const ByteRow<SIZE>& other) const noexcept {
             ByteRow<SIZE> block = ByteRow<SIZE>();
             for(unsigned int i = 0; i < SIZE; i++) {
                 block[i] = (this->at(i)) | (other.at(i));
@@ -184,7 +184,7 @@ namespace sakurajin {
          * @param distance Die Distanz die geschoben werden soll
          * @return ByteRow Die resultierende ByteRow
          */
-        virtual ByteRow operator<<(unsigned int distance) const {
+        virtual ByteRow operator<<(unsigned int distance) const noexcept {
             ByteRow<SIZE> block = ByteRow<SIZE>();
             for(unsigned int i = 0; i < SIZE; i++) {
                 block[i] = (this->at(i))>>distance;
@@ -205,7 +205,7 @@ namespace sakurajin {
          * @param distance Die Distanz die geschoben werden soll
          * @return ByteRow Die resultierende ByteRow
          */
-        virtual ByteRow operator>>(unsigned int distance) const {
+        virtual ByteRow operator>>(unsigned int distance) const noexcept {
             ByteRow<SIZE> block = ByteRow<SIZE>();
             for(unsigned int i = 0; i < SIZE; i++) {
                 block[i] = (this->at(i))<<distance;
@@ -222,7 +222,7 @@ namespace sakurajin {
          * @brief Schiebt die Daten um 1 Distanz nach unten.
          * @return ByteRow Die resultierende ByteRow
          */
-        virtual ByteRow operator--() const {
+        virtual ByteRow operator--() const noexcept {
             ByteRow<SIZE> block = ByteRow<SIZE>();
             for(unsigned int i = 0; i < SIZE-1; i++) {
                 block[i] = (this->at(i+1));
@@ -239,7 +239,7 @@ namespace sakurajin {
          * @brief Schiebt die Daten um 1 Distanz nach oben.
          * @return ByteRow Die resultierende ByteRow
          */
-        virtual ByteRow operator++() const {
+        virtual ByteRow operator++() const noexcept {
             ByteRow<SIZE> block = ByteRow<SIZE>();
             for(unsigned int i = 1; i < SIZE; i++) {
                 block[i] = (this->at(i-1));
@@ -262,7 +262,7 @@ namespace sakurajin {
          * @return true die Daten sind identisch
          * @return false die Daten sind nicht identisch
          */
-        virtual bool operator==(const ByteRow<SIZE>& other) const {
+        virtual bool operator==(const ByteRow<SIZE>& other) const noexcept {
             for (size_t i = 0; i < SIZE; i++) {
                 if(this->at(i) != other.at(i)) {
                     return false;
@@ -285,7 +285,7 @@ namespace sakurajin {
                  * @return true die Daten sind nicht identisch
                  * @return false die Daten sind identisch
                  */
-        virtual bool operator!=(const ByteRow<SIZE>& other) const {
+        virtual bool operator!=(const ByteRow<SIZE>& other) const noexcept {
             for (size_t i = 0; i < SIZE; i++) {
                 if(this->at(i) == other.at(i)) {
                     return false;

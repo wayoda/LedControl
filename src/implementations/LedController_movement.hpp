@@ -13,7 +13,7 @@
 #include "LedController_template.hpp"
 
 template <size_t columns, size_t rows>
-byte sakurajin::LedController<columns,rows>::moveRowRight(byte shiftedInColumn, unsigned int row_num) {
+byte sakurajin::LedController<columns,rows>::moveRowRight(byte shiftedInColumn, unsigned int row_num) noexcept {
     if (!initilized || row_num >= rows) {
         return 0x00;
     }
@@ -46,7 +46,7 @@ byte sakurajin::LedController<columns,rows>::moveRowRight(byte shiftedInColumn, 
 }
 
 template <size_t columns, size_t rows>
-byte sakurajin::LedController<columns,rows>::moveRowLeft(byte shiftedInColumn, unsigned int row_num) {
+byte sakurajin::LedController<columns,rows>::moveRowLeft(byte shiftedInColumn, unsigned int row_num) noexcept {
     if (!initilized || row_num >= rows) {
         return 0x00;
     }
@@ -79,7 +79,7 @@ byte sakurajin::LedController<columns,rows>::moveRowLeft(byte shiftedInColumn, u
 }
 
 template <size_t columns, size_t rows>
-byte sakurajin::LedController<columns,rows>::moveColumnUp(byte shiftedInRow, unsigned int col_num) {
+byte sakurajin::LedController<columns,rows>::moveColumnUp(byte shiftedInRow, unsigned int col_num) noexcept {
     if (!initilized) {
         return 0x00;
     }
@@ -114,7 +114,7 @@ byte sakurajin::LedController<columns,rows>::moveColumnUp(byte shiftedInRow, uns
 }
 
 template <size_t columns, size_t rows>
-byte sakurajin::LedController<columns,rows>::moveColumnDown(byte shiftedInRow, unsigned int col_num) {
+byte sakurajin::LedController<columns,rows>::moveColumnDown(byte shiftedInRow, unsigned int col_num) noexcept {
     if (!initilized) {
         return 0x00;
     }
@@ -144,27 +144,27 @@ byte sakurajin::LedController<columns,rows>::moveColumnDown(byte shiftedInRow, u
 
 //functions that abstract the basic functions above
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<columns> sakurajin::LedController<columns,rows>::moveDown() {
+sakurajin::ByteRow<columns> sakurajin::LedController<columns,rows>::moveDown() noexcept {
     return moveDown(sakurajin::ByteRow<columns>());
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<columns> sakurajin::LedController<columns,rows>::moveUp() {
+sakurajin::ByteRow<columns> sakurajin::LedController<columns,rows>::moveUp() noexcept {
     return moveUp(sakurajin::ByteRow<columns>());
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<rows> sakurajin::LedController<columns,rows>::moveLeft() {
+sakurajin::ByteRow<rows> sakurajin::LedController<columns,rows>::moveLeft() noexcept {
     return moveLeft(sakurajin::ByteRow<rows>());
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<rows> sakurajin::LedController<columns,rows>::moveRight() {
+sakurajin::ByteRow<rows> sakurajin::LedController<columns,rows>::moveRight() noexcept {
     return moveRight(sakurajin::ByteRow<rows>());
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<rows> sakurajin::LedController<columns,rows>::moveLeft(const sakurajin::ByteRow<rows>& shiftedInColumn) {
+sakurajin::ByteRow<rows> sakurajin::LedController<columns,rows>::moveLeft(const sakurajin::ByteRow<rows>& shiftedInColumn) noexcept {
     sakurajin::ByteRow<rows> ret = sakurajin::ByteRow<rows>();
     for(unsigned int i = 0; i < rows; i++) {
         ret[i] = moveRowLeft(shiftedInColumn[i],i);
@@ -173,7 +173,7 @@ sakurajin::ByteRow<rows> sakurajin::LedController<columns,rows>::moveLeft(const 
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<rows> sakurajin::LedController<columns,rows>::moveRight(const sakurajin::ByteRow<rows>& shiftedInColumn) {
+sakurajin::ByteRow<rows> sakurajin::LedController<columns,rows>::moveRight(const sakurajin::ByteRow<rows>& shiftedInColumn) noexcept {
     sakurajin::ByteRow<rows> ret = sakurajin::ByteRow<rows>();
     for(unsigned int i = 0; i < rows; i++) {
         ret[i] = moveRowRight(shiftedInColumn[i],i);
@@ -182,7 +182,7 @@ sakurajin::ByteRow<rows> sakurajin::LedController<columns,rows>::moveRight(const
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<columns> sakurajin::LedController<columns,rows>::moveUp(const sakurajin::ByteRow<columns>& shiftedInRow) {
+sakurajin::ByteRow<columns> sakurajin::LedController<columns,rows>::moveUp(const sakurajin::ByteRow<columns>& shiftedInRow) noexcept {
     sakurajin::ByteRow<columns> ret = sakurajin::ByteRow<columns>();
     for(unsigned int i = 0; i < columns; i++) {
         ret[i] = moveColumnUp(shiftedInRow[i],i);
@@ -191,7 +191,7 @@ sakurajin::ByteRow<columns> sakurajin::LedController<columns,rows>::moveUp(const
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteRow<columns> sakurajin::LedController<columns,rows>::moveDown(const sakurajin::ByteRow<columns>& shiftedInRow) {
+sakurajin::ByteRow<columns> sakurajin::LedController<columns,rows>::moveDown(const sakurajin::ByteRow<columns>& shiftedInRow) noexcept {
     sakurajin::ByteRow<columns> ret = sakurajin::ByteRow<columns>();
     for(unsigned int i = 0; i < columns; i++) {
         ret[i] = moveColumnDown(shiftedInRow[i],i);
@@ -203,31 +203,31 @@ sakurajin::ByteRow<columns> sakurajin::LedController<columns,rows>::moveDown(con
 
 //removed in version 2.1.0
 template <size_t columns, size_t rows>
-byte sakurajin::LedController<columns,rows>::moveLeft(byte shiftedInColumn) {
+byte sakurajin::LedController<columns,rows>::moveLeft(byte shiftedInColumn) noexcept {
     return moveRowLeft(shiftedInColumn,0);
 }
 
 //removed in version 2.1.0
 template <size_t columns, size_t rows>
-byte sakurajin::LedController<columns,rows>::moveRight(byte shiftedInColumn) {
+byte sakurajin::LedController<columns,rows>::moveRight(byte shiftedInColumn) noexcept {
     return moveRowRight(shiftedInColumn,0);
 }
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void sakurajin::LedController<columns,rows>::moveUp(sakurajin::ByteRow<columns>* shiftedOutRow) {
+void sakurajin::LedController<columns,rows>::moveUp(sakurajin::ByteRow<columns>* shiftedOutRow) noexcept {
     moveUp(sakurajin::ByteRow<columns>(), shiftedOutRow);
 };
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void sakurajin::LedController<columns,rows>::moveDown(sakurajin::ByteRow<columns>* shiftedOutRow) {
+void sakurajin::LedController<columns,rows>::moveDown(sakurajin::ByteRow<columns>* shiftedOutRow) noexcept {
     moveDown(sakurajin::ByteRow<columns>(), shiftedOutRow);
 }
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void sakurajin::LedController<columns,rows>::moveDown(const sakurajin::ByteRow<columns>& shiftedInRow, sakurajin::ByteRow<columns>* shiftedOutRow) {
+void sakurajin::LedController<columns,rows>::moveDown(const sakurajin::ByteRow<columns>& shiftedInRow, sakurajin::ByteRow<columns>* shiftedOutRow) noexcept {
     if(shiftedOutRow == nullptr) {
         moveDown(shiftedInRow);
     } else {
@@ -237,7 +237,7 @@ void sakurajin::LedController<columns,rows>::moveDown(const sakurajin::ByteRow<c
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void sakurajin::LedController<columns,rows>::moveUp(const sakurajin::ByteRow<columns>& shiftedInRow, sakurajin::ByteRow<columns>* shiftedOutRow) {
+void sakurajin::LedController<columns,rows>::moveUp(const sakurajin::ByteRow<columns>& shiftedInRow, sakurajin::ByteRow<columns>* shiftedOutRow) noexcept {
     if(shiftedOutRow == nullptr) {
         moveUp(shiftedInRow);
     } else {
@@ -247,7 +247,7 @@ void sakurajin::LedController<columns,rows>::moveUp(const sakurajin::ByteRow<col
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void sakurajin::LedController<columns,rows>::moveLeft(const sakurajin::ByteRow<rows>& shiftedInColumn, sakurajin::ByteRow<rows>* shiftedOutColumn) {
+void sakurajin::LedController<columns,rows>::moveLeft(const sakurajin::ByteRow<rows>& shiftedInColumn, sakurajin::ByteRow<rows>* shiftedOutColumn) noexcept {
     if(shiftedOutColumn == nullptr) {
         moveLeft(shiftedInColumn);
     } else {
@@ -257,7 +257,7 @@ void sakurajin::LedController<columns,rows>::moveLeft(const sakurajin::ByteRow<r
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
-void sakurajin::LedController<columns,rows>::moveRight(const sakurajin::ByteRow<rows>& shiftedInColumn, sakurajin::ByteRow<rows>* shiftedOutColumn) {
+void sakurajin::LedController<columns,rows>::moveRight(const sakurajin::ByteRow<rows>& shiftedInColumn, sakurajin::ByteRow<rows>* shiftedOutColumn) noexcept {
     if(shiftedOutColumn == nullptr) {
         moveRight(shiftedInColumn);
     } else {

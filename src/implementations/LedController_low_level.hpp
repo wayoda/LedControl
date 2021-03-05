@@ -14,7 +14,7 @@
 #include "LedController_MAX72XX.hpp"
 
 template <size_t columns, size_t rows>
-void sakurajin::LedController<columns,rows>::spiTransfer(unsigned int segment, byte opcode, byte data) {
+void sakurajin::LedController<columns,rows>::spiTransfer(unsigned int segment, byte opcode, byte data) noexcept {
     if (!initilized || segment >= conf.SegmentCount()) {
         return;
     }
@@ -90,7 +90,7 @@ void sakurajin::LedController<columns,rows>::spiTransfer(unsigned int segment, b
 
 template <size_t columns, size_t rows>
 void sakurajin::LedController<columns,rows>::setScanLimit(unsigned int segmentNumber,
-        unsigned int limit) {
+        unsigned int limit) noexcept {
     if (!initilized || segmentNumber >= conf.SegmentCount()) {
         return;
     };
@@ -100,7 +100,7 @@ void sakurajin::LedController<columns,rows>::setScanLimit(unsigned int segmentNu
 }
 
 template <size_t columns, size_t rows>
-void sakurajin::LedController<columns,rows>::setIntensity(unsigned int newIntesityLevel) {
+void sakurajin::LedController<columns,rows>::setIntensity(unsigned int newIntesityLevel) noexcept {
     if (newIntesityLevel > 15 || !initilized) {
         return;
     }
@@ -115,7 +115,7 @@ void sakurajin::LedController<columns,rows>::setIntensity(unsigned int newIntesi
 
 template <size_t columns, size_t rows>
 void sakurajin::LedController<columns,rows>::setIntensity(unsigned int segmentNumber,
-        unsigned int newIntesityLevel) {
+        unsigned int newIntesityLevel) noexcept {
     if (newIntesityLevel > 15 || !initilized ||
             segmentNumber >= conf.SegmentCount()) {
         return;
@@ -125,7 +125,7 @@ void sakurajin::LedController<columns,rows>::setIntensity(unsigned int segmentNu
 }
 
 template <size_t columns, size_t rows>
-void sakurajin::LedController<columns,rows>::refreshSegment(unsigned int segmentNumber) {
+void sakurajin::LedController<columns,rows>::refreshSegment(unsigned int segmentNumber) noexcept {
     if (!initilized) {
         return;
     }

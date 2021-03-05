@@ -37,7 +37,7 @@ namespace sakurajin {
          *
          * @param newdata Das Array, das zum initialisieren verwendet werden soll.
          */
-        ByteBlock(byte newdata[8]):ByteRow<8>(newdata) {};
+        ByteBlock(byte newdata[8]) noexcept:ByteRow<8>(newdata) {};
 
         /**
          * \~english
@@ -48,7 +48,7 @@ namespace sakurajin {
          * @brief Erstelle ein neues Objekt aus einer Liste von Werten.
          * So kann {0,0,0,0,0,0,0,0} als Kopierzuweisung verwendet werden.
          */
-        ByteBlock(byte n0,byte n1,byte n2,byte n3,byte n4,byte n5,byte n6,byte n7):ByteBlock() {
+        ByteBlock(byte n0,byte n1,byte n2,byte n3,byte n4,byte n5,byte n6,byte n7) noexcept:ByteBlock() {
             _data[0] = n0;
             _data[1] = n1;
             _data[2] = n2;
@@ -66,7 +66,7 @@ namespace sakurajin {
          * \~german
          * @brief Konstruiere ein neuess Objekt mit 0en.
          */
-        ByteBlock():ByteRow<8>() {};
+        ByteBlock() noexcept:ByteRow<8>() {};
 
         /**
          * \~english
@@ -79,7 +79,7 @@ namespace sakurajin {
          * @note Dieser Konstruktor existiert hauptsächlich für Typumwandlungen.
          * @param data Die daten, die zugewiesen werden sollen
          */
-        ByteBlock(const ByteRow<8>& data):ByteRow<8>(data) {};
+        ByteBlock(const ByteRow<8>& data) noexcept:ByteRow<8>(data) {};
 
         /**
          * \~english
@@ -92,7 +92,7 @@ namespace sakurajin {
          *
          * @return ByteBlock Die Splaten des gegebenen Blocks
          */
-        ByteBlock transpose() const {
+        ByteBlock transpose() const noexcept {
             return ByteBlock::makeColumns(*this);
         }
 
@@ -107,7 +107,7 @@ namespace sakurajin {
          *
          * @return ByteBlock Die Splaten des gegebenen Blocks
          */
-        ByteBlock makeColumns() const {
+        ByteBlock makeColumns() const noexcept {
             return this->transpose();
         }
 
@@ -122,7 +122,7 @@ namespace sakurajin {
          *
          * @return ByteBlock Der umgekehrte ByteBlock.
          */
-        ByteBlock reverse() const {
+        ByteBlock reverse() const noexcept {
             return ByteBlock::reverse(*this);
         }
 
@@ -137,7 +137,7 @@ namespace sakurajin {
          *
          * @return ByteBlock Der rotierte byteBlock.
          */
-        ByteBlock rotate180() const {
+        ByteBlock rotate180() const noexcept {
             return ByteBlock::rotate180(*this);
         }
 
@@ -155,7 +155,7 @@ namespace sakurajin {
          * @param input Das byte, das umgekehrt werden soll.
          * @return byte Das umgekehrte Byte
          */
-        static byte reverse(byte input) {
+        static byte reverse(byte input) noexcept {
             byte ret = 0x00;
             for (unsigned int i = 0; i < 8; i++) {
                 if (input & (0x01U << i)) {
@@ -178,7 +178,7 @@ namespace sakurajin {
          * @param input Der ByteBlock der umgekehrt werden soll.
          * @return ByteBlock Der umgekehrte ByteBlock.
          */
-        static ByteBlock reverse(ByteBlock input) {
+        static ByteBlock reverse(ByteBlock input) noexcept {
             auto reversedInput = ByteBlock();
 
             for (unsigned int i = 0; i < 8; i++) {
@@ -201,7 +201,7 @@ namespace sakurajin {
          * @param input Der zu rotierende ByteBlock.
          * @return ByteBlock Der rotierte byteBlock.
          */
-        static ByteBlock rotate180(ByteBlock input) {
+        static ByteBlock rotate180(ByteBlock input) noexcept {
             auto rotatedInput = ByteBlock();
 
             for (unsigned int i = 0; i < 8; i++) {
@@ -224,7 +224,7 @@ namespace sakurajin {
          * @param rowArray Der Block aus Zeilen
          * @return ByteBlock Die Splaten des gegebenen Blocks
          */
-        static ByteBlock makeColumns(ByteBlock rowArray) {
+        static ByteBlock makeColumns(ByteBlock rowArray) noexcept {
             auto columnArray = ByteBlock();
 
             for (unsigned int i = 0; i < 8; i++) {
@@ -249,7 +249,7 @@ namespace sakurajin {
          * @param rowArray Der Block aus Zeilen
          * @return ByteBlock Die Splaten des gegebenen Blocks
          */
-        static ByteBlock transpose(ByteBlock rowArray) {
+        static ByteBlock transpose(ByteBlock rowArray) noexcept {
             return ByteBlock::makeColumns(rowArray);
         }
 

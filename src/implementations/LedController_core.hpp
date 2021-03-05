@@ -1,31 +1,31 @@
 #include "LedController.hpp"
 
 template <size_t columns, size_t rows>
-sakurajin::LedController<columns,rows>::~LedController() {
+sakurajin::LedController<columns,rows>::~LedController() noexcept {
     initilized = false;
 }
 
 template <size_t columns, size_t rows>
-sakurajin::LedController<columns,rows>::LedController() {};
+sakurajin::LedController<columns,rows>::LedController() noexcept {};
 
 template <size_t columns, size_t rows>
-sakurajin::LedController<columns,rows>::LedController(unsigned int csPin) {
+sakurajin::LedController<columns,rows>::LedController(unsigned int csPin) noexcept {
     init(csPin);
 };
 
 template <size_t columns, size_t rows>
 sakurajin::LedController<columns,rows>::LedController(unsigned int dataPin, unsigned int clkPin,
-        unsigned int csPin, bool useHardwareSpiParam) {
+        unsigned int csPin, bool useHardwareSpiParam) noexcept {
     init(dataPin, clkPin, csPin, useHardwareSpiParam);
 }
 
 template <size_t columns, size_t rows>
-sakurajin::LedController<columns,rows>::LedController(const sakurajin::controller_configuration<columns,rows> &config) {
+sakurajin::LedController<columns,rows>::LedController(const sakurajin::controller_configuration<columns,rows> &config) noexcept {
     init(config);
 };
 
 template <size_t columns, size_t rows>
-sakurajin::LedController<columns,rows>::LedController(const sakurajin::LedController<columns,rows> &other) {
+sakurajin::LedController<columns,rows>::LedController(const sakurajin::LedController<columns,rows> &other) noexcept {
     if (!other.initilized) {
         return;
     }
@@ -46,7 +46,7 @@ sakurajin::LedController<columns,rows>::LedController(const sakurajin::LedContro
 }
 
 template <size_t columns, size_t rows>
-void sakurajin::LedController<columns,rows>::init(unsigned int csPin) {
+void sakurajin::LedController<columns,rows>::init(unsigned int csPin) noexcept {
     sakurajin::controller_configuration<columns,rows> config;
 
     config.SPI_CS = csPin;
@@ -57,7 +57,7 @@ void sakurajin::LedController<columns,rows>::init(unsigned int csPin) {
 
 template <size_t columns, size_t rows>
 void sakurajin::LedController<columns,rows>::init(unsigned int dataPin, unsigned int clkPin,
-        unsigned int csPin, bool useHardwareSpiParam) {
+        unsigned int csPin, bool useHardwareSpiParam) noexcept {
     if (initilized) {
         return;
     }
@@ -73,7 +73,7 @@ void sakurajin::LedController<columns,rows>::init(unsigned int dataPin, unsigned
 }
 
 template <size_t columns, size_t rows>
-void sakurajin::LedController<columns,rows>::init(const sakurajin::controller_configuration<columns,rows> &configuration) {
+void sakurajin::LedController<columns,rows>::init(const sakurajin::controller_configuration<columns,rows> &configuration) noexcept {
     if (initilized) {
         return;
     }
@@ -91,7 +91,7 @@ void sakurajin::LedController<columns,rows>::init(const sakurajin::controller_co
 }
 
 template <size_t columns, size_t rows>
-void sakurajin::LedController<columns,rows>::initConf() {
+void sakurajin::LedController<columns,rows>::initConf() noexcept {
     if (conf.useHardwareSpi) {
         conf.SPI_CLK = SCK;
         conf.SPI_MOSI = MOSI;
@@ -101,7 +101,7 @@ void sakurajin::LedController<columns,rows>::initConf() {
 }
 
 template <size_t columns, size_t rows>
-void sakurajin::LedController<columns,rows>::initSPI() {
+void sakurajin::LedController<columns,rows>::initSPI() noexcept {
     pinMode(conf.SPI_MOSI, OUTPUT);
     pinMode(conf.SPI_CLK, OUTPUT);
 
@@ -131,32 +131,30 @@ void sakurajin::LedController<columns,rows>::initSPI() {
 }
 
 template <size_t columns, size_t rows>
-bool sakurajin::LedController<columns,rows>::isInitilized() {
+bool sakurajin::LedController<columns,rows>::isInitilized() noexcept {
     return initilized;
 }
 
 // to be remvoed for version 2.2.0
 template <size_t columns, size_t rows>
-void sakurajin::LedController<columns,rows>::getSegmentData(unsigned int column, unsigned int row_num, sakurajin::ByteBlock* resultLocation) {
+void sakurajin::LedController<columns,rows>::getSegmentData(unsigned int column, unsigned int row_num, sakurajin::ByteBlock* resultLocation) noexcept {
     getSegmentData(conf.getSegmentNumber(column,row_num),resultLocation);
 }
 
 // to be removed for version 2.2.0
 template <size_t columns, size_t rows>
 void sakurajin::LedController<columns,rows>::getSegmentData(unsigned int segmentindex,
-        sakurajin::ByteBlock *resultLocation) {
+        sakurajin::ByteBlock *resultLocation) noexcept {
     if (!initilized || segmentindex >= conf.SegmentCount() ||
             resultLocation == nullptr) {
         return;
     }
 
-    for (unsigned int i = 0; i < 8; i++) {
-        (*resultLocation)[i] = LedStates[segmentindex][i];
-    }
+    *resultLocation = getSegmentData(segmentindex);
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteBlock sakurajin::LedController<columns,rows>::getSegmentData(unsigned int segmentindex) {
+sakurajin::ByteBlock sakurajin::LedController<columns,rows>::getSegmentData(unsigned int segmentindex) noexcept {
     if (!initilized || segmentindex >= conf.SegmentCount()) {
         return sakurajin::ByteBlock();
     };
@@ -164,16 +162,16 @@ sakurajin::ByteBlock sakurajin::LedController<columns,rows>::getSegmentData(unsi
 }
 
 template <size_t columns, size_t rows>
-sakurajin::ByteBlock sakurajin::LedController<columns,rows>::getSegmentData(unsigned int column, unsigned int row_num) {
+sakurajin::ByteBlock sakurajin::LedController<columns,rows>::getSegmentData(unsigned int column, unsigned int row_num) noexcept {
     return getSegmentData(conf.getSegmentNumber(column,row_num));
 }
 
 template <size_t columns, size_t rows>
-unsigned int sakurajin::LedController<columns,rows>::getSegmentCount() {
+unsigned int sakurajin::LedController<columns,rows>::getSegmentCount() noexcept {
     return columns*rows;
 }
 
 template <size_t columns, size_t rows>
-const sakurajin::controller_configuration<columns,rows>& sakurajin::LedController<columns,rows>::getConfig() {
+const sakurajin::controller_configuration<columns,rows>& sakurajin::LedController<columns,rows>::getConfig() noexcept {
     return conf;
 }

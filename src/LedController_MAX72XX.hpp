@@ -8,12 +8,12 @@ namespace sakurajin {
       private:
         charTable table;
 
-        static const MAX72XX& getInstance() {
+        static const MAX72XX& getInstance() noexcept {
             static MAX72XX instance = MAX72XX();
             return instance;
         }
 
-        MAX72XX();
+        MAX72XX() noexcept;
 
       public:
         static const unsigned int OP_NOOP = 0;
@@ -31,11 +31,11 @@ namespace sakurajin {
         static const unsigned int OP_SHUTDOWN = 12;
         static const unsigned int OP_DISPLAYTEST = 15;
 
-        static byte getChar(char c) {
+        static byte getChar(char c) noexcept {
             return getInstance().table.getChar(c);
         }
 
-        static const charTable& getTable() {
+        static const charTable& getTable() noexcept {
             return getInstance().table;
         }
     };

@@ -4,7 +4,7 @@ namespace sakurajin {
 
     class charTable:public ByteRow<128> {
       public:
-        charTable(byte newdata[128]):ByteRow<128>(newdata) {};
+        charTable(byte newdata[128]) noexcept:ByteRow<128>(newdata) {};
 
         charTable(
             byte n0,   byte n1,   byte n2,   byte n3,   byte n4,   byte n5,   byte n6,   byte n7,   byte n8,   byte n9,
@@ -20,7 +20,7 @@ namespace sakurajin {
             byte n100, byte n101, byte n102, byte n103, byte n104, byte n105, byte n106, byte n107, byte n108, byte n109,
             byte n110, byte n111, byte n112, byte n113, byte n114, byte n115, byte n116, byte n117, byte n118, byte n119,
             byte n120, byte n121, byte n122, byte n123, byte n124, byte n125, byte n126, byte n127
-        ) {
+        ) noexcept {
             _data[0] = n0;
             _data[1] = n1;
             _data[2] = n2;
@@ -163,7 +163,7 @@ namespace sakurajin {
             _data[127] = n127;
         };
 
-        virtual byte getChar(char c) const {
+        virtual byte getChar(char c) const noexcept {
             byte index = ((byte)c)%128;
             return this->at(index);
         }

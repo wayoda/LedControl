@@ -75,7 +75,7 @@ namespace sakurajin {
          * @param opcode Der Befehl, der ausgeführt werden soll.
          * @param data Die Daten, die für den Befehl benötigt werden.
          */
-        void spiTransfer(unsigned int segment, byte opcode, byte data);
+        void spiTransfer(unsigned int segment, byte opcode, byte data) noexcept;
 
         /**
          * \~english
@@ -100,7 +100,7 @@ namespace sakurajin {
          * @param segmentNumber Die Nummer, des Segemnts.
          * @param newIntesityLevel Die gewünschte Helligkeit inklusive der Grenzen von 0 & 15. (0..15)
          */
-        void setIntensity(unsigned int segmentNumber, unsigned int newIntesityLevel);
+        void setIntensity(unsigned int segmentNumber, unsigned int newIntesityLevel) noexcept;
 
         /**
          * \~english
@@ -119,7 +119,7 @@ namespace sakurajin {
          * \~german
          * @brief Initialisiere die internen Puffer des LedController.
          */
-        void resetBuffers();
+        void resetBuffers() noexcept;
 
         /**
          * \~english
@@ -128,7 +128,7 @@ namespace sakurajin {
          * \~german
          * @brief Initialisiere die SPI Ausgabe.
          */
-        void initSPI();
+        void initSPI() noexcept;
 
         /**
          * \~english
@@ -137,7 +137,7 @@ namespace sakurajin {
          * \~german
          * @brief Initialisiere die Konfiguration
          */
-        void initConf();
+        void initConf() noexcept;
 
       public:
         /**
@@ -147,7 +147,7 @@ namespace sakurajin {
          * \~german
          * @brief Erstelle einen neuen LedController ohne etwas zu initialisieren.
          */
-        LedController();
+        LedController() noexcept;
 
         /**
          * \~english
@@ -164,7 +164,7 @@ namespace sakurajin {
          *
          * @param csPin Der CS Pin über den die Matrix gesteuert wird.
          */
-        LedController(unsigned int csPin);
+        LedController(unsigned int csPin) noexcept;
 
         /**
          * \~english
@@ -190,7 +190,7 @@ namespace sakurajin {
          * https://www.arduino.cc/en/Reference/SPI für die Pin Konfiguration)
          */
         LedController(unsigned int dataPin, unsigned int clkPin, unsigned int csPin,
-                      bool useHardwareSpi = false);
+                      bool useHardwareSpi = false) noexcept;
 
         /**
          * \~english
@@ -204,7 +204,7 @@ namespace sakurajin {
          *
          * @param configuration die Konfiguration die zum erstellen verwendet werden soll.
          */
-        LedController(const sakurajin::controller_configuration<columns,rows> &configuration);
+        LedController(const sakurajin::controller_configuration<columns,rows> &configuration) noexcept;
 
         /**
          * \~english
@@ -213,7 +213,7 @@ namespace sakurajin {
          * \~german
          * @brief Zerstöre das Objekt und leere den Speicher.
          */
-        ~LedController();
+        ~LedController() noexcept;
 
         /**
          * \~english
@@ -226,7 +226,7 @@ namespace sakurajin {
          *
          * @param other der LedController, der kopiert werden soll.
          */
-        LedController(const LedController &other);
+        LedController(const LedController &other) noexcept;
 
         /**
          * \~english
@@ -243,7 +243,7 @@ namespace sakurajin {
          *
          * @param csPin Der Pin um die LedMatrix auszuwählen.
          */
-        void init(unsigned int csPin);
+        void init(unsigned int csPin) noexcept;
 
         /**
          * \~english
@@ -269,7 +269,7 @@ namespace sakurajin {
          * https://www.arduino.cc/en/Reference/SPI für die Pin Konfiguration)
          */
         void init(unsigned int dataPin, unsigned int clkPin, unsigned int csPin,
-                  bool useHardwareSpi = false);
+                  bool useHardwareSpi = false) noexcept;
 
         /**
          * \~english
@@ -282,7 +282,7 @@ namespace sakurajin {
          *
          * @param configuration Die Konfiguration, die verwendet werden soll.
          */
-        void init(const sakurajin::controller_configuration<columns,rows> &configuration);
+        void init(const sakurajin::controller_configuration<columns,rows> &configuration) noexcept;
 
         /**
          * \~english
@@ -297,7 +297,7 @@ namespace sakurajin {
          * @return true der LedController ist initialisiert
          * @return false der LedController ist nicht initialisiert
          */
-        bool isInitilized();
+        bool isInitilized() noexcept;
 
         /**
          * \~english
@@ -312,7 +312,7 @@ namespace sakurajin {
          * die nicht benötigt werden oder verringere die Helligkeit.
          * @param newIntesityLevel the new brightness of the matrix. (0..15)
          */
-        void setIntensity(unsigned int newIntesityLevel);
+        void setIntensity(unsigned int newIntesityLevel) noexcept;
 
         /**
          * \~english
@@ -328,7 +328,7 @@ namespace sakurajin {
          * @param segmentindex Die Nummer des gewünschten Segments
          * @param data Die Daten, die angezeigt werden sollen.
          */
-        void displayOnSegment(unsigned int segmentindex, sakurajin::ByteBlock data);
+        void displayOnSegment(unsigned int segmentindex, sakurajin::ByteBlock data) noexcept;
 
         /**
          * \~english
@@ -346,7 +346,7 @@ namespace sakurajin {
          * @param row_num Die Zeile in der das Segment ist.
          * @param data Die Daten, die angezeigt werden sollen.
          */
-        void displayOnSegment(unsigned int column, unsigned int row_num, sakurajin::ByteBlock data);
+        void displayOnSegment(unsigned int column, unsigned int row_num, sakurajin::ByteBlock data) noexcept;
 
         /**
          * \~english
@@ -363,7 +363,7 @@ namespace sakurajin {
          * @param row_num Die Zeile in der das Segment ist.
          * @return sakurajin::ByteBlock Die Daten, die in dem Segment angezeigt werden.
          */
-        sakurajin::ByteBlock getSegmentData(unsigned int column, unsigned int row_num);
+        sakurajin::ByteBlock getSegmentData(unsigned int column, unsigned int row_num) noexcept;
 
         /**
          * \~english
@@ -378,7 +378,7 @@ namespace sakurajin {
          * @param segmentindex Die Nummer des gewünschten Segments
          * @return sakurajin::ByteBlock Die Daten, die in dem Segment angezeigt werden.
          */
-        sakurajin::ByteBlock getSegmentData(unsigned int segmentindex);
+        sakurajin::ByteBlock getSegmentData(unsigned int segmentindex) noexcept;
 
         /**
          * \~english
@@ -387,7 +387,7 @@ namespace sakurajin {
          * \~german
          * @brief aktiviere alle Segmente, setzte alle auf die gleiche Helligkeit und leere den Inhalt.
          */
-        void resetMatrix();
+        void resetMatrix() noexcept;
 
         /**
          * \~english
@@ -396,7 +396,7 @@ namespace sakurajin {
          * \~german
          * @brief leere alle Segmente (alle LEDs aus).
          */
-        void clearMatrix();
+        void clearMatrix() noexcept;
 
         /**
          * \~english
@@ -409,7 +409,7 @@ namespace sakurajin {
          *
          * @param segmentNumber Die Nummer des gewünschten Segments.
          */
-        void clearSegment(unsigned int segmentNumber);
+        void clearSegment(unsigned int segmentNumber) noexcept;
 
         /**
          * \~english
@@ -422,7 +422,7 @@ namespace sakurajin {
          *
          * @return unsigned int Die Anzahl aller konfigurierten Segemente.
          */
-        unsigned int getSegmentCount();
+        unsigned int getSegmentCount() noexcept;
 
         /**
          * \~english
@@ -435,7 +435,7 @@ namespace sakurajin {
          *
          * @param segmentNumber Die Nummer des gewünschten Segments.
          */
-        void shutdownSegment(unsigned int segmentNumber);
+        void shutdownSegment(unsigned int segmentNumber) noexcept;
 
         /**
          * \~english
@@ -448,7 +448,7 @@ namespace sakurajin {
          *
          * @param segmentNumber Die Nummer des gewünschten Segments.
          */
-        void activateSegment(unsigned int segmentNumber);
+        void activateSegment(unsigned int segmentNumber) noexcept;
 
         /**
          * \~english
@@ -457,7 +457,7 @@ namespace sakurajin {
          * \~german
          * @brief Deaktiviere alle Segmente.
          */
-        void shutdownAllSegments();
+        void shutdownAllSegments() noexcept;
 
         /**
          * \~english
@@ -466,7 +466,7 @@ namespace sakurajin {
          * \~german
          * @brief Aktiviere alle Segmente.
          */
-        void activateAllSegments();
+        void activateAllSegments() noexcept;
 
         /**
          * \~english
@@ -482,7 +482,7 @@ namespace sakurajin {
          * @param segmentNumber Die nummer des gewünschten Segments.
          * @param limit Die Anzahl der Zeilen/Stellen die angezwigt werden sollen (0..7)
          */
-        void setScanLimit(unsigned int segmentNumber, unsigned int limit);
+        void setScanLimit(unsigned int segmentNumber, unsigned int limit) noexcept;
 
         /**
          * \~english
@@ -499,7 +499,7 @@ namespace sakurajin {
          * @param row Die Reihe in dem Segment, welche gesetzte werden soll.
          * @param value Der Wert der gesetzt werden soll.
          */
-        void setRow(unsigned int segmentNumber, unsigned int row, byte value);
+        void setRow(unsigned int segmentNumber, unsigned int row, byte value) noexcept;
 
         /**
          * \~english
@@ -516,7 +516,7 @@ namespace sakurajin {
          * @param row Die Reihe in dem Segment, welche gewünscht ist.
          * @return byte Der Wert, der angezeigt wird.
          */
-        byte getRow(unsigned int segmentNumber, unsigned int row);
+        byte getRow(unsigned int segmentNumber, unsigned int row) noexcept;
 
         /**
          * \~english
@@ -536,7 +536,7 @@ namespace sakurajin {
          * @param state true wenn sie an sein soll, ansonsten false
          */
         void setLed(unsigned int segmentNumber, unsigned int row, unsigned int column,
-                    boolean state);
+                    boolean state) noexcept;
 
         /**
          * \~english
@@ -553,7 +553,7 @@ namespace sakurajin {
          * @param col  die Spalte im Segment
          * @param value Der Wert der gesetzt werden soll.
          */
-        void setColumn(unsigned int segmentNumber, unsigned int col, byte value);
+        void setColumn(unsigned int segmentNumber, unsigned int col, byte value) noexcept;
 
         /**
          * \~english
@@ -573,7 +573,7 @@ namespace sakurajin {
          * @param dp true wenn der Dezimalpunkt gesetzt werden soll.
          */
         void setDigit(unsigned int segmentNumber, unsigned int digit, byte value,
-                      boolean dp);
+                      boolean dp) noexcept;
 
         /**
          * \~english
@@ -599,7 +599,7 @@ namespace sakurajin {
         * @param dp true wenn der Dezimalpunkt gesetzt werden soll.
         */
         void setChar(unsigned int segmentNumber, unsigned int digit, char value,
-                     boolean dp);
+                     boolean dp) noexcept;
 
         /**
          * \~english
@@ -609,7 +609,7 @@ namespace sakurajin {
          * \~german
          * @brief Lädt alle Segmente neu (zurücksetzten und dann updaten).
          */
-        void refreshSegments();
+        void refreshSegments() noexcept;
 
         /**
          * \~english
@@ -623,7 +623,7 @@ namespace sakurajin {
          *
          * @param segmentNumber Die Nummer des gewünschten Segments
          */
-        void refreshSegment(unsigned int segmentNumber);
+        void refreshSegment(unsigned int segmentNumber) noexcept;
 
         /**
          * \~english
@@ -633,7 +633,7 @@ namespace sakurajin {
          * \~german
          * @brief Lädt den Inhalt der internen Daten auf alle Segmente hoch.
          */
-        void updateSegments();
+        void updateSegments() noexcept;
 
         /**
          * \~english
@@ -647,7 +647,7 @@ namespace sakurajin {
          *
          * @param segmentNumber Die Nummer des gewünschten Segments
          */
-        void updateSegment(unsigned int segmentNumber);
+        void updateSegment(unsigned int segmentNumber) noexcept;
 
         /**
          * \~english
@@ -668,7 +668,7 @@ namespace sakurajin {
          * @warning Nur EINE ZEILE wird verschoben
          * @return byte Die Daten, die links rausgeschoben werden.
          */
-        byte moveRowLeft(byte shiftedInColumn = 0x00, unsigned int row_num = 0);
+        byte moveRowLeft(byte shiftedInColumn = 0x00, unsigned int row_num = 0) noexcept;
 
         /**
          * \~english
@@ -689,7 +689,7 @@ namespace sakurajin {
          * @warning Nur EINE ZEILE wird verschoben
          * @return byte Die Daten, die rechts rausgeschoben werden.
          */
-        byte moveRowRight(byte shiftedInColumn = 0x00, unsigned int row_num = 0);
+        byte moveRowRight(byte shiftedInColumn = 0x00, unsigned int row_num = 0) noexcept;
 
         /**
          * \~english
@@ -708,7 +708,7 @@ namespace sakurajin {
          * @warning Nur EINE SPALTE wird verschoben
          * @return byte Die Daten, die oben rausgeschoben werden.
          */
-        byte moveColumnUp(byte shiftedInRow = 0x00, unsigned int col_num = 0);
+        byte moveColumnUp(byte shiftedInRow = 0x00, unsigned int col_num = 0) noexcept;
 
         /**
          * \~english
@@ -727,7 +727,7 @@ namespace sakurajin {
          * @warning Nur EINE SPALTE wird verschoben
          * @return byte Die Daten, die unten rausgeschoben werden.
          */
-        byte moveColumnDown(byte shiftedInRow = 0x00, unsigned int col_num = 0);
+        byte moveColumnDown(byte shiftedInRow = 0x00, unsigned int col_num = 0) noexcept;
 
         /**
          * \~english
@@ -738,7 +738,7 @@ namespace sakurajin {
          * @brief Schibet die Daten eins nach oben und 0x00 wird unten reingeschoben.
          * @return sakurajin::ByteRow<rows> Die Reihen die rausgeschoben werden.
          */
-        sakurajin::ByteRow<columns> moveUp();
+        sakurajin::ByteRow<columns> moveUp() noexcept;
 
         /**
          * \~english
@@ -749,7 +749,7 @@ namespace sakurajin {
          * @brief Schibet die Daten eins nach unten und 0x00 wird oben reingeschoben.
          * @return sakurajin::ByteRow<rows> Die Reihen die rausgeschoben werden.
          */
-        sakurajin::ByteRow<columns> moveDown();
+        sakurajin::ByteRow<columns> moveDown() noexcept;
 
         /**
          * \~english
@@ -760,7 +760,7 @@ namespace sakurajin {
          * @brief Schibet die Daten eins nach links und 0x00 wird recht reingeschoben.
          * @return sakurajin::ByteRow<rows> Die Splaten die rausgeschoben werden.
          */
-        sakurajin::ByteRow<rows> moveLeft();
+        sakurajin::ByteRow<rows> moveLeft() noexcept;
 
         /**
          * \~english
@@ -771,7 +771,7 @@ namespace sakurajin {
          * @brief Schibet die Daten eins nach rechts und 0x00 wird links reingeschoben.
          * @return sakurajin::ByteRow<rows> Die Splaten die rausgeschoben werden.
          */
-        sakurajin::ByteRow<rows> moveRight();
+        sakurajin::ByteRow<rows> moveRight() noexcept;
 
         /**
          * \~english
@@ -786,7 +786,7 @@ namespace sakurajin {
          * @param shiftedInColumn Die Splaten die reingeschoben werden.
          * @return sakurajin::ByteRow<rows> Die Splaten die rausgeschoben werden.
          */
-        sakurajin::ByteRow<rows> moveLeft(const sakurajin::ByteRow<rows>& shiftedInColumn);
+        sakurajin::ByteRow<rows> moveLeft(const sakurajin::ByteRow<rows>& shiftedInColumn) noexcept;
 
         /**
          * \~english
@@ -801,7 +801,7 @@ namespace sakurajin {
          * @param shiftedInColumn Die Splaten die reingeschoben werden.
          * @return sakurajin::ByteRow<rows> Die Splaten die rausgeschoben werden.
          */
-        sakurajin::ByteRow<rows> moveRight(const sakurajin::ByteRow<rows>& shiftedInColumn);
+        sakurajin::ByteRow<rows> moveRight(const sakurajin::ByteRow<rows>& shiftedInColumn) noexcept;
 
         /**
          * \~english
@@ -816,7 +816,7 @@ namespace sakurajin {
          * @param shiftedInColumn Die Reihen die reingeschoben werden.
          * @return sakurajin::ByteRow<rows> Die Reihen die rausgeschoben werden.
          */
-        sakurajin::ByteRow<columns> moveUp(const sakurajin::ByteRow<columns>& shiftedInColumn);
+        sakurajin::ByteRow<columns> moveUp(const sakurajin::ByteRow<columns>& shiftedInColumn) noexcept;
 
         /**
          * \~english
@@ -831,7 +831,7 @@ namespace sakurajin {
          * @param shiftedInColumn Die Reihen die reingeschoben werden.
          * @return sakurajin::ByteRow<rows> Die Reihen die rausgeschoben werden.
          */
-        sakurajin::ByteRow<columns> moveDown(const sakurajin::ByteRow<columns>& shiftedInColumn);
+        sakurajin::ByteRow<columns> moveDown(const sakurajin::ByteRow<columns>& shiftedInColumn) noexcept;
 
         /**
          * \~english
@@ -847,7 +847,7 @@ namespace sakurajin {
          * @param input Das byte, das umgekehrt werden soll.
          * @return byte Das umgekehrte Byte
          */
-        byte reverse(byte input);
+        byte reverse(byte input) noexcept;
 
         /**
          * \~english
@@ -862,7 +862,7 @@ namespace sakurajin {
          * @param input Der sakurajin::ByteBlock der umgekehrt werden soll.
          * @return sakurajin::ByteBlock Der umgekehrte sakurajin::ByteBlock.
          */
-        sakurajin::ByteBlock reverse(sakurajin::ByteBlock input);
+        sakurajin::ByteBlock reverse(sakurajin::ByteBlock input) noexcept;
 
         /**
          * \~english
@@ -877,7 +877,7 @@ namespace sakurajin {
          * @param rowArray Der Block aus Zeilen
          * @return sakurajin::ByteBlock Die Splaten des gegebenen Blocks
          */
-        sakurajin::ByteBlock makeColumns(sakurajin::ByteBlock rowArray);
+        sakurajin::ByteBlock makeColumns(sakurajin::ByteBlock rowArray) noexcept;
 
         /**
          * \~english
@@ -892,7 +892,7 @@ namespace sakurajin {
          * @param input Der zu rotierende sakurajin::ByteBlock.
          * @return sakurajin::ByteBlock Der rotierte byteBlock.
          */
-        sakurajin::ByteBlock rotate180(sakurajin::ByteBlock input);
+        sakurajin::ByteBlock rotate180(sakurajin::ByteBlock input) noexcept;
 
         /**
          * \~english
@@ -905,7 +905,7 @@ namespace sakurajin {
          *
          * @return controlller_configuration Die aktuelle Konfiguration
          */
-        const sakurajin::controller_configuration<columns,rows>& getConfig();
+        const sakurajin::controller_configuration<columns,rows>& getConfig() noexcept;
 
         //The following methods are deprecated and will be removed in the future
         //They only exist to help the transition to a new version
@@ -923,7 +923,7 @@ namespace sakurajin {
          * @warning ONLY moves row 0, this function exists for backwards compatibility
          * @return byte The column that gets shifted out on the left
          */
-        byte moveLeft(byte shiftedInColumn);
+        byte moveLeft(byte shiftedInColumn) noexcept;
 
         /**
          * \~
@@ -937,7 +937,7 @@ namespace sakurajin {
          * @warning ONLY moves row 0, this function exists for backwards compatibility
          * @return byte The column that gets shifted out on the right
          */
-        byte moveRight(byte shiftedInColumn);
+        byte moveRight(byte shiftedInColumn) noexcept;
 
         /**
          * \~
@@ -950,7 +950,7 @@ namespace sakurajin {
          * @param row_num the row where the wanted segment is
          * @param resultLocation the location where the data should be stored
          */
-        void getSegmentData(unsigned int column, unsigned int row_num, sakurajin::ByteBlock* resultLocation);
+        void getSegmentData(unsigned int column, unsigned int row_num, sakurajin::ByteBlock* resultLocation) noexcept;
 
         /**
          * \~
@@ -962,7 +962,7 @@ namespace sakurajin {
          * @param segmentindex the index of whose data you want to have
          * @param resultLocation the location where the data should be stored
          */
-        void getSegmentData(unsigned int segmentindex, sakurajin::ByteBlock *resultLocation);
+        void getSegmentData(unsigned int segmentindex, sakurajin::ByteBlock *resultLocation) noexcept;
 
         /**
          * \~
@@ -974,7 +974,7 @@ namespace sakurajin {
          * @param rowArray the array of rows of which you want the columns
          * @param columnArray The address where the result will be stored
          */
-        void makeColumns(sakurajin::ByteBlock rowArray, sakurajin::ByteBlock *columnArray);
+        void makeColumns(sakurajin::ByteBlock rowArray, sakurajin::ByteBlock *columnArray) noexcept;
 
         /**
          * \~
@@ -986,7 +986,7 @@ namespace sakurajin {
          * @param input The array that should be mirrored
          * @param reversedInput The address where the result will be stored
          */
-        void reverse(sakurajin::ByteBlock input, sakurajin::ByteBlock *reversedInput);
+        void reverse(sakurajin::ByteBlock input, sakurajin::ByteBlock *reversedInput) noexcept;
 
         /**
          * \~
@@ -998,7 +998,7 @@ namespace sakurajin {
          * @param input the array that will be rotated
          * @param rotatedInput The address where the result will be stored
          */
-        void rotate180(sakurajin::ByteBlock input, sakurajin::ByteBlock *rotatedInput);
+        void rotate180(sakurajin::ByteBlock input, sakurajin::ByteBlock *rotatedInput) noexcept;
 
         /**
          * \~
@@ -1012,7 +1012,7 @@ namespace sakurajin {
          * @param shiftedOutRow The address of the row that will be shifted out on the
          * bottom
          */
-        void moveUp(const sakurajin::ByteRow<columns>& shiftedInRow, sakurajin::ByteRow<columns>* shiftedOutRow);
+        void moveUp(const sakurajin::ByteRow<columns>& shiftedInRow, sakurajin::ByteRow<columns>* shiftedOutRow) noexcept;
 
         /**
          * \~
@@ -1026,7 +1026,7 @@ namespace sakurajin {
          * @param shiftedOutRow The address of the row that will be shifted out on the
          * bottom
          */
-        void moveDown(const sakurajin::ByteRow<columns>& shiftedInRow, sakurajin::ByteRow<columns>* shiftedOutRow);
+        void moveDown(const sakurajin::ByteRow<columns>& shiftedInRow, sakurajin::ByteRow<columns>* shiftedOutRow) noexcept;
 
         /**
          * \~
@@ -1038,7 +1038,7 @@ namespace sakurajin {
          * @param shiftedOutRow The address of the row that will be shifted out on the
          * bottom
          */
-        void moveUp(sakurajin::ByteRow<columns>* shiftedOutRow);
+        void moveUp(sakurajin::ByteRow<columns>* shiftedOutRow) noexcept;
 
         /**
          * \~
@@ -1050,7 +1050,7 @@ namespace sakurajin {
          * @param shiftedOutRow The address of the row that will be shifted out on the
          * bottom
          */
-        void moveDown(sakurajin::ByteRow<columns>* shiftedOutRow);
+        void moveDown(sakurajin::ByteRow<columns>* shiftedOutRow) noexcept;
 
         /**
          * \~
@@ -1064,7 +1064,7 @@ namespace sakurajin {
          * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
          * @param shiftedOutColumn This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
          */
-        void moveLeft(const sakurajin::ByteRow<rows>& shiftedInColumn, sakurajin::ByteRow<rows>* shiftedOutColumn);
+        void moveLeft(const sakurajin::ByteRow<rows>& shiftedInColumn, sakurajin::ByteRow<rows>* shiftedOutColumn) noexcept;
 
         /**
          * \~
@@ -1078,7 +1078,7 @@ namespace sakurajin {
          * @param shiftedInColumn This Array contains what will be shifted in on each Row and needs to be the same size as number of rows or nullptr.
          * @param shiftedOutColumn This pointer to an Array will contain the bytes that will be shifted out on each Row, it should be the same size as the number of rows or nullptr.
          */
-        void moveRight(const sakurajin::ByteRow<rows>& shiftedInColumn, sakurajin::ByteRow<rows>* shiftedOutColumn);
+        void moveRight(const sakurajin::ByteRow<rows>& shiftedInColumn, sakurajin::ByteRow<rows>* shiftedOutColumn) noexcept;
     };
 
 }

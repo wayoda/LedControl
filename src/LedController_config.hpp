@@ -151,7 +151,7 @@ namespace sakurajin {
          *
          * @return unsigned int Die Anzahl der Segmente.
          */
-        unsigned int SegmentCount() {
+        unsigned int SegmentCount() const noexcept {
             return rows*columns;
         }
 
@@ -169,7 +169,7 @@ namespace sakurajin {
          * @return true Die Konfiguration ist gültig.
          * @return false Die Konfiguration ist ungültig.
          */
-        bool isValid() const {
+        bool isValid() const noexcept {
             return isValidConfig(*this);
         }
 
@@ -186,7 +186,7 @@ namespace sakurajin {
          * @param segmentNumber Die Segmentnummer des gesuchten Segments.
          * @return unsigned int Die Zeile in der das Segment ist.
          */
-        unsigned int getRow(unsigned int segmentNumber) const {
+        unsigned int getRow(unsigned int segmentNumber) const noexcept {
             unsigned int row = 0;
             if (rows != 0 && columns != 0) {
                 row = segmentNumber / columns;
@@ -212,7 +212,7 @@ namespace sakurajin {
          * @param segmentNumber Die Segmentnummer des gesuchten Segments.
          * @return unsigned int Die Spalte in der das Segment ist.
          */
-        unsigned int getColumn(unsigned int segmentNumber) const {
+        unsigned int getColumn(unsigned int segmentNumber) const noexcept {
             unsigned int col = 0;
             if (rows != 0 && columns != 0) {
                 col = segmentNumber % columns;
@@ -232,7 +232,7 @@ namespace sakurajin {
          *
          * @return unsigned int Die Länge einer Zeile
          */
-        unsigned int getRowLen() const {
+        unsigned int getRowLen() const noexcept {
             return columns;
         }
 
@@ -251,7 +251,7 @@ namespace sakurajin {
          * @param row Die Zeile in der das Segment ist
          * @return unsigned int Die Segmentnummer des segments
          */
-        unsigned int getSegmentNumber(unsigned int column, unsigned int row) const {
+        unsigned int getSegmentNumber(unsigned int column, unsigned int row) const noexcept {
             row %= rows;
             column %= columns;
             return row * columns + column;
@@ -268,7 +268,7 @@ namespace sakurajin {
          *
          * @return controller_configuration Eine Kopie der Konfiguration
          */
-        controller_configuration<columns,rows> copy() const {
+        controller_configuration<columns,rows> copy() const noexcept {
             controller_configuration<columns,rows> conf;
             conf.IntensityLevel = this->IntensityLevel;
             conf.onlySendOnChange = this->onlySendOnChange;
@@ -297,7 +297,7 @@ namespace sakurajin {
          * @return true Die Konfiguration ist gültig.
          * @return false Die Konfiguration ist ungültig.
          */
-        static bool isValidConfig(const controller_configuration<columns,rows> &conf) {
+        static bool isValidConfig(const controller_configuration<columns,rows> &conf) noexcept {
             //check if the dimenstions are valid
             if (rows == 0 || columns == 0) {
                 return false;
