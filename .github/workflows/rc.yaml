@@ -67,8 +67,8 @@ jobs:
         env:
           REPO: self
           BRANCH: gh-pages
-         FOLDER: doc/html
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FOLDER: doc/html
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             
       - uses: actions/upload-artifact@v1
         if: failure()

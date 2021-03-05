@@ -12,7 +12,7 @@ jobs:
     runs-on: "ubuntu-20.04"
     steps:
       - uses: actions/checkout@v1
-      
+
       - name: install doc deps
         run: sudo apt-get install --yes doxygen graphviz latexmk
 
@@ -68,8 +68,8 @@ jobs:
         env:
           REPO: self
           BRANCH: gh-pages
-         FOLDER: doc/html
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FOLDER: doc/html
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             
       - uses: actions/upload-artifact@v1
         if: failure()
