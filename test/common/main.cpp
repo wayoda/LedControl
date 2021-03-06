@@ -1,9 +1,11 @@
 #include "Move.hpp"
 #include "transformation.hpp"
 #include "config.hpp"
+#include "display.hpp"
 
 void process() {
     UNITY_BEGIN();
+    run_display_tests();
     run_config_tests();
     run_transformation_tests();
     run_move_tests();

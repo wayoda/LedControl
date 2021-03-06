@@ -148,7 +148,7 @@ void sakurajin::LedController<columns,rows>::setLed(unsigned int segmentNumber, 
         return;
     };
 
-    byte val = 0x80 >> column;
+    byte val = 0x01 << column;
 
     if (state)
         val |= LedStates[segmentNumber][row];
@@ -167,15 +167,10 @@ void sakurajin::LedController<columns,rows>::setColumn(unsigned int segmentNumbe
         return;
     };
 
-    byte val;
+    ByteBlock val = LedStates[segmentNumber].transpose();
+    val[col] = value;
+    displayOnSegment(segmentNumber,val.transpose());
 
-    for (int row = 0; row < 8; row++) {
-        val = value >> row;
-        val &= 0x01;
-        val <<= col;
-        val |= LedStates[segmentNumber][row];
-        setRow(segmentNumber, row, val);
-    }
 }
 
 template <size_t columns, size_t rows>
