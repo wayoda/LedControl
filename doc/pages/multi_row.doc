@@ -47,7 +47,7 @@ Below is an example of how the sakurajin::controller_configuration might be crea
 If you want to use virtual_multi_row (have all of the segments connected in series) then you have to set SPI_CS to you CS pin and set virtual_multi_row to true (which is the default).
 As long as those conditions are satisfied, the values of row_SPI_CS will be ignored.
 
-Look at the [sakurajin::controller_configuration page](@ref sakurajin::controller_configuration_page) for details on how to use all of the other fields.
+Look at the [sakurajin::controller_configuration page](@ref controller_configuration_page) for details on how to use all of the other fields.
 
 \section display_multi_data Displaying data on segments
 
@@ -108,7 +108,7 @@ Hier ist ein Beispiel wie eine gültige sakurajin::controller_configuration für
 Falls virtual_multi_row (alle Segmente in Reihe geschaltet) verwendet werden soll, dann muss SPI_CS auf den gewünschten CS pin gesetzt werden und virtual_multi_row muss true sein (was der Standardwert ist).
 Solange diese beiden Bedingungen erfüllt sind wird der Wert von row_SPI_CS ignoriert.
 
-Schau die [sakurajin::controller_configuration Seite](@ref sakurajin::controller_configuration_page) für die Details über die anderen Felder an.
+Schau die [sakurajin::controller_configuration Seite](@ref controller_configuration_page) für die Details über die anderen Felder an.
 
 \section display_multi_data Daten auf den Segmenten anzeigen
 

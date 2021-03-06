@@ -15,7 +15,7 @@ That is why that argument is removed from all constructors.
 2.0.x introduces the sakurajin::controller_configuration as class template.
 It can be used to set all the properties the controller should have and then be passed as argument to the init function or the constructor of the sakurajin::LedController.
 It needs the same dimensions as the sakurajin::LedController and provides a simple check for a valid configuration.
-You can check [this page](@ref sakurajin::controller_configuration_page) to learn more about the sakurajin::controller_configuration class.
+You can check [this page](@ref controller_configuration_page) to learn more about the sakurajin::controller_configuration class.
 While controller_configuration already existed in 1.7.2, it is used more extensively and it can do a lot more.
 
 The next big feature is support for multiple rows of segments.
@@ -40,7 +40,7 @@ Da die Dimensionen nun bekannt sind, wird nicht mehr die Anzahl der Sgemente ben
 2.0.x führt die sakurajin::controller_configuration Template Klasse ein.
 Zwar existiert controller_configuration schon in 1.7.2, allerdings ist diese Klasse nun auch ein Template und kann viel mehr.
 Wie der sakurajin::LedController braucht auch diese Klasse die Dimensionen der Matrix und diese müssen auch mit dem sakurajin::LedController übereinstimmen.
-Die Klasse wird [aus dieser Seite](@ref sakurajin::controller_configuration_page) im Detail beschrieben.
+Die Klasse wird [aus dieser Seite](@ref controller_configuration_page) im Detail beschrieben.
 
 Die nächste neue große Änderung ist die Unterstützung von mehreren Reihen von Segmenten.
 Nun können mehrere Matrizen an verschiedene CS Pins angeschlossen werden und mit einem einzigen sakurajin::LedController gesteuert werden.

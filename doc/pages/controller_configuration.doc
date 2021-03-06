@@ -1,7 +1,7 @@
 /*!
 
 \~english
-\page sakurajin::controller_configuration_page The sakurajin::controller_configuration
+\page controller_configuration_page The controller_configuration
 
 <b>Check the sakurajin::controller_configuration for more infomation about its functions or look for the [Examples](examples.html).</b>
 
@@ -77,7 +77,7 @@ The following options where removed at some point.
 
 
 \~german
-\page sakurajin::controller_configuration_page Die sakurajin::controller_configuration Klasse
+\page controller_configuration_page Die controller_configuration Klasse
 
 <b>Schau of die Seite der sakurajin::controller_configuration für mehr Informationen oder schau in die [Beispiele](examples.html).</b>
 
