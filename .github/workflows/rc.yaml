@@ -21,6 +21,7 @@ jobs:
           pip3 install -U wheel
           pip3 install -U platformio
           python3 -m platformio update
+          python3 -m platformio lib install "adafruit/DHT sensor library"
 
       - name: building examples and running the unit tests
         run: bash ./.scripts/ci_local.sh
