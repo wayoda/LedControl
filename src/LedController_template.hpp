@@ -1144,6 +1144,16 @@ namespace sakurajin {
  */
 
 /**
+ * @example 7-Segment-DHT-temp-humid.ino
+ *
+ * \~english
+ * An example on how to use the LedController to create a temparature and humidity display with 7-Segment displays.
+ *
+ * \~german
+ * Ein Beispiel wie man den LedController nutzen kann um eine Temperatur- und Luftfeuchtigkeitsanzeige mit 7-Segment Anzeigen zu erstellen.
+ */
+
+/**
  * @example LCDemo7Segment.ino
  *
  * \~english
