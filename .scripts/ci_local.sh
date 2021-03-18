@@ -40,7 +40,7 @@ else
         echo "doing the full test with 1 board and 6 examles"
         boards=("esp32dev")
     fi
-    examples=("Led-matrix-rocket" "Led-matrix-rocket-multi" "Led-matrix-counting" "Led-matrix-rocket-hwSPI" "Led-matrix-message" "7-Segment-counting")
+    examples=("Led-matrix-rocket" "Led-matrix-rocket-multi" "Led-matrix-counting" "Led-matrix-rocket-hwSPI" "Led-matrix-message" "7-Segment-counting" "7-Segment-DHT-temp-humid")
 fi
 
 function build(){

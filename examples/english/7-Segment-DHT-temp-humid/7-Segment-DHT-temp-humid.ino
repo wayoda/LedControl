@@ -1,4 +1,4 @@
-// DHT Temperature & Humidity Sensor dsiplayed on a 7-Seegment Display
+// DHT Temperature & Humidity Sensor displayed on a 7-Seegment Display
 
 // REQUIRES the following Arduino libraries:
 // - DHT Sensor Library: https://github.com/adafruit/DHT-sensor-library
@@ -26,18 +26,23 @@ DHT_Unified dht(DHTPIN, DHTTYPE);
 
 uint32_t delayMS;
 
+//Like alway the library has to be included
 #include "LedController.hpp"
 
+//The variable that is used to store the Controller object.
+//The controller has two rows with one Column each.
+//Since 7-Segment-Displays are used, every Segment has 8 Disigts that can be addressed.
 LedController<1,2> control = LedController<1,2>();
 
+//The chip select Pins for each row of the LedController
 #define CS_BOTTOM 16
 #define CS_TOP 22
 
+//The number of digits used to display each float
 const unsigned int NUMBER_OF_DIGITS = 4;
 
+//The number of values used to smooth the measured values
 #define SMOOTHING_BUFFER_SIZE 10
-
-//less than absolute zero (in Celsius) if invalid
 
 //This function returns the raw output from the sensor.
 //The unit is degrees Celsius.
@@ -155,8 +160,9 @@ void displayFloat(float value, unsigned int row = 0, unsigned int decimalPlaces 
 
 //this simply prints the sensor information to the serial interface
 void printSensorInfo(){
-  // Print temperature sensor details.
   sensor_t sensor;
+
+  // Print temperature sensor details.
   dht.temperature().getSensor(&sensor);
   Serial.println(F("------------------------------------"));
   Serial.println(F("Temperature Sensor"));
@@ -167,6 +173,7 @@ void printSensorInfo(){
   Serial.print  (F("Min Value:   ")); Serial.print(sensor.min_value); Serial.println(F("°C"));
   Serial.print  (F("Resolution:  ")); Serial.print(sensor.resolution); Serial.println(F("°C"));
   Serial.println(F("------------------------------------"));
+
   // Print humidity sensor details.
   dht.humidity().getSensor(&sensor);
   Serial.println(F("Humidity Sensor"));
@@ -198,7 +205,7 @@ void setup() {
   conf.virtual_multi_row = false;
 
   //These are the chip select pins for each row.
-  //The bottom row (row 0) is connected to pin 25 and the top row (row 1) is connected to pin 15
+  //The bottom row (row 0) is connected to pin 16 and the top row (row 1) is connected to pin 22
   conf.row_SPI_CS[0] = CS_BOTTOM;
   conf.row_SPI_CS[1] = CS_TOP;
 

@@ -1,48 +1,53 @@
-// DHT Temperature & Humidity Sensor dsiplayed on a 7-Seegment Display
+// DTH Temperatur- und Luftfeuchtigkeitssensor auf einem 7-Segment Display angezeigt.
 
-// REQUIRES the following Arduino libraries:
+// Die folgenden Arduino Bibliotheken werden benötigt:
 // - DHT Sensor Library: https://github.com/adafruit/DHT-sensor-library
 // - Adafruit Unified Sensor Lib: https://github.com/adafruit/Adafruit_Sensor
 // - LedController: https://github.com/noah1510/LedController
 
-//This code is based on the example for the DHT Sensor Library.
-//All of the sensor related code is moved into functions to better show the integration of the LedController library.
+//Dieser Code basiert auf einem Beispiel der DHT Sensor Library.
+//All der sensor bezogene Code wurde in Funktionen verpackt, um die integration des LedController besser zu zeigen.
 
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
 #include <DHT_U.h>
 
-#define DHTPIN 17     // Digital pin connected to the DHT sensor 
+#define DHTPIN 17     // Digital pin vebunden mit dem DHT sensor 
 
-// Uncomment the type of sensor in use:
+// verwendeten Sensortyp auskommentieren:
 //#define DHTTYPE    DHT11     // DHT 11
 #define DHTTYPE    DHT22     // DHT 22 (AM2302)
 //#define DHTTYPE    DHT21     // DHT 21 (AM2301)
 
-// See guide for details on sensor wiring and usage:
+// Anleitung für Verkabelung und Detials über die Sensoren (auf Englisch):
 //   https://learn.adafruit.com/dht/overview
 
 DHT_Unified dht(DHTPIN, DHTTYPE);
 
 uint32_t delayMS;
 
+//Wie immer die Bibliothek einbinden
 #include "LedController.hpp"
 
+//Die Variable in der Controller gespeichert ist.
+//Der Controller hat zwei Zeilen mit je einer Spalte.
+//Bei 7-Segment-Displays hat jedes Segment 8 Ziffern, die angezeigt werden können.
 LedController<1,2> control = LedController<1,2>();
 
+//Die CS Pins für die einzelnen Zeilen
 #define CS_BOTTOM 16
 #define CS_TOP 22
 
+//Die Anzahl der Ziffern, die für die Darstellung von floats verwendet werden soll
 const unsigned int NUMBER_OF_DIGITS = 4;
 
+//Wie viele Werte zur Glättung gespeichert werden sollen.
 #define SMOOTHING_BUFFER_SIZE 10
 
-//less than absolute zero (in Celsius) if invalid
-
-//This function returns the raw output from the sensor.
-//The unit is degrees Celsius.
-//Because of this the retrun values might not represent the actual temperature.
-//If there was an error reading the value, a value lower than absolute zero in Celsius is returned (less than -273.15) is returned.
+//Diese Funktion gibt die Rohdaten vom Sensor zurück.
+//Die Einheit ist Grad Celsius.
+//Weil keine Glättung stattfindet, kann der Wert stark schwanken.
+//Falls es einen Fehler beim Auslesen gab, wird ein Wert zurückgegeben der niedriger ist als der absolute Nullpunk (-273.15).
 float getRawTemp(){
   sensors_event_t event;
   dht.temperature().getEvent(&event);
@@ -54,10 +59,10 @@ float getRawTemp(){
   return event.temperature;
 }
 
-//This function returns the raw output from the sensor.
-//The relative humidity is returned so the value should be between 0 and 100.
-//Because of this the retrun values might not represent the actual humidity.
-//If there was an error reading the value a negative number is returned.
+//Diese Funktion gibt die Rohdaten vom Sensor zurück.
+//Die relative Luftfeuchtigkeit wird zurückgegeben, folglich sind die Werte zwischen 0 und 100.
+//Weil keine Glättung stattfindet, kann der Wert stark schwanken.
+//Falls es einen Fehler beim Auslesen gab, wird ein Wert zurückgegeben der negativ ist.
 float getRawHumid(){
   sensors_event_t event;
   dht.humidity().getEvent(&event);
@@ -68,10 +73,10 @@ float getRawHumid(){
   return event.relative_humidity;
 }
 
-//This function returns a smoothed valued for the temperature.
-//The unit is degrees Celsius.
-//If you expact fast changes use the raw data and handle the invalid values manually.
-//Its return value is always valid but only good after SMOOTHING_BUFFER_SIZE calls.
+//Diese Funktion gibt geglättete Werte für fie Temperatur zurück.
+//Die Einheit ist Grad Celsius.
+//Falls man schnelle Änderungen erwartet, sollte man die Rohdaten verwenden.
+//Der Rückgabewert ist immer gültig, aber erst gut nach SMOOTHING_BUFFER_SIZE aufrufen.
 float getTemp(){
   static float last_temps[SMOOTHING_BUFFER_SIZE];
   static bool firstCall = true;
@@ -97,10 +102,10 @@ float getTemp(){
   return sum/SMOOTHING_BUFFER_SIZE;
 }
 
-//This function returns a smoothed valued for the humidity.
-//The relative humidity is returned so the value should be between 0 and 100.
-//If you expact fast changes use the raw data and handle the invalid values manually.
-//Its return value is always valid but only good after SMOOTHING_BUFFER_SIZE calls.
+//Diese Funktion gibt geglättete Werte für fie Luftfeuchtigkeit zurück.
+//Die relative Luftfeuchtigkeit wird zurückgegeben, folglich sind die Werte zwischen 0 und 100.
+//Falls man schnelle Änderungen erwartet, sollte man die Rohdaten verwenden.
+//Der Rückgabewert ist immer gültig, aber erst gut nach SMOOTHING_BUFFER_SIZE aufrufen.
 float getHumidity(){
   static float last_humids[SMOOTHING_BUFFER_SIZE];
   static bool firstCall = true;
@@ -127,10 +132,11 @@ float getHumidity(){
   return sum/SMOOTHING_BUFFER_SIZE;
 }
 
-//This function can display a float on a 7-Segment display.
-//It assumes the dismension of the LedController is <1,row> and the row can be selected with the second parameter.
-//The third parameter is used to specify how many digits you want to after the decimal Place.
-//The fourth paramether is an offset moving all digits to the left by the specified amount
+//Diese Funktion kann einen float Wert auf einer 7-Segment-anzeige anzeigen.
+//Es wird die Annahme getroffen, dass der LedController nur eine Spalte hat.
+//Die gewünschte Zeile kann mit den zweiten Parameter ausgewählt werden.
+//Das dritte Parameter bestimmt die Anzahl der Stellen nach dem Komma.
+//Das vierte Parameter schiebt die angezeigte Zahl nach links.
 void displayFloat(float value, unsigned int row = 0, unsigned int decimalPlaces = 1,unsigned int digitOffset = 0){
   unsigned int total_length = NUMBER_OF_DIGITS;
   assert(decimalPlaces<=NUMBER_OF_DIGITS);
@@ -153,10 +159,11 @@ void displayFloat(float value, unsigned int row = 0, unsigned int decimalPlaces 
 
 }
 
-//this simply prints the sensor information to the serial interface
+//Eine einfache Ausgabe der Sensorinformationen über das Serial interface.
 void printSensorInfo(){
-  // Print temperature sensor details.
   sensor_t sensor;
+
+  //Temeraturdetails:
   dht.temperature().getSensor(&sensor);
   Serial.println(F("------------------------------------"));
   Serial.println(F("Temperature Sensor"));
@@ -167,7 +174,8 @@ void printSensorInfo(){
   Serial.print  (F("Min Value:   ")); Serial.print(sensor.min_value); Serial.println(F("°C"));
   Serial.print  (F("Resolution:  ")); Serial.print(sensor.resolution); Serial.println(F("°C"));
   Serial.println(F("------------------------------------"));
-  // Print humidity sensor details.
+
+  //Luftfeiuchtigkeitdetails
   dht.humidity().getSensor(&sensor);
   Serial.println(F("Humidity Sensor"));
   Serial.print  (F("Sensor Type: ")); Serial.println(sensor.name);
@@ -180,44 +188,47 @@ void printSensorInfo(){
 }
 
 void setup() {
-  //Initialize the Serial transfer
+  //Initialisieren der Serial interface.
   Serial.begin(19200);
-  // Initialize temperature/humidity device.
+  //initialisieren des Temperatur/Luftfeuchtigkeitssensor.
   dht.begin();
   
-  // Set delay between sensor readings based on sensor details.
+  //Setzt die Verzögerung zwischen zwei Messungen basierend auf den Sensorinformationen
   sensor_t sensor;
   dht.humidity().getSensor(&sensor);
   delayMS = sensor.min_delay / 1000;
 
-  //configure the LedController for the output
+  //Konfiguration für den Controller
   controller_configuration<1,2> conf;
 
-  //disable virtual_muti_row
+  //deaktivieren von virtual_muti_row
   conf.SPI_CS = 0;
   conf.virtual_multi_row = false;
 
-  //These are the chip select pins for each row.
-  //The bottom row (row 0) is connected to pin 25 and the top row (row 1) is connected to pin 15
+  //hier werden die Chip Select Pins der einzelnen Reihen gesetzt.
+  //Die untere Zeile (Zeile 0) ist an Pin 16 geschlossen und die obere Reihe (Reihe 1) an Pin 22
   conf.row_SPI_CS[0] = CS_BOTTOM;
   conf.row_SPI_CS[1] = CS_TOP;
 
-  //this enables hardware spi check what pins to use for your board
+  //Das setzt die nńutzung von harware SPI
+  //Schaue welche Pins bei deinem Board verwendet werden müssen.
   conf.useHardwareSpi = true;
 
-  //this enables debug output (nothing should be printed but it helps to fix possible problems with the config)
+  //Das schaltet die Debug Ausgabe an.
+  //Es sollte zwar nichts ausgegeben werden, kann aber trotzdem hilfreich sein.
   conf.debug_output = true;
 
-  //this specifies the transfer speed of the spi interface. If you want to use high values make sure your cables have a good connection
+  //Das setzt die Übertragungsgeschwindigkeit der SPI Schnittstelle.
+  //Falls hohe Werte gesetzt werden, sollte eine gute Verbingung sichergestellt werden.
   conf.spiTransferSpeed = 600000;
 
-  //initilizing the LedController with the configuration which we just set
+  //Initialisiere den LedController mit der erstellten Konfiguration.
   control.init(conf);
 
-  //set the lowest possible brightness
+  //setzt die Helligkeit auf die niedrigste Helligkeit
   control.setIntensity(0);
 
-  //turn every digit off
+  //schaltet alle Ziffern aus
   for(unsigned int i = 0; i < 8;i++){
     control.setRow(0,i,0x00);
     control.setRow(1,i,0x00);
@@ -225,17 +236,17 @@ void setup() {
 }
 
 void loop() {
-  // Delay between measurements.
+  //Verzögerung zwischen den Messungen
   delay(delayMS);
 
-  //get and display the temperature in the top row
+  //Temperatur holen und auf der oberen Reihe anzeigen anzeigen
   auto temp = getTemp();
   Serial.print(F("Temperature: "));
   Serial.println(temp);
   displayFloat(temp,1,1);
   control.setChar(1,7,'t',false);
 
-  //get and display the humidity in the bottom row
+  //Luftfeuchtigkeit holen und auf der unteren Reihe anzeigen anzeigen
   auto humid = getHumidity();
   Serial.print(F("Humidity: "));
   Serial.println(humid);
