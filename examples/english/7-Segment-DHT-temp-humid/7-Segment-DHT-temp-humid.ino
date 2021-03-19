@@ -26,8 +26,6 @@ DHT_Unified dht(DHTPIN, DHTTYPE);
 
 uint32_t delayMS;
 
-#include "assert.h
-
 //Like alway the library has to be included
 #include "LedController.hpp"
 
@@ -140,7 +138,7 @@ float getHumidity(){
 //The fourth paramether is an offset moving all digits to the left by the specified amount
 void displayFloat(float value, unsigned int row = 0, unsigned int decimalPlaces = 1,unsigned int digitOffset = 0){
   unsigned int total_length = NUMBER_OF_DIGITS;
-  assert(decimalPlaces<=NUMBER_OF_DIGITS);
+  if(NUMBER_OF_DIGITS<decimalPlaces){return;};
 
   if(value < 0){
     control.setChar(row,total_length-1+digitOffset,'-',false);
