@@ -26,6 +26,8 @@ DHT_Unified dht(DHTPIN, DHTTYPE);
 
 uint32_t delayMS;
 
+#include "assert.h
+
 //Wie immer die Bibliothek einbinden
 #include "LedController.hpp"
 
