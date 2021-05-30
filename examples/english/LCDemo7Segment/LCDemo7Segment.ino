@@ -4,9 +4,9 @@
  * @brief using the ledcontroller with 7-segment displays
  * @version 0.1
  * @date 2020-12-30
- * 
+ *
  * @copyright Copyright (c) 2020
- * 
+ *
  */
 
 //We always have to include the library
@@ -14,7 +14,7 @@
 
 /*
  You might need to change the following 3 Variables depending on your board.
- pin 15 is connected to the DataIn 
+ pin 15 is connected to the DataIn
  pin 14 is connected to the CLK
  pin 13 is connected to LOAD/ChipSelect
 */
@@ -34,7 +34,7 @@ unsigned long delaytime=250;
 void setup() {
 
   //Here a new LedController object is created without hardware SPI.
-  lc=LedController<1,1>(CS,CLK,DIN);
+  lc=LedController<1,1>(DIN,CLK,CS);
 
   /* Set the brightness to a medium values */
   lc.setIntensity(8);
@@ -45,7 +45,7 @@ void setup() {
 
 /*
  This method will display the characters for the
- word "Arduino" one after the other on digit 0. 
+ word "Arduino" one after the other on digit 0.
  */
 void writeArduinoOn7Segment() {
   lc.setChar(0,0,'a',false);
@@ -64,7 +64,7 @@ void writeArduinoOn7Segment() {
   delay(delaytime);
   lc.clearMatrix();
   delay(delaytime);
-} 
+}
 
 /*
   This method will scroll all the hexa-decimal
@@ -72,7 +72,7 @@ void writeArduinoOn7Segment() {
  four 7-Segment digits. otherwise it won't really look that good.
  */
 void scrollDigits() {
-  for(int i=0;i<13;i++) {
+  for(int i=0; i<13; i++) {
     lc.setDigit(0,3,i,false);
     lc.setDigit(0,2,i+1,false);
     lc.setDigit(0,1,i+2,false);
@@ -83,7 +83,7 @@ void scrollDigits() {
   delay(delaytime);
 }
 
-void loop() { 
+void loop() {
   writeArduinoOn7Segment();
   scrollDigits();
 }
