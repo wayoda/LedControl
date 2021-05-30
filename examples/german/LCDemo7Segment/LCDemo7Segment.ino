@@ -32,7 +32,7 @@ unsigned long delaytime=250;
 void setup() {
 
   //Nun wird das LedController Objekt ohne Hardware SPI erstellt.
-  lc=LedController<1,1>(CS,CLK,DIN);
+  lc=LedController<1,1>(DIN,CLK,CS);
 
   //Setzt die Helligkeit auf einen Mittleren Wert
   lc.setIntensity(8);
