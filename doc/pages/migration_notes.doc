@@ -1,0 +1,40 @@
+/*!
+
+\~english
+\page migration_notes Migration Notes
+
+This pages contains some basic information on the transition from one release to another and lists where changes are necessary.
+
+## 1.x.y to 2.0.z
+
+No matter which version you come from there are a lot of changes for version 2.0.x.
+Please read the full guide [here](@ref 1.x.y_to_2.0.z) to learn what changes are necessary to get your code working with release 2.0.x.
+Spoiler: no matter how you have written your code it needs changes since the sakurajin::LedController is now a template.
+
+## 1.6.x to 1.7.x
+
+Unless you used ByteBlock as return type and relied on that there should nothing that breaks compatibility.
+
+As of release 1.7.x there is no support for the std data types to reduce the codebase.
+If you do not want to use a pointer to an Array as a parameter to return the result, please wait for release 2.0.x where sakurajin::ByteBlock is implemented as a class and can be returned by functions (there are other bigger changes that make that transition a bit more complicated).
+
+\~german
+\page migration_notes Migrationsinformationen
+
+Diese Seite beinhaltet gererelle Informationen über den Umstieg von einem Release zu einem anderen und erwähnt die Änderungen, die gemacht werden müssen.
+
+## 1.x.y zu 2.0.z
+
+Egal von welcher Version man aus updated, es werden Änderungen für die Version 2.0.x benötigt.
+Lies die vollständige Anweisung [hier](@ref 1.x.y_to_2.0.z), um zu lernen welche Änderungen am Code notwendig sind, damit dieser mit Version 2.0.x funktioniert.
+Da der sakurajin::LedController nun ein Template ist, werden definitiv Änderungen benötigt.
+
+## 1.6.x zu 1.7.x
+
+Außer man verwendet Funktionen, welche ByteBlock als Rückgabewert haben, gibt es nicht was die Kompatibilität verhindert.
+
+Seit Version 1.7.x ist die Unterstützung für die std Datentypen entfernt, um eine Einheitlichere Codebase zu haben.
+Wenn du nicht Pointer auf Arrays als Rückgabe verwenden willst, wechsel einfach direkt auf Version 2.0.x.
+Da sakurajin::ByteBlock dort eine Klasse ist, kann diese auch wieder Rückgabewert sein (allerdings sind die [vollständigen Anweisungen](@ref 1.x.y_to_2.0.z) zu beachten).
+
+*/

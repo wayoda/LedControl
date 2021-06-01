@@ -1,0 +1,154 @@
+/*!
+
+\~english
+\page controller_configuration_page The controller_configuration
+
+<b>Check the sakurajin::controller_configuration for more infomation about its functions or look for the [Examples](examples.html).</b>
+
+This tutorial explains some of the fields of the sakurajin::controller_configuration and how to use it properly.
+All the attributes are explained on the [page for the sakurajin::controller_configuration](@ref sakurajin::controller_configuration), look there if anything is missing.
+On this page each option also lists when it was introduced.
+
+\section configuration_required_fields Required choices/options 
+
+To determine the required options there are a few choices that need to be made.
+
+\subsection configuration_spi_choices SPI configuration
+
+First off you need to choose between Hardware SPI and Software SPI.
+You can find more information about it on [this page](@ref SPI_intro).
+
+If you choose Software SPI you need to set the following options:
+
+<ul>
+    <li> sakurajin::controller_configuration.SPI_MOSI The pin that handles the Master Out Slave In Signal (since 1.7.2)
+    <li> sakurajin::controller_configuration.SPI_CLK The pin that handles the Clock Signal (since 1.7.2)
+    <li> sakurajin::controller_configuration.useHardwareSpi must be false (the default value) (since 1.7.2)
+</ul>
+
+If you choose hardware SPI the following option need to be set:
+
+<ul>
+    <li> sakurajin::controller_configuration.useHardwareSpi must be true (since 1.7.2)
+</ul>
+
+\subsection configuration_multi_row Multi Row configuration
+
+First off this decision has to be made even if there is only one row (in that case it does not matter which one since they behave the same).
+For the multi row support you have to decide between virtual multi row or real multi row.
+You can read the [page on multi row](@ref multi_row) for more information on how this works.
+
+Virtual multi row is the default and the enabled mode when no changes are mode from previous versions.
+For virtual multi row you have to set the following options:
+
+<ul>
+    <li> sakurajin::controller_configuration.SPI_CS The pin that enables the SPI transfer to the Matrix (since 1.7.2)
+    <li> sakurajin::controller_configuration.virtual_multi_row must be true (the default value) (since 2.0.0)
+</ul>
+
+For real multi row the following option have to be set:
+
+<ul>
+    <li> sakurajin::controller_configuration.virtual_multi_row must be false (since 2.0.0)
+    <li> sakurajin::controller_configuration.row_SPI_CS has to be set. Each index has to differ from 0 and needs to be set (since 2.0.0)
+</ul>
+
+If you only have one row you can set either SPI_CS or row_SPI_CS[0] and you can ignore virtual_multi_row.
+
+\section configuration_optional_fields Optional choices/options
+
+The following options are optional and the default value should work fine in most cases.
+
+<ul>
+    <li> sakurajin::controller_configuration.debug_output Enables debug output via Serial.println (needs initilisation since that is not done by this library) (default: false) (since 2.0.0)
+    <li> sakurajin::controller_configuration.spiTransferSpeed Sets the transfer speed of the SPI Interface when hardware SPI is used (default: 8000000) (since 2.0.0)
+    <li> sakurajin::controller_configuration.onlySendOnChange When this option is set the sakurajin::LedController only sends needed changes (default: true) (since 2.0.0)
+    <li> sakurajin::controller_configuration.IntensityLevel The brightness all of the segments should have (default: 1) (since 1.7.2)
+</ul>
+
+\section removed_configuration_options Removed choices/options
+
+The following options where removed at some point.
+
+<ul>
+    <li> rows Lists the number of rows (only existing 1.7.2)
+    <li> row_SPI_CS has been changed from pointer to an actual array with fixed size (only existing 1.7.2)
+</ul>
+
+
+\~german
+\page controller_configuration_page Die controller_configuration Klasse
+
+<b>Schau of die Seite der sakurajin::controller_configuration für mehr Informationen oder schau in die [Beispiele](examples.html).</b>
+
+Diese Seite erklärt die Felder der sakurajin::controller_configuration Klasse und wie sie verwendet werden.
+Alle Attribute sind auf der [Seite der sakurajin::controller_configuration](@ref sakurajin::controller_configuration) aufgelistet.
+Außerdem steht bei jeder Option wann sie hinzugefügt wurde.
+
+\section configuration_required_fields Benötigte Entscheidungen/Optionen 
+
+Um die benötigten Optionen zu bestimmen, müssen ein paar Entscheidungen getroffen werden.
+
+\subsection configuration_spi_choices SPI Konfiguration
+
+Zuerst muss zwischen hardware SPI und software SPI entschieden werden.
+Mehr Informatioen über die Entscheidung können [auf dieser Seite](@ref SPI_intro) gefunden werden,
+
+Falls spftware SPI verwendet wird müssen die folgenden Optionen gesetzt werden:
+
+<ul>
+    <li> sakurajin::controller_configuration.SPI_MOSI Der Pin, der das Master Out Slave In Signal handhabt (since 1.7.2)
+    <li> sakurajin::controller_configuration.SPI_CLK Der Pin, der das Clock Signal handhabt (since 1.7.2)
+    <li> sakurajin::controller_configuration.useHardwareSpi muss false sein (the default value) (since 1.7.2)
+</ul>
+
+Falls hardware SPI verwendet wird müssen die folgenden Optionen gesetzt werden:
+
+<ul>
+    <li> sakurajin::controller_configuration.useHardwareSpi muss true sein (since 1.7.2)
+</ul>
+
+\subsection configuration_multi_row Multi Row Konfiguration
+
+Diese Entscheidung muss selbst getroffen werden wenn nur eine Zeile verwendet wird (auch wenn beide Entscheidungen sich in dem Fall gleich verhalten).
+Es muss zwischen virtual multi row oder real multi row entschieden werden.
+Auf der [Seite über multi row](@ref multi_row) kann man mehr über die funktionsweise lesen.
+
+Virtual multi row ist der Standard und das was verwendet wird, wenn man den code von vorherigen Versionen verwendet.
+Für virtual multi row müssen die folgenden Optionen gesetzt werden:
+
+<ul>
+    <li> sakurajin::controller_configuration.SPI_CS Der Pin, der das Chip Select Signal der Matrix handhabt (since 1.7.2)
+    <li> sakurajin::controller_configuration.virtual_multi_row muss true sein (the default value) (since 2.0.0)
+</ul>
+
+Für real multi row müssen die folgenden Optionen gesetzt werden:
+
+<ul>
+    <li> sakurajin::controller_configuration.virtual_multi_row muss false sein (since 2.0.0)
+    <li> sakurajin::controller_configuration.row_SPI_CS Jeder Index muss auf einen Wert ungleich 0 gesetz sein. (since 2.0.0)
+</ul>
+
+Falls nur eine Zeile vorhanden ist kann entweder SPI_CS oder row_SPI_CS[0] gesetzt werden und virtual_multi_row kann ignoriert werden.
+
+\section configuration_optional_fields Optionale Entscheidungen/Optionen 
+
+Die folgenden Optionen sind optional und der Standardwert sollte in den meisten Fällen einfach funktionieren.
+
+<ul>
+    <li> sakurajin::controller_configuration.debug_output Aktiviert debug output über Serial.println (Initialisierung vor Verwendung benötigt) (default: false) (since 2.0.0)
+    <li> sakurajin::controller_configuration.spiTransferSpeed Setzt die Übertragungsgeschwindigkeit wenn Hardware SPI verwendet wird (default: 8000000) (since 2.0.0)
+    <li> sakurajin::controller_configuration.onlySendOnChange Wenn diese Option verwendet wird, werden nur Änderungen gesendet (default: true) (since 2.0.0)
+    <li> sakurajin::controller_configuration.IntensityLevel Die Helligkeit aller Segmente (default: 1) (since 1.7.2)
+</ul>
+
+\section removed_configuration_options Entfernte Entscheidungen/Optionen 
+
+Die folgenden Optionen wurden bei einer bestimmten Version entfernt.
+
+<ul>
+    <li> rows Gibt die Zahl der Zeilen an (nur in 1.7.2)
+    <li> row_SPI_CS ist nun ein festes Array statt ein pointer wie es vorher der fall war (nur 1.7.2)
+</ul>
+
+*/

@@ -1,0 +1,110 @@
+/*!
+\mainpage
+
+\~english
+
+sakurajin::LedController is an [Arduino](http://arduino.cc) library for MAX7219 and MAX7221 Led display drivers.
+The code should work with most boards and architectures but I only test it for the ESP32 Dev Module.
+Feel free to create an issue if something is missing or not working correctly.
+Version 2.0.0 should have increased compatibility since the library is now header only and uses templates.
+The only reason why some boards are not compatible is because they do now provide the necessary dependencies or are not compatible with the Arduino framework.
+
+The CI automatically tests the following boards(PlatformIO boards names):
+
+- esp32dev
+- d1_mini
+- uno
+- ATmega1280
+- leonardo
+- due (since 2.0.0)
+- teensy41 (since 2.0.0)
+- bluefruitmicro (since 2.0.0)
+
+The fast mode of the script tests the following boards:
+
+- esp32dev
+- ATmega1280
+
+All help regarding compatibility with more boards is welcome.
+
+\section Documentation
+
+The following links lead to their respective documentation:
+
+- [LedController class](@ref sakurajin::LedController)
+- [LedController configuration class](@ref sakurajin::controller_configuration)
+- [Installation](@ref install)
+- [Usage introduction](@ref usage)
+- [Migration information](@ref migration_notes)
+- [Example code](examples.html)
+
+If you have questions check the [dicussions](https://github.com/noah1510/LedController/discussions) or open a new one.
+
+\section Hardware SPI Pin Assignments
+
+If you want to use hardware SPI you have to use the following port.
+Please keep in mind that the MOSI(Master out Slave in) and the SCK(Serial Clock) signal can be shared by multiple SPI devices, while the SS(Slave Select) signal must be unique to every device(You can use every free pin for this).
+
+| Arduino Board | MOSI | MISO | SCK | SS (Slave) | SS (Master) |
+|---------------|------|------|-----|------------|-------------|
+| Uno or Duemilanove | 11 or ICSP-4 | 12 or ICSP-1 | 13 or ICSP-3 | 10 | - |
+| Mega1280 or Mega2560 | 51 or ICSP-4 | 50 or ICSP-1 | 52 or ICSP-3 | 53 | - |
+| Leonardo | ICSP-4 | ICSP-1 | ICSP-3 | - | - |
+| Due | ICSP-4 | ICSP-1 | ICSP-3 | - | 4, 10, 52 |
+| Deek-Robot Arduino | 11 | 12 | 13 | - | 10 |
+| ESP32-WROOM | 23 | 19 | 18 | - | 5 |
+
+\~german
+
+sakurajin::LedController ist eine [Arduino](http://arduino.cc) Biliothek für MAX7219 und MAX7221 Led Displaytreiber.
+Der Code sollte mit den meisten boards und Architekturen funktionieren, aber ich teste es allerdings nur mit ESP32 Dev Module.
+Fall etwas nicht richtig funktioniert öffne bitte ein Issue (nur englisch).
+Seid Version 2.0.0 sollte die Kompatibilität sehr viel größer sein, da sakurajin::LedController nun ein template ist und (fast) nur in headern geschrieben ist.
+Wenn ein Board nicht Kompatibiliel ist, unterstützt es nicht das Arduino Framework oder stellt keine SPI.h bereit.
+
+In der CI werden wie folgenden Boards automatisch getestet (PlatformIO boards Namen):
+
+- esp32dev
+- d1_mini
+- uno
+- ATmega1280
+- leonardo
+- due (since 2.0.0)
+- teensy41 (since 2.0.0)
+- bluefruitmicro (since 2.0.0)
+
+Der fast mode aus dem script testet die folgenden boards:
+
+- esp32dev
+- ATmega1280
+
+Alles an Hilfe mit der Kompatibilität ist willkommen.
+
+\section Dokumentation
+
+Die folgenden Liks führen zur entsprechenden Dokumentation:
+
+- [LedController Klasse](@ref sakurajin::LedController)
+- [LedController configuration Klasse](@ref sakurajin::controller_configuration)
+- [Installation](@ref install)
+- [Nutzungseinführung](@ref usage)
+- [Migrationsinformationen](@ref migration_notes)
+- [Beispielcode](examples.html)
+
+Bei Fragen schaut in die [dicussions](https://github.com/noah1510/LedController/discussions) oder öffnet eine neue (ausschließlisch auf englisch).
+
+\section Hardware SPI Pin Zuweisung
+
+Falls du hardware SPI nutzten möchtest müssen die folgenden Ports verwendet werden.
+Bitte beachte, dass das MOSI(Master out Slave in) und das SCK(Serial Clock) Signal von mehreren SPI Geräten gnutzt werden kann, während SS(Slave Select) einzigartig für jedes Gerät sein muss(ein bliebiger Pin kann verwendet werden).
+
+| Arduino Board | MOSI | MISO | SCK | SS (Slave) | SS (Master) |
+|---------------|------|------|-----|------------|-------------|
+| Uno or Duemilanove | 11 or ICSP-4 | 12 or ICSP-1 | 13 or ICSP-3 | 10 | - |
+| Mega1280 or Mega2560 | 51 or ICSP-4 | 50 or ICSP-1 | 52 or ICSP-3 | 53 | - |
+| Leonardo | ICSP-4 | ICSP-1 | ICSP-3 | - | - |
+| Due | ICSP-4 | ICSP-1 | ICSP-3 | - | 4, 10, 52 |
+| Deek-Robot Arduino | 11 | 12 | 13 | - | 10 |
+| ESP32-WROOM | 23 | 19 | 18 | - | 5 |
+
+*/

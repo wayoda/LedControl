@@ -1,0 +1,52 @@
+/*!
+
+\~english
+\page 1.x.y_to_2.0.z Migration from 1.x.y to 2.0.z
+
+<b>2.0.0 is not fully released yet but since the release of 2.0.0-rc1 only bug fixes and documentation updates will be pushed so these instructions will apply.</b>
+
+Version 2.0.x is no longer a drop in replacement for 1.7.x!
+Due to some large changes in the code base, the sakurajin::LedController is now a template class which requires the dimensions of your LED-Matrix as Argument so now instead of having the type `LedController`, the type is `sakurajin::LedController<columns,rows>`.
+This simplifies the whole interface and reduces the need for pointers.
+The examples are updated and respect these changes and there is now German documentation.
+Another side effect of this is, that you do not need to specify the total nmber of segments any more, since the dimensions are known.
+That is why that argument is removed from all constructors.
+
+2.0.x introduces the sakurajin::controller_configuration as class template.
+It can be used to set all the properties the controller should have and then be passed as argument to the init function or the constructor of the sakurajin::LedController.
+It needs the same dimensions as the sakurajin::LedController and provides a simple check for a valid configuration.
+You can check [this page](@ref controller_configuration_page) to learn more about the sakurajin::controller_configuration class.
+While controller_configuration already existed in 1.7.2, it is used more extensively and it can do a lot more.
+
+The next big feature is support for multiple rows of segments.
+Now you can connect multiple Matricies to different CS Pins and control them all using a single sakurajin::LedController instead of only being able to connect them all in a row.
+Another option is to connect all of the Segments in series and still have them act as if they were in different rows.
+This feature is called virtual multi row and has to be set in the controller configuration.
+For this feature to work, the length of each row has to be the same, in other words it is allowed to have two rows with two segments each but not to have one row with one segment and another with two.
+Check [this page](@ref multi_row) to learn more about how to use multiple rows.
+
+\~german
+\page 1.x.y_to_2.0.z Migration von 1.x.y zu 2.0.z
+
+<b>2.0.0 ist nicht vollständig veröfftlicht, aber seit 2.0.0-rc1 werden nur noch Fixes und Dokumentation hinzugefügt, also sind diese Anweisungen final.</b>
+
+Version 2.0.x ist nicht mehr ein einfacher Ersatz für 1.7.x!
+Wegen einiger großer Änderungen ist der sakurajin::LedController nun eine Template Klasse welche die Dimensionen der Led_Matrix als Argument benötigt.
+So wird nun statt dem Typ `LedController` der Typ `sakurajin::LedController<columns,rows>` benötigt.
+Dies vereinfacht das Interface und verringert den Bedarf von Pointern.
+Alle Beispiele wurden mit den Änderungen geupdated und die Dokumentation ist nun auch auf deutsch verfügbar.
+Da die Dimensionen nun bekannt sind, wird nicht mehr die Anzahl der Sgemente benötigt und sie wurde von allen Kontruktoren entfernt.
+
+2.0.x führt die sakurajin::controller_configuration Template Klasse ein.
+Zwar existiert controller_configuration schon in 1.7.2, allerdings ist diese Klasse nun auch ein Template und kann viel mehr.
+Wie der sakurajin::LedController braucht auch diese Klasse die Dimensionen der Matrix und diese müssen auch mit dem sakurajin::LedController übereinstimmen.
+Die Klasse wird [aus dieser Seite](@ref controller_configuration_page) im Detail beschrieben.
+
+Die nächste neue große Änderung ist die Unterstützung von mehreren Reihen von Segmenten.
+Nun können mehrere Matrizen an verschiedene CS Pins angeschlossen werden und mit einem einzigen sakurajin::LedController gesteuert werden.
+Alternativ können alle Segmente in Reihe angeschlossen werden, jdeoch in mehreren Reihen angeordnet werden.
+Diese Funktion nennt sich virtual multi row und kann in der sakurajin::controller_configuration gesetzt werden.
+Damit diese Funktion richtig funktioniert müssen alle Reiehen die gleiche Länge haben.
+Schaue auf [dieser Seite](@ref multi_row) nach um zu erfahren, wie man mehrere Reihen richtig nutzt.
+
+*/

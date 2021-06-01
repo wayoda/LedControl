@@ -1,0 +1,167 @@
+/*!
+
+\~english
+\page usage How to use this library
+
+<b>Check the sakurajin::LedController for more infomation about its functions or look for the [Examples](examples.html).</b>
+
+This page shows you the basic usage of the sakurajin::LedController and what you can do with it.
+
+\section init_lib Initilizing the Library
+
+You can initilize the library in two ways: with hardware SPI or with software SPI.
+
+1. Hardware SPI is at least 10 times faster but you can only use specific pins for some signals (look [here](index.html) for which pins).
+2. Software SPI is slower (which only mattesrs if you need really tight timings) but you can freely choose which (free) pins you want to use.
+
+\subsection SPI_intro Small introduction to SPI
+
+The Serial Peripheral Interface (SPI) is a synchronous serial communication interface specification used for short-distance communication, primarily in embedded systems.
+In this case your microcontroller is the master which controls the slave (at least one 7-Segment display or led matrix).
+
+The master has three significant pins: SCLK(Serial Clock), MOSI(Master Out Slave In), SS(Slave Select).
+The slave also has tree needed pins (and two for power(GND and VCC)): CLK(Clock), DIN(Data In), CS(Ship Select).
+SCLK has to be connected to CLK and MOSI to DIN.
+These signals can be shared by multiple SPI slaves even if they have nothing to do with each other.
+SS has to be connected to CS and each Slave has its own SS pin(which can be any free pin).
+
+\section getting_started Getting started
+
+To get started you need to first create a new sakurajin::controller_configuration object.
+This is used to configure the setup of the sakurajin::LedController which can get complex.
+sakurajin::controller_configuration has no constructor and is more like an struct with methods than it is a 'real' class.
+Because it is a template you need to know the dimension of your Matrix which causes the type to be `sakurajin::controller_configuration<sements_x,segments_y>`.
+To see how you can use more than one row with the sakurajin::LedController go [here](@ref multi_row).
+The rest of the example will use `sakurajin::controller_configuration<4,1>` like in the [rocket example](@ref Led-matrix-rocket.ino).
+
+If you want to use Hardware Spi set useHardwareSpi to true, otherwise set it to false.
+If you use hardware SPI you only need to specify the CS pin, if not you also need to CLK and MOSI pins.
+Just assign the wanted values to SPI_CS, SPI_CLK and SPI_MOSI.
+
+Now you can check if the configuration is Valid by calling the sakurajin::controller_configuration.isValid() method.
+If it returns true, you can continue with the next step, if not try setting debug_output and figure out what went wrong.
+
+Now that you have a valid configuration, you can pass it to the init function of a sakurajin::LedController object.
+You can use the sakurajin::LedController.setRow and sakurajin::LedController.setSegment to send data to the LedMatrix.
+
+sakurajin::LedController.setRow sets a specific Row of a given segment to a given byte.
+It needs the segment index which can be calculated from the segment coordinates by calling `lc.getConfig().getSegmentNumber(x,y)`.
+
+sakurajin::LedController.setSegment sets a whole segment but the segment can be specified through coordinates or the index.
+
+The following snippet is (probably working) sample code that initilizes a sakurajin::LedController using Hardware spi and sets some segments using sakurajin::LedController.setRow and sakurajin::LedController.setSegment.
+
+\code{cpp}
+
+#include "sakurajin::LedController.hpp"
+auto lc = sakurajin::LedController<4,1>();
+
+void setup(){
+    auto conf = sakurajin::controller_configuration<4,1>();
+    conf.useHardwareSpi = true;
+    conf.SPI_CS = 25;
+
+    lc.init(conf);
+
+    lc.setRow(lc.getConfig().getSegmentNumber(0,1),2,0xAA);
+    lc.setSegment(lc.getConfig().getSegmentNumber(1,1),{0x00,0x01,0x03,0x07,0x0F,0x1F,0x3F,0x7F});
+    lc.setSegment(2,1,{0x7F,0x3F,0x1F,0x0F,0x07,0x03,0x01,0x00});
+
+}
+
+void loop(){
+
+}
+
+\endcode
+
+\section what_after_intro What is next?
+
+Now that you know how to use the sakurajin::LedController you can check the more advanced features like [using multiple rows](@ref multi_row) or [moving the displayed data](@ref movement).
+
+
+
+\~german
+\page usage Nutzungsanleitung
+
+<b>Schau auf die Seite des sakurajin::LedController für mehr Informationen über dessen Funktionen schau in die [Beispiele](examples.html).</b>
+
+Diese Seite zeigt die Grundlegende Nutzung des sakurajin::LedController und was man machen kann.
+
+\section init_lib Initialisieren der Bibliothek
+
+
+1. Hardware SPI is at least 10 times faster but you can only use specific pins for some signals (look [here](index.html) for which pins).
+2. Software SPI is slower (which only mattesrs if you need really tight timings) but you can freely choose which (free) pins you want to use.
+
+Die Library kann auf zwei Weisen initialisiert werden: mit hardware SPI oder mit software SPI.
+
+1. Hardware SPI ist mindestens 10 mal schneller aber es müssen bestimmte pins verwendet werden (schau [hier](index.html) für Details).
+2. Software SPI ist langsamer (was nur bei knappen Timings relevant ist) aber man kann alle freien Pins verwenden.
+
+\subsection SPI_intro Kleine Einführung in  SPI
+
+Das Serial Peripheral Interface (SPI) ist eine synchrone serielle Kommunikationsschnittstelle, welche für Kommunitaktion, primär im embedded Bereich, für kurze Distanzen verwendet wird.
+In diesem Fall ist der microcontroller der Master, der die Slaves (mindestens ein 7-Segment display oder Led Matrix Segment) steuert.
+
+Der Master hat frei relevante Pins: SCLK(Serial Clock), MOSI(Master Out Slave In) und SS(Slave Select).
+Der Slave hat drei entsprechende Pins (und zwei für den Strom(GND und VCC)): CLK(Clock), DIN(Data In), CS(Ship Select).
+SCLK muss mit CLK verbunden werden und MOSI mit DIN.
+Diese Signale können zweichen mehreren SPI slaves geteilt werden, auch wenn die Slaves nicht miteinander zu tun haben.
+SS muss mit CS verbunden werden und jeder Slave braucht einen eigenen SS pin(dies kann jeder freier pin sein).
+
+\section getting_started Getting started
+
+Zum Verwenden muss erst ein neues sakurajin::controller_configuration objekt erstellt werden.
+Dieses wird verwendet um das setup des sakurajin::LedController zu konfigurieren, was sehr komplex sein kann.
+sakurajin::controller_configuration hat keinen Konstruktor und ist dadurch mehr wie ein struct als eine 'richtige' Klasse.
+Weil alle Klassen der Bibliothek ein template sind müssen die Dimensionen der Matrix angegeben werden.
+Dadurch wird der Datentyp der sakurajin::controller_configuration `sakurajin::controller_configuration<Segmente_x,Segmente_y>`.
+Um zu sehen wie man mehrere Zeilen mit einem sakurajin::LedController steuern kann schau [diese](@ref multi_row) Seite an. 
+Der Rest der Seite wird `sakurajin::controller_configuration<4,1>` verwenden wie im [Beispiel Rakete](@ref Led-matrix-rocket.ino).
+
+Wenn Hardware SPI verwendet werden soll muss useHardwareSpi auf true gesetzt werden, ansonsten auf false.
+Falls hardware SPI verwendet wird dann muss nur der CS pin angegeben werden, ansonsten wird noch der CLK und MOSI pin benötigt.
+Einfach die gewünschten Werte SPI_CS, SPI_CLK und SPI_MOSI zuweisen.
+
+Nun kann die Konfiguration mit der Funktion sakurajin::controller_configuration.isValid() auf Gültigkeit geprüft werden.
+Falls true zurückgegeben wird, kann mit dem nächsten Schritt fortgefahren werden.
+Wenn nicht lohnt es sich debug_output auf true zu setzen und rauszufinden was schief läuft.
+
+Nun da eine Gültige Konfiguration vorhanden ist, kann diese an die init Funktion des sakurajin::LedController Objekts übergeben werden.
+Nun können sakurajin::LedController.setRow und sakurajin::LedController.setSegment verwendet werden um Daten an die Matrix zu senden.
+
+setSegment sets a whole segment but the segment can be specified through coordinates or the index.
+sakurajin::LedController.setSegment setzt ein ganzes Segment, allerdings kann das Segment über Nummer und Koordinaten angegeben werden.
+
+Der folgende Codeschnipsel sollte funktionieren und zeigt wie ein Led initialisiert mit hardware SPI wird und auf einigen Segmenten Daten angezeigt werden. 
+
+\code{cpp}
+
+#include "sakurajin::LedController.hpp"
+auto lc = sakurajin::LedController<4,1>();
+
+void setup(){
+    auto conf = sakurajin::controller_configuration<4,1>();
+    conf.useHardwareSpi = true;
+    conf.SPI_CS = 25;
+
+    lc.init(conf);
+
+    lc.setRow(lc.getConfig().getSegmentNumber(0,1),2,0xAA);
+    lc.setSegment(lc.getConfig().getSegmentNumber(1,1),{0x00,0x01,0x03,0x07,0x0F,0x1F,0x3F,0x7F});
+    lc.setSegment(2,1,{0x7F,0x3F,0x1F,0x0F,0x07,0x03,0x01,0x00});
+
+}
+
+void loop(){
+
+}
+
+\endcode
+
+\section what_after_intro Was jetzt?
+
+Nun wo die Grundlagen verstanden sind kann man sich den fortgeschrittenen Themen wie dem [Verwenden mehrerer Zeilen](@ref multi_row) oder dem [Bewegen der angezeigten Daten](@ref movement) widmen.
+
+*/

@@ -1,0 +1,118 @@
+/*!
+
+\~english
+\page multi_row Controlling multiple rows
+
+<b>Check the sakurajin::LedController for more infomation about its functions or look for the [Examples](examples.html).</b>
+
+As of version 2.0.0 the sakurajin::LedController supports controlling multiple rows from one sakurajin::LedController object.
+This introduction explains everything you need to know to use multiple rows.
+
+\section multi_data_structure Data structure
+
+First look at the image below.
+It explains the data structure of the segments.
+Each square represents one segment and the example has a total of 8 Segments with 4 Segments in each row.
+\image html multi_row_numbering.svg "Data order of the Segements" width=50%
+
+As you can see the 0 is in the bottom left corner (unless you rotate your matrix).
+When you create a new sakurajin::LedController object it is required to specifiy the dimensions of the matrix, in other words the number of columns and rows.
+For this example the type of the sakurajin::LedController would be `sakurajin::LedController<4,2>` because there are 4 columns and 2 rows.
+These dimensions can be an arbitary size as long as you have enough memory (you will notice if you don't have enough).
+
+The example [sakurajin::LedControllerDemoRocketMulti](@ref Led-matrix-rocket-multi.ino) will be used to demonstrate each of the parts that need to be done.
+
+\section valid_multi_conf Creating a valid sakurajin::controller_configuration
+
+If you have a different Chip Select pin for each row, you need to create a custom sakurajin::controller_configuration with the same dimensions as your controller.
+By default it is assumed that all of the segments are connected in series in the order of their indexes.
+
+If you want each row to be connected to a different CS pin you need to set row_SPI_CS to the correct values.
+`row_SPI_CS[0]` should be set to the pin of row 0 and `row_SPI_CS[1]` to the pin of row 1.
+**You have to set the pin of each row to a unique value or you might encounter issues!**
+You also have to set SPI_CS to 0 or virtual_multi_row to false.
+One of those two is enough but setting both makes sure that virtual_multi_row is disabled.
+
+Below is an example of how the sakurajin::controller_configuration might be created for this example.
+
+\code{cpp}
+    sakurajin::controller_configuration<4,2> conf;
+    conf.SPI_CS = 0;
+    conf.virtual_multi_row = false;
+
+    conf.row_SPI_CS[0] = 25;
+    conf.row_SPI_CS[1] = 15;
+\endcode
+
+If you want to use virtual_multi_row (have all of the segments connected in series) then you have to set SPI_CS to you CS pin and set virtual_multi_row to true (which is the default).
+As long as those conditions are satisfied, the values of row_SPI_CS will be ignored.
+
+Look at the [sakurajin::controller_configuration page](@ref controller_configuration_page) for details on how to use all of the other fields.
+
+\section display_multi_data Displaying data on segments
+
+Now you can display data just as in [usage information](@ref usage) using `setSegment` with the coordinates of the segment.
+`getConfig().getSegmentNumber` can be used to calculate the segment index which is required by the `setRow` and `setColumn` function to set a single row or column.
+
+
+\~german
+\page multi_row Steuern von mehreren Zeilen
+
+<b>Schau auf die Seite des sakurajin::LedController für mehr Informationen über dessen Funktionen schau in die [Beispiele](examples.html).</b>
+
+Seit Vesion 2.0.0 kann mit einem sakurajin::LedController Objekt mehr als eine Zeile gesteuert werden.
+Diese Einführung erklärt alles was man wissen muss um mehrere Zeilen verwenden zu können
+
+\section multi_data_structure Datenstruktur
+
+Das Bild beschreibt die Datenstruktur der Segmente bei einer Matrix.
+Jedes Quadrat steht für ein Segment und in diesem Beispiel gibt es insgesamt 8 Segmente mit 4 Segmenten pro Reihe.
+(Kleine Übersetzungshinweis: Row heißt Zeile, Column heißt Splate)
+\image html multi_row_numbering.svg "Datenstruktur der Segmente" width=50%
+
+Wie man sehen kann ist die 0 in der Ecke unten links (außer man sreht die Matrix).
+Wenn ein neues sakurajin::LedController objekt erstellt wird, müssen die Dimensionen der matrix angegeben werden, also die Zahl der Zeilen und Spalten.
+In diesem Beispiel wäre der Datentyp des sakurajin::LedController `sakurajin::LedController<4,2>`, da es 4 Splaten und 2 Zeilen hat.
+Die Dimensionen können beliebig groß sein, solang man genug Arbeitsspeicher und Hardware besitzt.
+
+Das Beispiel [sakurajin::LedControllerDemoRocketMulti](@ref Led-matrix-rocket-multi.ino) wird genutzt um zu zeigen wie man mehrere Zeilen nutzt.
+
+\section valid_multi_conf Erstellen einer gültigen sakurajin::controller_configuration
+
+Falls man verschiedene CS pins für die einzelnen Zeilen verwenden möchte, dann muss man eine eigene sakurajin::controller_configuration erstellen, welche die selben Dimensionen hat wie der sakurajin::LedController.
+Standardmäßig wird angenommen, dass alle Segment in Reihe der Indexe angeschlossen sind.
+
+If you want each row to be connected to a different SPI pin you need to set row_SPI_CS to the correct values.
+`row_SPI_CS[0]` should be set to the pin of row 0 and `row_SPI_CS[1]` to the pin of row 1.
+**You have to set the pin of each row to a unique value or you might encounter issues!**
+You also have to set SPI_CS to 0 or virtual_multi_row to false.
+One of those two is enough but setting both makes sure that virtual_multi_row is disabled.
+
+Falls man jede Reihe an ein eigenen CS pin anschließen will muss row_SPI_CS auf den richtigen Wert gesetzt werden.
+`row_SPI_CS[0]` sollte auf den pin von Zeile 0 und `row_SPI_CS[1]` auf den pin von Zeile 1 gesetzt werden.
+<b>Jede Zeile sollte einen einzigartigen Wert besitzen ansonsten kommt es zu Problemen!</b>
+Außerdem müssen SPI_CS auf 0 und/oder virtual_multi_row auf false gesetzt werden.
+Eins der beiden reicht theoretisch aus, aber sicher ist sicher.
+
+Hier ist ein Beispiel wie eine gültige sakurajin::controller_configuration für dieses Beispiel aussehen könnte.
+
+\code{cpp}
+    sakurajin::controller_configuration<4,2> conf;
+    conf.SPI_CS = 0;
+    conf.virtual_multi_row = false;
+
+    conf.row_SPI_CS[0] = 25;
+    conf.row_SPI_CS[1] = 15;
+\endcode
+
+Falls virtual_multi_row (alle Segmente in Reihe geschaltet) verwendet werden soll, dann muss SPI_CS auf den gewünschten CS pin gesetzt werden und virtual_multi_row muss true sein (was der Standardwert ist).
+Solange diese beiden Bedingungen erfüllt sind wird der Wert von row_SPI_CS ignoriert.
+
+Schau die [sakurajin::controller_configuration Seite](@ref controller_configuration_page) für die Details über die anderen Felder an.
+
+\section display_multi_data Daten auf den Segmenten anzeigen
+
+Nun können Daten wie in [usage information](@ref usage) beschreiben mit `setSegment` mit den Koordinaten des Segments angezeigt werden.
+`getConfig().getSegmentNumber` kann verwendet werden um die Segmentnummer zu bestimmen, welche mitunter für sakurajin::LedController.setRow und sakurajin::LedController.setColumn benötigt wird.
+
+*/
