@@ -4,9 +4,9 @@
  * @brief using the ledcontroller with 7-segment displays
  * @version 0.1
  * @date 2020-12-30
- * 
+ *
  * @copyright Copyright (c) 2020
- * 
+ *
  */
 
 //Wie immer muss am Anfang die Bibliothek eingebunden werden.
@@ -14,7 +14,7 @@
 
 /*
  Die folgenden 3 Variabeln müssen abhängig vom board ggf geändert werden.
- pin 15 ist verbunden mit DataIn 
+ pin 15 ist verbunden mit DataIn
  pin 14 ist verbunden mit CLK
  pin 13 ist verbunden mit LOAD/ChipSelect
 */
@@ -64,7 +64,7 @@ void writeArduinoOn7Segment() {
 //Diese Funktion wird alle Hexadezimalziffern entlang des Displays bewegen.
 //Es werden mindestens vier 7-Segment Elemente benötigt damit die Anzeige gut aussieht.
 void scrollDigits() {
-  for(int i=0;i<13;i++) {
+  for(int i=0; i<13; i++) {
     lc.setDigit(0,3,i,false);
     lc.setDigit(0,2,i+1,false);
     lc.setDigit(0,1,i+2,false);
@@ -75,7 +75,7 @@ void scrollDigits() {
   delay(delaytime);
 }
 
-void loop() { 
+void loop() {
   writeArduinoOn7Segment();
   scrollDigits();
 }
