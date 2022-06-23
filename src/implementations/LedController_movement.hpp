@@ -94,7 +94,7 @@ byte sakurajin::LedController<columns,rows>::moveColumnUp(byte shiftedInRow, uns
                 if(i == 0) {
                     LedStates[seg][0] = shiftedInRow;
                 } else {
-                    LedStates[seg][0] = LedStates[conf.getSegmentNumber(col_num,i+1)][7];
+                    LedStates[seg][0] = LedStates[conf.getSegmentNumber(col_num,i-1)][7];
                 }
             } else {
                 LedStates[seg][j] = LedStates[seg][j - 1];
@@ -128,7 +128,7 @@ byte sakurajin::LedController<columns,rows>::moveColumnDown(byte shiftedInRow, u
                 if(i == rows-1) {
                     LedStates[seg][7] = shiftedInRow;
                 } else {
-                    LedStates[seg][7] = LedStates[conf.getSegmentNumber(col_num,i-1)][0];
+                    LedStates[seg][7] = LedStates[conf.getSegmentNumber(col_num,i+1)][0];
                 }
             } else {
                 LedStates[seg][j] = LedStates[seg][j + 1];
