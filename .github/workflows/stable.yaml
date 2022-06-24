@@ -37,12 +37,11 @@ jobs:
         run: bash .scripts/doxygen_multilang.sh
 
       - name: Check code meets quality standards
-        id: code-inspector
-        uses: codeinspectorio/github-action@master
+        id: codiga
+        uses: codiga/github-action@master
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          code_inspector_access_key: ${{ secrets.CODE_INSPECTOR_ACCESS_KEY }}
-          code_inspector_secret_key: ${{ secrets.CODE_INSPECTOR_SECRET_KEY }}
+          codiga_api_token: ${{ secrets.CODIGA_API_TOKEN }}
           min_quality_grade: 'EXCELLENT'
           min_quality_score: '99'
           max_defects_rate: '0.01'

@@ -2,7 +2,7 @@
 
 [![GitHub license](https://img.shields.io/github/license/noah1510/LedController.svg)](https://github.com/noah1510/LedController/blob/master/License)
 ![pre-release](https://github.com/noah1510/LedController/workflows/pre-release/badge.svg)
-[![code quality](https://www.code-inspector.com/project/8566/score/svg)](https://frontend.code-inspector.com/project/5318/dashboard)
+[![code quality](https://api.codiga.io/project/8566/score/svg)](https://app.codiga.io/hub/project/8566/LedController)
 [![stable release](https://img.shields.io/github/v/release/noah1510/LedController.svg)](https://GitHub.com/noah1510/LedController/releases/)
 [![arduino-library-badge](https://www.ardu-badge.com/badge/LedController.svg?)](https://www.ardu-badge.com/LedController)
 
