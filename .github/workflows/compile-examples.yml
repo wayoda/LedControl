@@ -18,6 +18,11 @@ jobs:
 
     env:
       SKETCHES_REPORTS_PATH: sketches-reports
+      LIBRARIES: |
+        # Install the library from the local path.
+        - source-path: ./
+        - name: Adafruit Unified Sensor
+        - name: DHT sensor library
 
     strategy:
       fail-fast: false
@@ -92,6 +97,7 @@ jobs:
         with:
           fqbn: ${{ matrix.board.fqbn }}
           platforms: ${{ matrix.board.platforms }}
+          libraries: ${{ env.LIBRARIES }}
           enable-deltas-report: true
           sketches-report-path: ${{ env.SKETCHES_REPORTS_PATH }}
 
