@@ -99,7 +99,11 @@ jobs:
           platforms: ${{ matrix.board.platforms }}
           libraries: ${{ env.LIBRARIES }}
           enable-deltas-report: true
+          sketch-paths: "examples/english"
           sketches-report-path: ${{ env.SKETCHES_REPORTS_PATH }}
+          cli-compile-flags: |
+            - --warnings
+            - default
 
       - name: Save memory usage change report as artifact
         if: github.event_name == 'pull_request'
