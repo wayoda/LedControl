@@ -59,7 +59,7 @@ auto lc = sakurajin::LedController<4,1>();
 void setup(){
     auto conf = sakurajin::controller_configuration<4,1>();
     conf.useHardwareSpi = true;
-    conf.SPI_CS = 25;
+    conf.cs_pin = 25;
 
     lc.init(conf);
 
@@ -144,7 +144,7 @@ auto lc = sakurajin::LedController<4,1>();
 void setup(){
     auto conf = sakurajin::controller_configuration<4,1>();
     conf.useHardwareSpi = true;
-    conf.SPI_CS = 25;
+    conf.cs_pin = 25;
 
     lc.init(conf);
 

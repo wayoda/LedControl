@@ -62,12 +62,12 @@ void setup() {
   controller_configuration<Segments,2> conf;
 
   //since more than one row is used (without virtual mult row) make sure to set this to 0
-  conf.SPI_CS = 0;
+  conf.cs_pin = 0;
 
   //These are the chip select pins for each row.
   //The bottom row (row 0) is connected to pin 25 and the top row (row 1) is connected to pin 15
-  conf.row_SPI_CS[0] = CS_BOTTOM;
-  conf.row_SPI_CS[1] = CS_TOP;
+  conf.row_cs_pin[0] = CS_BOTTOM;
+  conf.row_cs_pin[1] = CS_TOP;
 
   //this enables hardware spi check what pins to use for your board
   conf.useHardwareSpi = true;

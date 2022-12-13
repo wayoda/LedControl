@@ -37,11 +37,11 @@ Below is an example of how the sakurajin::controller_configuration might be crea
 
 \code{cpp}
     sakurajin::controller_configuration<4,2> conf;
-    conf.SPI_CS = 0;
+    conf.cs_pin = 0;
     conf.virtual_multi_row = false;
 
-    conf.row_SPI_CS[0] = 25;
-    conf.row_SPI_CS[1] = 15;
+    conf.row_cs_pin[0] = 25;
+    conf.row_cs_pin[1] = 15;
 \endcode
 
 If you want to use virtual_multi_row (have all of the segments connected in series) then you have to set SPI_CS to you CS pin and set virtual_multi_row to true (which is the default).
@@ -98,11 +98,11 @@ Hier ist ein Beispiel wie eine gültige sakurajin::controller_configuration für
 
 \code{cpp}
     sakurajin::controller_configuration<4,2> conf;
-    conf.SPI_CS = 0;
+    conf.cs_pin = 0;
     conf.virtual_multi_row = false;
 
-    conf.row_SPI_CS[0] = 25;
-    conf.row_SPI_CS[1] = 15;
+    conf.row_cs_pin[0] = 25;
+    conf.row_cs_pin[1] = 15;
 \endcode
 
 Falls virtual_multi_row (alle Segmente in Reihe geschaltet) verwendet werden soll, dann muss SPI_CS auf den gewünschten CS pin gesetzt werden und virtual_multi_row muss true sein (was der Standardwert ist).

@@ -49,7 +49,7 @@ template <size_t columns, size_t rows>
 void sakurajin::LedController<columns,rows>::init(unsigned int csPin) noexcept {
     sakurajin::controller_configuration<columns,rows> config;
 
-    config.SPI_CS = csPin;
+    config.cs_pin = csPin;
     config.useHardwareSpi = true;
 
     return init(config);
@@ -64,9 +64,9 @@ void sakurajin::LedController<columns,rows>::init(unsigned int dataPin, unsigned
 
     sakurajin::controller_configuration<columns,rows> config;
 
-    config.SPI_MOSI = dataPin;
-    config.SPI_CLK = clkPin;
-    config.SPI_CS = csPin;
+    config.mosi_pin = dataPin;
+    config.clk_pin = clkPin;
+    config.cs_pin = csPin;
     config.useHardwareSpi = useHardwareSpiParam;
 
     init(config);
@@ -93,8 +93,8 @@ void sakurajin::LedController<columns,rows>::init(const sakurajin::controller_co
 template <size_t columns, size_t rows>
 void sakurajin::LedController<columns,rows>::initConf() noexcept {
     if (conf.useHardwareSpi) {
-        conf.SPI_CLK = SCK;
-        conf.SPI_MOSI = MOSI;
+        conf.clk_pin = SCK;
+        conf.mosi_pin = MOSI;
     }
 
     resetBuffers();
@@ -102,16 +102,16 @@ void sakurajin::LedController<columns,rows>::initConf() noexcept {
 
 template <size_t columns, size_t rows>
 void sakurajin::LedController<columns,rows>::initSPI() noexcept {
-    pinMode(conf.SPI_MOSI, OUTPUT);
-    pinMode(conf.SPI_CLK, OUTPUT);
+    pinMode(conf.mosi_pin, OUTPUT);
+    pinMode(conf.clk_pin, OUTPUT);
 
     if(conf.virtual_multi_row) {
-        pinMode(conf.SPI_CS,OUTPUT);
-        digitalWrite(conf.SPI_CS,LOW);
+        pinMode(conf.cs_pin,OUTPUT);
+        digitalWrite(conf.cs_pin,LOW);
     } else {
         for(unsigned int i = 0; i < rows; i++) {
-            pinMode(conf.row_SPI_CS[i],OUTPUT);
-            digitalWrite(conf.row_SPI_CS[i],LOW);
+            pinMode(conf.row_cs_pin[i],OUTPUT);
+            digitalWrite(conf.row_cs_pin[i],LOW);
         }
     }
 
@@ -122,10 +122,10 @@ void sakurajin::LedController<columns,rows>::initSPI() noexcept {
     }
 
     if(conf.virtual_multi_row) {
-        digitalWrite(conf.SPI_CS,HIGH);
+        digitalWrite(conf.cs_pin,HIGH);
     } else {
         for(unsigned int i = 0; i < rows; i++) {
-            digitalWrite(conf.row_SPI_CS[i],HIGH);
+            digitalWrite(conf.row_cs_pin[i],HIGH);
         }
     }
 }

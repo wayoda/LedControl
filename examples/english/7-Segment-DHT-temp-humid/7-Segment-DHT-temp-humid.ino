@@ -201,13 +201,13 @@ void setup() {
   controller_configuration<1,2> conf;
 
   //disable virtual_muti_row
-  conf.SPI_CS = 0;
+  conf.cs_pin = 0;
   conf.virtual_multi_row = false;
 
   //These are the chip select pins for each row.
   //The bottom row (row 0) is connected to pin 16 and the top row (row 1) is connected to pin 22
-  conf.row_SPI_CS[0] = CS_BOTTOM;
-  conf.row_SPI_CS[1] = CS_TOP;
+  conf.row_cs_pin[0] = CS_BOTTOM;
+  conf.row_cs_pin[1] = CS_TOP;
 
   //this enables hardware spi check what pins to use for your board
   conf.useHardwareSpi = true;

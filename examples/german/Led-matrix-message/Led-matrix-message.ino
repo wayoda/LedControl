@@ -85,7 +85,7 @@ void setup() {
   //erstelle eine Konfiguration mit der gleichen Größe wie der Controller
   controller_configuration<Segments,1> conf;
   //Nutze den CS pin
-  conf.SPI_CS = CS;
+  conf.cs_pin = CS;
   //Setzt die Übertragungsgeschwindigkeit auf den höchsten stabilen Wert
   conf.spiTransferSpeed = 10000000;
   //schaltet Hardware SPI an

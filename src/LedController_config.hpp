@@ -12,6 +12,28 @@
 
 #define PRINTLN_IF(condition,x) if(condition){PRINTLN(x);}
 
+#include <SPI.h>
+
+#ifdef SPI_MOSI
+    #define LEDCONTROLLER_MOSI = SPI_MOSI
+#else
+    #ifdef MOSI
+        #define LEDCONTROLLER_MOSI = MOSI
+    #else
+        #define LEDCONTROLLER_NO_HW_SPI
+    #endif
+#endif
+
+#ifdef SPI_SCK
+    #define LEDCONTROLLER_CLK = SPI_SCK
+#else
+    #ifdef MOSI
+        #define LEDCONTROLLER_CLK = SCK
+    #else
+        #define LEDCONTROLLER_NO_HW_SPI
+    #endif
+#endif
+
 namespace sakurajin {
 
     /**
@@ -40,7 +62,7 @@ namespace sakurajin {
          * @brief Der pin für das data transfer Signal (MOSI am Board und DIN an der Matrix).
          * @warning Wenn das 0 ist und useHardwareSpi false ist, ist die Konfiguration ungültig.
          */
-        unsigned int SPI_MOSI = 0;
+        unsigned int mosi_pin = 0;
 
         /**
          * \~english
@@ -51,7 +73,7 @@ namespace sakurajin {
          * @brief Der pin für das chip select Signal (CS).
          * @warning Wenn das 0 ist und useHardwareSpi false ist, ist die Konfiguration ungültig.
          */
-        unsigned int SPI_CS = 0;
+        unsigned int cs_pin = 0;
 
         /**
          * \~english
@@ -62,18 +84,18 @@ namespace sakurajin {
          * @brief Der pin für das clock Signal (CLK).
          * @warning Wenn das 0 ist und useHardwareSpi false ist, ist die Konfiguration ungültig.
          */
-        unsigned int SPI_CLK = 0;
+        unsigned int clk_pin = 0;
 
         /**
          * \~english
          * @brief true if you want to use hardware SPI (view https://www.arduino.cc/en/Reference/SPI for pin config). While this is a
-         * lot faster you cannot use every pin for the MOSI and CLK signal. SPI_MOSI
-         * and SPI_CLK will be set automatically if this is true.
+         * lot faster you cannot use every pin for the MOSI and CLK signal. mosi_pin
+         * and clk_pin will be set automatically if this is true.
          *
          * \~german
          * @brief true falls hardware SPI genutzt werden soll (schaue https://www.arduino.cc/en/Reference/SPI für die Pin Konfiguration).
          * Diese Einstellung ist zwar sehr viel schneller, dafür kann nicht jeder PIN für MOSI und CLK verwendet werden.
-         * SPI_MOSI und SPI_CLK werden automatisch gesetzt wenn diese Variable true ist
+         * mosi_pin und clk_pin werden automatisch gesetzt wenn diese Variable true ist
          */
         bool useHardwareSpi = false;
 
@@ -98,7 +120,7 @@ namespace sakurajin {
          * @brief Dieses Array bestimmt welcher CS Pin für welche Reihe verwendet wird. @ref multi_row
          * @warning Jeder Eintrag sollte eine einzigartige Nummer haben, wenn nicht kann es zu Problemen führen.
          */
-        unsigned int row_SPI_CS[rows];
+        unsigned int row_cs_pin[rows];
 
         /**
          * \~english
@@ -273,11 +295,11 @@ namespace sakurajin {
             conf.IntensityLevel = this->IntensityLevel;
             conf.onlySendOnChange = this->onlySendOnChange;
             for(unsigned int i = 0; i < this->rows; i++) {
-                conf.row_SPI_CS[i] = this->row_SPI_CS[i];
+                conf.row_cs_pin[i] = this->row_cs_pin[i];
             }
-            conf.SPI_CLK = this->SPI_CLK;
-            conf.SPI_CS = this->SPI_CS;
-            conf.SPI_MOSI = this->SPI_MOSI;
+            conf.clk_pin = this->clk_pin;
+            conf.cs_pin = this->cs_pin;
+            conf.mosi_pin = this->mosi_pin;
             conf.useHardwareSpi = this->useHardwareSpi;
             return conf;
         }
@@ -303,34 +325,41 @@ namespace sakurajin {
                 return false;
             }
 
+            #ifdef LEDCONTROLLER_NO_HW_SPI
+            if(conf.useHardwareSpi){
+                PRINTLN_IF(conf.debug_output, "hardwareSPI is not available but used. Check your config or set useHardwareSpi to false");
+                return false;
+            }
+            #endif
+
             // checking the clk amd mosi pins
             if (!conf.useHardwareSpi) {
-                if (conf.SPI_CLK == 0) {
+                if (conf.clk_pin == 0) {
                     PRINTLN_IF(conf.debug_output, "No CLK Pin given. Specify one or set useHardwareSpi to true");
                     return false;
                 }
 
-                if (conf.SPI_MOSI == 0) {
+                if (conf.mosi_pin == 0) {
                     PRINTLN_IF(conf.debug_output, "No MOSI Pin given. Specify one or set useHardwareSpi to true");
                     return false;
                 }
             }
 
             // checking the cs pin(s)
-            if (conf.SPI_CS == 0 && conf.row_SPI_CS == nullptr) {
+            if (conf.cs_pin == 0 && conf.row_cs_pin == nullptr) {
                 PRINTLN_IF(conf.debug_output, "No CS Pin given");
                 return false;
             }
 
-            if (!conf.virtual_multi_row || conf.SPI_CS == 0) {
+            if (!conf.virtual_multi_row || conf.cs_pin == 0) {
                 for(unsigned int i = 0; i < rows; i++) {
-                    if(conf.row_SPI_CS[i] == 0) {
-                        PRINTLN_IF(conf.debug_output, "Invalid value in row_SPI_CS found. 0 is not allowed.");
+                    if(conf.row_cs_pin[i] == 0) {
+                        PRINTLN_IF(conf.debug_output, "Invalid value in row_cs_pin found. 0 is not allowed.");
                         return false;
                     }
                     for(unsigned int j = 0; j < i; j++) {
-                        if(conf.row_SPI_CS[i] == conf.row_SPI_CS[j]) {
-                            PRINTLN_IF(conf.debug_output, "None unique value in row_SPI_CS found! Each row needs its own pin or consider enabling virtual_multi_row.");
+                        if(conf.row_cs_pin[i] == conf.row_cs_pin[j]) {
+                            PRINTLN_IF(conf.debug_output, "None unique value in row_cs_pin found! Each row needs its own pin or consider enabling virtual_multi_row.");
                             return false;
                         }
                     }

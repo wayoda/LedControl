@@ -202,13 +202,13 @@ void setup() {
   controller_configuration<1,2> conf;
 
   //deaktivieren von virtual_muti_row
-  conf.SPI_CS = 0;
+  conf.cs_pin = 0;
   conf.virtual_multi_row = false;
 
   //hier werden die Chip Select Pins der einzelnen Reihen gesetzt.
   //Die untere Zeile (Zeile 0) ist an Pin 16 geschlossen und die obere Reihe (Reihe 1) an Pin 22
-  conf.row_SPI_CS[0] = CS_BOTTOM;
-  conf.row_SPI_CS[1] = CS_TOP;
+  conf.row_cs_pin[0] = CS_BOTTOM;
+  conf.row_cs_pin[1] = CS_TOP;
 
   //Das setzt die nńutzung von harware SPI
   //Schaue welche Pins bei deinem Board verwendet werden müssen.

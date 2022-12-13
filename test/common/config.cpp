@@ -16,13 +16,13 @@ static void check_invalid_configs() {
     c1.virtual_multi_row = false;
     TEST_ASSERT(!c1.isValid());
 
-    c1.row_SPI_CS[0] = 1;
+    c1.row_cs_pin[0] = 1;
     TEST_ASSERT(!c1.isValid());
 
-    c1.row_SPI_CS[1] = 1;
+    c1.row_cs_pin[1] = 1;
     TEST_ASSERT(!c1.isValid());
 
-    c1.row_SPI_CS[1] = 2;
+    c1.row_cs_pin[1] = 2;
     TEST_ASSERT(c1.isValid());
 
 }

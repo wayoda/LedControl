@@ -32,8 +32,8 @@ void sakurajin::LedController<columns,rows>::spiTransfer(unsigned int segment, b
     spidata[row*columns*2+offset+1] = opcode;
     spidata[row*columns*2+offset] = data;
 
-    if(conf.virtual_multi_row && conf.SPI_CS != 0) {
-        auto cs = conf.SPI_CS;
+    if(conf.virtual_multi_row && conf.cs_pin != 0) {
+        auto cs = conf.cs_pin;
         digitalWrite(cs, LOW);
 
         if (conf.useHardwareSpi) {
@@ -44,7 +44,7 @@ void sakurajin::LedController<columns,rows>::spiTransfer(unsigned int segment, b
             if (conf.useHardwareSpi) {
                 SPI.transfer(spidata[i-1]);
             } else {
-                shiftOut(conf.SPI_MOSI, conf.SPI_CLK, MSBFIRST, spidata[i-1]);
+                shiftOut(conf.mosi_pin, conf.clk_pin, MSBFIRST, spidata[i-1]);
             }
         }
 
@@ -60,7 +60,7 @@ void sakurajin::LedController<columns,rows>::spiTransfer(unsigned int segment, b
         for(unsigned int r = 0; r < rows ; r++) {
 
             //enable the line
-            auto cs = conf.row_SPI_CS[r];
+            auto cs = conf.row_cs_pin[r];
             digitalWrite(cs, LOW);
 
             //init the spi transfer if hardware should be used
@@ -73,7 +73,7 @@ void sakurajin::LedController<columns,rows>::spiTransfer(unsigned int segment, b
                 if (conf.useHardwareSpi) {
                     SPI.transfer(spidata[r*columns*2+i-1]);
                 } else {
-                    shiftOut(conf.SPI_MOSI, conf.SPI_CLK, MSBFIRST, spidata[r*columns*2+i-1]);
+                    shiftOut(conf.mosi_pin, conf.clk_pin, MSBFIRST, spidata[r*columns*2+i-1]);
                 }
             }
 

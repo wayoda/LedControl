@@ -8,9 +8,9 @@ const sakurajin::ByteBlock& testBlock() {
 sakurajin::controller_configuration<4,1>& get_conf() {
     static sakurajin::controller_configuration<4,1> conf;
     if(!conf.isValid()) {
-        conf.SPI_CS = 16;
-        conf.SPI_CLK = 15;
-        conf.SPI_MOSI = 14;
+        conf.cs_pin = 16;
+        conf.clk_pin = 15;
+        conf.mosi_pin = 14;
         conf.useHardwareSpi = false;
         conf.isValid();
     }
@@ -21,7 +21,7 @@ sakurajin::controller_configuration<4,1>& get_conf() {
 sakurajin::controller_configuration<4,1>& get_conf_SPI() {
     static sakurajin::controller_configuration<4,1> conf;
     if(!conf.isValid()) {
-        conf.SPI_CS = 16;
+        conf.cs_pin = 16;
         conf.useHardwareSpi = true;
         conf.isValid();
     }
@@ -32,9 +32,9 @@ sakurajin::controller_configuration<4,1>& get_conf_SPI() {
 sakurajin::controller_configuration<4,4>& get_multi_conf() {
     static sakurajin::controller_configuration<4,4> conf;
     if(!conf.isValid()) {
-        conf.SPI_CLK = 15;
-        conf.SPI_MOSI = 14;
-        conf.SPI_CS = 13;
+        conf.clk_pin = 15;
+        conf.mosi_pin = 14;
+        conf.cs_pin = 13;
         conf.useHardwareSpi = false;
         conf.isValid();
     }
@@ -45,7 +45,7 @@ sakurajin::controller_configuration<4,4>& get_multi_conf() {
 sakurajin::controller_configuration<4,4>& get_multi_conf_SPI() {
     static sakurajin::controller_configuration<4,4> conf;
     if(!conf.isValid()) {
-        conf.SPI_CS = 13;
+        conf.cs_pin = 13;
         conf.useHardwareSpi = true;
         conf.isValid();
     }
