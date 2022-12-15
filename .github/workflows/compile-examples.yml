@@ -151,12 +151,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
+      - uses: actions/setup-python@v4
+        with:
+            python-version: '3.9'
+            cache: 'pip'
+      - run: pip install -r ./.scripts/requirements.txt
       - name: setup pio
         run: | 
-          pip3 install -U setuptools
-          pip3 install -U wheel
-          pip3 install -U platformio
           python3 -m platformio update
           python3 -m platformio lib -g install "adafruit/DHT sensor library"
           python3 -m platformio lib -g install "adafruit/Adafruit Unified Sensor"
