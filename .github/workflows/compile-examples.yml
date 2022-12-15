@@ -92,9 +92,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install ESP32 platform dependencies
-        if: startsWith(matrix.board.fqbn, 'esp32:esp32')
-        run: pip3 install pyserial
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+            python-version: '3.9'
+            cache: 'pip'
+      - name: install pip dependencies
+        run: pip install pyserial
 
       - name: Compile examples
         uses: arduino/compile-sketches@v1
@@ -151,11 +155,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: setup python
+        uses: actions/setup-python@v4
         with:
             python-version: '3.9'
             cache: 'pip'
-      - run: pip install -r ./.scripts/requirements.txt
+      - name: install pip dependencies
+        run: pip install -r ./.scripts/requirements.txt
       - name: setup pio
         run: | 
           python3 -m platformio update
