@@ -7,6 +7,10 @@ on:
       - "examples/**"
       - "src/**"
   push:
+    tags:
+      - 'v*'
+    branches:
+      - 'master'
     paths:
       - ".github/workflows/compile-examples.yml"
       - "examples/**"
@@ -166,19 +170,22 @@ jobs:
           name: build-artifact
           path: .
   
-  update-latest-release:
+  update-release:
     name: "update the latest release"
     runs-on: ubuntu-latest
     needs: [build-pio, build-arduino]
     
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
       - name: install doc deps
         run: sudo apt-get install --yes doxygen graphviz latexmk texlive-latex-extra
         
       - name: prepare for building docs
         run: |
-          mkdir doc/html
-          mkdir doc/latex
+          mkdir -p doc/html
+          mkdir -p doc/latex
       
       - name: build documentation
         run: bash .scripts/doxygen_multilang.sh
@@ -201,8 +208,9 @@ jobs:
           project_name: 'LedController'
           max_timeout_sec: '600'
 
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        if: ${{ github.ref }} == 'master' 
+      - name: update latest release
+        if: ${{ github.ref_name == 'master' }}
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
@@ -213,9 +221,21 @@ jobs:
             latest.zip
             refman_english.pdf
             refman_german.pdf
+            
+      - name: update stable release
+        if: ${{ github.ref_type == 'tag' }}
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: ${{ endsWith( github.ref_name, 'rc') }}
+          files: |
+            License
+            release.zip
+            refman_english.pdf
+            refman_german.pdf
 
       - name: Deploy to pages
-        if: "contains(github.event.head_commit.message, '--build-docs')"
+        if: ${{ contains(github.event.head_commit.message, '--build-docs') }}
         uses: s0/git-publish-subdir-action@master
         env:
           REPO: self

@@ -36,6 +36,11 @@ build_lang(){
 
     #run doxygen
     doxygen Doxyfile.$lang
+    if [ "$?" -ne 0 ];
+    then
+        rm Doxyfile.$lang
+        return 1
+    fi
 
     #build pdf file
     cd doc/latex/$lang/
@@ -47,20 +52,22 @@ build_lang(){
 
     #remove lang specific doxygen file
     rm Doxyfile.$lang
+    
+    return 0
 
 }
 
 #build as much language in parallel as possible
 for lang in "${OUTPUT_LANGUAGES[@]}"
 do
-    #this limits the amount of parallel builds
-    ((i=i%MAX_CORES)); ((i++==0)) && wait
-
     #this calls a new subroutine for that language in the array
-    build_lang $lang &
+    build_lang $lang
+    if [ "$?" -ne 0 ];
+    then
+        exit 1
+    fi
 done
-wait
 
 #create new root index file
-rm $DOXYGEN_BASE/html/index.html
+rm -f $DOXYGEN_BASE/html/index.html
 cp $ROOT_INDEX_LOCATION/index.html $DOXYGEN_BASE/html/
