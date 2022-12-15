@@ -30,14 +30,14 @@ LedController<Segments,1> lc = LedController<Segments,1>();
 
 //This is my pixelart of a rocket which will be used in this example
 ByteBlock rocket= ByteBlock::reverse({
-  B00000000,
-  B00001111,
-  B00111110,
-  B11111101,
-  B00111110,
-  B00001111,
-  B00000000,
-  B00000000
+  0b00000000,
+  0b00001111,
+  0b00111110,
+  0b11111101,
+  0b00111110,
+  0b00001111,
+  0b00000000,
+  0b00000000
 });
 
 ByteBlock rocketColumns;
