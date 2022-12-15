@@ -182,7 +182,7 @@ void sakurajin::LedController<columns,rows>::setDigit(unsigned int segmentNumber
 
     byte v = sakurajin::MAX72XX::getChar(value%16);
     if (dp) {
-        v |= B10000000;
+        v |= 0b10000000;
     };
     LedStates[segmentNumber][digit] = v;
     spiTransfer(segmentNumber, digit + 1, v);
@@ -197,7 +197,7 @@ void sakurajin::LedController<columns,rows>::setChar(unsigned int segmentNumber,
 
     byte v = sakurajin::MAX72XX::getChar(value);
     if (dp) {
-        v |= B10000000;
+        v |= 0b10000000;
     };
 
     LedStates[segmentNumber][digit] = v;
