@@ -116,8 +116,6 @@ void sakurajin::LedController<columns,rows>::initSPI() noexcept {
     }
 
     if (conf.useHardwareSpi) {
-        SPI.setBitOrder(MSBFIRST);
-        SPI.setDataMode(SPI_MODE0);
         SPI.begin();
     }
 
