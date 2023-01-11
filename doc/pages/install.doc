@@ -1,0 +1,76 @@
+/*!
+
+\~english
+\page install Installation instructions
+
+If you want to see how to use the library look [here](@ref usage)
+
+\section arduino_install Arduino Ide
+
+The library is in the Arduino library manager.
+
+1. Open your [Arduino](http://arduino.cc) IDE.
+2. Click on Tools, Manage Libraries..
+3. Type `LedController` in the search bar.
+4. Select the version you want and click install.
+5. That was it you are ready to use the library.
+
+\section PlatformIO
+
+The [library](https://platformio.org/lib/show/7144/LedController) is also available for the [platform.io](https://platformio.org/platformio) library manager.
+<b>Since they get their information from the Arduino Library Manager and the git repository, their version might not be up to date.</b>
+<b>In addition to that, they do not provide release candidates.</b>
+
+\subsection CLI
+
+Just type `pio lib install "LedController"` or `python -m platformio lib install "LedController"` to install the library.
+
+\subsection vsx_install Visual Studio Code extention
+
+Either open a command line and use the CLI instructions or do the following steps:
+
+1. Open [Visual Studio Code](https://code.visualstudio.com/)
+2. Install the [platform.io extention](https://platformio.org/platformio-ide) and wait till it is installed and configured
+3. Open the PlatformIO home (by clicking on the little house symbol)
+4. Click on the libraries tab.
+5. Type `LedController` in the search bar and click on the result named `LedController`
+6. Select the Version you want to install and click on install.
+
+\~german
+\page install Installationsanweisungen
+
+Falls du wissen möchstest, wie man die Bibliothek verwendet klicke [hier](@ref usage).
+
+\section arduino_install Arduino Ide
+
+Diese Bibliothek ist im Arduino library manager.
+
+1. Öffne deine [Arduino](http://arduino.cc) IDE.
+2. Klicke auf Werkzeuge, Bibliotheken verwalten..
+3. Tippe `LedController` in die Suchleiste.
+4. Wähle die gewünschte Version und klicke auf installieren.
+5. Das war alles, du kannst die Bibliothek jetzt nutzen.
+
+\section PlatformIO
+
+Die [Bibliothek](https://platformio.org/lib/show/7144/LedController) ist auch für den [platform.io](https://platformio.org/platformio) library manager verfügbar.
+<b>Da diese ihre Informationen von Arduino bekommen, sind sie nicht immer auf dem neusten Stand.</b>
+<b>Scheinbar sind hier auch keine Realease Candidate versionen verfügbar.</b>
+
+\subsection CLI
+
+Einfach `pio lib install "LedController"` oder `python -m platformio lib install "LedController"` eingeben um die Bibliothek zu installieren.
+Dies funktioniert, wenn platformio bereits über python installiert ist.
+
+\subsection vsx_install Visual Studio Code Erweiterung
+
+Either open a command line and use the CLI instructions or do the following steps:
+
+1. Öffne [Visual Studio Code](https://code.visualstudio.com/)
+2. Installiere die [platform.io extention](https://platformio.org/platformio-ide) und warte bis sie installiert und konfiguriert ist.
+3. Öffne das PlatformIO home (auf das kleine Haus Symbol klicken)
+4. Klicke auf den libraries Tab.
+5. Gebe `LedController` in die Suchleiste ein und klick auf das Ergebnis `LedController`
+6. Wähle die gewünschte Version and klick auf install.
+
+*/

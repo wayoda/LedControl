@@ -1,0 +1,13 @@
+doc/html
+doc/man
+doc/latex
+doxywarn*.txt
+refman_*.pdf
+
+.vscode
+.idea
+logs
+.pio
+src/*.ino
+*.~*#
+*.orig

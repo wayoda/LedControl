@@ -1,0 +1,257 @@
+name: Compile Examples
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/compile-examples.yml"
+      - "examples/**"
+      - "src/**"
+  push:
+    tags:
+      - 'v*'
+    branches:
+      - 'master'
+    paths:
+      - ".github/workflows/compile-examples.yml"
+      - "examples/**"
+      - "src/**"
+
+jobs:
+  build-arduino:
+    runs-on: ubuntu-latest
+
+    env:
+      SKETCHES_REPORTS_PATH: sketches-reports
+      LIBRARIES: |
+        # Install the library from the local path.
+        - source-path: ./
+        - name: Adafruit Unified Sensor
+        - name: DHT sensor library
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        board:
+          - fqbn: arduino:avr:uno
+            platforms: |
+              - name: arduino:avr
+
+          - fqbn: arduino:samd:mkr1000
+            platforms: |
+              - name: arduino:samd
+          - fqbn: arduino:samd:mkrzero
+            platforms: |
+              - name: arduino:samd
+          - fqbn: arduino:samd:mkrwifi1010
+            platforms: |
+              - name: arduino:samd
+          - fqbn: arduino:samd:mkrfox1200
+            platforms: |
+              - name: arduino:samd
+          - fqbn: arduino:samd:mkrwan1300
+            platforms: |
+              - name: arduino:samd
+          - fqbn: arduino:samd:mkrwan1310
+            platforms: |
+              - name: arduino:samd
+          - fqbn: arduino:samd:mkrgsm1400
+            platforms: |
+              - name: arduino:samd
+          - fqbn: arduino:samd:mkrnb1500
+            platforms: |
+              - name: arduino:samd
+          - fqbn: arduino:samd:mkrvidor4000
+            platforms: |
+              - name: arduino:samd
+          - fqbn: arduino:mbed_portenta:envie_m7
+            platforms: |
+              - name: arduino:mbed_portenta
+          - fqbn: arduino:mbed_portenta:envie_m4
+            platforms: |
+              - name: arduino:mbed_portenta
+          - fqbn: arduino:mbed_nano:nano33ble
+            platforms: |
+              - name: arduino:mbed_nano
+          - fqbn: arduino:mbed_nano:nanorp2040connect
+            platforms: |
+              - name: arduino:mbed_nano
+          - fqbn: arduino:mbed_edge:edge_control
+            platforms: |
+              - name: arduino:mbed_edge
+          - fqbn: esp32:esp32:esp32
+            platforms: |
+              - name: esp32:esp32
+                source-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+          - fqbn: rp2040:rp2040:rpipico
+            platforms: |
+              - name: rp2040:rp2040
+                source-url: https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+            python-version: '3.9'
+            cache: 'pip'
+      - name: install pip dependencies
+        run: pip install pyserial
+
+      - name: Compile examples
+        uses: arduino/compile-sketches@v1
+        with:
+          fqbn: ${{ matrix.board.fqbn }}
+          platforms: ${{ matrix.board.platforms }}
+          libraries: ${{ env.LIBRARIES }}
+          enable-deltas-report: true
+          sketch-paths: "examples/english"
+          sketches-report-path: ${{ env.SKETCHES_REPORTS_PATH }}
+          cli-compile-flags: |
+            - --warnings
+            - default
+
+      - name: Save memory usage change report as artifact
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.SKETCHES_REPORTS_PATH }}
+          path: ${{ env.SKETCHES_REPORTS_PATH }}
+        
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: build-artifact
+          path: .
+          
+  build-pio:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        boards:
+            - name: esp32dev
+            - name: d1_mini
+            - name: uno
+            - name: ATmega1280
+            - name: leonardo
+            - name: due
+            - name: teensy41
+            - name: bluefruitmicro
+        
+        examples:
+            - name: Led-matrix-rocket
+            - name: Led-matrix-rocket-multi
+            - name: Led-matrix-counting
+            - name: Led-matrix-rocket-hwSPI
+            - name: Led-matrix-message
+            - name: 7-Segment-counting
+            - name: 7-Segment-DHT-temp-humid
+            
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+            python-version: '3.9'
+            cache: 'pip'
+      - name: install pip dependencies
+        run: pip install -r ./.scripts/requirements.txt
+      - name: setup pio
+        run: | 
+          python3 -m platformio update
+          python3 -m platformio lib -g install "adafruit/DHT sensor library"
+          python3 -m platformio lib -g install "adafruit/Adafruit Unified Sensor"
+          
+      - name: compile examples
+        run: PLATFORMIO_CI_SRC="examples/english/${{ matrix.examples.name }}/${{ matrix.examples.name }}.ino" python3 -m platformio ci --lib="." -b ${{ matrix.boards.name }}
+    
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: build-artifact
+          path: .
+  
+  update-release:
+    name: "update the latest release"
+    runs-on: ubuntu-latest
+    needs: [build-pio, build-arduino]
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: install doc deps
+        run: sudo apt-get install --yes doxygen graphviz latexmk texlive-latex-extra
+        
+      - name: prepare for building docs
+        run: |
+          mkdir -p doc/html
+          mkdir -p doc/latex
+      
+      - name: build documentation
+        run: bash .scripts/doxygen_multilang.sh
+        
+      - name: pack repo
+        run: |
+          zip -r latest.zip src License README.md library.properties keywords.txt .vscode examples src
+
+      - name: Check code meets quality standards
+        id: codiga
+        uses: codiga/github-action@master
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          codiga_api_token: ${{ secrets.CODIGA_API_TOKEN }}
+          min_quality_grade: 'EXCELLENT'
+          min_quality_score: '99'
+          max_defects_rate: '0.01'
+          max_complex_functions_rate: '0.01'
+          max_long_functions_rate: '0.01'
+          project_name: 'LedController'
+          max_timeout_sec: '600'
+
+      - name: update latest release
+        if: ${{ github.ref_name == 'master' }}
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            License
+            latest.zip
+            refman_english.pdf
+            refman_german.pdf
+            
+      - name: update stable release
+        if: ${{ github.ref_type == 'tag' }}
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: ${{ endsWith( github.ref_name, 'rc') }}
+          files: |
+            License
+            release.zip
+            refman_english.pdf
+            refman_german.pdf
+
+      - name: Deploy to pages
+        if: ${{ contains(github.event.head_commit.message, '--build-docs') }}
+        uses: s0/git-publish-subdir-action@master
+        env:
+          REPO: self
+          BRANCH: gh-pages
+          FOLDER: doc/html
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: build-artifact-${{ matrix.os }}-${{ matrix.compiler }}
+          path: .
