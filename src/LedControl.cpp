@@ -1,7 +1,7 @@
 /*
  *    LedControl.cpp - A library for controling Leds with a MAX7219/MAX7221
  *    Copyright (c) 2007 Eberhard Fahle
- * 
+ *
  *    Permission is hereby granted, free of charge, to any person
  *    obtaining a copy of this software and associated documentation
  *    files (the "Software"), to deal in the Software without
@@ -10,10 +10,10 @@
  *    copies of the Software, and to permit persons to whom the
  *    Software is furnished to do so, subject to the following
  *    conditions:
- * 
- *    This permission notice shall be included in all copies or 
+ *
+ *    This permission notice shall be included in all copies or
  *    substantial portions of the Software.
- * 
+ *
  *    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  *    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
  *    OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -55,7 +55,7 @@ LedControl::LedControl(int dataPin, int clkPin, int csPin, int numDevices) {
     pinMode(SPI_CS,OUTPUT);
     digitalWrite(SPI_CS,HIGH);
     SPI_MOSI=dataPin;
-    for(int i=0;i<64;i++) 
+    for(int i=0;i<64;i++)
         status[i]=0x00;
     for(int i=0;i<maxDevices;i++) {
         spiTransfer(i,OP_DISPLAYTEST,0);
@@ -92,7 +92,7 @@ void LedControl::setScanLimit(int addr, int limit) {
 void LedControl::setIntensity(int addr, int intensity) {
     if(addr<0 || addr>=maxDevices)
         return;
-    if(intensity>=0 && intensity<16)	
+    if(intensity>=0 && intensity<16)
         spiTransfer(addr, OP_INTENSITY,intensity);
 }
 
@@ -106,6 +106,81 @@ void LedControl::clearDisplay(int addr) {
         status[offset+i]=0;
         spiTransfer(addr, i+1,status[offset+i]);
     }
+}
+
+void LedControl::setRotation(int rot) {
+  rotation = rot;
+}
+
+coord LedControl::flipHorizontally(coord xy) {
+  xy.x = 7- xy.x;
+  return xy;
+}
+
+coord LedControl::flipVertically(coord xy) {
+  xy.y = 7- xy.y;
+  return xy;
+}
+
+coord LedControl::rotate90(coord xy) {
+  int tmp = xy.y;
+  xy.y = xy.x;
+  xy.x = tmp;
+  return flipHorizontally(xy);
+}
+
+coord LedControl::rotate180(coord xy) {
+  return flipHorizontally(flipVertically(xy));
+}
+
+coord LedControl::rotate270(coord xy) {
+  return rotate180(rotate90(xy));
+}
+
+coord LedControl::transform(coord xy) {
+  if (rotation == 90) {
+    xy = rotate90(xy);
+  } else if (rotation == 180) {
+    xy = rotate180(xy);
+  } else if (rotation == 270) {
+    xy = rotate270(xy);
+  }
+  return xy;
+}
+
+coord LedControl::transform(int x, int y) {
+  coord xy;
+  xy.x = x;
+  xy.y =y;
+  return transform(xy);
+}
+
+void LedControl::setXY(int addr, int x, int y, boolean state) {
+  coord xy;
+  xy.x = x;
+  xy.y = y;
+  xy = transform(xy);
+  setLed(addr, xy.y, xy.x, state);
+}
+
+void LedControl::setRawXY(int addr, int x, int y, boolean state) {
+  setLed(addr, y, x, state);
+}
+
+boolean LedControl::getXY(int addr, int x, int y) {
+  coord xy;
+  xy.x = x;
+  xy.y = y;
+  xy = transform(xy);
+  return getLed(addr, xy.y, xy.x);
+}
+
+boolean LedControl::getRawXY(int addr, int x, int y) {
+  return getLed(addr, y, x);
+}
+
+void LedControl::setXY(int addr, coord xy, boolean state) {
+  setXY(addr, xy.x, xy.y, state);
 }
 
 void LedControl::setLed(int addr, int row, int column, boolean state) {
@@ -127,6 +202,31 @@ void LedControl::setLed(int addr, int row, int column, boolean state) {
     spiTransfer(addr, row+1,status[offset+row]);
 }
 
+void LedControl::invertRawXY(int addr, int x, int y) {
+  return setRawXY(addr, x, y, !getRawXY(addr, x, y));
+}
+
+void LedControl::invertXY(int addr, int x, int y) {
+  return setXY(addr, x, y, !getXY(addr, x, y));
+}
+
+boolean LedControl::getXY(int addr, coord xy) {
+  return getXY(addr, xy.x, xy.y);
+}
+
+boolean LedControl::getLed(int addr, int row, int column) {
+    int offset;
+    boolean state;
+
+    if(addr<0 || addr>=maxDevices)
+        return false;
+    if(row<0 || row>7 || column<0 || column>7)
+        return false;
+    offset=addr*8;
+    state = (1 == ( (status[offset+row] >> (7-column)) & 1));
+    return state;
+}
+
 void LedControl::setRow(int addr, int row, byte value) {
     int offset;
     if(addr<0 || addr>=maxDevices)
@@ -143,7 +243,7 @@ void LedControl::setColumn(int addr, int col, byte value) {
 
     if(addr<0 || addr>=maxDevices)
         return;
-    if(col<0 || col>7) 
+    if(col<0 || col>7)
         return;
     for(int row=0;row<8;row++) {
         val=value >> (7-row);
@@ -161,7 +261,7 @@ void LedControl::setDigit(int addr, int digit, byte value, boolean dp) {
     if(digit<0 || digit>7 || value>15)
         return;
     offset=addr*8;
-    v=pgm_read_byte_near(charTable + value); 
+    v=pgm_read_byte_near(charTable + value);
     if(dp)
         v|=B10000000;
     status[offset+digit]=v;
@@ -182,7 +282,7 @@ void LedControl::setChar(int addr, int digit, char value, boolean dp) {
         //no defined beyond index 127, so we use the space char
         index=32;
     }
-    v=pgm_read_byte_near(charTable + index); 
+    v=pgm_read_byte_near(charTable + index);
     if(dp)
         v|=B10000000;
     status[offset+digit]=v;
@@ -199,13 +299,25 @@ void LedControl::spiTransfer(int addr, volatile byte opcode, volatile byte data)
     //put our device data into the array
     spidata[offset+1]=opcode;
     spidata[offset]=data;
-    //enable the line 
+    //enable the line
     digitalWrite(SPI_CS,LOW);
-    //Now shift out the data 
+    //Now shift out the data
     for(int i=maxbytes;i>0;i--)
         shiftOut(SPI_MOSI,SPI_CLK,MSBFIRST,spidata[i-1]);
     //latch the data onto the display
     digitalWrite(SPI_CS,HIGH);
-}    
+}
 
-
+void LedControl::backup() {
+  memcpy(backupStatus, status, 64);
+}
+void LedControl::restore() {
+  memcpy(status, backupStatus, 64);
+  int offset;
+  for (int addr=0; addr<maxDevices; addr++) {
+    offset=addr*8;
+    for(int i=0;i<8;i++) {
+      spiTransfer(addr, i+1,status[offset+i]);
+    }
+  }
+}
